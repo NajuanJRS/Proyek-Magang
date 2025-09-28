@@ -1,0 +1,83 @@
+<?php
+
+namespace App\Http\Controllers\admin;
+
+use App\Http\Controllers\Controller;
+use App\Models\admin\KategoriHeader;
+use App\Models\admin\Header;
+use Illuminate\Contracts\View\View;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
+
+class HeaderProfileController extends Controller
+{
+    /**
+     * Display a listing of the resource.
+     */
+    public function index(Request $request): View
+    {
+        $search = $request->input('search');
+        $headerProfile = Header::when($search, function ($query, $search) {
+            $query->where('nama_kategori', 'like', "%$search%")
+                  ->orWhere('keterangan', 'like', "%$search%");
+        })->paginate(10);
+
+        return view('Admin.profile.headerProfile.headerProfile', compact('headerProfile'));
+    }
+
+    /**
+     * Display the specified resource.
+     */
+    public function show(Header $headerProfile)
+    {
+        //
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     */
+    public function edit(Header $headerProfile)
+    {
+        $headerProfile = Header::findOrFail($headerProfile->id_header);
+        $kategoriHeader = KategoriHeader::all();
+        return view('Admin.profile.headerProfile.formEditHeaderProfile', compact('headerProfile', 'kategoriHeader'));
+    }
+
+    /**
+     * Update the specified resource in storage.
+     */
+    public function update(Request $request, Header $headerProfile)
+    {
+        $request->validate([
+            'id_user' => 'nullable|exists:user,id_user',
+            'keterangan' => 'required|min:5',
+            'gambar' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+        ]);
+
+        $idUser = Auth::check() && Auth::user()->role === 'admin'
+        ? 1
+        : Auth::id();
+
+        $data = [
+            'id_user'    => $idUser,
+            'keterangan' => $request->keterangan,
+        ];
+
+        if ($request->hasFile('gambar')) {
+            // Hapus gambar lama jika ada
+            $oldFilePath = 'header/' . $headerProfile->gambar;
+            if ($headerProfile->gambar && Storage::disk('public')->exists($oldFilePath)) {
+                Storage::disk('public')->delete($oldFilePath);
+            }
+
+            // Upload gambar baru
+            $path = $request->file('gambar')->store('header', 'public');
+            $data['gambar'] = basename($path);
+        }
+
+        $headerProfile->update($data);
+
+        return redirect()->route('admin.headerProfile.index')->with('success', 'Data Heading Berhasil Diperbarui!');
+    }
+}

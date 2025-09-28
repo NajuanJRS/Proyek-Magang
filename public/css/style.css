@@ -1,0 +1,812 @@
+/* CSS Reset dan Pengaturan Dasar */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+}
+
+body {
+    background-color: #f8f9fa;
+}
+
+.dashboard-container {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+}
+
+/* Header (Bagian Atas) */
+.header {
+    background-color: #3b82f6; /* Warna biru */
+    color: white;
+    padding: 15px 20px;
+    display: flex;
+    align-items: center;
+}
+
+.header .logo-container {
+    display: flex;
+    align-items: center;
+}
+
+.header .logo-container img {
+    height: 65px;
+    margin-right: 15px;
+}
+
+.header .title {
+    font-size: 1.2rem;
+    font-weight: 500;
+}
+
+.header .menu-toggle {
+    font-size: 1.5rem;
+    margin-right: 20px;
+    cursor: pointer;
+}
+
+/* Konten Utama (Sidebar + Main Area) */
+.main-content-wrapper {
+    display: flex;
+    flex-grow: 1;
+    overflow: hidden;
+}
+
+/* Sidebar (Menu Kiri) */
+.sidebar {
+    width: 260px;
+    background-color: #ffffff;
+    border-right: 1px solid #dee2e6;
+    display: flex;
+    flex-direction: column;
+    padding: 20px 0;
+
+}
+
+.sidebar .admin-profile {
+    text-align: center;
+    padding: 10px 20px 30px 20px;
+    border-bottom: 1px solid #e9ecef;
+    margin-bottom: 15px;
+}
+
+.sidebar .admin-profile i {
+    font-size: 48px;
+    color: #adb5bd;
+    margin-bottom: 10px;
+}
+
+.sidebar .admin-profile h3 {
+    font-size: 1rem;
+    color: #495057;
+    font-weight: 500;
+    margin-top: 5px;
+}
+
+.sidebar .admin-profile p {
+    font-size: 0.875rem;
+    color: #6c757d;
+}
+
+.sidebar-menu {
+    list-style: none;
+}
+
+.sidebar-menu a {
+    display: flex;
+    align-items: center;
+    padding: 12px 25px;
+    color: #495057;
+    text-decoration: none;
+    font-size: 0.95rem;
+    transition: background-color 0.2s, color 0.2s;
+}
+
+.sidebar-menu a i {
+    width: 35px;
+    text-align: center;
+    margin-right: 10px;
+    font-size: 1.1rem;
+    color: #868e96;
+}
+
+.sidebar-menu a:hover,
+.sidebar-menu a.active {
+    background-color: #e9ecef;
+    color: #0d6efd;
+}
+
+.sidebar-menu a:hover i,
+.sidebar-menu a.active i {
+     color: #0d6efd;
+}
+
+.sidebar-menu .has-arrow::after {
+    content: '>';
+    float: right;
+    transition: transform 0.2s;
+}
+
+/* Main Area (Konten Kanan) */
+.main-panel {
+    flex-grow: 1;
+    padding: 30px;
+    background-color: #e9ecef;
+    overflow-y: auto;
+}
+
+.welcome-card {
+    background-color: #ffffff;
+    padding: 25px;
+    border-radius: 5px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+}
+
+/* SIDEBAR */
+.sidebar {
+  width: 240px;
+  min-height: 100vh;
+  background: #fff;
+  transition: width 0.3s ease;
+  box-shadow: 2px 0 6px rgba(0, 0, 0, 0.05);
+}
+
+.sidebar-icon-only {
+  width: 70px;
+}
+
+.sidebar .nav-item {
+  display: flex;
+  align-items: center;
+}
+
+.sidebar .nav-link {
+  display: flex;
+  align-items: center;
+  padding: 12px 20px;
+  color: #333;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.sidebar .nav-link:hover {
+  background: #f2f2f2;
+  border-radius: 8px;
+}
+
+.sidebar .menu-title {
+  margin-left: 10px;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.sidebar-icon-only .menu-title {
+  opacity: 0;
+  visibility: hidden;
+}
+
+/* NAVBAR */
+.navbar {
+  height: 65px;
+  padding-left: 1rem;
+  background: #4A90E2; /* biru */
+  color: #fff;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+  z-index: 1000;
+}
+
+.navbar .navbar-brand img {
+  height: 40px;
+}
+
+.navbar .navbar-brand {
+  font-weight: bold;
+  font-size: 1.2rem;
+  color: #fff;
+  margin-left: 10px;
+}
+
+.navbar .navbar-toggler {
+  border: none;
+  background: transparent;
+  font-size: 1.5rem;
+  color: #fff;
+  margin: 0 10px;
+}
+
+/* CONTENT WRAPPER */
+.page-body-wrapper {
+  display: flex;
+}
+
+.main-panel {
+  flex: 1;
+  transition: margin-left 0.3s ease;
+}
+
+.sidebar-icon-only ~ .main-panel {
+  margin-left: 70px;
+}
+
+.sidebar ~ .main-panel {
+  margin-left: 240px;
+}
+
+/* Navbar */
+    .navbar-custom {
+        background-color: #4a90e2; /* warna biru */
+    }
+    .navbar-custom .navbar-brand,
+    .navbar-custom .nav-link,
+    .navbar-custom .navbar-toggler {
+        color: #fff;
+    }
+    .navbar-custom .navbar-brand img {
+        height: 40px;
+        margin-right: 5px;
+    }
+
+    /* Sidebar */
+    .sidebar {
+        width: 240px;
+        background: #fff;
+        border-right: 1px solid #ddd;
+        height: 100vh;
+        position: fixed;
+        top: 56px; /* tinggi navbar */
+        left: 0;
+        overflow-y: auto;
+        padding: 1rem;
+    }
+    .sidebar .user-info {
+        text-align: center;
+        margin-bottom: 1rem;
+    }
+    .sidebar .user-info img {
+        width: 80px;
+        height: 80px;
+        border-radius: 50%;
+        margin-bottom: 0.5rem;
+    }
+    .sidebar .nav-link {
+        color: #333;
+        display: flex;
+        align-items: center;
+        padding: 0.5rem 0.75rem;
+    }
+    .sidebar .nav-link i {
+        margin-right: 10px;
+        font-size: 18px;
+    }
+    .sidebar .nav-link.active {
+        color: #4a90e2;
+        font-weight: bold;
+    }
+
+    /* Main content */
+    .content {
+        margin-left: 240px;
+        padding: 2rem;
+        margin-top: 56px; /* navbar height */
+        background: #f5f5f5;
+        min-height: 100vh;
+    }
+
+    /* Pastikan submenu turun ke bawah */
+        .sidebar .collapse ul {
+            display: block !important;
+            /* pastikan vertikal */
+            flex-direction: column !important;
+        }
+
+        .sidebar .collapse .nav-link {
+            padding-left: 2rem;
+            display: block;
+            width: 100%;
+        }
+
+        .sidebar .nav-item {
+            display: block !important;
+        }
+
+        body {
+            min-height: 100vh;
+            background: #f6f6f6;
+            font-family: 'Poppins', Arial, sans-serif;
+        }
+
+        .login-card {
+            background: #fff;
+            border-radius: 20px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+            width: 700px;
+            /* Atur lebar card di sini */
+            height: 600px;
+            /* Atur tinggi card di sini */
+            padding: 40px 32px;
+            /* Padding tetap proporsional */
+            margin: auto;
+            margin-top: 60px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .login-card img {
+            width: 100px;
+            margin-bottom: 20px;
+        }
+
+        .login-card h3 {
+            font-size: 1.7rem;
+            font-weight: 600;
+            margin-bottom: 0;
+            text-shadow: 1px 2px 4px rgba(0, 0, 0, 0.10);
+        }
+
+        .login-card .login-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 24px;
+            text-shadow: 1px 2px 4px rgba(0, 0, 0, 0.10);
+        }
+
+        .input-group {
+            margin-bottom: 18px;
+        }
+
+        .form-control {
+            border-radius: 15px !important;
+            background: #e0e0e0;
+            border: none;
+            font-size: 1.1rem;
+            padding-left: 25px;
+            padding-right: 40px;
+            padding-top: 10px;
+            height: 50px;
+        }
+
+        /* ...existing code... */
+        .input-group-text {
+            background: #e0e0e0;
+            border: none;
+            border-radius: 15px 0 0 15px !important;
+            font-size: 1.3rem;
+            color: #555;
+        }
+
+        .input-group .form-control {
+            border-radius: 0 !important;
+        }
+
+        .input-group .form-control:first-child {
+            border-radius: 15px 0 0 15px !important;
+        }
+
+        .input-group .form-control:last-child {
+            border-radius: 0 15px 15px 0 !important;
+        }
+
+        .input-group .input-group-text:last-child {
+            border-radius: 0 15px 15px 0 !important;
+        }
+
+        .input-group .input-group-text {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .input-group .toggle-password {
+            position: absolute;
+            right: 18px;
+            top: 12px;
+            background: none;
+            border: none;
+            font-size: 1.2rem;
+            color: #555;
+            cursor: pointer;
+            z-index: 2;
+        }
+
+        .form-check-label {
+            font-size: 1rem;
+            color: #222;
+        }
+
+        .login-btn {
+            background: #98c3fa;
+            color: #fff;
+            font-weight: 600;
+            border: none;
+            border-radius: 15px;
+            font-size: 1.1rem;
+            padding: 12px 0;
+            margin-top: 10px;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+            transition: background 0.2s;
+        }
+
+        .login-btn:hover {
+            background: #56a3f6;
+        }
+
+        .copyright-text {
+            text-align: center;
+            color: #fff;
+            margin-top: 30px;
+            font-size: 0.95rem;
+            text-shadow: 1px 2px 4px rgba(0, 0, 0, 0.10);
+        }
+
+        .login-card {
+            background: #fff;
+            border-radius: 20px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+            padding: 64px 64px 56px 64px;
+            /* padding lebih besar */
+            max-width: 650px;
+            /* card lebih lebar */
+            margin: auto;
+            margin-top: 60px;
+        }
+        @media (max-width: 700px) {
+        .login-card {
+            width: 95vw;
+            height: auto;
+            padding: 24px 8px;
+        }
+    }
+
+    /* Tombol edit dan search (Ubah) - Biru */
+.btn-info {
+    background: #3498db;
+    color: #fff !important;
+    border: none;
+    border-radius: 8px;
+    padding: 6px 18px;
+    font-size: 0.98rem;
+    font-weight: 500;
+    transition: box-shadow 0.2s, background 0.2s;
+    box-shadow: 0 2px 8px rgba(52, 152, 219, 0.08);
+}
+.btn-info:hover, .btn-info:focus {
+    background: #217dbb;
+    color: #fff !important;
+    box-shadow: 0 4px 12px rgba(52, 152, 219, 0.18);
+}
+
+/* Tombol Delete (Hapus) - Merah solid */
+.btn-danger {
+    background: #e74c3c;
+    color: #fff !important;
+    border: none;
+    border-radius: 8px;
+    padding: 6px 18px;
+    font-size: 0.98rem;
+    font-weight: 500;
+    transition: box-shadow 0.2s, background 0.2s;
+    box-shadow: 0 2px 8px rgba(231, 76, 60, 0.08);
+}
+.btn-danger:hover, .btn-danger:focus {
+    background: #c0392b;
+    color: #fff !important;
+    box-shadow: 0 4px 12px rgba(231, 76, 60, 0.18);
+}
+
+/* Ikon di tombol */
+.btn-info i,
+.btn-danger i {
+    font-size: 1.1rem;
+    margin-right: 4px;
+    vertical-align: middle;
+}
+
+/* Card dan Table */
+.card {
+    border-radius: 20px;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.07);
+}
+.custom-table-container {
+    padding-bottom: 0;
+}
+.table th, .table td {
+    vertical-align: middle !important;
+    font-size: 1rem;
+}
+.table th {
+    font-weight: 600;
+}
+
+/* Tombol Tambah dan Search */
+.btn-primary {
+    background: #56a3f6;
+    border: none;
+    font-weight: 500;
+}
+.btn-primary:hover, .btn-primary:focus {
+    background: #3498db;
+}
+.input-group .form-control {
+    font-size: 1rem;
+    padding: 8px 12px;
+}
+.input-group .btn {
+    font-size: 1rem;
+    padding: 8px 12px;
+}
+
+/* Tombol Edit dan Delete */
+.btn-info {
+    background: #3498db;
+    color: #fff !important;
+    border: none;
+    font-weight: 500;
+}
+.btn-info:hover, .btn-info:focus {
+    background: #217dbb;
+    color: #fff !important;
+}
+.btn-danger {
+    background: #e74c3c;
+    color: #fff !important;
+    border: none;
+    font-weight: 500;
+}
+.btn-danger:hover, .btn-danger:focus {
+    background: #c0392b;
+    color: #fff !important;
+}
+.btn-sm {
+    font-size: 0.98rem;
+    padding: 6px 16px;
+    border-radius: 8px;
+}
+.btn i {
+    font-size: 1.1rem;
+    margin-right: 4px;
+    vertical-align: middle;
+}
+
+
+/* Sidebar default */
+.sidebar {
+    width: 240px;
+    background: #fff;
+    border-right: 1px solid #ddd;
+    height: 100vh;
+    position: fixed;
+    top: 56px; /* tinggi navbar */
+    left: 0;
+    overflow-y: auto;
+    padding: 1rem;
+    transition: width 0.3s ease, left 0.3s ease;
+}
+
+/* Mode minimized (desktop) */
+.sidebar.sidebar-minimized {
+    width: 70px;
+}
+.sidebar.sidebar-minimized .nav-link span,
+.sidebar.sidebar-minimized .user-info,
+.sidebar.sidebar-minimized p.text-muted {
+    display: none;
+}
+.sidebar.sidebar-minimized .nav-link {
+    justify-content: center;
+    text-align: center;
+}
+.sidebar.sidebar-minimized .nav-link i {
+    margin-right: 0;
+    font-size: 1.3rem;
+}
+.content.sidebar-minimized {
+    margin-left: 70px;
+}
+
+
+.sidebar {
+    width: 240px;
+    left: 0;
+    transition: all 0.3s ease;
+    position: fixed;
+    top: 56px; /* tingginya navbar */
+    bottom: 0;
+    overflow-y: auto;
+}
+
+/* Jika sidebar disembunyikan (desktop minimized / mobile closed) */
+.sidebar.hidden {
+    left: -240px;
+}
+
+/* Konten */
+.content {
+    margin-left: 240px;
+    transition: margin-left 0.3s ease;
+}
+.content.full {
+    margin-left: 0;
+}
+
+#sidebarToggle {
+    font-size: 2rem;        /* Membesarkan ikon */
+    padding: 10px 15px;     /* Memberi ruang klik lebih besar */
+    width: auto;            /* Biar fleksibel */
+    height: auto;
+    display: flex;
+    align-items: start;
+    justify-content: center;
+}
+#sidebarToggle i {
+    font-size: 2rem;        /* Ikon list lebih besar */
+}
+
+/* Logo & teks navbar */
+.logo-navbar {
+    transition: all 0.3s ease;
+    height: 50px;
+}
+
+/* Sembunyikan logo mini default */
+.logo-mini {
+    display: none;
+    height: 40px;
+    transition: opacity 0.2s;
+}
+
+.brand-text {
+    font-size: 1.1rem;
+    font-weight: 500;
+    white-space: nowrap;
+}
+
+
+.navbar.nav-collapsed .brand-text {
+    transform: translateX(10px);
+}
+
+.navbar.nav-collapsed #sidebarToggle {
+    transform: translateX(10px); /* hamburger geser ke kiri */
+}
+
+
+.logo-full {
+    height: 40px;
+    transition: opacity 0.2s;
+}
+
+/* Kalau sidebar minimize */
+body.nav-collapsed .logo-full {
+    display: none !important;
+}
+body.nav-collapsed .logo-mini {
+    display: inline-block !important;
+}
+body.nav-collapsed .brand-text {
+    transform: translateX(-30px);
+    opacity: 0.7;
+}
+
+/* Mobile / responsive sidebar improvements */
+@media (max-width: 991px) {
+  /* sidebar hidden by default on mobile */
+  .sidebar {
+    left: -100%;
+    width: 300px;
+    position: fixed;
+    top: 56px; /* height navbar */
+    bottom: 0;
+    z-index: 1050;
+    transition: left 0.28s ease;
+    background: #fff;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.12);
+  }
+  .sidebar.show {
+    left: 0;
+  }
+  /* content should not have left margin on mobile */
+  .content {
+    margin-left: 0 !important;
+    padding: 1rem;
+  }
+  /* smaller paddings for sidebar items */
+  .sidebar .nav-link {
+    padding: 0.65rem 1rem;
+  }
+  /* backdrop to dim page when sidebar open */
+  .sidebar-backdrop {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.45);
+    z-index: 1040;
+    display: none;
+    transition: opacity 0.22s ease;
+  }
+  .sidebar-backdrop.show {
+    display: block;
+    opacity: 1;
+  }
+  /* ensure brand text not overflow */
+  .brand-text {
+    font-size: 1rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+}
+
+/* helper to prevent body scroll when sidebar overlay open */
+body.no-scroll {
+  overflow: hidden;
+}
+
+/* keep desktop behavior unchanged but ensure smooth transition */
+@media (min-width: 992px) {
+  .sidebar {
+    left: 0;
+  }
+}
+
+@media (max-width: 991px) {
+  /* Logo animation (mobile) */
+  .logo-full, .logo-mini {
+    display: inline-block;
+    transform-origin: center;
+    will-change: transform, opacity;
+  }
+
+  /* default: show mini, hide full on small screens */
+  .logo-mini {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+  .logo-full {
+    opacity: 0;
+    transform: translateY(5px) scale(.96);
+    pointer-events: none;
+  }
+
+  /* when mobile sidebar overlay is open, show full logo and hide mini */
+  body.mobile-sidebar-open .logo-full {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    pointer-events: auto;
+  }
+  body.mobile-sidebar-open .logo-mini {
+    opacity: 0;
+    transform: translateY(9px) scale(.92);
+  }
+
+  /* also gently fade/hide brand text when sidebar open (optional) */
+  .brand-text {
+    transition: opacity .28s ease, transform .28s ease;
+  }
+  body.mobile-sidebar-open .brand-text {
+    opacity: 0;
+    transform: translateX(8px);
+  }
+}
+
+.sidebar.sidebar-scroll {
+    max-height: auto; /* sesuaikan jika navbar punya tinggi lain */
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch; /* smooth scrolling pada mobile */
+}
+
+/* Optional: styling scrollbar (modern browsers) */
+.sidebar.sidebar-scroll::-webkit-scrollbar {
+    width: 10px;
+}
+.sidebar.sidebar-scroll::-webkit-scrollbar-thumb {
+    background: rgba(0,0,0,0.12);
+    border-radius: 8px;
+}
+.sidebar.sidebar-scroll::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.nav-link.active, .nav-link.active i {
+            color: #0d6efd !important; /* Bootstrap primary blue */
+            font-weight: 600;
+        }
