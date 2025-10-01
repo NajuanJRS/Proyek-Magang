@@ -62,10 +62,15 @@
                                             </select>
                                         </div>
 
-                                        <label for="keterangan" class="mb-2">Keterangan</label>
+                                        <label for="headline" class="mb-2">Headline</label>
                                         <div class="mb-4">
-                                            <textarea class="form-control" id="keterangan" name="keterangan" vrows="5"
-                                                placeholder="Masukkan keterangan singkat untuk gambar slider">{{ old('keterangan', $slider->keterangan) }}</textarea>
+                                            <input type="text" class="form-control" id="headline" name="headline"
+                                                placeholder="Masukkan Headline untuk gambar slider" value="{{ old('headline', $slider->headline) }}">
+                                        </div>
+                                        <label for="sub_heading" class="mb-2">Sub Heading</label>
+                                        <div class="mb-4">
+                                            <textarea class="form-control" id="sub_heading" name="sub_heading" vrows="5"
+                                                placeholder="Masukkan Sub Heading singkat untuk gambar slider">{{ old('sub_heading', $slider->sub_heading) }}</textarea>
                                         </div>
 
 

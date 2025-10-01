@@ -53,7 +53,7 @@
                                             <tr>
                                                 <td>{{ $loop->iteration }}</td>
                                                 <td>
-                                                <img src="{{ asset('storage/gambarHeader/'.$p->gambar_header) }}" width="150">
+                                                <img src="{{ asset('storage/gambarHeader/'.$p->gambar) }}" width="150">
                                                 </td>
                                                 <td>
                                                     <label class="font-weight-bold">{{ $p->menuHeader->nama_menu }}</label>

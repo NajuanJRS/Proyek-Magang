@@ -43,7 +43,8 @@ class SliderController extends Controller
         $request->validate([
             'id_user' => 'nullable|exists:user,id_user',
             'id_kategori_header' => 'nullable|exists:kategori_header,id_kategori_header',
-            'keterangan' => 'required|min:5', // Sesuaikan dengan view
+            'headline' => 'required|min:5', // Sesuaikan dengan view
+            'sub_heading' => 'required|min:5', // Sesuaikan dengan view
             'gambar'     => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
 
@@ -58,7 +59,8 @@ class SliderController extends Controller
         Header::create([
             'id_user'    => $idUser,
             'id_kategori_header' => $request->id_kategori_header,
-            'keterangan' => $request->keterangan,
+            'headline' => $request->headline,
+            'sub_heading' => $request->sub_heading,
             'gambar'     => $filename,
         ]);
 
@@ -91,7 +93,8 @@ class SliderController extends Controller
         $request->validate([
             'id_user' => 'nullable|exists:user,id_user',
             'id_kategori_header' => 'nullable|exists:kategori_header,id_kategori_header',
-            'keterangan' => 'required|min:5',
+            'headline' => 'required|min:5',
+            'sub_heading' => 'required|min:5',
             'gambar' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
 
@@ -102,7 +105,8 @@ class SliderController extends Controller
         $data = [
             'id_user'    => $idUser,
             'id_kategori_header' => $request->id_kategori_header,
-            'keterangan' => $request->keterangan,
+            'headline' => $request->headline,
+            'sub_heading' => $request->sub_heading,
         ];
 
         if ($request->hasFile('gambar')) {

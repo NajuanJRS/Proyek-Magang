@@ -1,11 +1,1481 @@
-@import 'tailwindcss';
+/* area konten (tempat background ditempel) */
+.site-main{
+  /* tidak wajib, tapi bagus untuk menghindari tampilan 'mentok' */
+  min-height: 60vh;
+}
 
-@source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
-@source '../../storage/framework/views/*.php';
-@source '../**/*.blade.php';
-@source '../**/*.js';
 
-@theme {
-    --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
-        'Segoe UI Symbol', 'Noto Color Emoji';
+/* background abstrak halaman dinas sosial */
+.ds-bg-abstract{
+  background-color: #F8F9FA;                       /* warna dasar */
+  background-image: url('/images/background-dinas-sosial.png');
+  background-repeat: no-repeat;
+  background-position: top center;
+  background-size: 100% auto;                      /* lebar penuh, tinggi ikut gambar */
+}
+
+/* background polos halaman dinas sosial */
+.ds-bg-plain {
+  background-color: #F8F9FA; /* Warna abu-abu terang */
+}
+
+/* Atur skala agar proporsional di berbagai layar */
+@media (min-width: 992px){
+  .ds-bg-abstract{
+    background-size: 1400px auto;                  /* desktop (boleh ubah 1200–1600px) */
+  }
+}
+@media (max-width: 767.98px){
+  .ds-bg-abstract{
+    background-size: 600px auto;                   /* mobile; sesuaikan bila perlu */
+  }
+}
+
+
+/* === TOPBAR (desktop) === */
+.ds-topbar{
+  background-color:#2B5A9A;
+  background-image:url('/images/pola-sasirangan.png');
+  background-repeat:repeat;
+  background-size:cover;              /* pola menyesuaikan bar */
+  border-bottom:2px solid rgba(0,0,0,.25);
+  padding-top:.25rem;                  /* tinggi ramping */
+  padding-bottom:.25rem;
+  position: sticky;       /* fallback Bootstrap: sticky-top */
+  position: -webkit-sticky;
+  top: 0;
+  z-index: 1050;
+}
+
+/* Logo & ikon */
+.ds-logo{ height:45px; width:auto; }   /* cukup besar untuk smartphone */
+.ds-icon{ font-size:1.5rem; line-height:1; }  /* ikon ≈ 26px: nyaman disentuh */
+
+/* Menu desktop */
+.navbar-nav .nav-link{
+  font-size:.95rem;
+  font-weight:400;                     /* tidak terlalu tebal */
+  padding:.25rem .75rem;
+}
+.navbar-nav .nav-link:hover{
+  text-decoration:underline;
+  text-underline-offset:4px;
+}
+
+
+/* ===========================
+   OVERLAY (klik di luar panel)
+   =========================== */
+.ds-overlay{
+  position:fixed;
+  inset:0;                             /* akan dioverride JS: overlay.style.top = tinggi navbar */
+  background:rgba(0,0,0,.25);
+  opacity:0;
+  pointer-events:none;
+  transition:opacity .25s ease;
+  z-index:1015;                        /* di bawah panel (1020), di atas konten */
+}
+.ds-overlay.show{
+  opacity:1;
+  pointer-events:auto;
+}
+
+/* =========================================
+   PANEL MOBILE (muncul DI BAWAH navbar)
+   ========================================= */
+.ds-mobile-panel{
+  background:#234676;
+  border-bottom:1px solid rgba(255,255,255,.15);
+  overflow:hidden;
+  max-height:0;
+  opacity:0;
+  transform:translateY(-8px);
+  transition:
+    max-height .7s cubic-bezier(.2,.8,.2,1),
+    opacity    .5s ease-out,
+    transform  .6s cubic-bezier(.2,.8,.2,1);
+  will-change:max-height,opacity,transform;
+  position:fixed;      /* <<< UBAH INI dari 'relative' menjadi 'fixed' */
+  top: 0;              /* <<< TAMBAHKAN INI (akan diupdate oleh JS) */
+  left: 0;             /* <<< TAMBAHKAN INI agar lebarnya penuh */
+  right: 0;            /* <<< TAMBAHKAN INI agar lebarnya penuh */
+  z-index:1020;
+}
+.ds-mobile-panel.open{
+  max-height:80vh;                     /* tidak full screen */
+  opacity:1;
+  transform:translateY(0);
+}
+
+/* Isi menu mobile + jarak tepi */
+.ds-mobile-menu{ padding:12px 0 18px; }
+.ds-mobile-menu .nav-link{
+  color:#fff;
+  display:block;
+  padding:12px 6px;                    /* touch target nyaman */
+  text-transform:uppercase;
+  letter-spacing:.02em;
+  border-bottom:1px solid rgba(255,255,255,.15);
+  font-weight:350;
+  font-size:0.9rem;
+
+  /* animasi item (stagger) */
+  opacity:0;
+  transform:translateY(-6px);
+  transition:opacity .45s ease-out, transform .45s ease-out;
+}
+.ds-mobile-panel.open .nav-link{
+  opacity:1;
+  transform:translateY(0);
+}
+/* Stagger: jeda berurutan */
+.ds-mobile-panel.open .nav-link:nth-child(1){ transition-delay:.05s; }
+.ds-mobile-panel.open .nav-link:nth-child(2){ transition-delay:.10s; }
+.ds-mobile-panel.open .nav-link:nth-child(3){ transition-delay:.15s; }
+.ds-mobile-panel.open .nav-link:nth-child(4){ transition-delay:.20s; }
+.ds-mobile-panel.open .nav-link:nth-child(5){ transition-delay:.25s; }
+.ds-mobile-panel.open .nav-link:nth-child(6){ transition-delay:.30s; }
+.ds-mobile-panel.open .nav-link:nth-child(7){ transition-delay:.35s; }
+
+.ds-mobile-menu .nav-link:hover{
+  background:rgba(255,255,255,.08);
+}
+
+/* Padding kontainer agar tidak menempel ke tepi layar pada mobile */
+@media (max-width:991.98px){
+  .ds-mobile-panel .container{
+    padding-left:22px;
+    padding-right:22px;
+  }
+}
+
+/* (Opsional) jika user memilih reduce motion */
+@media (prefers-reduced-motion: reduce){
+  .ds-mobile-panel{ transition:none; transform:none; }
+  .ds-mobile-menu .nav-link{ transition:none; transform:none; opacity:1; }
+}
+
+/* ===== Footer ===== */
+.ds-footer{
+  background:#fff;
+  border:1px solid #E5E7EB;      /* garis tipis seperti gambar */
+  border-radius:6px;
+}
+
+/* Bar atas + garis pemisah */
+.ds-footer-top{
+  border-bottom:1px solid #E5E7EB;
+  background:#fff;
+}
+
+/* Ikon medsos */
+.ds-social .bi{
+  font-size:1.4rem;
+  transition:transform .15s ease, color .15s ease;
+}
+.ds-social a:hover .bi{
+  transform:translateY(-1px);
+  color:#2B5A9A;
+}
+
+/* Daftar tautan */
+.ds-linklist li + li{ margin-top:.35rem; }
+.ds-linklist a{
+  color:inherit;
+}
+.ds-linklist a:hover{
+  color:#6d84a5;
+  text-decoration:underline;
+  text-underline-offset:3px;
+}
+
+/* Responsif: rapikan jarak pada layar kecil */
+@media (max-width: 991.98px){
+  .ds-footer .container{ padding-left:18px; padding-right:18px; }
+}
+
+/* breadcrumb sedikit kecil & rapi */
+.breadcrumb{
+  --bs-breadcrumb-divider: ' / ';
+}
+.breadcrumb a{ text-decoration:none; }
+.breadcrumb .breadcrumb-item + .breadcrumb-item::before{
+  color:#9AA3AF;
+}
+
+/* Mengecilkan font breadcrumb di mobile */
+@media (max-width: 767.98px) {
+  .breadcrumb {
+    font-size: 0.85rem; /* Anda bisa ubah nilai ini, misal: 0.75rem atau 12px */
+  }
+}
+
+/* ===== HERO ===== */
+.ds-hero{
+  position:relative;
+  overflow:hidden;
+}
+
+/* Tinggi responsif: cukup besar untuk hero tapi tidak berlebihan */
+.ds-hero .carousel,
+.ds-hero .carousel-inner,
+.ds-hero .carousel-item,
+.ds-hero .ds-hero-slide{
+  height: clamp(440px, 55vh, 560px); /* min 320px, ideal 55vh, max 560px */
+}
+
+/* Background gambar tiap slide */
+.ds-hero-slide{
+  background-position:center;
+  background-size:cover;
+  width:100%;
+}
+
+/* Overlay gradient (atas transparan, bawah lebih gelap) */
+.ds-hero-overlay{
+  position:absolute;
+  inset:0;
+  background: linear-gradient(180deg, rgba(0,0,0,0.15) 0%, rgba(0,0,0,0.45) 100%);
+  pointer-events:none;
+}
+
+/* Kontainer teks */
+.ds-hero-content{
+  position:absolute;
+  inset:0;
+  display:flex;
+  align-items:flex-end;              /* teks ditempatkan bawah kiri */
+  padding-bottom: clamp(18px, 6vh, 48px);
+}
+
+/* Teks judul & sub */
+.ds-hero-title{
+  color:#fff;
+  font-weight:650;
+  line-height:1;
+  font-size: clamp(1.25rem, 3.vw, 2.5rem);
+  margin:0 0 .25rem 0;
+  text-shadow: 0 1px 2px rgba(0,0,0,.35);
+}
+.ds-hero-sub{
+  color:#E8EEF6;
+  max-width: 56ch;
+  font-size: clamp(.95rem, 1.6vw, 1.15rem);
+  margin:0;
+}
+/* Teks judul & sub */
+.ds-hero-title-beranda{
+  color:#fff;
+  font-weight:650;
+  line-height:1.15;
+  font-size: clamp(1.25rem, 3.vw, 2.5rem);
+  margin:0 0 .25rem 0;
+  text-shadow: 0 1px 2px rgba(0,0,0,.35);
+}
+.ds-hero-sub-beranda{
+  color:#E8EEF6;
+  max-width: 56ch;
+  font-size: clamp(.95rem, 1.6vw, 1.15rem);
+  margin:0;
+}
+
+/* Ukuran hero title & sub lebih kecil di mobile */
+@media (max-width: 767.98px) {
+  .ds-hero-title {
+    font-size: 0.9rem;
+  }
+  .ds-hero-sub {
+    font-size: 0.9rem;
+  }
+}
+
+/* CTA optional */
+.ds-hero-cta{
+  font-weight:600;
+  padding:.6rem 1rem;
+}
+
+/* Indikator posisi lebih turun sedikit agar tidak menabrak teks */
+.ds-hero-indicators{
+  margin-bottom: clamp(8px, 2.2vh, 18px);
+}
+.ds-hero-indicators [data-bs-target]{
+  width:10px; height:10px; border-radius:50%;
+}
+
+/* Tombol prev/next diperjelas di mobile */
+.ds-hero .carousel-control-prev-icon,
+.ds-hero .carousel-control-next-icon{
+  filter: drop-shadow(0 1px 2px rgba(0,0,0,.5));
+}
+
+/* Sedikit kurangi tinggi di layar sangat kecil */
+@media (max-width: 360px){
+  .ds-hero .carousel,
+  .ds-hero .carousel-inner,
+  .ds-hero .carousel-item,
+  .ds-hero .ds-hero-slide{
+    height: 300px;
+  }
+}
+
+/* Override warna primary Bootstrap */
+.btn-primary {
+  --bs-btn-bg: #2B5A9A;
+  --bs-btn-border-color: #2B5A9A;
+  --bs-btn-hover-bg: #234676;      /* warna lebih gelap saat hover */
+  --bs-btn-hover-border-color: #234676;
+  --bs-btn-active-bg: #1e3a6d;
+  --bs-btn-active-border-color: #1e3a6d;
+}
+
+/* ===== LAYANAN ===== */
+.ds-section-title{
+  font-weight: 500; /* medium */
+}
+
+.ds-layanan-card{
+  border:1px solid #E5E7EB;
+  border-radius:12px;
+  transition: transform .2s ease, box-shadow .2s ease;
+}
+.ds-layanan-card:hover{
+  transform:translateY(-4px);
+  box-shadow:0 6px 18px rgba(0,0,0,.08);
+}
+.ds-layanan-card img{
+  max-height:120px;
+  object-fit:contain;
+  margin:auto;
+}
+.ds-layanan-card .card-title{
+  font-size:.95rem;
+  line-height:1.3;
+}
+.ds-layanan .container{
+  max-width: 1100px;   /* silakan coba 1000–1140 sesuai selera */
+  margin: 0 auto;
+}
+
+.ds-card-h{
+  display:flex;
+  align-items:flex-start;
+  gap:12px;
+  background:#fff;
+  border:1px solid #E5E7EB;
+  border-radius:12px;
+  box-shadow:0 2px 6px rgba(0,0,0,.05);
+  padding:12px 14px;
+  text-decoration:none;   /* hilangkan underline */
+  color:inherit;          /* pakai warna teks normal */
+  transition:transform .15s ease, box-shadow .15s ease;
+}
+.ds-card-h:hover{
+  transform:translateY(-2px);
+  box-shadow:0 4px 12px rgba(0,0,0,.08);
+}
+
+/* Row desktop: rapatkan gutter */
+@media (min-width: 768px){
+  .ds-layanan-row{
+    --bs-gutter-x: .75rem;   /* jarak horizontal ≈ 12px */
+    --bs-gutter-y: 1rem;     /* jarak vertikal ≈ 16px */
+    justify-content: center; /* pastikan tetap di tengah */
+  }
+}
+
+/* ====== DESKTOP (kartu memanjang ke bawah) ====== */
+@media (min-width: 992px){
+  .ds-layanan-card{
+    min-height: 270px;
+    max-width: 215px;            /* atur lebar maksimum kartu desktop */
+    margin-left: auto;
+    margin-right: auto;
+    border:1px solid #E5E7EB;
+    border-radius:12px;
+    transition: transform .2s ease, box-shadow .2s ease;
+    display: flex;
+    flex-direction: column;
+  }
+  .ds-layanan-card:hover{
+    transform: translateY(-4px);
+    box-shadow: 0 6px 18px rgba(0,0,0,.08);
+  }
+  .ds-layanan-icon-wrapper{ margin: 25px 0 16px; }
+  .ds-layanan-icon-wrapper img{
+    max-height: 100px;           /* besarkan ikon di desktop */
+    object-fit: contain;
+    margin: 0 auto;
+  }
+  .ds-layanan-card .card-body {
+    display: flex; /* << Tambahkan ini */
+    align-items: center; /* << Tambahkan ini */
+    justify-content: center; /* << Tambahkan ini */
+    flex-grow: 1; /* << Tambahkan ini */
+  }
+  .ds-layanan-card .card-title{
+    font-size: 1rem;
+    line-height: 1.35;
+    margin-bottom: 2rem;
+  }
+  .ds-divider{
+    border: none;
+    border-top: 2px solid #2B5A9A;
+    margin: 0 0 12px 0;
+  }
+  .ds-link-btn{
+    background: none;
+    border: none;
+    padding: 0;
+    font-size: .9rem;
+    font-weight: 600;
+    color: #2B5A9A;
+    transition: color 0.2s;
+    text-decoration: none;
+  }
+.ds-link-btn:hover, .ds-link-btn:focus {
+  color: #00419c;
+}
+
+  .ds-link-btn:hover{ text-decoration: underline; }
+  /* rapikan jarak antar kartu di desktop (opsional) */
+  .ds-layanan .row{ --bs-gutter-x: 1rem; --bs-gutter-y: 1.25rem; }
+}
+
+/* ===== MOBILE: kartu horizontal, berjejer vertikal ===== */
+@media (max-width: 767.98px){
+  .ds-vstack{
+    display: flex;
+    flex-direction: column;
+    gap: 18px;               /* jarak antar kartu */
+  }
+
+  .ds-card-h{
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    background: #fff;
+    border: 1px solid #E5E7EB;
+    border-radius: 12px;
+    box-shadow: 0 2px 6px rgba(0,0,0,.05);
+    padding: 12px 14px;
+  }
+
+  .ds-card-h img{
+    width: 56px;
+    height: 56px;
+    object-fit: contain;
+    flex: 0 0 auto;
+  }
+
+  .ds-card-h h6{
+    font-size: 0.95rem;
+    line-height: 1.3;
+    margin: 0;
+  }
+
+  .ds-card-h .ds-divider{
+    border: 0;
+    border-top: 1px solid #2B5A9A;
+    margin: 6px 0 6px;
+  }
+
+  .ds-card-h .ds-link-btn{
+    color: #2B5A9A;
+    font-weight: 600;
+    text-decoration: none;
+    font-size: 0.9rem;
+  }
+  .ds-card-h .ds-link-btn:hover{
+    text-decoration: underline;
+  }
+}
+
+/* ===== BERITA ===== */
+.ds-featured-news{
+  display:flex; gap:24px;
+  background:#fff; border:1px solid #E5E7EB; border-radius:12px;
+  padding:16px; box-shadow:0 4px 12px rgba(0,0,0,.06);
+}
+.ds-featured-img{
+  width:48%; max-height:360px; object-fit:cover; border-radius:8px;
+}
+.ds-featured-body{ display:flex; flex-direction:column; }
+.ds-featured-title{ font-size:1.25rem; font-weight:500; line-height:1.35; margin:0 0 .5rem; }
+.ds-featured-summary{ color:#555; margin:0 0 .75rem; }
+.ds-meta{ display:flex; justify-content:space-between; align-items:center; gap:12px; font-size:.875rem; color:#6b7280; }
+
+/* Link judul berita (tanpa underline, hover underline) */
+.ds-news-link{ color:inherit; text-decoration:none; }
+.ds-news-link:hover{ text-decoration:underline; }
+
+.ds-news-card{ display:flex; flex-direction:column; background:#fff; border:1px solid #E5E7EB; border-radius:12px; overflow:hidden; text-decoration:none; color:inherit; box-shadow:0 4px 12px rgba(0,0,0,.04); transition:transform .18s ease, box-shadow .18s ease; height:100%; }
+.ds-news-card:hover{ transform:translateY(-4px); box-shadow:0 8px 18px rgba(0,0,0,.08); }
+.ds-news-card img{ width:100%; height:160px; object-fit:cover; }
+.ds-news-card-body{ padding:12px; display:flex; flex-direction:column; gap:8px; flex:1; }
+.ds-news-title{ font-size:1rem; line-height:1.35; font-weight:600; margin:0; }
+
+/* ====== MOBILE VARIANT ====== */
+@media (max-width: 767.98px){
+  /* Unggulan: hanya gambar + judul */
+  .ds-mfeat{
+    display:block; text-decoration:none; color:inherit;
+    background:#fff; border:1px solid #E5E7EB; border-radius:12px; overflow:hidden;
+    box-shadow:0 2px 8px rgba(0,0,0,.08);
+  }
+  .ds-mfeat img{ width:100%; height:180px; object-fit:cover; display:block; }
+  .ds-mfeat h3{
+    font-size:1rem; font-weight:600; line-height:1.35;
+    padding:10px 12px 12px; margin:0;
+  }
+
+  /* List vertikal: thumb kiri + judul kanan + garis */
+    .ds-mnews-list{
+    background:#fff;
+    border:1px solid #E5E7EB;
+    border-radius:12px;
+    padding:6px 8px;
+    box-shadow:0 2px 8px rgba(0,0,0,.08);
+  }
+
+    .ds-mnews-item{
+    display:flex;
+    align-items:center;       /* judul rata tengah */
+    gap:10px;
+    padding:10px 6px;
+    text-decoration:none;
+    color:inherit;
+    border-bottom:1px solid #E5E7EB; /* garis PEMISAH antar item */
+  }
+
+  .ds-mnews-divider{
+    border:0; border-top:1px solid #3c70da; margin:8px 0 0;
+  }
+  /* Hilangkan garis pada item terakhir */
+  .ds-mnews-item:last-child{
+    border-bottom:none;       /* hilangkan garis di item terakhir */
+  }
+  /* Thumbnail */
+  .ds-mnews-item img{
+    width:56px;
+    height:56px;
+    object-fit:cover;
+    border-radius:6px;
+    flex:0 0 auto;
+  }
+
+  /* Judul */
+  .ds-mnews-title{
+    font-size:.95rem;
+    line-height:1.3;
+    /* otomatis ikut center karena parent align-items:center */
+  }
+
+}
+
+/* Desktop: gambar unggulan lebih lebar (≈60%) */
+@media (min-width: 992px){
+  .ds-featured-img{ width:60%; }
+  .ds-featured-body{ width:40%; }
+}
+
+/* Grid statis (desktop) */
+@media (min-width:768px){
+  .ds-partner-grid{
+    gap:28px;
+    justify-content:center;
+    align-items:center;
+    flex-wrap:wrap;
+  }
+  .ds-partner-item img{
+    height:120px;
+    width:auto;
+    object-fit:contain;
+  }
+}
+
+/* ============ Visi & Misi card ============ */
+/* Atur ukuran kartu visi misi lebih ramping */
+
+.ds-vm-card{
+  background:#fff;
+  border:1px solid #E5E7EB;             /* border halus */
+  border-radius:12px;
+  box-shadow:0 4px 12px rgba(0,0,0,.08); /* bayangan seperti kartu lain */
+}
+
+/* Bungkus daftar misi agar tetap rata kiri tapi berada di tengah */
+.misi-wrapper {
+  text-align: center;         /* seluruh blok di tengah */
+}
+
+.misi-wrapper ol {
+  display: inline-block;      /* list jadi blok sejajar di tengah */
+  text-align: left;           /* isi list tetap rata kiri */
+  margin: 0 auto;             /* tengah secara horizontal */
+  padding-left: 1.2rem;       /* indentasi nomor */
+}
+
+/* Warna judul dalam kartu */
+.ds-visi-misi-card h4 {
+  color: #2B5A9A !important;  /* ganti warna biru tua */
+  font-weight: 600;           /* opsional: lebih tegas */
+}
+
+@media (max-width: 767.98px){
+  .ds-vm-card, .ds-visi-misi-card{
+    width: 100%;
+    max-width: none;              /* pastikan tidak ada batas lebar */
+    margin-left: 0;
+    margin-right: 0;
+    padding: 12px 14px;
+  }
+}
+
+/* Tablet/desktop saja: kartu dibuat ramping & center */
+@media (min-width: 768px){
+  .ds-vm-card, .ds-visi-misi-card{
+    max-width: 1020px;   /* ubah 700/750 sesuai selera */
+    margin-left: auto;
+    margin-right: auto;
+    padding: 24px 32px;
+  }
+}
+
+
+/* Horizontal scroll (mobile) */
+@media (max-width:767.98px){
+  .ds-partner-scroll{
+    overflow-x:auto;
+    padding:6px 2px;
+  }
+  .ds-partner-scroll::-webkit-scrollbar{
+    display:none; /* sembunyikan scrollbar untuk iOS/Chrome */
+  }
+  .ds-partner-track{
+    display:flex;
+    justify-content:center;
+    gap:16px;
+  }
+  .ds-partner-item{
+    flex:0 0 auto; /* supaya tidak mengecil */
+  }
+  .ds-partner-item img{
+    height:90px;
+    width:auto;
+    object-fit:contain;
+  }
+}
+
+/* ======= HERO PROFIL ======= */
+.ds-hero-bg{
+  width:100%;
+  height: 48vw;             /* tinggi relatif agar proporsional di semua layar */
+  max-height: 420px;        /* batas desktop */
+  min-height: 220px;        /* batas minimum */
+  object-fit: cover;
+  display:block;
+}
+
+.ds-hero-inner{
+  position:absolute; inset:0;
+  display:flex; flex-direction:column; align-items:center; justify-content:center;
+  padding: 0 12px;
+}
+.ds-hero-inner h1{ font-size: clamp(1.4rem, 2.4vw + 1rem, 2rem); }
+.ds-hero-inner p{  max-width: 900px; }
+
+/* ===== MOBILE: grid 2 kolom, kartu kompak & klik di seluruh kartu ===== */
+@media (max-width: 767.98px){
+  /* rapatkan gutter */
+  .ds-layanan-row-mobile{
+    --bs-gutter-x: .7rem;   /* jarak horizontal antar kartu */
+    --bs-gutter-y: .75rem;  /* jarak vertikal antar kartu */
+  }
+
+  /* kartu versi kompak (anchor yang menyerupai .ds-layanan-card) */
+  .ds-card-compact{
+    display:block;
+    text-decoration:none;
+    color:inherit;
+    padding-top:.25rem;                    /* sedikit ruang atas utk icon */
+    transition:transform .18s ease, box-shadow .18s ease;
+  }
+  .ds-card-compact:hover{
+    transform:translateY(-2px);
+    box-shadow:0 6px 14px rgba(0,0,0,.08);
+  }
+
+  /* ikon lebih kecil */
+  .ds-card-compact .ds-layanan-icon-wrapper{
+    margin: 8px 0 6px;
+  }
+  .ds-card-compact .ds-layanan-icon-wrapper img{
+    max-height: 64px;
+    object-fit: contain;
+  }
+
+  /* judul kompak, 2–3 baris dengan ellipsis */
+  .ds-title-compact{
+    font-size: .82rem;
+    line-height: 1.25;
+    display: -webkit-box;  /* potong maksimal 3 baris */
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    min-height: 2.6em;       /* jaga tinggi agar semua kartu sama */
+  }
+
+  /* tidak perlu divider & tombol pada versi kompak */
+  .ds-card-compact .ds-divider,
+  .ds-card-compact .ds-link-btn { display:none; }
+}
+
+.konten-utama {
+  max-width: 940px; /* Ubah angka ini untuk mengatur lebar konten */
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 15px;  /* Spasi aman di dalam container */
+  padding-right: 15px; /* Spasi aman di dalam container */
+}
+.konten-berita {
+  max-width: 1100px; /* Ubah angka ini untuk mengatur lebar konten */
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 15px;  /* Spasi aman di dalam container */
+  padding-right: 15px; /* Spasi aman di dalam container */
+}
+
+/* ====== PAGINATION ====== */
+.pagination {
+  --bs-pagination-font-size: 0.9rem;
+  --bs-pagination-border-radius: 6px;
+  --bs-pagination-focus-box-shadow: none; /* Hapus bayangan default saat di-klik */
+  --bs-pagination-focus-bg: #e9ecef;
+  gap: 6px; /* Jarak antar tombol pagination */
+}
+
+.page-link {
+  color: #495057; /* Warna teks abu-abu tua */
+  background-color: #fff;
+  border: 1px solid #dee2e6;
+  font-weight: 500;
+  transition: all 0.2s ease-in-out;
+
+  /* Membuat ukuran tombol seragam */
+  min-width: 40px;
+  height: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Hover untuk tombol yang tidak aktif */
+.page-item:not(.active) .page-link:hover {
+  background-color: #f8f9fa; /* Latar abu-abu sangat terang */
+  color: #2B5A9A; /* Warna teks biru sesuai tema */
+}
+
+/* Tombol halaman yang sedang aktif */
+.page-item.active .page-link {
+  background-color: #2B5A9A; /* Warna biru primer */
+  border-color: #2B5A9A;
+  color: #fff;
+  z-index: 3;
+}
+
+/* Tombol yang dinonaktifkan (misal: "sebelumnya" di halaman 1) */
+.page-item.disabled .page-link {
+  background-color: #e9ecef;
+  color: #6c757d;
+  pointer-events: none;
+}
+
+/* Sembunyikan teks "Showing results" bawaan dari pagination Laravel */
+.pagination-wrapper nav > p {
+  display: none;
+}
+
+/* Penyesuaian Kartu Berita di Mobile */
+@media (max-width: 767.98px) {
+    /* Kembalikan layout meta ke horizontal & kecilkan font-nya */
+    .ds-news-card .ds-meta {
+        font-size: 0.75rem; /* << Ukuran font dikecilkan */
+        /* Properti flex-direction: column dihapus agar kembali sejajar */
+    }
+
+    /* Kecilkan sedikit judul berita di kartu mobile */
+    .ds-news-card .ds-news-title {
+        font-size: 0.85rem;
+        font-weight: 600;
+        line-height: 1.3;
+    }
+
+    /* Kurangi tinggi gambar agar kartu lebih proporsional */
+    .ds-news-card img {
+        height: 110px;
+    }
+}
+
+/* ====== HALAMAN KONTAK ====== */
+.ds-contact-card {
+  background: #fff;
+  border: 1px solid #E5E7EB;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,.08);
+  padding: clamp(1.5rem, 4vw, 2.5rem); /* Padding responsif */
+  max-width: 960px; /* Lebar maksimum kontainer */
+  margin: 0 auto; /* Posisikan di tengah */
+}
+
+.ds-contact-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem; /* Jarak antara ikon dan teks */
+  margin-left: 3rem; /* atau gunakan padding-left jika ingin isi bergeser */
+}
+
+.ds-contact-icon {
+  font-size: 1.25rem;
+  color: #2B5A9A; /* Warna biru primer sesuai tema */
+  margin-top: 3px;
+  flex-shrink: 0;
+}
+
+.ds-contact-title {
+  font-weight: 600; /* Sedikit tebal */
+  margin-bottom: 0.25rem;
+  color: #2B5A9A; /* Warna biru untuk judul sub-bagian */
+}
+
+.ds-map-container {
+  width: 100%;
+  height: 400px;
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid #dee2e6;
+}
+
+.ds-map-container iframe {
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+
+@media (max-width: 767.98px) {
+  .ds-contact-item {
+    margin-left: 0 !important;
+  }
+}
+
+/* ====== HALAMAN FAQ ====== */
+.ds-faq-section .container {
+  max-width: 860px; /* Batasi lebar kontainer agar lebih fokus */
+}
+
+.ds-faq-title {
+  font-weight: 600;
+}
+
+.ds-faq-subtitle {
+  font-size: 1.1rem;
+  color: #6c757d;
+  max-width: 680px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.ds-faq-search-wrapper {
+  max-width: 600px;
+}
+
+.ds-faq-search-wrapper .form-control {
+  padding: 0.75rem 1.25rem;
+  border-right: 0;
+}
+.ds-faq-search-wrapper .form-control:focus {
+  box-shadow: 0 0 0 0.25rem rgba(43, 90, 154, 0.2);
+  border-color: #a9c5ec;
+}
+
+/* Filter Kategori */
+.ds-faq-filter-btn {
+  border-radius: 20px;
+  padding: 0.3rem 1rem;
+  font-weight: 500;
+  background-color: #e9ecef;
+  border: 1px solid #dee2e6;
+  color: #495057;
+  transition: all 0.2s ease;
+}
+
+.ds-faq-filter-btn:hover {
+  background-color: #dbe4f0;
+}
+
+.ds-faq-filter-btn.active {
+  background-color: #2B5A9A;
+  color: #fff;
+  border-color: #2B5A9A;
+}
+
+/* Wrapper untuk akordeon */
+.ds-faq-accordion-wrapper {
+  max-width: 800px;
+}
+
+/* Kustomisasi Akordeon Bootstrap */
+.accordion-item {
+  background-color: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px !important;
+  margin-bottom: 0.75rem;
+  overflow: hidden; /* Penting untuk border-radius */
+}
+.accordion-item:first-of-type,
+.accordion-item:last-of-type {
+  border-radius: 8px !important;
+}
+
+.accordion-header {
+  font-weight: 600;
+}
+
+.accordion-button {
+  font-weight: 600;
+  color: #212529;
+}
+
+.accordion-button:not(.collapsed) {
+  background-color: #f8f9fa;
+  box-shadow: inset 0 -1px 0 #e5e7eb;
+  color: #2B5A9A;
+}
+
+.accordion-button:focus {
+  box-shadow: none;
+  border-color: transparent;
+}
+
+.accordion-button::after {
+  /* Ganti ikon panah default dengan versi yang lebih modern */
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%236c757d'%3e%3cpath fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/%3e%3c/svg%3e");
+}
+
+
+/* ====== PANEL PENCARIAN ====== */
+.ds-search-panel {
+  /* Efek kaca buram */
+  background-color: rgba(255, 255, 255, 0.75);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+
+  padding: 0 1rem;
+  box-shadow: inset 0 2px 5px rgba(0,0,0,0.05);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+
+  /* === PERUBAHAN UTAMA DI SINI === */
+  position: fixed; /* Diubah dari 'sticky' menjadi 'fixed' */
+  left: 0;         /* Ditambahkan agar panel memenuhi lebar layar */
+  right: 0;        /* Ditambahkan agar panel memenuhi lebar layar */
+  z-index: 1000;
+
+  /* Animasi */
+  max-height: 0;
+  opacity: 0;
+  transition: max-height 0.35s ease-out, opacity 0.35s ease-out, padding 0.35s ease-out;
+  will-change: max-height, opacity, padding;
+}
+
+.ds-search-panel.open {
+  max-height: 120px;
+  opacity: 1;
+  /* Jarak atas/bawah diperkecil */
+  padding: 1rem 1rem;
+}
+
+.ds-search-box {
+  max-width: 720px;
+  margin: 0 auto;
+  display: flex;
+  gap: 0.75rem;
+  /* Membuat semua item sejajar di tengah secara vertikal */
+  align-items: center;
+}
+
+/* Mengatur tinggi search box dan tombol "Cari" */
+.ds-search-box .form-control,
+.ds-search-box .btn-primary {
+  padding-top: 0.4rem;
+  padding-bottom: 0.4rem;
+}
+
+.ds-search-box .form-control:focus {
+  border-color: #2B5A9A;
+  box-shadow: 0 0 0 0.25rem rgba(43, 90, 154, 0.2);
+}
+
+/* ====== Penyesuaian Panel Pencarian di Mobile ====== */
+@media (max-width: 767.98px) {
+  .ds-search-panel.open {
+    /* Kurangi jarak atas/bawah panel */
+    padding: 0.75rem 1rem;
+  }
+
+  /* Kecilkan tinggi search box dan tombol "Cari" */
+  .ds-search-box .form-control,
+  .ds-search-box .btn-primary {
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+    font-size: 0.9rem; /* Kecilkan juga ukuran font-nya */
+  }
+}
+
+/* ====== HALAMAN HASIL PENCARIAN ====== */
+.ds-search-result-item {
+  padding-bottom: 1.5rem;
+  margin-bottom: 1.5rem;
+  border-bottom: 1px solid #e5e7eb;
+}
+.ds-search-results-container .ds-search-result-item:last-child {
+  border-bottom: none;
+  margin-bottom: 0;
+}
+
+.ds-result-title {
+  font-size: 1.2rem;
+  font-weight: 600;
+  text-decoration: none;
+  color: #2B5A9A;
+}
+.ds-result-title:hover {
+  text-decoration: underline;
+}
+
+.ds-result-meta {
+  font-size: 0.85rem;
+  color: #6c757d;
+  margin: 0.25rem 0 0.5rem;
+}
+
+.ds-result-summary {
+  color: #495057;
+  line-height: 1.6;
+}
+
+/* Sidebar Filter */
+.ds-filter-card {
+  background-color: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  padding: 1.25rem;
+}
+
+/* CLASS BARU UNTUK PERILAKU STICKY */
+.sidebar-sticky {
+  position: sticky;
+  top: 90px;
+}
+
+.ds-filter-title {
+  font-weight: 600;
+  padding-bottom: 0.75rem;
+  margin-bottom: 0.75rem;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.ds-filter-list li a {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.6rem 0.75rem;
+  text-decoration: none;
+  color: #212529;
+  border-radius: 6px;
+  transition: background-color 0.2s ease;
+}
+
+.ds-filter-list li a:hover {
+  background-color: #f8f9fa;
+}
+
+.ds-filter-list li a.active {
+  background-color: #eaf0f8;
+  font-weight: 600;
+  color: #2B5A9A;
+}
+
+.ds-filter-count {
+  font-size: 0.9rem;
+  background-color: #e9ecef;
+  padding: 0.1rem 0.5rem;
+  border-radius: 4px;
+}
+.ds-filter-list li a.active .ds-filter-count {
+  background-color: #2B5A9A;
+  color: #fff;
+}
+
+/* Kartu untuk membungkus hasil pencarian */
+.ds-results-card {
+  background-color: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  padding: 1.5rem;
+}
+
+/* Penyesuaian padding untuk layar mobile */
+@media (max-width: 767.98px) {
+  .ds-results-card {
+    padding: 1rem;
+  }
+    /* Kecilkan padding di dalam kartu hasil pencarian */
+  .d-lg-none .ds-results-card {
+    padding: 1rem;
+  }
+
+  /* Kecilkan judul hasil pencarian */
+  .ds-result-title {
+    font-size: 1.05rem;
+    line-height: 1.3;
+  }
+
+  /* Kecilkan teks ringkasan/summary */
+  .ds-result-summary {
+    font-size: 0.9rem;
+    line-height: 1.5;
+  }
+
+  /* Kurangi jarak antar item hasil pencarian */
+  .ds-search-result-item {
+    margin-bottom: 1rem;
+    padding-bottom: 1rem;
+  }
+}
+
+/* ====== SIDEBAR BERITA & ARTIKEL ====== */
+.ds-sidebar-card {
+  background-color: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  padding: 1.25rem;
+}
+
+/* Sembunyikan sidebar di mobile */
+@media (max-width: 991.98px) {
+  .ds-sidebar-card {
+    display: none;
+  }
+}
+
+.ds-sidebar-title {
+  font-weight: 600;
+  padding-bottom: 0.75rem;
+  margin-bottom: 0.75rem;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.ds-sidebar-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  text-decoration: none;
+  color: inherit;
+  margin-bottom: 0.75rem;
+}
+.ds-sidebar-list .ds-sidebar-item:last-child {
+  margin-bottom: 0;
+}
+
+.ds-sidebar-item:hover .ds-sidebar-item-title {
+  color: #2B5A9A;
+}
+
+.ds-sidebar-item img {
+  width: 60px;
+  height: 60px;
+  object-fit: cover;
+  border-radius: 3px;
+  flex-shrink: 0;
+}
+
+.ds-sidebar-item-title {
+  font-size: 0.9rem;
+  font-weight: 500;
+  line-height: 1.4;
+  transition: color 0.2s ease;
+}
+
+/* ====== Penyesuaian Konten Berita di Mobile ====== */
+@media (max-width: 767.98px) {
+  /* Atur ulang padding kartu artikel agar tidak terlalu lebar */
+  .ds-article-card {
+    padding: 0.3rem;
+  }
+
+  /* Tebalkan sedikit judul artikel */
+  .ds-article-title {
+    font-weight: 700;
+  }
+}
+
+/* ====== TOMBOL SHARE ====== */
+.ds-share-buttons {
+  display: flex;
+  gap: 0.75rem;
+}
+
+.ds-share-buttons a {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  color: #fff;
+  text-decoration: none;
+  font-size: 1.1rem;
+  transition: opacity 0.2s ease;
+}
+
+.ds-share-buttons a:hover {
+  opacity: 0.85;
+}
+
+.ds-article-meta {
+  margin-top: 1rem;
+}
+
+.meta-author {
+  color: #2B5A9A; /* Warna biru */
+  font-weight: 600;
+  font-size: 1rem;
+}
+
+.meta-date {
+  color: #6c757d; /* Warna abu-abu gelap */
+  font-size: 0.9rem;
+  margin-top: 0.25rem;
+}
+
+.ds-share-btn-whatsapp { background-color: #25D366; }
+.ds-share-btn-facebook { background-color: #1877F2; }
+.ds-share-btn-instagram { background-color: #d62976; }
+
+/* ====== SIDEBAR LAYANAN ====== */
+.ds-sidebar-item-layanan {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.6rem 0.75rem;
+  text-decoration: none;
+  color: inherit;
+  border-radius: 6px;
+  border: 1px solid transparent;
+  transition: all 0.2s ease;
+  margin-bottom: 4px; /* Jarak antar item */
+}
+
+.ds-sidebar-item-layanan img {
+  width: 32px;
+  height: 32px;
+  object-fit: contain;
+}
+
+.ds-sidebar-item-layanan:hover {
+  background-color: #f8f9fa;
+}
+
+.ds-sidebar-item-layanan.active {
+  background-color: #2B5A9A; /* Latar biru solid */
+  color: #fff; /* Teks putih */
+  font-weight: 600;
+}
+
+.ds-sidebar-item-layanan .ds-sidebar-item-title {
+  margin-bottom: 0;
+  font-size: 0.95rem;
+  line-height: 1.3;
+}
+
+/* ====== HALAMAN PROFIL PEJABAT ====== */
+.ds-kadis-card {
+  position: relative;
+  border-radius: 12px;
+  overflow: hidden;
+  padding: 2rem;
+  background-size: cover;
+  background-position: center;
+}
+
+.ds-kadis-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.7) 50%, rgba(0,0,0,0.3) 100%);
+}
+
+.ds-kadis-content {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.ds-kadis-photo {
+  flex-shrink: 0;
+}
+
+.ds-kadis-photo img {
+  width: 150px; /* Ukuran foto diperbesar */
+  height: 150px; /* Ukuran foto diperbesar */
+  border-radius: 50%;
+  object-fit: cover;
+  border: 4px solid #fff; /* Border dipertebal */
+}
+
+.ds-kadis-text {
+  color: #fff;
+}
+
+.ds-kadis-sambutan {
+  font-size: 1rem;
+  line-height: 1.7;
+}
+
+/* Kartu Pejabat Lainnya (Gaya Baru) */
+.ds-pejabat-card {
+  background-color: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+  text-align: center;
+  padding: 1rem;
+}
+
+.ds-pejabat-photo-wrapper {
+  background-color: #f0f8ff;
+  border-radius: 8px;
+  margin-bottom: 1rem;
+  overflow: hidden; /* Penting agar gambar mengikuti sudut melengkung */
+  /* Padding dihapus agar gambar memenuhi kontainer */
+}
+
+.ds-pejabat-photo {
+  width: 100%;
+  height: 180px; /* Tinggikan gambar agar lebih memanjang */
+  object-fit: cover; /* Membuat gambar memenuhi area, memotong jika perlu */
+  display: block; /* Menghilangkan spasi ekstra di bawah gambar */
+}
+
+.ds-pejabat-info h6 {
+  font-size: 0.9rem;
+}
+
+/* Penyesuaian mobile */
+@media (max-width: 576px) {
+  .ds-kadis-content {
+    flex-direction: column;
+    text-align: center;
+  }
+}
+
+/* Penyesuaian Kartu Kepala Dinas di Mobile */
+@media (max-width: 767.98px) {
+  .ds-kadis-overlay {
+    /* Mengubah gradasi dari kiri-kanan menjadi bawah-atas */
+    background: linear-gradient(0deg, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.5) 40%, rgba(0,0,0,0.2) 100%);
+  }
+}
+
+/* ====== GAMBAR DENGAN FITUR ZOOM ====== */
+.ds-image-zoom-wrapper {
+  position: relative;
+  cursor: pointer;
+  overflow: hidden;
+  border-radius: 8px; /* Sesuaikan dengan radius gambar */
+}
+
+.ds-image-zoom-overlay {
+  position: absolute;
+  inset: 0;
+  background-color: rgba(0,0,0,0.5);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  color: #fff;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.ds-image-zoom-wrapper:hover .ds-image-zoom-overlay {
+  opacity: 1;
+}
+
+.ds-image-zoom-overlay .bi {
+  font-size: 2.5rem;
+}
+
+/* Penyesuaian Modal agar background lebih gelap */
+.modal-backdrop {
+  background-color: rgba(0,0,0,0.7);
+}
+
+/* Penyesuaian Judul Modal di Mobile */
+@media (max-width: 767.98px) {
+  .modal-title {
+    font-size: 1rem; /* Ukuran font dikecilkan dari default */
+  }
+}
+
+/* ====== HALAMAN DETAIL DOWNLOAD ====== */
+.ds-download-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.ds-download-item {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+}
+
+.ds-download-icon .bi {
+  font-size: 2.5rem;
+  color: #dc3545; /* Warna ikon PDF */
+}
+
+.ds-download-info {
+  flex-grow: 1;
+}
+
+.ds-download-title {
+  font-weight: 600;
+  margin-bottom: 0.1rem;
+}
+
+.ds-download-meta {
+  font-size: 0.85rem;
+  color: #6c757d;
+}
+
+.ds-download-btn {
+  flex-shrink: 0; /* Mencegah tombol menyusut */
+}
+
+/* Penyesuaian mobile */
+@media (max-width: 576px) {
+  .ds-download-item {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .ds-download-btn {
+    width: 100%;
+    margin-top: 0.75rem;
+  }
 }

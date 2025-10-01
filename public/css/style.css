@@ -566,6 +566,7 @@ body {
     font-size: 1.1rem;
     margin-right: 4px;
     vertical-align: middle;
+    align-content: start;
 }
 
 
@@ -631,7 +632,7 @@ body {
 
 #sidebarToggle {
     font-size: 2rem;        /* Membesarkan ikon */
-    padding: 10px 15px;     /* Memberi ruang klik lebih besar */
+    padding: 0px 15px 0px 0px;     /* Memberi ruang klik lebih besar */
     width: auto;            /* Biar fleksibel */
     height: auto;
     display: flex;
@@ -663,11 +664,11 @@ body {
 
 
 .navbar.nav-collapsed .brand-text {
-    transform: translateX(10px);
+    transform: translateX(25px);
 }
 
 .navbar.nav-collapsed #sidebarToggle {
-    transform: translateX(10px); /* hamburger geser ke kiri */
+    transform: translateX(25px); /* hamburger geser ke kiri */
 }
 
 

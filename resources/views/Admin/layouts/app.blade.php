@@ -22,7 +22,7 @@
                 <img src="{{ asset('img/Logo mini.png') }}" alt="Logo Mini" class="d-none" id="logoMini">
 
                 <!-- Tombol hamburger (desktop: minimize, mobile: buka sidebar overlay) -->
-                <button id="sidebarToggle" class="btn btn-link text-white ms-1 d-none d-lg-inline-flex" type="button"
+                <button id="sidebarToggle" class="btn btn-link text-white d-none d-lg-inline-flex" type="button"
                     aria-label="Toggle sidebar">
                     <i class="bi bi-list"></i>
                 </button>

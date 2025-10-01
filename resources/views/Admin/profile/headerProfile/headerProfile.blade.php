@@ -23,7 +23,8 @@
                                                 <th class="text-center">No.</th>
                                                 <th class="text-center">Gambar</th>
                                                 <th class="text-center">Kategori Header</th>
-                                                <th class="text-center">Keterangan</th>
+                                                <th class="text-center">Headline</th>
+                                                <th class="text-center">Sub Heading</th>
                                                 <th class="text-center">Aksi</th>
                                             </tr>
                                         </thead>
@@ -39,13 +40,15 @@
                                                         </td>
                                                         <td class="text-center">
                                                             {{ $h->kategoriHeader->nama_kategori ?? '-' }}</td>
+                                                        <td class ="text-center">
+                                                            {{ $h->headline ?? '-' }}</td>
 
                                                         @php
                                                             $fullText = trim(
                                                                 preg_replace(
                                                                     '/\s+/',
                                                                     ' ',
-                                                                    html_entity_decode(strip_tags($h->keterangan)),
+                                                                    html_entity_decode(strip_tags($h->sub_heading)),
                                                                 ),
                                                             );
                                                         @endphp
@@ -58,13 +61,13 @@
 
                                                             @if (mb_strlen($fullText) > 160)
                                                                 <button type="button" class="btn btn-link p-0 see-more"
-                                                                    data-id="{{ $h->id_header }}" data-judul="Keterangan">
+                                                                    data-id="{{ $h->id_header }}" data-judul="sub_heading">
                                                                     Lihat selengkapnya
                                                                 </button>
                                                             @endif
 
                                                             <div id="full-content-{{ $h->id_header }}" class="d-none">
-                                                                {{ $h->keterangan ?? '-' }}
+                                                                {{ $h->sub_heading ?? '-' }}
                                                             </div>
                                                         </td>
 

@@ -13,7 +13,8 @@ class Header extends Model
         'id_user',
         'id_kategori_header',
         'gambar',
-        'keterangan',
+        'headline',
+        'sub_heading',
     ];
 
     public function kategoriHeader()

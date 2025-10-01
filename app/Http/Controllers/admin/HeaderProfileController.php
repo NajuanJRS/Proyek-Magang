@@ -20,7 +20,8 @@ class HeaderProfileController extends Controller
         $search = $request->input('search');
         $headerProfile = Header::when($search, function ($query, $search) {
             $query->where('nama_kategori', 'like', "%$search%")
-                  ->orWhere('keterangan', 'like', "%$search%");
+                  ->orWhere('headline', 'like', "%$search%")
+                  ->orWhere('sub_heading', 'like', "%$search%");
         })->paginate(10);
 
         return view('Admin.profile.headerProfile.headerProfile', compact('headerProfile'));
@@ -51,7 +52,8 @@ class HeaderProfileController extends Controller
     {
         $request->validate([
             'id_user' => 'nullable|exists:user,id_user',
-            'keterangan' => 'required|min:5',
+            'headline' => 'nullable|min:5',
+            'sub_heading' => 'nullable|min:5',
             'gambar' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
 
@@ -61,7 +63,8 @@ class HeaderProfileController extends Controller
 
         $data = [
             'id_user'    => $idUser,
-            'keterangan' => $request->keterangan,
+            'headline' => $request->headline,
+            'sub_heading' => $request->sub_heading,
         ];
 
         if ($request->hasFile('gambar')) {
