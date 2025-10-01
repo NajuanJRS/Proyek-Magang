@@ -70,7 +70,7 @@
 
     {{-- LOGIKA TAMPILAN: Halaman 1 berbeda dengan halaman selanjutnya --}}
     @if ($berita->currentPage() == 1)
-      
+
       @php
         $items = $berita->items();
         $featuredNews = $items[0] ?? null;
@@ -143,7 +143,7 @@
       {{-- ==== PERUBAHAN TAMPILAN MOBILE SELESAI ==== --}}
 
     @else
-      
+
       {{-- Halaman berikutnya: 12 berita grid (Sama untuk Desktop & Mobile) --}}
       <div class="row g-3">
         @foreach($berita as $item)
@@ -167,7 +167,7 @@
 </section>
     {{-- NAVIGASI PAGINATION --}}
     <div class="d-flex flex-column align-items-center mt-5">
-      {{ $berita->links('vendor.pagination.custom-links-only') }}
+      {{ $berita->links('pengguna.vendor.pagination.custom-links-only') }}
       @if ($berita->hasPages())
         <p class="small text-muted mt-2">
           Showing {{ $berita->firstItem() }} to {{ $berita->lastItem() }} of {{ $berita->total() }} results

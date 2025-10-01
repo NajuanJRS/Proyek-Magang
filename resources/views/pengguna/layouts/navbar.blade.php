@@ -167,7 +167,7 @@
       });
     }
   });
-  
+
   closeSearchButton.addEventListener('click', closeSearchPanel);
 })();
 </script>

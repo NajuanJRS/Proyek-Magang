@@ -51,6 +51,8 @@
             $openMenu = 'menuBeranda';
         } elseif (request()->routeIs('admin.profile.index') || request()->routeIs('admin.pejabat.index')) {
             $openMenu = 'menuProfil';
+        } elseif (request()->routeIs('admin.layanan.index') || request()->routeIs('admin.layanan.index')) {
+            $openMenu = 'menuLayanan';
         }
     @endphp
 
@@ -66,31 +68,30 @@
         <p class="text-muted">Menu</p>
         <ul class="nav flex-column">
             <!-- Beranda -->
-<li class="nav-item">
-    <a class="nav-link d-flex justify-content-between align-items-center {{ request()->routeIs('admin.slider.index') || request()->routeIs('admin.mitra.index') ? 'active' : '' }}"
-        data-bs-toggle="collapse" href="#menuBeranda" role="button"
-        aria-expanded="false" aria-controls="menuBeranda"
-        onclick="toggleArrow(this)">
-        <span><i class="bi bi-house"></i> Beranda</span>
-        <i class="bi bi-chevron-down small arrow-icon"></i>
-    </a>
-    <div class="collapse ps-2" id="menuBeranda" data-bs-parent="#sidebarMenu">
-        <ul class="nav flex-column ms-3">
-            <li>
-                <a href="{{ route('admin.slider.index') }}"
-                   class="nav-link {{ request()->routeIs('admin.slider.index') ? 'active' : '' }}">
-                   Hero Section
+            <li class="nav-item">
+                <a class="nav-link d-flex justify-content-between align-items-center {{ request()->routeIs('admin.slider.index') || request()->routeIs('admin.mitra.index') ? 'active' : '' }}"
+                    data-bs-toggle="collapse" href="#menuBeranda" role="button" aria-expanded="false"
+                    aria-controls="menuBeranda" onclick="toggleArrow(this)">
+                    <span><i class="bi bi-house"></i> Beranda</span>
+                    <i class="bi bi-chevron-down small arrow-icon"></i>
                 </a>
+                <div class="collapse ps-2" id="menuBeranda" data-bs-parent="#sidebarMenu">
+                    <ul class="nav flex-column ms-3">
+                        <li>
+                            <a href="{{ route('admin.slider.index') }}"
+                                class="nav-link {{ request()->routeIs('admin.slider.index') ? 'active' : '' }}">
+                                Hero Section
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{{ route('admin.mitra.index') }}"
+                                class="nav-link {{ request()->routeIs('admin.mitra.index') ? 'active' : '' }}">
+                                Unit Layanan dan Mitra
+                            </a>
+                        </li>
+                    </ul>
+                </div>
             </li>
-            <li>
-                <a href="{{ route('admin.mitra.index') }}"
-                   class="nav-link {{ request()->routeIs('admin.mitra.index') ? 'active' : '' }}">
-                   Unit Layanan dan Mitra
-                </a>
-            </li>
-        </ul>
-    </div>
-</li>
 
 
             <!-- Profil -->
@@ -116,11 +117,25 @@
                 </div>
             </li>
 
-
-            <!-- Menu lainnya -->
-            <li>
-                <a href="#" class="nav-link"><i class="bi bi-file-earmark-text"></i> Layanan</a>
+            <!-- Layanan -->
+            <li class="nav-item">
+                <a class="nav-link d-flex justify-content-between align-items-center {{ request()->routeIs('admin.headerLayanan.index') || request()->routeIs('admin.layanan.index') ? 'active' : '' }}"
+                    data-bs-toggle="collapse" href="#menuLayanan" role="button" aria-expanded="false"
+                    aria-controls="menuLayanan" onclick="toggleArrow(this)">
+                    <span><i class="bi bi-file-earmark-text"></i> Layanan</span>
+                    <i class="bi bi-chevron-down small arrow-icon"></i>
+                </a>
+                <div class="collapse ps-2" id="menuLayanan" data-bs-parent="#sidebarMenu">
+                    <ul class="nav flex-column ms-3">
+                        <li><a href="{{ route('admin.headerLayanan.index') }}"
+                                class="nav-link {{ request()->routeIs('admin.headerLayanan.index') ? 'active' : '' }}">Header</a>
+                        </li>
+                        <li><a href="{{ route('admin.layanan.index') }}"
+                                class="nav-link {{ request()->routeIs('admin.layanan.index') ? 'active' : '' }}">Konten Layanan</a></li>
+                    </ul>
+                </div>
             </li>
+
             <li>
                 <a href="#" class="nav-link"><i class="bi bi-newspaper"></i> Berita</a>
             </li>

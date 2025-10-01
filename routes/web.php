@@ -6,6 +6,7 @@ use App\Http\Controllers\BeritaController as LandingBeritaController;
 use App\Http\Controllers\admin\FaqController;
 use App\Http\Controllers\FaqController as LandingFaqController;
 use App\Http\Controllers\admin\FileDownloadController;
+use App\Http\Controllers\admin\HeaderLayananController;
 use App\Http\Controllers\admin\HeaderProfileController;
 use App\Http\Controllers\admin\KontakController;
 use App\Http\Controllers\admin\KotakMasukController;
@@ -28,20 +29,20 @@ Route::view('/layanan/prosedur-pengangkatan-anak', 'layanan.pengangkatan');
 Route::view('/layanan/penyaluran-logistik-bufferstock-bencana', 'layanan.bufferstock');
 
 // profil
-Route::view('/profil', 'profil.index')->name('profil.index');
+Route::view('/profil', 'pengguna.profil.index')->name('profil.index');
 // layanan
-Route::view('/layanan', 'layanan.index')->name('layanan.index');
+Route::view('/layanan', 'pengguna.layanan.index')->name('layanan.index');
 // berita
-Route::view('/berita', 'berita.index')->name('berita.index');
+Route::view('/berita', 'pengguna.berita.index')->name('berita.index');
 // download
-Route::view('/download', 'download.index')->name('download.index');
+Route::view('/download', 'pengguna.download.index')->name('download.index');
 // PPID
-Route::view('/ppid', 'ppid.index')->name('ppid.index');
+Route::view('/ppid', 'pengguna.ppid.index')->name('ppid.index');
 // kontak
-Route::view('/kontak', 'kontak.index')->name('kontak.index');
+Route::view('/kontak', 'pengguna.kontak.index')->name('kontak.index');
 
 Route::get('/', function () {
-    return view('landingPage.beranda');  // resources/views/beranda.blade.php
+    return view('pengguna.beranda');  // resources/views/beranda.blade.php
 })->name('beranda');
 
 // pencarian
@@ -81,10 +82,11 @@ Route::prefix('admin')->name('admin.')->group(function () {
 
     Route::resource('header-profile', HeaderProfileController::class)->names('headerProfile');
 
+    Route::resource('header-layanan', HeaderLayananController::class)->names('headerLayanan');
+
     Route::resource('pejabat', pejabatController::class);
 
     Route::resource('layanan', LayananKamiController::class);
-
 
     Route::resource('download', FileDownloadController::class);
 
