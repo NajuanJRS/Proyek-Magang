@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\pengguna;
 
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 
@@ -27,12 +28,12 @@ class ProfilController extends Controller
             return $profile;
         }, $allProfiles);
 
-        $viewName = 'profil.show'; // Default view
+        $viewName = 'pengguna.profil.show'; // Default view
         $viewData = [];
 
         // === LOGIKA BARU UNTUK HALAMAN SPESIFIK ===
         if ($slug == 'pejabat') {
-            $viewName = 'profil.pejabat'; // Gunakan view khusus untuk halaman pejabat
+            $viewName = 'pengguna.profil.pejabat'; // Gunakan view khusus untuk halaman pejabat
             $viewData['pejabat'] = [
                 'kepala' => [
                     'nama' => 'Drs. H. AHMAD FIKRI, M.AP',
@@ -49,7 +50,7 @@ class ProfilController extends Controller
                 ]
             ];
         }elseif ($slug == 'struktur-organisasi') {
-            $viewName = 'profil.struktur'; // Gunakan view baru untuk struktur
+            $viewName = 'pengguna.profil.struktur'; // Gunakan view baru untuk struktur
             $viewData['pageData'] = [
                 'title' => 'Struktur Organisasi Dinas Sosial Provinsi Kalimantan Selatan',
                 'image' => 'struktur-organisasi.jpg'

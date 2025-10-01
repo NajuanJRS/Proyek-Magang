@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\pengguna;
 
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 use Illuminate\Support\Facades\Response; // <-- Pastikan ini ditambahkan
@@ -39,7 +40,7 @@ class DownloadController extends Controller
             ]
         ];
 
-        return view('download.show', [
+        return view('pengguna.download.show', [
             'pageContent' => $pageContent,
             'allDownloads' => $downloadsWithStatus
         ]);

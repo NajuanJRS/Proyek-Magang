@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('pengguna.layouts.app')
 
 @section('page_bg', 'ds-bg-plain')
 

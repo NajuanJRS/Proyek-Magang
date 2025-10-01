@@ -2,46 +2,46 @@
 
 use App\Http\Controllers\admin\AdminUpdateController;
 use App\Http\Controllers\admin\BeritaController;
-use App\Http\Controllers\BeritaController as LandingBeritaController;
+use App\Http\Controllers\pengguna\BeritaController as LandingBeritaController;
 use App\Http\Controllers\admin\FaqController;
-use App\Http\Controllers\FaqController as LandingFaqController;
+use App\Http\Controllers\pengguna\FaqController as LandingFaqController;
 use App\Http\Controllers\admin\FileDownloadController;
 use App\Http\Controllers\admin\HeaderProfileController;
 use App\Http\Controllers\admin\KontakController;
 use App\Http\Controllers\admin\KotakMasukController;
 use App\Http\Controllers\admin\LayananKamiController;
-use App\Http\Controllers\LayananController;
+use App\Http\Controllers\pengguna\LayananController;
 use App\Http\Controllers\admin\ManajemenProfileController;
 use App\Http\Controllers\admin\MitraController;
 use App\Http\Controllers\admin\PageHeaderController;
 use App\Http\Controllers\admin\pejabatController;
 use App\Http\Controllers\admin\SliderController;
-use App\Http\Controllers\DownloadController;
+use App\Http\Controllers\pengguna\DownloadController;
 use App\Http\Controllers\LoginController;
-use App\Http\Controllers\ProfilController;
-use App\Http\Controllers\SearchController;
+use App\Http\Controllers\pengguna\ProfilController;
+use App\Http\Controllers\pengguna\SearchController;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\PpidController;
+use App\Http\Controllers\pengguna\PpidController;
 
 Route::view('/layanan/penerbitan-surat-tanda-pendaftaran', 'layanan.penerbitan');
 Route::view('/layanan/prosedur-pengangkatan-anak', 'layanan.pengangkatan');
 Route::view('/layanan/penyaluran-logistik-bufferstock-bencana', 'layanan.bufferstock');
 
 // profil
-Route::view('/profil', 'profil.index')->name('profil.index');
+Route::view('/profil', 'pengguna.profil.index')->name('profil.index');
 // layanan
-Route::view('/layanan', 'layanan.index')->name('layanan.index');
+Route::view('/layanan', 'pengguna.layanan.index')->name('layanan.index');
 // berita
-Route::view('/berita', 'berita.index')->name('berita.index');
+Route::view('/berita', 'pengguna.berita.index')->name('berita.index');
 // download
-Route::view('/download', 'download.index')->name('download.index');
+Route::view('/download', 'pengguna.download.index')->name('download.index');
 // PPID
-Route::view('/ppid', 'ppid.index')->name('ppid.index');
+Route::view('/ppid', 'pengguna.ppid.index')->name('ppid.index');
 // kontak
-Route::view('/kontak', 'kontak.index')->name('kontak.index');
+Route::view('/kontak', 'pengguna.kontak.index')->name('kontak.index');
 
 Route::get('/', function () {
-    return view('landingPage.beranda');  // resources/views/beranda.blade.php
+    return view('pengguna.beranda');  // resources/views/beranda.blade.php
 })->name('beranda');
 
 // pencarian
@@ -60,6 +60,7 @@ Route::get('/download/{slug}', [DownloadController::class, 'show'])->name('downl
 Route::get('/download/file/{filename}', [DownloadController::class, 'downloadFile'])->name('download.file');
 // Route menampilkan halaman Profil PPID
 Route::get('/ppid/{slug}', [PpidController::class, 'show'])->name('ppid.show');
+
 
 Route::middleware('guest')->prefix('/')->group(function () {
     Route::get('login', [LoginController::class, 'index'])->name('login');
