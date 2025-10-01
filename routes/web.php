@@ -21,6 +21,7 @@ use App\Http\Controllers\LoginController;
 use App\Http\Controllers\ProfilController;
 use App\Http\Controllers\SearchController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\PpidController;
 
 Route::view('/layanan/penerbitan-surat-tanda-pendaftaran', 'layanan.penerbitan');
 Route::view('/layanan/prosedur-pengangkatan-anak', 'layanan.pengangkatan');
@@ -57,6 +58,8 @@ Route::get('/profil/{slug}', [ProfilController::class, 'show'])->name('profil.sh
 Route::get('/download/{slug}', [DownloadController::class, 'show'])->name('download.show');
 // Route baru untuk menangani proses download file
 Route::get('/download/file/{filename}', [DownloadController::class, 'downloadFile'])->name('download.file');
+// Route menampilkan halaman Profil PPID
+Route::get('/ppid/{slug}', [PpidController::class, 'show'])->name('ppid.show');
 
 Route::middleware('guest')->prefix('/')->group(function () {
     Route::get('login', [LoginController::class, 'index'])->name('login');

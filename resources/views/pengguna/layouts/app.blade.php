@@ -13,7 +13,7 @@
   <link rel="stylesheet" href="{{ asset('css/app.css') }}">
 </head>
 <body>
-  @include('landingPage.layouts.navbar')
+  @include('pengguna.layouts.navbar')
 
   <main class="site-main @yield('page_bg')">
     @yield('content')

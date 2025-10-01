@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('pengguna.layouts.app')
 
 {{-- aktifkan background abstrak hanya di halaman ini (opsional) --}}
 @section('page_bg', 'ds-bg-abstract')
