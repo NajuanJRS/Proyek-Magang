@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\pengguna;
 
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 
@@ -40,7 +41,7 @@ class FaqController extends Controller
         // Ambil data FAQ untuk kategori yang sedang aktif
         $activeFaqs = $allFaqs[$kategori] ?? $allFaqs['umum'];
 
-        return view('faq.index', [
+        return view('pengguna.faq.index', [
             'faqs' => $activeFaqs,
             'kategoriList' => $kategoriList,
             'kategoriAktif' => $kategori

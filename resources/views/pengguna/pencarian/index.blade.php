@@ -25,7 +25,7 @@
             <div class="ds-results-card">
               {{-- Judul Halaman --}}
               <div class="mb-4">
-                <h1 class="fw-bold">Hasil Pencarian</h1>
+                <h2 class="fw-bold">Hasil Pencarian</h2>
                 @if($keyword)
                   <p class="lead text-muted">Menampilkan hasil untuk: "{{ $keyword }}"</p>
                 @endif

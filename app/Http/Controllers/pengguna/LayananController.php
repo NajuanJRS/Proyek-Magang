@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\pengguna;
 
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 
@@ -65,7 +66,7 @@ class LayananController extends Controller
                 "
             ];
 
-        return view('layanan.show', [
+        return view('pengguna.layanan.show', [
             'service' => $serviceContent,
             'allServices' => $servicesWithStatus
         ]);

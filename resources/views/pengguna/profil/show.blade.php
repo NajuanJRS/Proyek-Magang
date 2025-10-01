@@ -21,7 +21,7 @@
         <div class="col-lg-8">
           <article class="ds-article-card">
             {{-- JUDUL KONTEN --}}
-            <h1 class="ds-article-title">{{ $profileContent['title'] }}</h1>
+            <h2 class="ds-article-title">{{ $profileContent['title'] }}</h2>
 
             <hr class="my-4">
 

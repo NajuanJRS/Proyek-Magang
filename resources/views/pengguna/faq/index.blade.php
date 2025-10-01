@@ -18,7 +18,7 @@
     <div class="container">
       {{-- Judul Halaman --}}
       <div class="text-center">
-        <h1 class="ds-faq-title">FAQ (Pertanyaan Umum)</h1>
+        <h2 class="ds-faq-title">FAQ (Pertanyaan Umum)</h2>
         <p class="ds-faq-subtitle">Temukan jawaban cepat untuk pertanyaan umum seputar layanan, program, dan prosedur di Dinas Sosial. Ketik pertanyaan Anda di bawah atau jelajahi berdasarkan kategori.</p>
       </div>
 

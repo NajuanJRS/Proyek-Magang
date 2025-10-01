@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\pengguna;
 
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 
@@ -46,7 +47,7 @@ class SearchController extends Controller
         }
 
         // Kirim semua data yang diperlukan ke view
-        return view('pencarian.index', [
+        return view('pengguna.pencarian.index', [
             'keyword' => $keyword,
             'filters' => $filters,
             'results' => $filteredResults,
