@@ -7,39 +7,27 @@
 {{-- =====================
      HERO SECTION (SLIDER)
 ===================== --}}
-@php
-  $heroSlides = [
-    [
-      'image'    => asset('images/beranda/foto-beranda1.jpg'),
-      'headline' => 'Membangun Kesejahteraan Sosial<br>untuk Kalimantan Selatan',
-      'sub'      => 'Akses informasi layanan, program bantuan, dan berita terbaru kami secara mudah dan transparan.',
-    ],
-    [
-      'image'    => asset('images/beranda/foto-beranda2.jpg'),
-      'headline' => 'Layanan Tepat Sasaran, Informasi Terintegrasi',
-      'sub'      => 'Kami berkomitmen menghadirkan pelayanan sosial yang inklusif, akuntabel, dan transparan.',
-    ],
-  ];
-@endphp
-
 <section class="ds-hero position-relative">
   <div id="heroCarousel" class="carousel slide carousel-fade" data-bs-ride="carousel" data-bs-interval="6000">
     <div class="carousel-inner">
-      @foreach ($heroSlides as $i => $s)
-        <div class="carousel-item {{ $i === 0 ? 'active' : '' }}">
-          <div class="ds-hero-slide" style="background-image:url('{{ $s['image'] }}');"></div>
+      @foreach ($heroSlides as $index => $slide)
+        <div class="carousel-item {{ $index === 0 ? 'active' : '' }}">
+          {{-- Gunakan path dari storage --}}
+          <div class="ds-hero-slide" style="background-image:url('{{ asset('storage/header/' . $slide->gambar) }}');"></div>
           <div class="ds-hero-overlay"></div>
 
           <div class="container ds-hero-content">
             <div class="col-12 col-lg-7">
-              <h1 class="ds-hero-title-beranda">{!! $s['headline'] !!}</h1>
-              <p class="ds-hero-sub-beranda mb-3 mb-md-4">{{ $s['sub'] }}</p>
+              {{-- Ambil data dari kolom database --}}
+              <h1 class="ds-hero-title-beranda">{!! $slide->headline !!}</h1>
+              <p class="ds-hero-sub-beranda mb-3 mb-md-4">{{ $slide->sub_heading }}</p>
             </div>
           </div>
         </div>
       @endforeach
     </div>
 
+    {{-- Tombol navigasi dan indikator (tidak perlu diubah) --}}
     <button class="carousel-control-prev" type="button" data-bs-target="#heroCarousel" data-bs-slide="prev">
       <span class="carousel-control-prev-icon"></span>
       <span class="visually-hidden">Sebelumnya</span>
@@ -48,10 +36,9 @@
       <span class="carousel-control-next-icon"></span>
       <span class="visually-hidden">Berikutnya</span>
     </button>
-
     <div class="carousel-indicators ds-hero-indicators">
-      @foreach ($heroSlides as $i => $s)
-        <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="{{ $i }}" class="{{ $i===0 ? 'active' : '' }}"></button>
+      @foreach ($heroSlides as $index => $slide)
+        <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="{{ $index }}" class="{{ $index === 0 ? 'active' : '' }}"></button>
       @endforeach
     </div>
   </div>

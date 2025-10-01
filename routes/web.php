@@ -23,10 +23,13 @@ use App\Http\Controllers\pengguna\ProfilController;
 use App\Http\Controllers\pengguna\SearchController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\pengguna\PpidController;
+use App\Http\Controllers\pengguna\BerandaController;
 
 Route::view('/layanan/penerbitan-surat-tanda-pendaftaran', 'layanan.penerbitan');
 Route::view('/layanan/prosedur-pengangkatan-anak', 'layanan.pengangkatan');
 Route::view('/layanan/penyaluran-logistik-bufferstock-bencana', 'layanan.bufferstock');
+
+Route::get('/', [BerandaController::class, 'index'])->name('beranda');
 
 // profil
 Route::view('/profil', 'pengguna.profil.index')->name('profil.index');
@@ -41,9 +44,6 @@ Route::view('/ppid', 'pengguna.ppid.index')->name('ppid.index');
 // kontak
 Route::view('/kontak', 'pengguna.kontak.index')->name('kontak.index');
 
-Route::get('/', function () {
-    return view('pengguna.beranda');  // resources/views/beranda.blade.php
-})->name('beranda');
 
 // pencarian
 Route::get('/pencarian', [SearchController::class, 'index'])->name('pencarian.index');
