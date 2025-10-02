@@ -10,7 +10,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 
-class HeaderBeritaController extends Controller
+class HeaderDownloadController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -18,19 +18,19 @@ class HeaderBeritaController extends Controller
     public function index(Request $request): View
     {
         $search = $request->input('search');
-        $headerBerita = Header::when($search, function ($query, $search) {
+        $headerDownload = Header::when($search, function ($query, $search) {
             $query->where('nama_kategori', 'like', "%$search%")
                   ->orWhere('headline', 'like', "%$search%")
                   ->orWhere('sub_heading', 'like', "%$search%");
         })->paginate(10);
 
-        return view('Admin.berita.headerBerita.headerBerita', compact('headerBerita'));
+        return view('Admin.download.headerDownload.headerDownload', compact('headerDownload'));
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(Header $headerBerita)
+    public function show(Header $headerDownload)
     {
         //
     }
@@ -38,17 +38,17 @@ class HeaderBeritaController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Header $headerBerita)
+    public function edit(Header $headerDownload)
     {
-        $headerBerita = Header::findOrFail($headerBerita->id_header);
+        $headerDownload = Header::findOrFail($headerDownload->id_header);
         $kategoriHeader = KategoriHeader::all();
-        return view('Admin.berita.headerBerita.formEditHeaderBerita', compact('headerBerita', 'kategoriHeader'));
+        return view('Admin.download.headerDownload.formEditHeaderDownload', compact('headerDownload', 'kategoriHeader'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Header $headerBerita)
+    public function update(Request $request, Header $headerDownload)
     {
         $request->validate([
             'id_user' => 'nullable|exists:user,id_user',
@@ -69,8 +69,8 @@ class HeaderBeritaController extends Controller
 
         if ($request->hasFile('gambar')) {
             // Hapus gambar lama jika ada
-            $oldFilePath = 'header/' . $headerBerita->gambar;
-            if ($headerBerita->gambar && Storage::disk('public')->exists($oldFilePath)) {
+            $oldFilePath = 'header/' . $headerDownload->gambar;
+            if ($headerDownload->gambar && Storage::disk('public')->exists($oldFilePath)) {
                 Storage::disk('public')->delete($oldFilePath);
             }
 
@@ -79,8 +79,8 @@ class HeaderBeritaController extends Controller
             $data['gambar'] = basename($path);
         }
 
-        $headerBerita->update($data);
+        $headerDownload->update($data);
 
-        return redirect()->route('admin.headerBerita.index')->with('success', 'Data Heading Berhasil Diperbarui!');
+        return redirect()->route('admin.headerDownload.index')->with('success', 'Data Heading Berhasil Diperbarui!');
     }
 }

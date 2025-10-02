@@ -55,6 +55,8 @@
             $openMenu = 'menuLayanan';
         } elseif (request()->routeIs('admin.headerBerita.index') || request()->routeIs('admin.kontenBerita.index')) {
             $openMenu = 'menuBerita';
+        } elseif (request()->routeIs('admin.headerDownload.index') || request()->routeIs('admin.kontenDownload.index')) {
+            $openMenu = 'menuDownload';
         }
     @endphp
 
@@ -151,9 +153,25 @@
                 </div>
             </li>
 
-            <li>
-                <a href="#" class="nav-link"><i class="bi bi-download"></i> Download</a>
+            <!-- Download -->
+            <li class="nav-item">
+                <a class="nav-link d-flex justify-content-between align-items-center {{ request()->routeIs('admin.headerDownload.index') || request()->routeIs('admin.kontenDownload.index') ? 'active' : '' }}"
+                    data-bs-toggle="collapse" href="#menuDownload" role="button" aria-expanded="false"
+                    aria-controls="menuDownload" onclick="toggleArrow(this)">
+                    <span><i class="bi bi-download"></i> Download</span>
+                    <i class="bi bi-chevron-down small arrow-icon"></i>
+                </a>
+                <div class="collapse ps-2" id="menuDownload" data-bs-parent="#sidebarMenu">
+                    <ul class="nav flex-column ms-3">
+                        <li><a href="{{ route('admin.headerDownload.index') }}"
+                                class="nav-link {{ request()->routeIs('admin.headerDownload.index') ? 'active' : '' }}">Header</a>
+                        </li>
+                        <li><a href="{{ route('admin.headerDownload.index') }}"
+                                class="nav-link {{ request()->routeIs('admin.kontenDownload.index') ? 'active' : '' }}">Konten Download</a></li>
+                    </ul>
+                </div>
             </li>
+
             <li>
                 <a href="#" class="nav-link"><i class="bi bi-people"></i> PPID</a>
             </li>
