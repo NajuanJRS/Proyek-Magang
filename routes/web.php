@@ -36,11 +36,11 @@ Route::get('/', [BerandaController::class, 'index'])->name('beranda');
 // profil
 Route::get('/profil', [ProfilController::class, 'index'])->name('profil.index');
 // layanan
-Route::view('/layanan', 'pengguna.layanan.index')->name('layanan.index');
+Route::get('/layanan', [LayananController::class, 'index'])->name('layanan.index');
 // berita
 Route::get('/berita', [LandingBeritaController::class, 'index'])->name('berita.index');
 // download
-Route::view('/download', 'pengguna.download.index')->name('download.index');
+Route::get('/download', [DownloadController::class, 'index'])->name('download.index');
 // PPID
 Route::view('/ppid', 'pengguna.ppid.index')->name('ppid.index');
 // kontak

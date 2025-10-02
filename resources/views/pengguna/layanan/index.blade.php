@@ -14,15 +14,16 @@
   </nav>
 
   {{-- ====== HERO (gambar statis, teks di tengah) ====== --}}
-  <section class="ds-hero ds-hero-profil">
-    {{-- Anda bisa mengganti gambar hero jika ada yang khusus untuk layanan --}}
-    <img src="{{ asset('images/hero/hero-layanan.jpg') }}" alt="Hero Layanan" class="ds-hero-bg" loading="lazy">
-    <div class="ds-hero-overlay"></div>
-    <div class="container ds-hero-inner text-center text-white">
-      <h1 class="ds-hero-title">Layanan Dinas Sosial Provinsi Kalimantan Selatan</h1>
-      <p class="ds-hero-sub">Jelajahi berbagai program dan layanan yang kami sediakan untuk mendukung kebutuhan Anda. Klik pada salah satu layanan untuk melihat informasi selengkapnya.</p>
-    </div>
-  </section>
+    @if($header)
+    <section class="ds-hero ds-hero-profil">
+        <img src="{{ asset('storage/header/' . $header->gambar) }}" alt="{{ $header->headline }}" class="ds-hero-bg" loading="lazy">
+        <div class="ds-hero-overlay"></div>
+        <div class="container ds-hero-inner text-center text-white">
+        <h1 class="ds-hero-title">{!! $header->headline !!}</h1>
+        <p class="ds-hero-sub">{{ $header->sub_heading }}</p>
+        </div>
+    </section>
+    @endif
 
   {{-- ====== GRID KARTU (daftar layanan) ====== --}}
   @php
