@@ -100,6 +100,8 @@ class MitraController extends Controller
         $data = [
             'id_user'    => $idUser,
             'id_kategori_header' => $request->id_kategori_header,
+            'nama_mitra' => $request->nama_mitra,
+            'link_mitra' => $request->link_mitra,
             'keterangan' => $request->keterangan,
         ];
 

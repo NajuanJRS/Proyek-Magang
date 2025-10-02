@@ -32,7 +32,7 @@ Route::view('/layanan/penyaluran-logistik-bufferstock-bencana', 'layanan.buffers
 Route::get('/', [BerandaController::class, 'index'])->name('beranda');
 
 // profil
-Route::view('/profil', 'pengguna.profil.index')->name('profil.index');
+Route::get('/profil', [ProfilController::class, 'index'])->name('profil.index');
 // layanan
 Route::view('/layanan', 'pengguna.layanan.index')->name('layanan.index');
 // berita

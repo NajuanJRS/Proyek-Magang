@@ -13,15 +13,17 @@
     </ol>
   </nav>
 
-  {{-- ====== HERO (gambar statis, teks di tengah) ====== --}}
-  <section class="ds-hero ds-hero-profil">
-    <img src="{{ asset('images/hero/hero-profil.jpg') }}" alt="Hero Profil" class="ds-hero-bg" loading="lazy">
-    <div class="ds-hero-overlay"></div>
-    <div class="container ds-hero-inner text-center text-white">
-      <h1 class="ds-hero-title">Profil Dinas Sosial Provinsi Kalimantan Selatan</h1>
-      <p class="ds-hero-sub">Selamat datang di halaman Profil Dinas Sosial Provinsi Kalimantan Selatan, tempat Anda bisa mengenal lebih dekat peran kami dalam mewujudkan kesejahteraan sosial.</p>
-    </div>
-  </section>
+  {{-- ====== HERO (sekarang dinamis dari database) ====== --}}
+  @if($header)
+    <section class="ds-hero ds-hero-profil">
+      <img src="{{ asset('storage/header/' . $header->gambar) }}" alt="{{ $header->headline }}" class="ds-hero-bg" loading="lazy">
+      <div class="ds-hero-overlay"></div>
+      <div class="container ds-hero-inner text-center text-white">
+        <h1 class="ds-hero-title">{!! $header->headline !!}</h1>
+        <p class="ds-hero-sub">{{ $header->sub_heading }}</p>
+      </div>
+    </section>
+  @endif
 
   {{-- ====== GRID KARTU (pakai komponen kartu dari Beranda) ====== --}}
   @php
