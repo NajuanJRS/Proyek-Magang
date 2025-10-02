@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\admin;
+namespace App\Http\Controllers\admin\Header;
 
 use App\Http\Controllers\Controller;
 use App\Models\admin\Header;
@@ -10,7 +10,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 
-class HeaderLayananController extends Controller
+class HeaderBeritaController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -18,19 +18,19 @@ class HeaderLayananController extends Controller
     public function index(Request $request): View
     {
         $search = $request->input('search');
-        $headerLayanan = Header::when($search, function ($query, $search) {
+        $headerBerita = Header::when($search, function ($query, $search) {
             $query->where('nama_kategori', 'like', "%$search%")
                   ->orWhere('headline', 'like', "%$search%")
                   ->orWhere('sub_heading', 'like', "%$search%");
         })->paginate(10);
 
-        return view('Admin.layanan.headerLayanan.headerLayanan', compact('headerLayanan'));
+        return view('Admin.berita.headerBerita.headerBerita', compact('headerBerita'));
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(Header $headerLayanan)
+    public function show(Header $headerBerita)
     {
         //
     }
@@ -38,17 +38,17 @@ class HeaderLayananController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Header $headerLayanan)
+    public function edit(Header $headerBerita)
     {
-        $headerLayanan = Header::findOrFail($headerLayanan->id_header);
+        $headerBerita = Header::findOrFail($headerBerita->id_header);
         $kategoriHeader = KategoriHeader::all();
-        return view('Admin.layanan.headerLayanan.formEditHeaderLayanan', compact('headerLayanan', 'kategoriHeader'));
+        return view('Admin.berita.headerBerita.formEditheaderBerita', compact('headerBerita', 'kategoriHeader'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Header $headerLayanan)
+    public function update(Request $request, Header $headerBerita)
     {
         $request->validate([
             'id_user' => 'nullable|exists:user,id_user',
@@ -69,8 +69,8 @@ class HeaderLayananController extends Controller
 
         if ($request->hasFile('gambar')) {
             // Hapus gambar lama jika ada
-            $oldFilePath = 'header/' . $headerLayanan->gambar;
-            if ($headerLayanan->gambar && Storage::disk('public')->exists($oldFilePath)) {
+            $oldFilePath = 'header/' . $headerBerita->gambar;
+            if ($headerBerita->gambar && Storage::disk('public')->exists($oldFilePath)) {
                 Storage::disk('public')->delete($oldFilePath);
             }
 
@@ -79,8 +79,8 @@ class HeaderLayananController extends Controller
             $data['gambar'] = basename($path);
         }
 
-        $headerLayanan->update($data);
+        $headerBerita->update($data);
 
-        return redirect()->route('admin.headerLayanan.index')->with('success', 'Data Heading Berhasil Diperbarui!');
+        return redirect()->route('admin.headerBerita.index')->with('success', 'Data Heading Berhasil Diperbarui!');
     }
 }

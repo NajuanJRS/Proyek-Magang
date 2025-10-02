@@ -6,8 +6,9 @@ use App\Http\Controllers\pengguna\BeritaController as LandingBeritaController;
 use App\Http\Controllers\admin\FaqController;
 use App\Http\Controllers\pengguna\FaqController as LandingFaqController;
 use App\Http\Controllers\admin\FileDownloadController;
-use App\Http\Controllers\admin\HeaderLayananController;
-use App\Http\Controllers\admin\HeaderProfileController;
+use App\Http\Controllers\admin\Header\HeaderBeritaController;
+use App\Http\Controllers\admin\Header\HeaderLayananController;
+use App\Http\Controllers\admin\Header\HeaderProfileController;
 use App\Http\Controllers\admin\KontakController;
 use App\Http\Controllers\admin\KotakMasukController;
 use App\Http\Controllers\admin\LayananKamiController;
@@ -84,6 +85,8 @@ Route::prefix('admin')->name('admin.')->group(function () {
     Route::resource('header-profile', HeaderProfileController::class)->names('headerProfile');
 
     Route::resource('header-layanan', HeaderLayananController::class)->names('headerLayanan');
+
+    Route::resource('header-berita', HeaderBeritaController::class)->names('headerBerita');
 
     Route::resource('pejabat', pejabatController::class);
 
