@@ -49,6 +49,12 @@
                                             </div>
                                         </div>
 
+                                        <label for="nama_mitra" class="mb-2">Nama Mitra</label>
+                                        <div class="mb-4">
+                                            <textarea class="form-control" id="nama_mitra" name="nama_mitra"
+                                                placeholder="Masukkan link mitra">{{ old('nama_mitra', $mitra->nama_mitra) }}</textarea>
+                                        </div>
+
                                         <label for="link_mitra" class="mb-2">Link Mitra</label>
                                         <div class="mb-4">
                                             <textarea class="form-control" id="link_mitra" name="link_mitra"

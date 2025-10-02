@@ -53,6 +53,8 @@
             $openMenu = 'menuProfil';
         } elseif (request()->routeIs('admin.layanan.index') || request()->routeIs('admin.layanan.index')) {
             $openMenu = 'menuLayanan';
+        } elseif (request()->routeIs('admin.headerBerita.index') || request()->routeIs('admin.kontenBerita.index')) {
+            $openMenu = 'menuBerita';
         }
     @endphp
 
@@ -67,6 +69,7 @@
         </div>
         <p class="text-muted">Menu</p>
         <ul class="nav flex-column">
+
             <!-- Beranda -->
             <li class="nav-item">
                 <a class="nav-link d-flex justify-content-between align-items-center {{ request()->routeIs('admin.slider.index') || request()->routeIs('admin.mitra.index') ? 'active' : '' }}"
@@ -77,22 +80,15 @@
                 </a>
                 <div class="collapse ps-2" id="menuBeranda" data-bs-parent="#sidebarMenu">
                     <ul class="nav flex-column ms-3">
-                        <li>
-                            <a href="{{ route('admin.slider.index') }}"
-                                class="nav-link {{ request()->routeIs('admin.slider.index') ? 'active' : '' }}">
-                                Hero Section
-                            </a>
+                        <li><a href="{{ route('admin.slider.index') }}"
+                                class="nav-link {{ request()->routeIs('admin.slider.index') ? 'active' : '' }}">Hero Section</a>
                         </li>
-                        <li>
-                            <a href="{{ route('admin.mitra.index') }}"
-                                class="nav-link {{ request()->routeIs('admin.mitra.index') ? 'active' : '' }}">
-                                Unit Layanan dan Mitra
-                            </a>
-                        </li>
+                        <li><a href="{{ route('admin.mitra.index') }}"
+                                class="nav-link {{ request()->routeIs('admin.mitra.index') ? 'active' : '' }}">Unit Layanan
+                                Dan Mitra</a></li>
                     </ul>
                 </div>
             </li>
-
 
             <!-- Profil -->
             <li class="nav-item">
@@ -136,9 +132,25 @@
                 </div>
             </li>
 
-            <li>
-                <a href="#" class="nav-link"><i class="bi bi-newspaper"></i> Berita</a>
+            <!-- Berita -->
+            <li class="nav-item">
+                <a class="nav-link d-flex justify-content-between align-items-center {{ request()->routeIs('admin.headerBerita.index') || request()->routeIs('admin.kontenBerita.index') ? 'active' : '' }}"
+                    data-bs-toggle="collapse" href="#menuBerita" role="button" aria-expanded="false"
+                    aria-controls="menuBerita" onclick="toggleArrow(this)">
+                    <span><i class="bi bi-newspaper"></i> Berita</span>
+                    <i class="bi bi-chevron-down small arrow-icon"></i>
+                </a>
+                <div class="collapse ps-2" id="menuBerita" data-bs-parent="#sidebarMenu">
+                    <ul class="nav flex-column ms-3">
+                        <li><a href="{{ route('admin.headerBerita.index') }}"
+                                class="nav-link {{ request()->routeIs('admin.headerBerita.index') ? 'active' : '' }}">Header</a>
+                        </li>
+                        <li><a href="{{ route('admin.headerBerita.index') }}"
+                                class="nav-link {{ request()->routeIs('admin.kontenBerita.index') ? 'active' : '' }}">Konten Berita</a></li>
+                    </ul>
+                </div>
             </li>
+
             <li>
                 <a href="#" class="nav-link"><i class="bi bi-download"></i> Download</a>
             </li>
