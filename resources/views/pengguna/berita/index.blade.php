@@ -37,7 +37,7 @@
         {{-- TAMPILAN DESKTOP --}}
         <div class="d-none d-md-block">
           @if($featuredNews)
-            <a href="{{ route('berita.show', $featuredNews->id_berita) }}" class="ds-featured-news text-decoration-none text-dark mb-4">
+            <a href="{{ route('berita.show', $featuredNews->slug) }}" class="ds-featured-news text-decoration-none text-dark mb-4">
               <img src="{{ asset('storage/berita/' . $featuredNews->gambar1) }}" alt="{{ $featuredNews->judul }}" class="ds-featured-img">
               <div class="ds-featured-body">
                 <h2 class="ds-featured-title">{{ $featuredNews->judul }}</h2>
@@ -53,7 +53,7 @@
           <div class="row g-3">
             @foreach($regularNews as $item)
             <div class="col-12 col-md-4 col-lg-3">
-              <a href="{{ route('berita.show', $item->id_berita) }}" class="ds-news-card h-100">
+              <a href="{{ route('berita.show', $item->slug) }}" class="ds-news-card h-100">
                 <img src="{{ asset('storage/berita/' . $item->gambar1) }}" alt="{{ $item->judul }}">
                 <div class="ds-news-card-body">
                   <h6 class="ds-news-title">{{ $item->judul }}</h6>
@@ -71,7 +71,7 @@
         {{-- TAMPILAN MOBILE --}}
         <div class="d-md-none">
           @if($featuredNews)
-            <a class="ds-mfeat" href="{{ route('berita.show', $featuredNews->id_berita) }}">
+            <a class="ds-mfeat" href="{{ route('berita.show', $featuredNews->slug) }}">
               <img src="{{ asset('storage/berita/' . $featuredNews->gambar1) }}" alt="{{ $featuredNews->judul }}">
               <h3 class="mt-2">{{ $featuredNews->judul }}</h3>
             </a>
@@ -80,7 +80,7 @@
           <div class="row g-3">
             @foreach($regularNews as $item)
               <div class="col-6">
-                <a href="{{ route('berita.show', $item->id_berita) }}" class="ds-news-card h-100">
+                <a href="{{ route('berita.show', $item->slug) }}" class="ds-news-card h-100">
                   <img src="{{ asset('storage/berita/' . $item->gambar1) }}" alt="{{ $item->judul }}">
                   <div class="ds-news-card-body">
                     <h6 class="ds-news-title">{{ $item->judul }}</h6>
@@ -101,7 +101,7 @@
         <div class="row g-3">
           @foreach($berita as $item)
           <div class="col-6 col-md-4 col-lg-3">
-            <a href="{{ route('berita.show', $item->id_berita) }}" class="ds-news-card h-100">
+            <a href="{{ route('berita.show', $item->slug) }}" class="ds-news-card h-100">
               <img src="{{ asset('storage/berita/' . $item->gambar1) }}" alt="{{ $item->judul }}">
               <div class="ds-news-card-body">
                 <h6 class="ds-news-title">{{ $item->judul }}</h6>

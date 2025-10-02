@@ -23,9 +23,9 @@ class BeritaController extends Controller
     }
 
     // Method untuk halaman detail berita
-    public function show($id): View
+    public function show(string $slug): View
     {
-        $article = Berita::findOrFail($id);
+        $article = Berita::where('slug', $slug)->firstOrFail();
 
         // Ubah struktur data agar sesuai dengan view yang ada
         $content = [];

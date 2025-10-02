@@ -106,7 +106,7 @@
         
         {{-- DESKTOP --}}
         <div class="d-none d-md-block">
-            <a href="{{ route('berita.show', $unggulan->id_berita) }}" class="ds-featured-news text-decoration-none text-dark mb-4">
+            <a href="{{ route('berita.show', $unggulan->slug) }}" class="ds-featured-news text-decoration-none text-dark mb-4">
                 <img src="{{ asset('storage/berita/' . $unggulan->gambar1) }}" alt="{{ $unggulan->judul }}" class="ds-featured-img">
                 <div class="ds-featured-body">
                     <h2 class="ds-featured-title">{{ $unggulan->judul }}</h2>
@@ -121,7 +121,7 @@
             <div class="row g-3">
                 @foreach($berita->slice(1, 4) as $item)
                 <div class="col-md-4 col-lg-3">
-                    <a href="{{ route('berita.show', $item->id_berita) }}" class="ds-news-card">
+                    <a href="{{ route('berita.show', $item->slug) }}" class="ds-news-card">
                         <img src="{{ asset('storage/berita/' . $item->gambar1) }}" alt="{{ $item->judul }}">
                         <div class="ds-news-card-body">
                             <h6 class="ds-news-title">{{ $item->judul }}</h6>
@@ -138,13 +138,13 @@
 
         {{-- MOBILE --}}
         <div class="d-md-none">
-            <a class="ds-mfeat" href="{{ route('berita.show', $unggulan->id_berita) }}">
+            <a class="ds-mfeat" href="{{ route('berita.show', $unggulan->slug) }}">
               <img src="{{ asset('storage/berita/' . $unggulan->gambar1) }}" alt="{{ $unggulan->judul }}">
               <h3 class="mt-2">{{ $unggulan->judul }}</h3>
             </a>
             <div class="ds-mnews-list mt-3">
                 @foreach($berita->slice(1) as $item)
-                    <a href="{{ route('berita.show', $item->id_berita) }}" class="ds-mnews-item">
+                    <a href="{{ route('berita.show', $item->slug) }}" class="ds-mnews-item">
                         <img src="{{ asset('storage/berita/' . $item->gambar1) }}" alt="{{ $item->judul }}">
                         <div class="ds-mnews-title">{{ $item->judul }}</div>
                     </a>

@@ -9,6 +9,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
 
 class BeritaController extends Controller
 {
@@ -48,6 +49,8 @@ class BeritaController extends Controller
             'dibaca' => 'nullable',
         ]);
 
+        $slug = Str::slug($request->judul, '-');
+
         // Upload gambar1 (wajib)
         $path1 = $request->file('gambar1')->store('berita', 'public');
         $fileGambar1 = basename($path1);
@@ -73,6 +76,7 @@ class BeritaController extends Controller
             Berita::create([
                 'id_user'    => $idUser,
                 'judul'      => $request->judul,
+                'slug'       => $slug,
                 'isi_berita1' => $request->isi_berita1,
                 'gambar1'     => $fileGambar1,
                 'isi_berita2' => $request->isi_berita2,
@@ -162,7 +166,9 @@ class BeritaController extends Controller
         $path3 = $request->file('gambar3')->store('berita', 'public');
         $data['gambar3'] = basename($path3);
     }
-
+    if ($request->filled('judul')) {
+            $data['slug'] = Str::slug($request->judul, '-');
+    }
         $berita->update($data);
 
         return redirect()->route('admin.berita.index')->with('success', 'Data Berhasil Diupdate!');
