@@ -5,9 +5,22 @@ namespace App\Http\Controllers\pengguna;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
+use App\Models\admin\Header;
 
 class ProfilController extends Controller
 {
+    public function index(): View
+    {
+        // Ambil data header dari database di mana id_kategori_header adalah 2
+        // Kita gunakan 'first()' karena kita hanya butuh satu data header untuk halaman ini
+        $header = Header::where('id_kategori_header', 2)->first();
+
+        // Kirim data header ke view
+        return view('pengguna.profil.index', [
+            'header' => $header
+        ]);
+    }
+
     public function show(string $slug): View
     {
         // --- DATA DUMMY (Nanti ini akan diambil dari database) ---
