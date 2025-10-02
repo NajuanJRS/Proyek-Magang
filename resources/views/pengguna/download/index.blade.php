@@ -13,17 +13,17 @@
     </ol>
   </nav>
 
-    {{-- ====== HERO (dinamis dari database) ====== --}}
-    @if($header)
-    <section class="ds-hero ds-hero-profil">
-        <img src="{{ asset('storage/header/' . $header->gambar) }}" alt="{{ $header->headline }}" class="ds-hero-bg" loading="lazy">
-        <div class="ds-hero-overlay"></div>
-        <div class="container ds-hero-inner text-center text-white">
-        <h1 class="ds-hero-title">{!! $header->headline !!}</h1>
-        <p class="ds-hero-sub">{{ $header->sub_heading }}</p>
-        </div>
-    </section>
-    @endif
+{{-- ====== HERO (dinamis dari database) ====== --}}
+@if($header)
+  <section class="ds-hero ds-hero-profil">
+    <img src="{{ asset('storage/header/' . $header->gambar) }}" alt="{{ $header->headline }}" class="ds-hero-bg" loading="lazy">
+    <div class="ds-hero-overlay"></div>
+    <div class="container ds-hero-inner text-center text-white">
+      <h1 class="ds-hero-title">{!! $header->headline !!}</h1>
+      <p class="ds-hero-sub">{{ $header->sub_heading }}</p>
+    </div>
+  </section>
+@endif
 
   {{-- ====== GRID KARTU (daftar item download) ====== --}}
   @php

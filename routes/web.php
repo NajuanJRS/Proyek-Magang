@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\admin\AdminUpdateController;
 use App\Http\Controllers\admin\BeritaController;
+use App\Http\Controllers\pengguna\BerandaController;
 use App\Http\Controllers\pengguna\BeritaController as LandingBeritaController;
 use App\Http\Controllers\admin\FaqController;
 use App\Http\Controllers\pengguna\FaqController as LandingFaqController;
@@ -27,7 +28,9 @@ use App\Http\Controllers\pengguna\ProfilController;
 use App\Http\Controllers\pengguna\SearchController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\pengguna\PpidController;
-use App\Http\Controllers\pengguna\BerandaController;
+use App\Http\Controllers\pengguna\KontakController as VioletController;
+
+
 
 Route::view('/layanan/penerbitan-surat-tanda-pendaftaran', 'layanan.penerbitan');
 Route::view('/layanan/prosedur-pengangkatan-anak', 'layanan.pengangkatan');
@@ -44,9 +47,9 @@ Route::get('/berita', [LandingBeritaController::class, 'index'])->name('berita.i
 // download
 Route::get('/download', [DownloadController::class, 'index'])->name('download.index');
 // PPID
-Route::view('/ppid', 'pengguna.ppid.index')->name('ppid.index');
+Route::get('/ppid', [PpidController::class, 'index'])->name('ppid.index');
 // kontak
-Route::view('/kontak', 'pengguna.kontak.index')->name('kontak.index');
+Route::get('/kontak', [VioletController::class, 'index'])->name('kontak.index');
 
 
 // pencarian

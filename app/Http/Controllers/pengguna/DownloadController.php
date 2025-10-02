@@ -13,7 +13,7 @@ class DownloadController extends Controller
         public function index(): View
     {
         // Ambil header untuk halaman download (asumsi id_kategori_header = 4)
-        $header = Header::where('id_kategori_header', 4)->first();
+        $header = Header::where('id_kategori_header', 5)->first();
 
         // Kirim data header ke view
         return view('pengguna.download.index', [

@@ -13,16 +13,17 @@
     </ol>
   </nav>
 
-  {{-- ====== HERO (gambar statis, teks di tengah) ====== --}}
+{{-- ====== HERO (dinamis dari database) ====== --}}
+@if($header)
   <section class="ds-hero ds-hero-profil">
-    {{-- Ganti gambar hero dengan yang sesuai untuk PPID --}}
-    <img src="{{ asset('images/hero/hero-ppid.jpg') }}" alt="Hero PPID" class="ds-hero-bg" loading="lazy">
+    <img src="{{ asset('storage/header/' . $header->gambar) }}" alt="{{ $header->headline }}" class="ds-hero-bg" loading="lazy">
     <div class="ds-hero-overlay"></div>
     <div class="container ds-hero-inner text-center text-white">
-      <h1 class="ds-hero-title">PPID Dinas Sosial Provinsi Kalimantan Selatan</h1>
-      <p class="ds-hero-sub">Sebagai wujud komitmen terhadap Keterbukaan Informasi Publik, kami menyediakan akses informasi mengenai profil PPID, daftar informasi publik, serta prosedur permohonan dan pengajuan keberatan.</p>
+      <h1 class="ds-hero-title">{!! $header->headline !!}</h1>
+      <p class="ds-hero-sub">{{ $header->sub_heading }}</p>
     </div>
   </section>
+@endif
 
   {{-- ====== GRID KARTU (daftar menu PPID) ====== --}}
   @php
