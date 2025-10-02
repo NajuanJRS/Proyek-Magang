@@ -26,6 +26,36 @@ class BeritaController extends Controller
         return view('Admin.redaksi.berita', compact('berita'));
     }
 
+    // Fungsi untuk membuat slug unik (telah disesuaikan)
+    private function getUniqueSlug(string $title, ?int $exceptId = null): string
+    {
+        $slug = Str::slug($title, '-');
+        $originalSlug = $slug;
+        $count = 1;
+
+        // Query dasar untuk memeriksa slug
+        $query = Berita::where('slug', $slug);
+
+        // Jika sedang mengedit, kecualikan ID berita saat ini dari pemeriksaan
+        if ($exceptId !== null) {
+            $query->where('id_berita', '!=', $exceptId);
+        }
+
+        // Loop jika slug sudah ada
+        while ($query->exists()) {
+            $count++;
+            $slug = $originalSlug . '-' . $count;
+            // Perbarui query untuk memeriksa slug baru
+            $query = Berita::where('slug', $slug);
+            if ($exceptId !== null) {
+                $query->where('id_berita', '!=', $exceptId);
+            }
+        }
+
+        return $slug;
+    }
+
+
     /**
      * Show the form for creating a new resource.
      */
@@ -49,7 +79,7 @@ class BeritaController extends Controller
             'dibaca' => 'nullable',
         ]);
 
-        $slug = Str::slug($request->judul, '-');
+        $slug = $this->getUniqueSlug($request->judul);
 
         // Upload gambar1 (wajib)
         $path1 = $request->file('gambar1')->store('berita', 'public');
@@ -139,7 +169,10 @@ class BeritaController extends Controller
             'dibaca'     => 0,
             'tgl_posting'=> now(),
         ];
-
+    if ($request->judul !== $berita->judul) {
+            // Panggil fungsi dengan ID berita saat ini untuk dikecualikan
+            $data['slug'] = $this->getUniqueSlug($request->judul, $id);
+    }
         // Handle Gambar 1
     if ($request->hasFile('gambar1')) {
         if ($berita->gambar1 && Storage::disk('public')->exists('berita/' . $berita->gambar1)) {
@@ -166,11 +199,7 @@ class BeritaController extends Controller
         $path3 = $request->file('gambar3')->store('berita', 'public');
         $data['gambar3'] = basename($path3);
     }
-    if ($request->filled('judul')) {
-            $data['slug'] = Str::slug($request->judul, '-');
-    }
         $berita->update($data);
-
         return redirect()->route('admin.berita.index')->with('success', 'Data Berhasil Diupdate!');
     }
 
