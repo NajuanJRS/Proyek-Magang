@@ -10,7 +10,7 @@
                             <div class="card-body px-4 py-4">
 
                                 <div class="d-flex justify-content-between align-items-center mb-3">
-                                    <h4 class="card-title mb-0">Header Download</h4>
+                                    <h4 class="card-title mb-0">Header Kontak</h4>
                                 </div>
 
                                 <div class="d-flex justify-content-end mb-4">
@@ -30,8 +30,8 @@
                                         </thead>
                                         <tbody>
                                             @php $no = 1; @endphp
-                                            @forelse($headerDownload as $h)
-                                                @if (($h->kategoriHeader->nama_kategori ?? '') === 'Heading Download')
+                                            @forelse($headerKontak as $h)
+                                                @if (($h->kategoriHeader->nama_kategori ?? '') === 'Heading Kontak')
                                                     <tr>
                                                         <td class="text-center">{{ $no++ }}</td>
                                                         <td class="text-center">
@@ -72,7 +72,7 @@
                                                         </td>
 
                                                         <td class="text-center">
-                                                            <a href="{{ route('admin.headerDownload.edit', $h->id_header) }}"
+                                                            <a href="{{ route('admin.headerKontak.edit', $h->id_header) }}"
                                                                 class="btn btn-info btn-sm">
                                                                 <i class="bi bi-pencil-square"></i> Ubah
                                                             </a>
@@ -88,7 +88,7 @@
                                     </table>
                                 </div>
                                 <div class="mt-4">
-                                    {{ $headerDownload->links() }}
+                                    {{ $headerKontak->links() }}
                                 </div>
                             </div>
                         </div>
