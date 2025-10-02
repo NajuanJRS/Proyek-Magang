@@ -36,7 +36,7 @@ Route::get('/profil', [ProfilController::class, 'index'])->name('profil.index');
 // layanan
 Route::view('/layanan', 'pengguna.layanan.index')->name('layanan.index');
 // berita
-Route::view('/berita', 'pengguna.berita.index')->name('berita.index');
+Route::get('/berita', [LandingBeritaController::class, 'index'])->name('berita.index');
 // download
 Route::view('/download', 'pengguna.download.index')->name('download.index');
 // PPID

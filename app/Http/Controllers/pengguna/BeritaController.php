@@ -5,56 +5,56 @@ namespace App\Http\Controllers\pengguna;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
+use App\Models\admin\Berita;
 
 class BeritaController extends Controller
 {
-    /**
-     * Menampilkan halaman detail sebuah berita.
-     */
-    public function show(string $slug): View
+    // Method baru untuk halaman arsip berita
+    public function index(Request $request): View
     {
-        // --- DATA DUMMY (Nanti ini akan diambil dari database berdasarkan $slug) ---
+        $currentPage = $request->get('page', 1);
+        $perPage = ($currentPage == 1) ? 9 : 12;
 
-        // Ini adalah struktur data yang ideal untuk konten fleksibel Anda
-        $article = [
-            'title' => 'Rapat Pembahasan Usulan Perubahan pada Pergub Kesejahteraan Sosial',
-            'author' => 'Admin Dinsos',
-            'date' => 'Kamis, 22 Agustus 2025',
-            'views' => 321,
-            'content' => [
-                // Setiap elemen dalam array ini adalah satu "blok" konten.
-                // Blok pertama selalu gambar utama/thumbnail.
-                [
-                    'type'    => 'image',
-                    'url'     => 'berita1.jpg',
-                    'caption' => 'Suasana rapat pembahasan yang berlangsung di aula utama.'
-                ],
-                [
-                    'type'    => 'text',
-                    'content' => 'Rapat dilaksanakan menindaklanjuti usulan perubahan Pergub No. 077/2022 tentang Tata Cara Penyelenggaraan Kesejahteraan Sosial. Rapat ini dilaksanakan karena adanya usulan perubahan Pasal 6 dan Pasal 7 pada Peraturan Gubernur Kalimantan Selatan Nomor 037 Tahun 2024 tentang Tata Cara Pelaksanaan Penyelenggaraan Kesejahteraan Sosial.'
-                ],
-                [
-                    'type'    => 'text',
-                    'content' => 'Diharapkan dengan dilaksanakan rapat ini dapat meningkatkan Kesejahteraan Sosial di Provinsi Kalimantan Selatan. Dalam rapat ini dihadiri oleh Kepala UPTD Dinas Sosial Prov.Kalsel beserta jajaran dari Biro Hukum Setda Prov.Kalsel.'
-                ],
-                [
-                    'type'    => 'image',
-                    'url'     => 'berita2.jpg',
-                    'caption' => 'Peserta rapat memberikan masukan dan pandangan.'
-                ],
-                [
-                    'type'    => 'image',
-                    'url'     => 'berita5.jpg',
-                    'caption' => 'Sesi diskusi panel setelah pemaparan materi utama.'
-                ],
-                // Perhatikan, tidak ada 'isikonten2'. Sistem akan langsung menampilkan
-                // gambar2, lalu gambar3, sesuai urutan dalam array ini.
-            ]
+        $berita = Berita::orderBy('tgl_posting', 'desc')->paginate($perPage);
+
+        return view('pengguna.berita.index', [
+            'berita' => $berita
+        ]);
+    }
+
+    // Method untuk halaman detail berita
+    public function show($id): View
+    {
+        $article = Berita::findOrFail($id);
+
+        // Ubah struktur data agar sesuai dengan view yang ada
+        $content = [];
+        if ($article->gambar1) {
+            $content[] = ['type' => 'image', 'url' => $article->gambar1, 'caption' => 'Gambar Utama'];
+        }
+        if ($article->isi_berita1) {
+            $content[] = ['type' => 'text', 'content' => $article->isi_berita1];
+        }
+        if ($article->gambar2) {
+            $content[] = ['type' => 'image', 'url' => $article->gambar2, 'caption' => 'Gambar Pendukung 1'];
+        }
+        if ($article->isi_berita2) {
+            $content[] = ['type' => 'text', 'content' => $article->isi_berita2];
+        }
+        if ($article->gambar3) {
+            $content[] = ['type' => 'image', 'url' => $article->gambar3, 'caption' => 'Gambar Pendukung 2'];
+        }
+        
+        $articleData = [
+            'title' => $article->judul,
+            'author' => 'Admin Dinsos', // Sementara
+            'date' => \Carbon\Carbon::parse($article->tgl_posting)->isoFormat('dddd, D MMMM YYYY'),
+            'views' => $article->dibaca,
+            'content' => $content
         ];
 
-        // Kirim data artikel ke view
         return view('pengguna.berita.show', [
-            'article' => $article
+            'article' => $articleData
         ]);
     }
 }

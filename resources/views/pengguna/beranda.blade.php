@@ -12,13 +12,10 @@
     <div class="carousel-inner">
       @foreach ($heroSlides as $index => $slide)
         <div class="carousel-item {{ $index === 0 ? 'active' : '' }}">
-          {{-- Gunakan path dari storage --}}
           <div class="ds-hero-slide" style="background-image:url('{{ asset('storage/header/' . $slide->gambar) }}');"></div>
           <div class="ds-hero-overlay"></div>
-
           <div class="container ds-hero-content">
             <div class="col-12 col-lg-7">
-              {{-- Ambil data dari kolom database --}}
               <h1 class="ds-hero-title-beranda">{!! $slide->headline !!}</h1>
               <p class="ds-hero-sub-beranda mb-3 mb-md-4">{{ $slide->sub_heading }}</p>
             </div>
@@ -26,8 +23,6 @@
         </div>
       @endforeach
     </div>
-
-    {{-- Tombol navigasi dan indikator (tidak perlu diubah) --}}
     <button class="carousel-control-prev" type="button" data-bs-target="#heroCarousel" data-bs-slide="prev">
       <span class="carousel-control-prev-icon"></span>
       <span class="visually-hidden">Sebelumnya</span>
@@ -44,75 +39,53 @@
   </div>
 </section>
 
-{{-- Nanti lanjut Bagian 2: Layanan Utama --}}
 {{-- =====================
      LAYANAN UTAMA
 ===================== --}}
 @php
+  // Data ini nantinya juga bisa ditarik dari database tabel 'layanan'
   $services = [
-    [
-      'title' => 'Pemulangan Orang Telantar',
-      'img'   => 'pemulangan_orang_telantar.png',
-      'url'   => url('/layanan/pemulangan-orang-telantar'),
-    ],
-    [
-      'title' => 'Penerbitan Surat Tanda Pendaftaran Lembaga Kesejahteraan Sosial',
-      'img'   => 'penerbitan_surat_tanda_pendaftaran_lembaga_kesejahteraan_sosial.png',
-      'url'   => url('/layanan/penerbitan-surat-tanda-pendaftaran'),
-    ],
-    [
-      'title' => 'Prosedur Pengangkatan Anak',
-      'img'   => 'prosedur_pengangkatan_anak.png',
-      'url'   => url('/layanan/prosedur-pengangkatan-anak'),
-    ],
-    [
-      'title' => 'Penyaluran Logistik Bufferstock Bencana',
-      'img'   => 'penyaluran_logistik_bufferstock_bencana.png',
-      'url'   => url('/layanan/penyaluran-logistik-bufferstock-bencana'),
-    ],
+    ['title' => 'Pemulangan Orang Telantar', 'img' => 'pemulangan_orang_telantar.png', 'url' => url('/layanan/pemulangan-orang-telantar')],
+    ['title' => 'Penerbitan Surat Tanda Pendaftaran Lembaga Kesejahteraan Sosial', 'img' => 'penerbitan_surat_tanda_pendaftaran_lembaga_kesejahteraan_sosial.png', 'url' => url('/layanan/pendaftaran-lks')],
+    ['title' => 'Prosedur Pengangkatan Anak', 'img' => 'prosedur_pengangkatan_anak.png', 'url' => url('/layanan/prosedur-pengangkatan-anak')],
+    ['title' => 'Penyaluran Logistik Bufferstock Bencana', 'img' => 'penyaluran_logistik_bufferstock_bencana.png', 'url' => url('/layanan/penyaluran-logistik-bencana')],
   ];
 @endphp
-
 <section class="ds-layanan py-5">
   <div class="konten-utama">
     <div class="text-center mb-4">
       <h2 class="ds-section-title">Layanan Utama</h2>
     </div>
-
-{{-- DESKTOP/TABLET: grid (diperbarui) --}}
-<div class="d-none d-md-block">
-  <div class="row ds-layanan-row g-3 justify-content-center">
-    @foreach($services as $s)
-      <div class="col-12 col-md-6 col-lg-3 d-flex">
-        <a href="{{ $s['url'] }}" class="card ds-layanan-card text-center w-100 text-decoration-none text-dark">
-          <div class="ds-layanan-icon-wrapper">
-            <img src="{{ asset('images/layanan/'.$s['img']) }}" alt="{{ $s['title'] }}">
+    {{-- Tampilan Desktop --}}
+    <div class="d-none d-md-block">
+      <div class="row ds-layanan-row g-3 justify-content-center">
+        @foreach($services as $s)
+          <div class="col-12 col-md-6 col-lg-3 d-flex">
+            <a href="{{ $s['url'] }}" class="card ds-layanan-card text-center w-100 text-decoration-none text-dark">
+              <div class="ds-layanan-icon-wrapper">
+                <img src="{{ asset('images/layanan/'.$s['img']) }}" alt="{{ $s['title'] }}">
+              </div>
+              <div class="card-body">
+                <h6 class="card-title fw-semibold">{{ $s['title'] }}</h6>
+              </div>
+            </a>
           </div>
-          <div class="card-body">
-            <h6 class="card-title fw-semibold">{{ $s['title'] }}</h6>
-          </div>
-        </a>
+        @endforeach
       </div>
-    @endforeach
-  </div>
-</div>
-
-{{-- MOBILE: kartu horizontal tapi ditumpuk vertikal --}}
-<div class="d-md-none">
-  <div class="ds-vstack">
-    @foreach($services as $s)
-      {{-- Mengubah align-items-start menjadi align-items-center agar lebih rapi --}}
-      <a href="{{ $s['url'] }}" class="ds-card-h d-flex align-items-center">
-        <img src="{{ asset('images/layanan/'.$s['img']) }}" alt="{{ $s['title'] }}">
-        <div class="flex-grow-1">
-          <h6 class="mb-0 fw-semibold">{{ $s['title'] }}</h6>
-        </div>
-      </a>
-    @endforeach
-  </div>
-</div>
-
-
+    </div>
+    {{-- Tampilan Mobile --}}
+    <div class="d-md-none">
+      <div class="ds-vstack">
+        @foreach($services as $s)
+          <a href="{{ $s['url'] }}" class="ds-card-h d-flex align-items-center">
+            <img src="{{ asset('images/layanan/'.$s['img']) }}" alt="{{ $s['title'] }}">
+            <div class="flex-grow-1">
+              <h6 class="mb-0 fw-semibold">{{ $s['title'] }}</h6>
+            </div>
+          </a>
+        @endforeach
+      </div>
+    </div>
     <div class="text-center mt-4">
       <a href="{{ url('/layanan') }}" class="btn btn-primary">Lihat Semua Layanan</a>
     </div>
@@ -120,119 +93,70 @@
 </section>
 
 {{-- =====================
-     PORTAL BERITA
+     PORTAL BERITA (TELAH DIPERBAIKI)
 ===================== --}}
-@php
-  // Sementara hard-coded; nanti bisa diganti dari DB
-  $berita = [
-    [
-      'slug'  => 'rapat-pembahasan-perubahan-pergub-kesos',
-      'judul' => 'Rapat Pembahasan Usulan Perubahan Pasal 6 dan Pasal 7 pada Pergub Kesejahteraan Sosial',
-      'ringkasan' => 'Rapat dilaksanakan menindaklanjuti usulan perubahan Pergub No. 077/2022 tentang Tata Cara Penyelenggaraan Kesejahteraan Sosial Rapat ini dilaksanakan karena adanya usulan perubahan Pasal 6 dan Pasal 7 pada Peraturan Gubernur Kalimantan Selatan Nomor 037 Tahun 2024 tentang Tata Cara Pelaksanaan Penyelenggaraan Kesejahteraan Sosial. Diharapkan dengan dilaksanakan rapat ini dapat meningkatkan Kesejahteraan Sosial di Provinsi Kalimantan Selatan.
-                      Dalam rapat ini dihadiri oleh Kepala UPTD Dinas Sosial Prov.Kalsel beserta...',
-      'tanggal'   => '22 Agustus 2025',
-      'views'     => 321,
-      'gambar'    => asset('images/berita/berita1.jpg'),
-    ],
-    [
-      'slug'  => 'kaji-tiru-diy',
-      'judul' => 'kaji tiru (benchmarking) ke Dinas Sosial Daerah Istimewa Yogyakarta',
-      'tanggal' => '22 Agustus 2025',
-      'views'   => 321,
-      'gambar'  => asset('images/berita/berita2.jpg'),
-    ],
-    [
-      'slug'  => 'upacara-hari-pahlawan-79',
-      'judul' => 'Upacara Peringatan Hari Pahlawan ke-79',
-      'tanggal' => '22 Agustus 2025',
-      'views'   => 352,
-      'gambar'  => asset('images/berita/berita3.jpg'),
-    ],
-    [
-      'slug'  => 'e-sila-pandu',
-      'judul' => 'E-Sila Pandu',
-      'tanggal' => '2 Agustus 2025',
-      'views'   => 264,
-      'gambar'  => asset('images/berita/berita4.jpg'),
-    ],
-    [
-      'slug'  => 'rapat-evaluasi-kinerja-2024',
-      'judul' => 'Rapat Evaluasi Capaian Kinerja Dinas Sosial Provinsi Kalimantan Selatan',
-      'tanggal' => '22 Agustus 2025',
-      'views'   => 404,
-      'gambar'  => asset('images/berita/berita5.jpg'),
-    ],
-  ];
-@endphp
-
 <section class="ds-news py-5">
   <div class="konten-berita">
     <div class="text-center mb-4">
       <h2 class="fw-semibold">Portal Berita</h2>
     </div>
 
-    {{-- DESKTOP / TABLET (tetap seperti versi sebelumnya) --}}
-    <div class="d-none d-md-block">
-      @php $unggulan = $berita[0] ?? null; @endphp
-      @if($unggulan)
-        <article class="ds-featured-news mb-4">
-          <img src="{{ $unggulan['gambar'] }}" alt="Berita unggulan" class="ds-featured-img">
-          <div class="ds-featured-body">
-            <h3 class="ds-featured-title">
-              <a href="{{ url('/berita/'.$unggulan['slug']) }}" class="ds-news-link">{{ $unggulan['judul'] }}</a>
-            </h3>
-            @if(!empty($unggulan['ringkasan']))
-              <p class="ds-featured-summary">{{ $unggulan['ringkasan'] }}</p>
-            @endif
-            <div class="ds-meta mt-auto">
-              <span><i class="bi bi-clock me-1"></i>{{ $unggulan['tanggal'] }}</span>
-              <span class="text-primary"><i class="bi bi-eye me-1"></i>{{ $unggulan['views'] }} Kali</span>
-            </div>
-          </div>
-        </article>
-      @endif
-
-      <div class="row g-3">
-        @foreach(array_slice($berita, 1, 4) as $b)
-          <div class="col-12 col-sm-6 col-lg-3">
-            <a href="{{ url('/berita/'.$b['slug']) }}" class="ds-news-card">
-              <img src="{{ $b['gambar'] }}" alt="{{ $b['judul'] }}">
-              <div class="ds-news-card-body">
-                <h4 class="ds-news-title">{{ $b['judul'] }}</h4>
-                <div class="ds-meta mt-auto">
-                  <span><i class="bi bi-clock me-1"></i>{{ $b['tanggal'] }}</span>
-                  <span class="text-primary"><i class="bi bi-eye me-1"></i>{{ $b['views'] }} Kali</span>
+    @if($berita->isNotEmpty())
+        @php $unggulan = $berita->first(); @endphp
+        
+        {{-- DESKTOP --}}
+        <div class="d-none d-md-block">
+            <a href="{{ route('berita.show', $unggulan->id_berita) }}" class="ds-featured-news text-decoration-none text-dark mb-4">
+                <img src="{{ asset('storage/berita/' . $unggulan->gambar1) }}" alt="{{ $unggulan->judul }}" class="ds-featured-img">
+                <div class="ds-featured-body">
+                    <h2 class="ds-featured-title">{{ $unggulan->judul }}</h2>
+                    <p class="ds-featured-summary">{{ Str::limit(strip_tags($unggulan->isi_berita1), 200) }}</p>
+                    <div class="mt-auto ds-meta">
+                        <span><i class="bi bi-calendar-event me-1"></i> {{ \Carbon\Carbon::parse($unggulan->tgl_posting)->isoFormat('D MMM YYYY') }}</span>
+                        <span class="text-primary"><i class="bi bi-eye me-1"></i> {{ $unggulan->dibaca }} Kali</span>
+                    </div>
                 </div>
-              </div>
             </a>
-          </div>
-        @endforeach
-      </div>
-    </div>
-
-    {{-- MOBILE: unggulan (gambar + judul), lalu list vertikal (thumb + judul) --}}
-    <div class="d-md-none">
-      {{-- Unggulan --}}
-      @if($unggulan)
-        <a class="ds-mfeat" href="{{ url('/berita/'.$unggulan['slug']) }}">
-          <img src="{{ $unggulan['gambar'] }}" alt="Berita unggulan">
-          <h3 class="mt-2">{{ $unggulan['judul'] }}</h3>
-        </a>
-      @endif
-
-        {{-- List berita lain (tanpa tanggal & views) --}}
-        <div class="ds-mnews-list mt-3">
-            @foreach(array_slice($berita, 1) as $b)
-                <a href="{{ url('/berita/'.$b['slug']) }}" class="ds-mnews-item">
-                <img src="{{ $b['gambar'] }}" alt="{{ $b['judul'] }}">
-                <div class="ds-mnews-title">{{ $b['judul'] }}</div>
-                </a>
-            @endforeach
+            <hr class="my-4">
+            <div class="row g-3">
+                @foreach($berita->slice(1, 4) as $item)
+                <div class="col-md-4 col-lg-3">
+                    <a href="{{ route('berita.show', $item->id_berita) }}" class="ds-news-card">
+                        <img src="{{ asset('storage/berita/' . $item->gambar1) }}" alt="{{ $item->judul }}">
+                        <div class="ds-news-card-body">
+                            <h6 class="ds-news-title">{{ $item->judul }}</h6>
+                            <div class="mt-auto ds-meta small">
+                                <span><i class="bi bi-calendar-event me-1"></i> {{ \Carbon\Carbon::parse($item->tgl_posting)->isoFormat('D MMM YYYY') }}</span>
+                                <span class="text-primary"><i class="bi bi-eye me-1"></i> {{ $item->dibaca }}</span>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                @endforeach
+            </div>
         </div>
-  </div>
+
+        {{-- MOBILE --}}
+        <div class="d-md-none">
+            <a class="ds-mfeat" href="{{ route('berita.show', $unggulan->id_berita) }}">
+              <img src="{{ asset('storage/berita/' . $unggulan->gambar1) }}" alt="{{ $unggulan->judul }}">
+              <h3 class="mt-2">{{ $unggulan->judul }}</h3>
+            </a>
+            <div class="ds-mnews-list mt-3">
+                @foreach($berita->slice(1) as $item)
+                    <a href="{{ route('berita.show', $item->id_berita) }}" class="ds-mnews-item">
+                        <img src="{{ asset('storage/berita/' . $item->gambar1) }}" alt="{{ $item->judul }}">
+                        <div class="ds-mnews-title">{{ $item->judul }}</div>
+                    </a>
+                @endforeach
+            </div>
+        </div>
+    @endif
+
     <div class="text-center mt-4">
-        <a href="{{ url('/berita') }}" class="btn btn-primary">Lihat Semua Berita</a>
+        <a href="{{ route('berita.index') }}" class="btn btn-primary">Lihat Semua Berita</a>
     </div>
+  </div>
 </section>
 
 {{-- =====================
