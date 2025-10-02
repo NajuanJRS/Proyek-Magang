@@ -8,7 +8,9 @@ use App\Http\Controllers\pengguna\FaqController as LandingFaqController;
 use App\Http\Controllers\admin\FileDownloadController;
 use App\Http\Controllers\admin\Header\HeaderBeritaController;
 use App\Http\Controllers\admin\Header\HeaderDownloadController;
+use App\Http\Controllers\admin\Header\HeaderKontakController;
 use App\Http\Controllers\admin\Header\HeaderLayananController;
+use App\Http\Controllers\admin\Header\HeaderPpidController;
 use App\Http\Controllers\admin\Header\HeaderProfileController;
 use App\Http\Controllers\admin\KontakController;
 use App\Http\Controllers\admin\KotakMasukController;
@@ -92,6 +94,10 @@ Route::prefix('admin')->name('admin.')->group(function () {
     ->parameters(['header-berita' => 'header_berita']);
 
     Route::resource('header-download', HeaderDownloadController::class)->names('headerDownload');
+
+    Route::resource('header-ppid', HeaderPpidController::class)->names('headerPpid');
+
+    Route::resource('header-kontak', HeaderKontakController::class)->names('headerKontak');
 
     Route::resource('pejabat', pejabatController::class);
 

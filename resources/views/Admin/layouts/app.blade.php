@@ -57,6 +57,10 @@
             $openMenu = 'menuBerita';
         } elseif (request()->routeIs('admin.headerDownload.index') || request()->routeIs('admin.kontenDownload.index')) {
             $openMenu = 'menuDownload';
+        } elseif (request()->routeIs('admin.headerPpid.index') || request()->routeIs('admin.kontenPpid.index')) {
+            $openMenu = 'menuPPID';
+        } elseif (request()->routeIs('admin.headerKontak.index') || request()->routeIs('admin.kontenKontak.index')) {
+            $openMenu = 'menuKontak';
         }
     @endphp
 
@@ -172,12 +176,44 @@
                 </div>
             </li>
 
-            <li>
-                <a href="#" class="nav-link"><i class="bi bi-people"></i> PPID</a>
+            <!-- PPID -->
+            <li class="nav-item">
+                <a class="nav-link d-flex justify-content-between align-items-center {{ request()->routeIs('admin.headerPpid.index') || request()->routeIs('admin.kontenPpid.index') ? 'active' : '' }}"
+                    data-bs-toggle="collapse" href="#menuPPID" role="button" aria-expanded="false"
+                    aria-controls="menuPPID" onclick="toggleArrow(this)">
+                    <span><i class="bi bi-people"></i> PPID</span>
+                    <i class="bi bi-chevron-down small arrow-icon"></i>
+                </a>
+                <div class="collapse ps-2" id="menuPPID" data-bs-parent="#sidebarMenu">
+                    <ul class="nav flex-column ms-3">
+                        <li><a href="{{ route('admin.headerPpid.index') }}"
+                                class="nav-link {{ request()->routeIs('admin.headerPpid.index') ? 'active' : '' }}">Header</a>
+                        </li>
+                        <li><a href="{{ route('admin.headerPpid.index') }}"
+                                class="nav-link {{ request()->routeIs('admin.kontenPpid.index') ? 'active' : '' }}">Konten PPID</a></li>
+                    </ul>
+                </div>
             </li>
-            <li>
-                <a href="#" class="nav-link"><i class="bi bi-envelope"></i> Kontak</a>
+
+            <!-- Kontak -->
+            <li class="nav-item">
+                <a class="nav-link d-flex justify-content-between align-items-center {{ request()->routeIs('admin.headerKontak.index') || request()->routeIs('admin.kontenKontak.index') ? 'active' : '' }}"
+                    data-bs-toggle="collapse" href="#menuKontak" role="button" aria-expanded="false"
+                    aria-controls="menuKontak" onclick="toggleArrow(this)">
+                    <span><i class="bi bi-envelope"></i> Kontak</span>
+                    <i class="bi bi-chevron-down small arrow-icon"></i>
+                </a>
+                <div class="collapse ps-2" id="menuKontak" data-bs-parent="#sidebarMenu">
+                    <ul class="nav flex-column ms-3">
+                        <li><a href="{{ route('admin.headerKontak.index') }}"
+                                class="nav-link {{ request()->routeIs('admin.headerKontak.index') ? 'active' : '' }}">Header</a>
+                        </li>
+                        <li><a href="{{ route('admin.headerKontak.index') }}"
+                                class="nav-link {{ request()->routeIs('admin.kontenKontak.index') ? 'active' : '' }}">Konten Kontak</a></li>
+                    </ul>
+                </div>
             </li>
+
             <li>
                 <a href="#" class="nav-link"><i class="bi bi-question-circle"></i> FAQ</a>
             </li>
