@@ -56,7 +56,7 @@
                     </figure>
                   
                   @elseif ($chunk['type'] == 'text')
-                    <p>{{ $chunk['content'] }}</p>
+                    {!! $chunk['content'] !!}
                   @endif
 
                 @endforeach
