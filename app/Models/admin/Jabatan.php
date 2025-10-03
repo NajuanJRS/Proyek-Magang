@@ -2,17 +2,20 @@
 
 namespace App\Models\admin;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Jabatan extends Model
 {
-    protected $table = 'jabatan';
-    public $timestamps = false;
-    protected $primaryKey = 'id_jabatan';
-    protected $fillable = [
-        'nama_jabatan',
-    ];
+    use HasFactory;
 
+    protected $table = 'jabatan';
+    protected $primaryKey = 'id_jabatan';
+    public $timestamps = false;
+
+    protected $fillable = ['nama_jabatan'];
+
+    // Relasi ke tabel Pejabat
     public function pejabat()
     {
         return $this->hasMany(Pejabat::class, 'id_jabatan');

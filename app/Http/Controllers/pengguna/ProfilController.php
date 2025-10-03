@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 use App\Models\admin\Header;
+use App\Models\admin\Pejabat;
+use App\Models\admin\Jabatan;
 
 class ProfilController extends Controller
 {
@@ -46,22 +48,24 @@ class ProfilController extends Controller
 
         // === LOGIKA BARU UNTUK HALAMAN SPESIFIK ===
         if ($slug == 'pejabat') {
-            $viewName = 'pengguna.profil.pejabat'; // Gunakan view khusus untuk halaman pejabat
-            $viewData['pejabat'] = [
-                'kepala' => [
-                    'nama' => 'Drs. H. AHMAD FIKRI, M.AP',
-                    'jabatan' => 'Kepala Dinas Sosial',
-                    'sambutan' => 'Assalamualaikum Warahmatullahi Wabarakatuh. Selamat datang di portal digital resmi Dinas Sosial Provinsi Kalimantan Selatan...',
-                    'foto' => 'foto-pejabat.jpg', // foto close up
-                    'background' => 'gambar-kartu-pajabat.jpg' // foto background
-                ],
-                'lainnya' => [
-                    ['nama' => 'MURJANI, S.Pd., M.M', 'jabatan' => 'Sekretaris', 'foto' => 'foto-pejabat1.jpg'],
-                    ['nama' => 'H. ACHMADI, S.Sos', 'jabatan' => 'Sekretaris', 'foto' => 'foto-pejabat1.jpg'],
-                    ['nama' => 'Drs. H. SURYA FUJIANORROCHIM, M.AP', 'jabatan' => 'Kepala Bidang Pemberdayaan Sosial', 'foto' => 'foto-pejabat1.jpg'],
-                    ['nama' => 'ROKHADI, SE', 'jabatan' => 'Kepala Sub Bagian Keuangan dan Aset', 'foto' => 'foto-pejabat1.jpg'],
-                ]
-            ];
+            $viewName = 'pengguna.profil.pejabat';
+
+            // Ambil ID Jabatan untuk 'Kepala Dinas'
+            $jabatanKepalaDinas = Jabatan::where('nama_jabatan', 'Kepala Dinas')->first();
+
+            // Ambil data Kepala Dinas
+            $pejabatKepala = Pejabat::with('jabatan')
+                                    ->where('id_jabatan', $jabatanKepalaDinas->id_jabatan)
+                                    ->first();
+
+            // Ambil data pejabat lainnya (selain Kepala Dinas)
+            $pejabatLainnya = Pejabat::with('jabatan')
+                                     ->where('id_jabatan', '!=', $jabatanKepalaDinas->id_jabatan)
+                                     ->get();
+
+            $viewData['pejabatKepala'] = $pejabatKepala;
+            $viewData['pejabatLainnya'] = $pejabatLainnya;
+            
         }elseif ($slug == 'struktur-organisasi') {
             $viewName = 'pengguna.profil.struktur'; // Gunakan view baru untuk struktur
             $viewData['pageData'] = [
