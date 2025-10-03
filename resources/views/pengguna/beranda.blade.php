@@ -101,8 +101,8 @@
       <h2 class="fw-semibold">Portal Berita</h2>
     </div>
 
-    @if (!empty($berita))
-        @php $unggulan = $berita[0]; @endphp
+    @if($berita->isNotEmpty())
+        @php $unggulan = $berita->first(); @endphp
 
         {{-- DESKTOP --}}
         <div class="d-none d-md-block">
@@ -119,7 +119,7 @@
             </a>
             <hr class="my-4">
             <div class="row g-3">
-                @foreach(array_slice($berita, 1, 4) as $item)
+                @foreach($berita->slice(1, 4) as $item)
                 <div class="col-md-4 col-lg-3">
                     <a href="{{ route('berita.show', $item->slug) }}" class="ds-news-card">
                         <img src="{{ asset('storage/berita/' . $item->gambar1) }}" alt="{{ $item->judul }}">
@@ -143,7 +143,7 @@
               <h3 class="mt-2">{{ $unggulan->judul }}</h3>
             </a>
             <div class="ds-mnews-list mt-3">
-                @foreach(array_slice($berita, 1) as $item)
+                @foreach($berita->slice(1) as $item)
                     <a href="{{ route('berita.show', $item->slug) }}" class="ds-mnews-item">
                         <img src="{{ asset('storage/berita/' . $item->gambar1) }}" alt="{{ $item->judul }}">
                         <div class="ds-mnews-title">{{ $item->judul }}</div>
@@ -201,7 +201,7 @@
   <div class="container">
     <h2 class="ds-section-title text-center mb-4">Unit Layanan & Mitra Kerja Kami</h2>
 
-    @if (!empty($pengguna))
+    @if($mitra->isNotEmpty())
       {{-- DESKTOP/TABLET: grid dinamis --}}
       <div class="d-none d-md-flex ds-partner-grid">
         @foreach($mitra as $m)
