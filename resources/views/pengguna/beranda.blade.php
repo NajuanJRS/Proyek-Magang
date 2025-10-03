@@ -103,7 +103,7 @@
 
     @if($berita->isNotEmpty())
         @php $unggulan = $berita->first(); @endphp
-        
+
         {{-- DESKTOP --}}
         <div class="d-none d-md-block">
             <a href="{{ route('berita.show', $unggulan->slug) }}" class="ds-featured-news text-decoration-none text-dark mb-4">
@@ -197,35 +197,45 @@
 {{-- ======================
      UNIT & MITRA KERJA
 ====================== --}}
-@php
-  $mitra = [
-    'mitra1.png','mitra2.png','mitra3.png','mitra4.png'
-  ];
-@endphp
-
 <section class="ds-mitra py-5">
   <div class="container">
     <h2 class="ds-section-title text-center mb-4">Unit Layanan & Mitra Kerja Kami</h2>
 
-    {{-- DESKTOP/TABLET: grid statis --}}
-    <div class="d-none d-md-flex ds-partner-grid">
-      @foreach($mitra as $m)
-        <div class="ds-partner-item">
-          <img src="{{ asset('images/mitra/'.$m) }}" alt="Mitra {{ $loop->index+1 }}">
-        </div>
-      @endforeach
-    </div>
-
-    {{-- MOBILE: horizontal scroll --}}
-    <div class="d-md-none ds-partner-scroll">
-      <div class="ds-partner-track">
+    @if($mitra->isNotEmpty())
+      {{-- DESKTOP/TABLET: grid dinamis --}}
+      <div class="d-none d-md-flex ds-partner-grid">
         @foreach($mitra as $m)
           <div class="ds-partner-item">
-            <img src="{{ asset('images/mitra/'.$m) }}" alt="Mitra {{ $loop->index+1 }}">
+            {{-- Logika untuk menampilkan link jika ada --}}
+            @if($m->link_mitra)
+              <a href="{{ $m->link_mitra }}" target="_blank" rel="noopener">
+                <img src="{{ asset('storage/mitra/' . $m->gambar) }}" alt="{{ $m->nama_mitra }}">
+              </a>
+            @else
+              <img src="{{ asset('storage/mitra/' . $m->gambar) }}" alt="{{ $m->nama_mitra }}">
+            @endif
           </div>
         @endforeach
       </div>
-    </div>
+
+      {{-- MOBILE: horizontal scroll dinamis --}}
+      <div class="d-md-none ds-partner-scroll">
+        <div class="ds-partner-track">
+          @foreach($mitra as $m)
+            <div class="ds-partner-item">
+              {{-- Logika yang sama untuk mobile --}}
+              @if($m->link_mitra)
+                <a href="{{ $m->link_mitra }}" target="_blank" rel="noopener">
+                  <img src="{{ asset('storage/mitra/' . $m->gambar) }}" alt="{{ $m->nama_mitra }}">
+                </a>
+              @else
+                <img src="{{ asset('storage/mitra/' . $m->gambar) }}" alt="{{ $m->nama_mitra }}">
+              @endif
+            </div>
+          @endforeach
+        </div>
+      </div>
+    @endif
   </div>
 </section>
 
