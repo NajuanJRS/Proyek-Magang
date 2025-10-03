@@ -34,15 +34,16 @@
               @if (!empty($article['content']))
                 @foreach($article['content'] as $index => $chunk)
 
-                  @if ($chunk['type'] == 'image')
-                    <figure class="my-4 text-center">
-                      <img src="{{ asset('images/berita/' . $chunk['url']) }}"
-                           alt="{{ $chunk['caption'] ?? 'Gambar Berita ' . ($index + 1) }}"
-                           class="img-fluid rounded shadow-sm">
-                      @if (!empty($chunk['caption']))
-                        <figcaption class="figure-caption mt-2">{{ $chunk['caption'] }}</figcaption>
-                      @endif
-                    </figure>
+                @if ($chunk['type'] == 'image')
+                <figure class="my-4 text-center">
+                    {{-- Path diperbaiki dengan menambahkan /storage/ --}}
+                    <img src="{{ asset('storage/berita/' . $chunk['url']) }}"
+                        alt="{{ $chunk['caption'] ?? 'Gambar Berita ' . ($index + 1) }}"
+                        class="img-fluid rounded shadow-sm">
+                    @if (!empty($chunk['caption']))
+                    <figcaption class="figure-caption mt-2">{{ $chunk['caption'] }}</figcaption>
+                    @endif
+                </figure>
 
                   @elseif ($chunk['type'] == 'text')
                     {!! $chunk['content'] !!}
