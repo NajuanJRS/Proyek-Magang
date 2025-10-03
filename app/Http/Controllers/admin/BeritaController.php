@@ -201,6 +201,21 @@ class BeritaController extends Controller
         $path3 = $request->file('gambar3')->store('berita', 'public');
         $data['gambar3'] = basename($path3);
     }
+
+    if ($request->has('hapus_gambar2') && $request->hapus_gambar2 == 1) {
+    if ($berita->gambar2 && Storage::disk('public')->exists('berita/'.$berita->gambar2)) {
+        Storage::disk('public')->delete('berita/'.$berita->gambar2);
+    }
+    $berita->gambar2 = null;
+    }
+
+    if ($request->has('hapus_gambar3') && $request->hapus_gambar3 == 1) {
+        if ($berita->gambar3 && Storage::disk('public')->exists('berita/'.$berita->gambar3)) {
+            Storage::disk('public')->delete('berita/'.$berita->gambar3);
+        }
+        $berita->gambar3 = null;
+    }
+
         $berita->update($data);
         return redirect()->route('admin.berita.index')->with('success', 'Data Berhasil Diupdate!');
     }
