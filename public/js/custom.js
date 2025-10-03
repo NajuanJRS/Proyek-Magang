@@ -78,7 +78,9 @@ if (searchInput && tableRows) {
             // ambil teks dari kolom ke-2, 3, dan 4 (indeks 1, 2, 3)
             const cells = row.querySelectorAll("td");
             const combinedText =
-                (cells[1]?.textContent.toLowerCase() || "");
+                (cells[1]?.textContent.toLowerCase() || "")
+                + " " +
+                (cells[2]?.textContent.toLowerCase() || "");
 
             if (searchTerm.length >= 3 && combinedText.includes(searchTerm)) {
                 row.style.display = "";
@@ -125,28 +127,6 @@ document.addEventListener("DOMContentLoaded", function () {
             }
         });
     }
-});
-
-document.addEventListener("DOMContentLoaded", function () {
-    const jabatanSelect = document.getElementById("id_jabatan");
-    const sambutanForm = document.getElementById("form-kata-sambutan");
-
-    function toggleSambutan() {
-        const selectedOption = jabatanSelect.options[jabatanSelect.selectedIndex];
-        const namaJabatan = (selectedOption.getAttribute("data-nama") || "").toLowerCase().trim();
-
-        if (namaJabatan === "kepala dinas") {
-            sambutanForm.style.display = "block";
-        } else {
-            sambutanForm.style.display = "none";
-        }
-    }
-
-    // ✅ Jalankan sekali saat halaman load
-    toggleSambutan();
-
-    // ✅ Jalankan setiap kali user ganti pilihan
-    jabatanSelect.addEventListener("change", toggleSambutan);
 });
 
 document.addEventListener("DOMContentLoaded", function () {

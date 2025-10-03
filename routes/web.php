@@ -20,7 +20,7 @@ use App\Http\Controllers\pengguna\LayananController;
 use App\Http\Controllers\admin\ManajemenProfileController;
 use App\Http\Controllers\admin\MitraController;
 use App\Http\Controllers\admin\PageHeaderController;
-use App\Http\Controllers\admin\pejabatController;
+use App\Http\Controllers\admin\PejabatController;
 use App\Http\Controllers\admin\SliderController;
 use App\Http\Controllers\pengguna\DownloadController;
 use App\Http\Controllers\LoginController;
@@ -102,7 +102,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
 
     Route::resource('header-kontak', HeaderKontakController::class)->names('headerKontak');
 
-    Route::resource('pejabat', pejabatController::class);
+    Route::resource('pejabat', PejabatController::class);
 
     Route::resource('layanan', LayananKamiController::class);
 

@@ -9,7 +9,7 @@ use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
-class pejabatController extends Controller
+class PejabatController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -25,7 +25,7 @@ class pejabatController extends Controller
             })
             ->paginate(10);
 
-        return view('Admin.konfigurasiKonten.pejabat.pejabat', compact('pejabat'));
+        return view('Admin.profile.pejabat.pejabat', compact('pejabat'));
     }
 
     /**
@@ -34,7 +34,7 @@ class pejabatController extends Controller
     public function create(Pejabat $pejabat): View
     {
         $jabatan = Jabatan::all(); // ambil semua jabatan
-        return view('Admin.konfigurasiKonten.pejabat.formPejabat', compact('pejabat', 'jabatan'));
+        return view('Admin.profile.pejabat.formPejabat', compact('pejabat', 'jabatan'));
     }
 
     /**
@@ -70,7 +70,7 @@ class pejabatController extends Controller
     public function edit(Pejabat $pejabat)
     {
         $jabatan = Jabatan::all();
-        return view('Admin.konfigurasiKonten.pejabat.formEditPejabat', compact('pejabat', 'jabatan'));
+        return view('Admin.profile.pejabat.formEditPejabat', compact('pejabat', 'jabatan'));
     }
 
     /**
