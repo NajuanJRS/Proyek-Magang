@@ -508,7 +508,16 @@ body {
     box-shadow: 0 4px 16px rgba(0,0,0,0.07);
 }
 .custom-table-container {
-    padding-bottom: 0;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+}
+.custom-table-container table {
+    min-width: 1200px; /* tabel dipaksa punya lebar minimal */
+}
+.custom-table-container th,
+.custom-table-container td {
+    white-space: nowrap; /* teks panjang tidak turun ke bawah */
+    vertical-align: middle;
 }
 .table th, .table td {
     vertical-align: middle !important;

@@ -151,8 +151,8 @@
                         <li><a href="{{ route('admin.headerBerita.index') }}"
                                 class="nav-link {{ request()->routeIs('admin.headerBerita.index') ? 'active' : '' }}">Header</a>
                         </li>
-                        <li><a href="{{ route('admin.headerBerita.index') }}"
-                                class="nav-link {{ request()->routeIs('admin.kontenBerita.index') ? 'active' : '' }}">Konten Berita</a></li>
+                        <li><a href="{{ route('admin.berita.index') }}"
+                                class="nav-link {{ request()->routeIs('admin.berita.index') ? 'active' : '' }}">Konten Berita</a></li>
                     </ul>
                 </div>
             </li>

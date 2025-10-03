@@ -22,6 +22,7 @@ class Berita extends Model
     protected $fillable = [
         'id_user',
         'judul',
+        'slug',
         'gambar1',
         'isi_berita1',
         'gambar2',

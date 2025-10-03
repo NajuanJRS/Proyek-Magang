@@ -23,7 +23,7 @@ class BeritaController extends Controller
             $query->where('judul', 'like', "%$search%")
                   ->orWhere('isi_berita', 'like', "%$search%");
         })->paginate(10);
-        return view('Admin.redaksi.berita', compact('berita'));
+        return view('Admin.berita.kontenBerita.kontenBerita', compact('berita'));
     }
 
     // Fungsi untuk membuat slug unik (telah disesuaikan)
@@ -61,7 +61,7 @@ class BeritaController extends Controller
      */
     public function create(): View
     {
-        return view('Admin.redaksi.formBerita');
+        return view('Admin.berita.kontenBerita.formKontenBerita');
     }
 
     /**
@@ -73,7 +73,9 @@ class BeritaController extends Controller
             'judul' => 'required|min:5',
             'isi_berita1' => 'required|min:5',
             'gambar1' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'isi_berita2' => 'nullable|min:5',
             'gambar2' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'isi_berita3' => 'nullable|min:5',
             'gambar3' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'tgl_posting' => 'nullable|date',
             'dibaca' => 'nullable',
@@ -134,7 +136,7 @@ class BeritaController extends Controller
     public function edit($id): View
     {
         $berita = Berita::findOrFail($id);
-        return view('Admin.redaksi.formEditBerita', compact('berita'));
+        return view('Admin.berita.kontenBerita.formEditKontenBerita', compact('berita'));
     }
 
     /**
@@ -154,7 +156,7 @@ class BeritaController extends Controller
             'tgl_posting' => 'nullable|date',
             'dibaca' => 'nullable',
         ]);
-        
+
         $berita = Berita::findOrFail($id);
         $idUser = Auth::check() && Auth::user()->role === 'admin'
         ? 1
