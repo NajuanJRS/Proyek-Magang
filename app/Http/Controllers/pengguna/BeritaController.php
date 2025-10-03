@@ -33,6 +33,12 @@ class BeritaController extends Controller
     {
         $article = Berita::where('slug', $slug)->firstOrFail();
 
+        // Ambil 4 berita terbaru lainnya (selain yang sedang dibuka) untuk sidebar
+        $latestNews = Berita::where('slug', '!=', $slug)
+                            ->orderBy('tgl_posting', 'desc')
+                            ->take(4)
+                            ->get();
+
         // Ubah struktur data agar sesuai dengan view yang ada
         $content = [];
         if ($article->gambar1) {
@@ -60,7 +66,8 @@ class BeritaController extends Controller
         ];
 
         return view('pengguna.berita.show', [
-            'article' => $articleData
+            'article' => $articleData,
+            'sidebarArticles' => $latestNews
         ]);
     }
 }

@@ -4,17 +4,6 @@
 
 @section('content')
 
-  {{-- ====== DATA DUMMY UNTUK SIDEBAR ====== --}}
-  @php
-    $sidebarArticles = [
-      ['title' => 'Upacara Peringatan Hari Pahlawan ke-79', 'image' => 'berita3.jpg', 'url' => '#'],
-      ['title' => 'E-Sila Pandu', 'image' => 'berita4.jpg', 'url' => '#'],
-      ['title' => 'Rapat Evaluasi Capaian Kinerja Dinas Sosial', 'image' => 'berita5.jpg', 'url' => '#'],
-      ['title' => 'CERAMAH KEAGAMAAN', 'image' => 'berita2.jpg', 'url' => '#'],
-    ];
-  @endphp
-
-
   {{-- ====== BREADCRUMB ====== --}}
   <nav aria-label="breadcrumb" class="container my-2">
     <ol class="breadcrumb small mb-0">
@@ -37,14 +26,14 @@
                 <div class="meta-author">{{ $article['author'] }}</div>
                 <div class="meta-date">{{ $article['date'] }}</div>
             </div>
-            
+
             <hr class="my-4">
 
             {{-- KONTEN BERITA (FLEKSIBEL) --}}
             <div class="ds-article-content">
               @if (!empty($article['content']))
                 @foreach($article['content'] as $index => $chunk)
-                  
+
                   @if ($chunk['type'] == 'image')
                     <figure class="my-4 text-center">
                       <img src="{{ asset('images/berita/' . $chunk['url']) }}"
@@ -54,7 +43,7 @@
                         <figcaption class="figure-caption mt-2">{{ $chunk['caption'] }}</figcaption>
                       @endif
                     </figure>
-                  
+
                   @elseif ($chunk['type'] == 'text')
                     {!! $chunk['content'] !!}
                   @endif
@@ -79,19 +68,19 @@
 
         {{-- KOLOM KANAN: SIDEBAR --}}
         <div class="col-lg-4">
-          <div class="ds-sidebar-card sidebar-sticky">
+        <div class="ds-sidebar-card sidebar-sticky">
             <h5 class="ds-sidebar-title">Berita & Artikel Lainnya</h5>
             <div class="ds-sidebar-list">
-              @foreach($sidebarArticles as $item)
-                <a href="{{ $item['url'] }}" class="ds-sidebar-item">
-                  <img src="{{ asset('images/berita/' . $item['image']) }}" alt="{{ $item['title'] }}">
-                  <h6 class="ds-sidebar-item-title">{{ $item['title'] }}</h6>
+            @foreach($sidebarArticles as $item)
+                <a href="{{ route('berita.show', $item->slug) }}" class="ds-sidebar-item">
+                <img src="{{ asset('storage/berita/' . $item->gambar1) }}" alt="{{ $item->judul }}">
+                <h6 class="ds-sidebar-item-title">{{ $item->judul }}</h6>
                 </a>
-              @endforeach
+            @endforeach
             </div>
-          </div>
         </div>
-        
+        </div>
+
       </div>
     </div>
   </section>

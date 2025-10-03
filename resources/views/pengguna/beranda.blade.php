@@ -101,9 +101,9 @@
       <h2 class="fw-semibold">Portal Berita</h2>
     </div>
 
-    @if($berita->isNotEmpty())
-        @php $unggulan = $berita->first(); @endphp
-        
+    @if (!empty($berita))
+        @php $unggulan = $berita[0]; @endphp
+
         {{-- DESKTOP --}}
         <div class="d-none d-md-block">
             <a href="{{ route('berita.show', $unggulan->slug) }}" class="ds-featured-news text-decoration-none text-dark mb-4">
@@ -119,7 +119,7 @@
             </a>
             <hr class="my-4">
             <div class="row g-3">
-                @foreach($berita->slice(1, 4) as $item)
+                @foreach(array_slice($berita, 1, 4) as $item)
                 <div class="col-md-4 col-lg-3">
                     <a href="{{ route('berita.show', $item->slug) }}" class="ds-news-card">
                         <img src="{{ asset('storage/berita/' . $item->gambar1) }}" alt="{{ $item->judul }}">
@@ -143,7 +143,7 @@
               <h3 class="mt-2">{{ $unggulan->judul }}</h3>
             </a>
             <div class="ds-mnews-list mt-3">
-                @foreach($berita->slice(1) as $item)
+                @foreach(array_slice($berita, 1) as $item)
                     <a href="{{ route('berita.show', $item->slug) }}" class="ds-mnews-item">
                         <img src="{{ asset('storage/berita/' . $item->gambar1) }}" alt="{{ $item->judul }}">
                         <div class="ds-mnews-title">{{ $item->judul }}</div>
@@ -197,35 +197,45 @@
 {{-- ======================
      UNIT & MITRA KERJA
 ====================== --}}
-@php
-  $mitra = [
-    'mitra1.png','mitra2.png','mitra3.png','mitra4.png'
-  ];
-@endphp
-
 <section class="ds-mitra py-5">
   <div class="container">
     <h2 class="ds-section-title text-center mb-4">Unit Layanan & Mitra Kerja Kami</h2>
 
-    {{-- DESKTOP/TABLET: grid statis --}}
-    <div class="d-none d-md-flex ds-partner-grid">
-      @foreach($mitra as $m)
-        <div class="ds-partner-item">
-          <img src="{{ asset('images/mitra/'.$m) }}" alt="Mitra {{ $loop->index+1 }}">
-        </div>
-      @endforeach
-    </div>
-
-    {{-- MOBILE: horizontal scroll --}}
-    <div class="d-md-none ds-partner-scroll">
-      <div class="ds-partner-track">
+    @if (!empty($pengguna))
+      {{-- DESKTOP/TABLET: grid dinamis --}}
+      <div class="d-none d-md-flex ds-partner-grid">
         @foreach($mitra as $m)
           <div class="ds-partner-item">
-            <img src="{{ asset('images/mitra/'.$m) }}" alt="Mitra {{ $loop->index+1 }}">
+            {{-- Logika untuk menampilkan link jika ada --}}
+            @if($m->link_mitra)
+              <a href="{{ $m->link_mitra }}" target="_blank" rel="noopener">
+                <img src="{{ asset('storage/mitra/' . $m->gambar) }}" alt="{{ $m->nama_mitra }}">
+              </a>
+            @else
+              <img src="{{ asset('storage/mitra/' . $m->gambar) }}" alt="{{ $m->nama_mitra }}">
+            @endif
           </div>
         @endforeach
       </div>
-    </div>
+
+      {{-- MOBILE: horizontal scroll dinamis --}}
+      <div class="d-md-none ds-partner-scroll">
+        <div class="ds-partner-track">
+          @foreach($mitra as $m)
+            <div class="ds-partner-item">
+              {{-- Logika yang sama untuk mobile --}}
+              @if($m->link_mitra)
+                <a href="{{ $m->link_mitra }}" target="_blank" rel="noopener">
+                  <img src="{{ asset('storage/mitra/' . $m->gambar) }}" alt="{{ $m->nama_mitra }}">
+                </a>
+              @else
+                <img src="{{ asset('storage/mitra/' . $m->gambar) }}" alt="{{ $m->nama_mitra }}">
+              @endif
+            </div>
+          @endforeach
+        </div>
+      </div>
+    @endif
   </div>
 </section>
 

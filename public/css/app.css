@@ -1494,6 +1494,7 @@
 #feedbackModal .modal-content {
   border-radius: 12px;
   border: none;
+  position: relative; /* Diperlukan untuk positioning absolut anak */
 }
 
 #feedbackModal .form-control {
@@ -1517,14 +1518,18 @@
   }
 }
 
-/* Posisi Tombol "X" di dalam Modal */
-#feedbackModal .modal-content {
-  position: relative; /* Diperlukan untuk positioning absolut anak */
-}
-
 #feedbackModal .btn-close {
   position: absolute;
   top: 1rem;
   right: 1rem;
   z-index: 10;
+}
+
+.ds-article-content p {
+  font-size: 1.1rem;
+  line-height: 1.8;
+  margin-bottom: 1.5rem;
+  color: #343a40;
+  word-wrap: break-word; /* <-- TAMBAHKAN BARIS INI */
+  overflow-wrap: break-word;
 }
