@@ -38,6 +38,7 @@
                                         <tr>
                                             <th style="width: 5%;">No.</th>
                                             <th style="width: 75%;">Pertanyaan</th>
+                                            <th class="text-center" style="width: 50%;">Kategori FAQ</th>
                                             <th class="text-center" style="width: 20%;">Aksi</th>
                                         </tr>
                                     </thead>
@@ -46,6 +47,7 @@
                                             <tr>
                                                 <td>{{ $loop->iteration }}</td>
                                                 <td class="isi-konten">{{ $f->pertanyaan }}</td>
+                                                <td class="text-center">{{ $f->kategoriFaq->nama_kategori_faq ?? '-' }}</td>
                                                 <td class="text-center">
                                                     {{-- Tombol lihat selengkapnya --}}
                                                     <button type="button" title="Lihat Detail" class="btn btn-warning btn-sm see-more"

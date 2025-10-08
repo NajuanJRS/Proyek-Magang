@@ -11,7 +11,13 @@ class Faq extends Model
     protected $primaryKey = 'id_faq';
     protected $fillable = [
         'id_user',
+        'id_kategori_faq',
         'pertanyaan',
         'jawaban',
     ];
+
+    public function kategoriFaq()
+    {
+        return $this->belongsTo(KategoriFaq::class, 'id_kategori_faq', 'id_kategori_faq');
+    }
 }

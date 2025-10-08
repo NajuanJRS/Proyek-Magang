@@ -35,6 +35,20 @@
                                             placeholder="Masukkan Pertanyaan FAQ">
                                     </div>
 
+                                    {{-- Kategori FAQ --}}
+                                    <label for="kategori_faq" class="mb-2">Kategori FAQ</label>
+                                    <div class="mb-4">
+                                        <select class="form-select" id="kategori_faq" name="kategori_faq" required>
+                                            <option value="" disabled selected>Pilih Kategori FAQ</option>
+                                            @foreach ($kategoriFaq as $kategori)
+                                                <option value="{{ $kategori->id_kategori_faq }}"
+                                                    {{ old('kategori_faq', $faq->id_kategori_faq) == $kategori->id_kategori_faq ? 'selected' : '' }}>
+                                                    {{ $kategori->nama_kategori_faq }}
+                                                </option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+
                                     {{-- Jawaban --}}
                                     <label for="jawaban" class="mb-2">Jawaban</label>
                                     <div class="mb-4">
