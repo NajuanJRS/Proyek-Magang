@@ -63,9 +63,13 @@ class ProfilController extends Controller
                                      ->where('id_jabatan', '!=', $jabatanKepalaDinas->id_jabatan)
                                      ->get();
 
+            // Ambil gambar background dari tabel header dengan id_header = 8
+            $kadisBackground = Header::where('id_kategori_header', 8)->first();
+
             $viewData['pejabatKepala'] = $pejabatKepala;
             $viewData['pejabatLainnya'] = $pejabatLainnya;
-            
+            $viewData['kadisBackground'] = $kadisBackground;
+
         }elseif ($slug == 'struktur-organisasi') {
             $viewName = 'pengguna.profil.struktur'; // Gunakan view baru untuk struktur
             $viewData['pageData'] = [
