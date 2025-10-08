@@ -12,6 +12,7 @@ class Kontak extends Model
     protected $fillable = [
         'nomor_telepon',
         'email',
+        'jam_pelayanan',
         'map',
         'alamat',
     ];
