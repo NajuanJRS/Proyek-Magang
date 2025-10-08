@@ -10,8 +10,8 @@ class Faq extends Model
     public $timestamps = false;
     protected $primaryKey = 'id_faq';
     protected $fillable = [
+        'id_user',
         'pertanyaan',
         'jawaban',
-        'created_at',
     ];
 }

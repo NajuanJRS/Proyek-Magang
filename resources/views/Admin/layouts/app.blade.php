@@ -61,6 +61,8 @@
             $openMenu = 'menuPPID';
         } elseif (request()->routeIs('admin.headerKontak.index') || request()->routeIs('admin.kontenKontak.index')) {
             $openMenu = 'menuKontak';
+        } elseif (request()->routeIs('admin.faq.index')) {
+            $openMenu = ''; // FAQ tidak memiliki submenu
         }
     @endphp
 
@@ -214,9 +216,14 @@
                 </div>
             </li>
 
-            <li>
-                <a href="#" class="nav-link"><i class="bi bi-question-circle"></i> FAQ</a>
+            <!-- FAQ -->
+            <li class="nav-item">
+                <a href="{{ route('admin.faq.index') }}"
+                    class="nav-link d-flex justify-content-between align-items-center {{ request()->routeIs('admin.faq.index') ? 'active' : '' }}">
+                    <span><i class="bi bi-question-circle"></i> FAQ</span>
+                </a>
             </li>
+
             <li>
                 <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: block;">
                     @csrf

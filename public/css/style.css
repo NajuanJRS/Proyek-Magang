@@ -502,6 +502,55 @@ body {
     vertical-align: middle;
 }
 
+/* Tombol Warning (Kuning/Oranye) */
+.btn-warning {
+    background: #f39c12; /* amber/orange */
+    color: #fff !important;
+    border: none;
+    border-radius: 8px;
+    padding: 6px 18px;
+    font-size: 0.98rem;
+    font-weight: 500;
+    transition: box-shadow 0.18s, background 0.18s, transform 0.06s;
+    box-shadow: 0 2px 8px rgba(243, 156, 18, 0.08);
+}
+.btn-warning:hover,
+.btn-warning:focus {
+    background: #d87b05;
+    color: #fff !important;
+    box-shadow: 0 4px 12px rgba(216, 123, 5, 0.16);
+}
+.btn-warning:active {
+    transform: translateY(1px);
+}
+
+/* Ikon pada tombol warning agar konsisten */
+.btn-warning i {
+    font-size: 1.1rem;
+    margin-right: 6px;
+    vertical-align: middle;
+}
+
+/* Variant outline untuk kasus kebutuhan */
+.btn-outline-warning {
+    background: transparent;
+    color: #f39c12;
+    border: 1px solid #f39c12;
+    box-shadow: none;
+}
+.btn-outline-warning:hover,
+.btn-outline-warning:focus {
+    background: #f39c12;
+    color: #fff;
+}
+
+/* Ukuran kecil konsisten dengan .btn-sm */
+.btn-warning.btn-sm {
+    padding: 6px 12px;
+    font-size: 0.9rem;
+    border-radius: 8px;
+}
+
 /* Card dan Table */
 .card {
     border-radius: 20px;

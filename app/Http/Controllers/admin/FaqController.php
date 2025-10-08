@@ -49,7 +49,6 @@ class FaqController extends Controller
             'id_user' => $idUser,
             'pertanyaan' => $request->pertanyaan,
             'jawaban' => $request->jawaban,
-            'created_at' => now(),
         ]);
 
         return redirect()->route('admin.faq.index')->with('success', 'Data Pejabat Berhasil Disimpan!');
@@ -91,7 +90,6 @@ class FaqController extends Controller
             'id_user'    => $idUser,
             'pertanyaan' => $request->pertanyaan,
             'jawaban'    => $request->jawaban,
-            'created_at'=> now(),
         ];
 
         $faq->update($data);
