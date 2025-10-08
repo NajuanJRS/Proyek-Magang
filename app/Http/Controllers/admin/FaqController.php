@@ -4,6 +4,7 @@ namespace App\Http\Controllers\admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\admin\Faq;
+use App\Models\admin\KategoriFaq;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -27,7 +28,8 @@ class FaqController extends Controller
      */
     public function create(): View
     {
-        return view('Admin.faq.formFaq');
+        $kategoriFaq = KategoriFaq::all();
+        return view('Admin.faq.formFaq', compact('kategoriFaq'));
     }
 
     /**
@@ -36,6 +38,7 @@ class FaqController extends Controller
     public function store(Request $request)
     {
         $request->validate([
+            'kategori_faq' => 'required|exists:kategori_faq,id_kategori_faq',
             'id_user' => 'nullable|exists:user,id_user',
             'pertanyaan' => 'required|min:5',
             'jawaban' => 'required|min:5',
@@ -47,6 +50,7 @@ class FaqController extends Controller
 
         Faq::create([
             'id_user' => $idUser,
+            'id_kategori_faq' => $request->kategori_faq,
             'pertanyaan' => $request->pertanyaan,
             'jawaban' => $request->jawaban,
         ]);
@@ -68,7 +72,8 @@ class FaqController extends Controller
     public function edit($id)
     {
         $faq = Faq::findOrFail($id);
-        return view('Admin.faq.formEditFaq', compact('faq'));
+        $kategoriFaq = KategoriFaq::all();
+        return view('Admin.faq.formEditFaq', compact('faq', 'kategoriFaq'));
     }
 
     /**
@@ -78,6 +83,7 @@ class FaqController extends Controller
     {
         $request->validate([
             'id_user' => 'nullable|exists:user,id_user',
+            'kategori_faq' => 'required|exists:kategori_faq,id_kategori_faq',
             'pertanyaan' => 'required|min:5',
             'jawaban' => 'required|min:5',
         ]);
@@ -88,6 +94,7 @@ class FaqController extends Controller
 
         $data = [
             'id_user'    => $idUser,
+            'id_kategori_faq' => $request->kategori_faq,
             'pertanyaan' => $request->pertanyaan,
             'jawaban'    => $request->jawaban,
         ];

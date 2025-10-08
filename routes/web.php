@@ -13,6 +13,7 @@ use App\Http\Controllers\admin\Header\HeaderKontakController;
 use App\Http\Controllers\admin\Header\HeaderLayananController;
 use App\Http\Controllers\admin\Header\HeaderPpidController;
 use App\Http\Controllers\admin\Header\HeaderProfileController;
+use App\Http\Controllers\admin\Header\KartuPejabatController;
 use App\Http\Controllers\admin\KontakController;
 use App\Http\Controllers\admin\KotakMasukController;
 use App\Http\Controllers\admin\LayananKamiController;
@@ -101,6 +102,8 @@ Route::prefix('admin')->name('admin.')->group(function () {
     Route::resource('header-ppid', HeaderPpidController::class)->names('headerPpid');
 
     Route::resource('header-kontak', HeaderKontakController::class)->names('headerKontak');
+
+    Route::resource('header-kartu-pejabat', KartuPejabatController::class)->names('headerKartu');
 
     Route::resource('pejabat', PejabatController::class);
 
