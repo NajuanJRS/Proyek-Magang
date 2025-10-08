@@ -15,7 +15,7 @@ class KontakController extends Controller
     public function index(): View
     {
         $kontak = Kontak::first();
-        return view('Admin.manajemenProfile.kontak.kontak', compact('kontak'));
+        return view('Admin.kontak.kontak.kontak', compact('kontak'));
     }
 
     /**
