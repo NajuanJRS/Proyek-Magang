@@ -32,40 +32,41 @@
         </form>
       </div>
 
-      {{-- Filter Kategori (Sekarang menggunakan link `<a>`) --}}
-      <div class="ds-faq-filters d-flex justify-content-center flex-wrap gap-2 mb-4">
-        @foreach($kategoriList as $slug => $nama)
-          <a href="{{ route('faq.index', ['kategori' => $slug]) }}"
-             class="btn btn-sm ds-faq-filter-btn {{ $kategoriAktif == $slug ? 'active' : '' }}">
-            {{ $nama }}
-          </a>
+        {{-- Filter Kategori (diperbaiki) --}}
+        <div class="ds-faq-filters d-flex justify-content-center flex-wrap gap-2 mb-4">
+        @foreach($kategoriList as $kategori)
+            <a href="{{ route('faq.index', ['kategori' => $kategori->slug]) }}"
+            class="btn btn-sm ds-faq-filter-btn {{ $kategoriAktif == $kategori->slug ? 'active' : '' }}">
+            {{ $kategori->nama_kategori_faq }}
+            </a>
         @endforeach
-      </div>
+        </div>
 
-      {{-- Daftar Pertanyaan (Akordeon) --}}
-      <div class="ds-faq-accordion-wrapper mx-auto">
+        {{-- Daftar Pertanyaan (Akordeon) --}}
+        <div class="ds-faq-accordion-wrapper mx-auto">
         <div class="accordion" id="faqAccordion">
-          @forelse($faqs as $index => $faq)
+            @forelse($faqs as $index => $faq)
             <div class="accordion-item">
-              <h2 class="accordion-header" id="heading-{{ $index }}">
+                <h2 class="accordion-header" id="heading-{{ $index }}">
                 <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-{{ $index }}" aria-expanded="false" aria-controls="collapse-{{ $index }}">
-                  {{ $faq['q'] }}
+                    {{-- Menggunakan properti objek 'pertanyaan' --}}
+                    {{ $faq->pertanyaan }}
                 </button>
-              </h2>
-              <div id="collapse-{{ $index }}" class="accordion-collapse collapse" aria-labelledby="heading-{{ $index }}" data-bs-parent="#faqAccordion">
+                </h2>
+                <div id="collapse-{{ $index }}" class="accordion-collapse collapse" aria-labelledby="heading-{{ $index }}" data-bs-parent="#faqAccordion">
                 <div class="accordion-body">
-                  {{ $faq['a'] }}
+                    {{-- Menggunakan properti objek 'jawaban' dan render HTML --}}
+                    {!! $faq->jawaban !!}
                 </div>
-              </div>
+                </div>
             </div>
-          @empty
+            @empty
             <div class="text-center text-muted py-5">
                 <p>Tidak ada pertanyaan yang ditemukan untuk kategori ini.</p>
             </div>
-          @endforelse
+            @endforelse
         </div>
-      </div>
-
+        </div>
     </div>
   </section>
 @endsection

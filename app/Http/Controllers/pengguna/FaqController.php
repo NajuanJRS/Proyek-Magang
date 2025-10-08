@@ -3,37 +3,28 @@
 namespace App\Http\Controllers\pengguna;
 
 use App\Http\Controllers\Controller;
+use App\Models\admin\Faq;
+use App\Models\admin\KategoriFaq;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
-use App\Models\admin\Faq;
 
 class FaqController extends Controller
 {
-    public function index(string $kategori = 'umum'): View
-    {
-        // Data dummy untuk semua FAQ, diurutkan berdasarkan kategori
-        $allFaqs = Faq::all();
+    public function index(string $kategoriSlug = 'umum'): View
+        {
+            // Ambil semua kategori dari database untuk tombol filter
+            $kategoriList = KategoriFaq::all();
 
-        // Daftar kategori untuk ditampilkan sebagai tombol filter
-        $kategoriList = [
-            'umum' => 'Umum',
-            'bantuan-sosial' => 'Bantuan Sosial',
-            'profil' => 'Profil',
-            'layanan' => 'Layanan',
-        ];
+            // Ambil data FAQ berdasarkan slug kategori yang aktif dari URL
+            $faqs = Faq::whereHas('kategori', function ($query) use ($kategoriSlug) {
+                $query->where('slug', $kategoriSlug);
+            })->get();
 
-        // Ambil data FAQ untuk kategori yang sedang aktif
-        $activeFaqs = [];
-        if ($kategori == 'umum') {
-            $activeFaqs = $allFaqs->map(function ($faq) {
-                return ['q' => $faq->pertanyaan, 'a' => $faq->jawaban];
-            })->all();
+            // Kirim data yang sudah difilter ke view
+            return view('pengguna.faq.index', [
+                'faqs' => $faqs,
+                'kategoriList' => $kategoriList,
+                'kategoriAktif' => $kategoriSlug
+            ]);
         }
-
-        return view('pengguna.faq.index', [
-            'faqs' => $activeFaqs,
-            'kategoriList' => $kategoriList,
-            'kategoriAktif' => $kategori
-        ]);
-    }
 }
