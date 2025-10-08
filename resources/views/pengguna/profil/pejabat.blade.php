@@ -25,11 +25,18 @@
                 {{-- KARTU KEPALA DINAS (GAYA BARU) --}}
                 @if($pejabatKepala)
                     <div class="ds-kadis-card-new mb-5">
-                        <div class="ds-kadis-background" style="background-image: url('{{ asset('storage/pejabat/' . $pejabatKepala->gambar_background) }}');"></div>
+                        {{-- Menampilkan gambar background dari tabel header --}}
+                        @if($kadisBackground)
+                            <div class="ds-kadis-background" style="background-image: url('{{ asset('storage/header/' . $kadisBackground->gambar) }}');"></div>
+                        @else
+                            {{-- Fallback jika gambar tidak ditemukan --}}
+                            <div class="ds-kadis-background" style="background-color: #e9ecef;"></div>
+                        @endif
+
                         <div class="ds-kadis-info">
                             <img src="{{ asset('storage/pejabat/' . $pejabatKepala->gambar) }}" class="ds-kadis-photo-new" alt="{{ $pejabatKepala->nama_pejabat }}">
                             <div class="ds-kadis-nameplate">
-                                <h3 class="mb-0">{{ $pejabatKepala->nama_pejabat }}</h3>
+                                <h4 class="mb-0">{{ $pejabatKepala->nama_pejabat }}</h4>
                                 <p class="text-muted mb-0">{{ $pejabatKepala->jabatan->nama_jabatan }}</p>
                             </div>
                         </div>
