@@ -12,7 +12,7 @@ class Kontak extends Model
     protected $fillable = [
         'nomor_telepon',
         'email',
+        'map',
         'alamat',
-        'url_google_maps',
     ];
 }

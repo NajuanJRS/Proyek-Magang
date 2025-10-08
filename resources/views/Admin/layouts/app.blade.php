@@ -197,7 +197,7 @@
 
             <!-- Kontak -->
             <li class="nav-item">
-                <a class="nav-link d-flex justify-content-between align-items-center {{ request()->routeIs('admin.headerKontak.index') || request()->routeIs('admin.kontenKontak.index') ? 'active' : '' }}"
+                <a class="nav-link d-flex justify-content-between align-items-center {{ request()->routeIs('admin.headerKontak.index') || request()->routeIs('admin.kontak.index') ? 'active' : '' }}"
                     data-bs-toggle="collapse" href="#menuKontak" role="button" aria-expanded="false"
                     aria-controls="menuKontak" onclick="toggleArrow(this)">
                     <span><i class="bi bi-envelope"></i> Kontak</span>
@@ -208,8 +208,8 @@
                         <li><a href="{{ route('admin.headerKontak.index') }}"
                                 class="nav-link {{ request()->routeIs('admin.headerKontak.index') ? 'active' : '' }}">Header</a>
                         </li>
-                        <li><a href="{{ route('admin.headerKontak.index') }}"
-                                class="nav-link {{ request()->routeIs('admin.kontenKontak.index') ? 'active' : '' }}">Konten Kontak</a></li>
+                        <li><a href="{{ route('admin.kontak.index') }}"
+                                class="nav-link {{ request()->routeIs('admin.kontak.index') ? 'active' : '' }}">Konten Kontak</a></li>
                     </ul>
                 </div>
             </li>
