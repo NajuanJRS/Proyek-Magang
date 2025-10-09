@@ -18,7 +18,7 @@ class FileDownload extends Model
         'tgl_file',
     ];
 
-    public function kategori()
+    public function kategoriDownload()
     {
         return $this->belongsTo(KategoriFile::class, 'id_kategori', 'id_kategori');
     }

@@ -172,7 +172,7 @@
                         <li><a href="{{ route('admin.headerDownload.index') }}"
                                 class="nav-link {{ request()->routeIs('admin.headerDownload.index') ? 'active' : '' }}">Header</a>
                         </li>
-                        <li><a href="{{ route('admin.headerDownload.index') }}"
+                        <li><a href="{{ route('admin.kontenDownload.index') }}"
                                 class="nav-link {{ request()->routeIs('admin.kontenDownload.index') ? 'active' : '' }}">Konten Download</a></li>
                     </ul>
                 </div>
