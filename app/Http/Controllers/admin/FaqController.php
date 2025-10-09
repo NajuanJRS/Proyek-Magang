@@ -17,9 +17,15 @@ class FaqController extends Controller
     public function index(Request $request): View
     {
         $search = $request->input('search');
-        $faq = Faq::when($search, function ($query, $search) {
-            $query->where('pertanyaan', 'like', "%$search%");
-        })->paginate(10);
+
+        $faq = Faq::with('kategoriFaq') // eager load relasi kategori
+            ->when($search, function ($query, $search) {
+                $query->where('pertanyaan', 'like', "%$search%")
+                    ->orWhereHas('kategoriFaq', function ($q) use ($search) {
+                        $q->where('nama_kategori_faq', 'like', "%$search%");
+                    });
+            })->paginate(10);
+
         return view('Admin.faq.faq', compact('faq'));
     }
 

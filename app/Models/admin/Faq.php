@@ -16,14 +16,14 @@ class Faq extends Model
 
     protected $fillable = [
         'id_user',
+        'id_kategori_faq',
         'pertanyaan',
         'jawaban',
-        'id_kategori_faq', // Pastikan kolom ini ada di fillable
     ];
 
     // === TAMBAHKAN FUNGSI RELASI INI ===
-    public function kategori()
+    public function kategoriFaq()
     {
-        return $this->belongsTo(KategoriFaq::class, 'id_kategori_faq');
+        return $this->belongsTo(KategoriFaq::class, 'id_kategori_faq', 'id_kategori_faq');
     }
 }

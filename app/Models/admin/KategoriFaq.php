@@ -8,7 +8,7 @@ class KategoriFaq extends Model
 {
     protected $table = 'kategori_faq';
     protected $primaryKey = 'id_kategori_faq';
-    public $timestamps = false; // Jika tidak menggunakan kolom created_at dan updated_at
+    public $timestamps = false;
 
     protected $fillable = [
         'nama_kategori_faq',
