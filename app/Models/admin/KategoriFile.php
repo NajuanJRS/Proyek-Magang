@@ -6,10 +6,13 @@ use Illuminate\Database\Eloquent\Model;
 
 class KategoriFile extends Model
 {
-    protected $table = 'kategori';
+    protected $table = 'kategori_download';
     protected $primaryKey = 'id_kategori';
     protected $fillable = [
+        'icon',
         'nama_kategori',
+        'slug',
+        'halaman_induk',
     ];
     public $timestamps = false;
 

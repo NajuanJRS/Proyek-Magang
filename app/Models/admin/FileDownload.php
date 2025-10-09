@@ -19,7 +19,7 @@ class FileDownload extends Model
         'path_file',
     ];
 
-    public function kategori()
+    public function kategoriDownload()
     {
         return $this->belongsTo(KategoriDownload::class, 'id_kategori_download');
     }

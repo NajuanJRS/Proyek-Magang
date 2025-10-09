@@ -6,14 +6,13 @@ use App\Http\Controllers\pengguna\BerandaController;
 use App\Http\Controllers\pengguna\BeritaController as LandingBeritaController;
 use App\Http\Controllers\admin\FaqController;
 use App\Http\Controllers\pengguna\FaqController as LandingFaqController;
-use App\Http\Controllers\admin\FileDownloadController;
+use App\Http\Controllers\admin\DownloadController as DownloadControllerAdmin;
 use App\Http\Controllers\admin\Header\HeaderBeritaController;
 use App\Http\Controllers\admin\Header\HeaderDownloadController;
 use App\Http\Controllers\admin\Header\HeaderKontakController;
 use App\Http\Controllers\admin\Header\HeaderLayananController;
 use App\Http\Controllers\admin\Header\HeaderPpidController;
 use App\Http\Controllers\admin\Header\HeaderProfileController;
-use App\Http\Controllers\admin\Header\KartuPejabatController;
 use App\Http\Controllers\admin\KontakController;
 use App\Http\Controllers\admin\KotakMasukController;
 use App\Http\Controllers\admin\LayananKamiController;
@@ -113,7 +112,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
 
     Route::resource('layanan', LayananKamiController::class);
 
-    Route::resource('download', FileDownloadController::class);
+    Route::resource('download', DownloadControllerAdmin::class)->names('kontenDownload');
 
     Route::resource('berita', BeritaController::class);
 
