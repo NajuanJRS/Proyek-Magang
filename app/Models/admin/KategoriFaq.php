@@ -11,7 +11,8 @@ class KategoriFaq extends Model
     public $timestamps = false; // Jika tidak menggunakan kolom created_at dan updated_at
 
     protected $fillable = [
-        'nama_kategori',
+        'nama_kategori_faq',
+        'slug'
     ];
 
     public function faqs()
