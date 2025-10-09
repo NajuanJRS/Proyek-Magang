@@ -23,17 +23,18 @@
             <h2 class="ds-article-title mb-4">{{ $pageContent['title'] }}</h2>
 
             <div class="ds-download-list">
-              @foreach($pageContent['files'] as $file)
+            {{-- Perulangan ini sekarang menggunakan objek dari database --}}
+            @foreach($pageContent['files'] as $file)
                 <div class="ds-download-item">
                     <div class="ds-download-icon">
                         <i class="bi bi-file-earmark-pdf"></i>
                     </div>
                     <div class="ds-download-info">
-                        <h6 class="ds-download-title">{{ $file['name'] }}</h6>
+                        <h6 class="ds-download-title">{{ $file->nama_file }}</h6>
                         <span class="ds-download-meta">File PDF</span>
                     </div>
-                    {{-- Mengarahkan link ke route download.file dengan parameter nama file --}}
-                    <a href="{{ route('download.file', ['filename' => $file['filename']]) }}" class="btn btn-outline-primary ms-auto ds-download-btn">
+                    {{-- Menggunakan properti objek 'path_file' --}}
+                    <a href="{{ route('download.file', ['filename' => $file->path_file]) }}" class="btn btn-outline-primary ms-auto ds-download-btn">
                         <i class="bi bi-download me-2"></i>Download
                     </a>
                 </div>
@@ -55,18 +56,17 @@
 
         {{-- KOLOM KANAN: SIDEBAR KATEGORI DOWNLOAD --}}
         <div class="col-lg-4">
-          <div class="ds-sidebar-card">
+        <div class="ds-sidebar-card">
             <h5 class="ds-sidebar-title">Download</h5>
             <div class="ds-sidebar-list">
-              @foreach($allDownloads as $item)
-                {{-- Menggunakan class yang sama dengan sidebar layanan --}}
-                <a href="{{ $item['url'] }}" class="ds-sidebar-item-layanan {{ $item['active'] ? 'active' : '' }}">
-                  <img src="{{ asset('images/download/' . $item['img']) }}" alt="">
-                  <h6 class="ds-sidebar-item-title">{{ $item['title'] }}</h6>
+            @foreach($allDownloads as $item)
+                <a href="{{ $item->url }}" class="ds-sidebar-item-layanan {{ $item->active ? 'active' : '' }}">
+                <img src="{{ asset('storage/icon/' . $item->icon) }}" alt="{{ $item->nama_kategori }}">
+                <h6 class="ds-sidebar-item-title">{{ $item->nama_kategori }}</h6>
                 </a>
-              @endforeach
+            @endforeach
             </div>
-          </div>
+        </div>
         </div>
 
       </div>

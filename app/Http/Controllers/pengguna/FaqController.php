@@ -16,7 +16,7 @@ class FaqController extends Controller
             $kategoriList = KategoriFaq::all();
 
             // Ambil data FAQ berdasarkan slug kategori yang aktif dari URL
-            $faqs = Faq::whereHas('kategori', function ($query) use ($kategoriSlug) {
+            $faqs = Faq::whereHas('kategoriFaq', function ($query) use ($kategoriSlug) {
                 $query->where('slug', $kategoriSlug);
             })->get();
 

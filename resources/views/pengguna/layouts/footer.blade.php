@@ -4,7 +4,7 @@
   <div class="ds-footer-top">
     <div class="container d-flex align-items-center justify-content-between py-2">
         <span class="text-body-secondary medium d-block d-md-inline mb-2 mb-md-0">
-         Terhubung dengan kami<br class="d-md-none">di media sosial:
+         Terhubung dengan kami <br class="d-md-none">di media sosial:
         </span>
       <div class="ds-social d-flex align-items-center gap-4">
         <a href="https://facebook.com/" target="_blank" rel="noopener" aria-label="Facebook" class="text-body-secondary"><i class="bi bi-facebook"></i></a>
