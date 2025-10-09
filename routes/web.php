@@ -103,9 +103,13 @@ Route::prefix('admin')->name('admin.')->group(function () {
 
     Route::resource('header-kontak', HeaderKontakController::class)->names('headerKontak');
 
-    Route::resource('header-kartu-pejabat', KartuPejabatController::class)->names('headerKartu');
-
     Route::resource('pejabat', PejabatController::class);
+
+    Route::get('kartu-pejabat/{id}/edit', [PejabatController::class, 'editHeader'])
+    ->name('headerKartu.edit');
+
+    Route::put('kartu-pejabat/{id}', [PejabatController::class, 'updateHeader'])
+    ->name('headerKartu.update');
 
     Route::resource('layanan', LayananKamiController::class);
 

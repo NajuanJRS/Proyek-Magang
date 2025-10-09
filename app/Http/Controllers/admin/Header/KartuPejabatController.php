@@ -24,7 +24,7 @@ class KartuPejabatController extends Controller
                   ->orWhere('sub_heading', 'like', "%$search%");
         })->paginate(10);
 
-        return view('Admin.profile.headerKartu.headerKartu', compact('headerKartu'));
+        return view('Admin.profile.pejabat.pejabat', compact('headerKartu'));
     }
 
     /**
@@ -42,7 +42,7 @@ class KartuPejabatController extends Controller
     {
         $headerKartu = Header::findOrFail($headerKartu->id_header);
         $kategoriHeader = KategoriHeader::all();
-        return view('Admin.profile.headerKartu.headerKartu', compact('headerKartu', 'kategoriHeader'));
+        return view('Admin.profile.pejabat.pejabat', compact('headerKartu', 'kategoriHeader'));
     }
 
     /**
@@ -81,6 +81,6 @@ class KartuPejabatController extends Controller
 
         $headerKartu->update($data);
 
-        return redirect()->route('admin.headerKartu.index')->with('success', 'Data Heading Berhasil Diperbarui!');
+        return redirect()->route('admin.pejabat.index')->with('success', 'Data Heading Berhasil Diperbarui!');
     }
 }

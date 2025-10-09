@@ -3,10 +3,13 @@
 namespace App\Http\Controllers\admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\admin\Header;
 use App\Models\admin\Jabatan;
+use App\Models\admin\KategoriHeader;
 use App\Models\admin\Pejabat;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 
 class PejabatController extends Controller
@@ -17,15 +20,24 @@ class PejabatController extends Controller
     public function index(Request $request)
     {
         $search = $request->input('search');
-        $pejabat = Pejabat::with('jabatan') // ambil relasi jabatan
+
+        // Data pejabat
+        $pejabat = Pejabat::with('jabatan')
             ->when($search, function ($query, $search) {
                 $query->where('nama_pejabat', 'like', "%$search%")
-                      ->orWhere('nip', 'like', "%$search%")
-                      ->orWhere('jabatan', 'like', "%$search%");
+                    ->orWhere('nip', 'like', "%$search%");
             })
             ->paginate(10);
 
-        return view('Admin.profile.pejabat.pejabat', compact('pejabat'));
+        // Data headerKartu
+        $headerKartu = Header::with('kategoriHeader')
+            ->when($search, function ($query, $search) {
+                $query->where('headline', 'like', "%$search%")
+                    ->orWhere('sub_heading', 'like', "%$search%");
+            })
+            ->paginate(10);
+
+        return view('Admin.profile.pejabat.pejabat', compact('pejabat', 'headerKartu'));
     }
 
     /**
@@ -46,18 +58,21 @@ class PejabatController extends Controller
             'nip' => 'required|min:5|max:18',
             'nama_pejabat' => 'required|min:5|max:100',
             'id_jabatan' => 'required|exists:jabatan,id_jabatan',
-            'kata_sambutan' => 'nullable|string',
             'gambar' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
+
+        $idUser = Auth::check() && Auth::user()->role === 'admin'
+        ? 1
+        : Auth::id();
 
         $path = $request->file('gambar')->store('pejabat', 'public');
         $filename = basename($path);
 
         Pejabat::create([
+            'id_user' => $idUser,
             'nip' => $request->nip,
             'nama_pejabat' => $request->nama_pejabat,
             'id_jabatan' => $request->id_jabatan,
-            'kata_sambutan' => $request->kata_sambutan,
             'gambar' => $filename,
         ]);
 
@@ -73,6 +88,15 @@ class PejabatController extends Controller
         return view('Admin.profile.pejabat.formEditPejabat', compact('pejabat', 'jabatan'));
     }
 
+
+    public function editHeader($id)
+    {
+        $headerKartu = Header::findOrFail($id);
+        $kategoriHeader = KategoriHeader::all();
+
+        return view('Admin.profile.pejabat.formEditKartuPejabat', compact('headerKartu', 'kategoriHeader'));
+}
+
     /**
      * Update data pejabat
      */
@@ -82,14 +106,17 @@ class PejabatController extends Controller
             'nip' => 'required|min:5|max:18',
             'nama_pejabat' => 'required|min:5|max:100',
             'id_jabatan' => 'required|exists:jabatan,id_jabatan',
-            'kata_sambutan' => 'nullable|string',
             'gambar' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
 
+        $idUser = Auth::check() && Auth::user()->role === 'admin'
+        ? 1
+        : Auth::id();
+
         $data = [
+            'id_user' => $idUser,
             'nip' => $request->nip,
             'nama_pejabat' => $request->nama_pejabat,
-            'kata_sambutan' => $request->kata_sambutan,
             'id_jabatan' => $request->id_jabatan,
         ];
 
@@ -108,6 +135,39 @@ class PejabatController extends Controller
         $pejabat->update($data);
 
         return redirect()->route('admin.pejabat.index')->with('success', 'Data Pejabat Berhasil Diperbarui!');
+    }
+
+    public function updateHeader(Request $request, $id)
+    {
+        $headerKartu = Header::findOrFail($id);
+
+        $request->validate([
+            'headline' => 'nullable|min:5',
+            'sub_heading' => 'nullable|min:5',
+            'gambar' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+        ]);
+
+        $data = [
+            'headline' => $request->headline,
+            'sub_heading' => $request->sub_heading,
+        ];
+
+        // Jika ada upload gambar baru
+        if ($request->hasFile('gambar')) {
+            // Hapus gambar lama kalau ada
+            $oldFilePath = 'header/' . $headerKartu->gambar;
+            if ($headerKartu->gambar && Storage::disk('public')->exists($oldFilePath)) {
+                Storage::disk('public')->delete($oldFilePath);
+            }
+
+            // Upload gambar baru
+            $path = $request->file('gambar')->store('header', 'public');
+            $data['gambar'] = basename($path);
+        }
+
+        $headerKartu->update($data);
+
+        return redirect()->route('admin.pejabat.index')->with('success', 'Data Header Kartu berhasil diperbarui!');
     }
 
     /**
