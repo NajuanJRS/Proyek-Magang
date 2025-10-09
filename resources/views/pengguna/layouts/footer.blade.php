@@ -44,27 +44,32 @@
       </div>
 
       <!-- Kolom 3: kontak -->
-      <div class="col-lg-4">
+        <div class="col-lg-4">
         <h6 class="fw-semibold mb-2">Hubungi Kami</h6>
-        <div class="medium text-body-secondary">
-          <div class="mb-2">Dinas Sosial Provinsi Kalimantan Selatan</div>
+        @if($kontakInfo)
+            <div class="medium text-body-secondary">
+            <div class="mb-2">Dinas Sosial Provinsi Kalimantan Selatan</div>
 
-          <div class="d-flex mb-2">
-            <i class="bi bi-geo-alt me-2"></i>
-            <div>Jl. R. Soeprapto No. 8, Antasan Besar, Banjarmasin Tengah, Kota Banjarmasin, Kalimantan Selatan 70231</div>
-          </div>
+            <div class="d-flex mb-2">
+                <i class="bi bi-geo-alt me-2"></i>
+                {{-- Menampilkan alamat dari database --}}
+                <div>{!! $kontakInfo->alamat !!}</div>
+            </div>
 
-          <div class="d-flex mb-2">
-            <i class="bi bi-telephone me-2"></i>
-            <div>(0811) 5005141</div>
-          </div>
+            <div class="d-flex mb-2">
+                <i class="bi bi-telephone me-2"></i>
+                {{-- Menampilkan telepon dari database --}}
+                <div>{{ $kontakInfo->nomor_telepon }}</div>
+            </div>
 
-          <div class="d-flex">
-            <i class="bi bi-envelope me-2"></i>
-            <div><a href="mailto:dinsoskalselprov@gmail.com" class="link-underline-opacity-0">dinsoskalselprov@gmail.com</a></div>
-          </div>
+            <div class="d-flex">
+                <i class="bi bi-envelope me-2"></i>
+                {{-- Menampilkan email dari database --}}
+                <div><a href="mailto:{{ $kontakInfo->email }}" class="link-underline-opacity-0">{{ $kontakInfo->email }}</a></div>
+            </div>
+            </div>
+        @endif
         </div>
-      </div>
     </div>
   </div>
 </footer>
