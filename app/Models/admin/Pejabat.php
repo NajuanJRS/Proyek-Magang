@@ -16,10 +16,10 @@ class Pejabat extends Model
     public $timestamps = false;
 
     protected $fillable = [
+        'id_user',
         'nip',
         'id_jabatan',
         'nama_pejabat',
-        'kata_sambutan',
         'gambar',
     ];
 
