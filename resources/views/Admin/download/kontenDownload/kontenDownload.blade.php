@@ -30,7 +30,8 @@
 
                             {{-- Tombol Delete --}}
                             <a href="#" class="btn btn-sm btn-danger"
-                               onclick="deleteData('{{ $k->id_kategori }}')">Hapus</a>
+                               onclick="deleteData('{{ $k->id_kategori }}')">
+                               <i class="bi bi-trash"></i>Hapus</a>
 
                             <form id="delete-form-{{ $k->id_kategori }}"
                                   action="{{ route('admin.kontenDownload.destroy', $k->id_kategori) }}"

@@ -82,7 +82,8 @@
 
                                                         {{-- Tombol Delete --}}
                                                         <a href="#" class="btn btn-sm btn-danger"
-                                                            onclick="deleteData('{{ $f->id_file }}')">Hapus</a>
+                                                            onclick="deleteData('{{ $f->id_file }}')">
+                                                            <i class="bi bi-trash"></i>Hapus</a>
 
                                                         <form id="delete-form-{{ $f->id_file }}"
                                                             action="{{ route('admin.fileDownload.destroy', $f->id_file) }}"
