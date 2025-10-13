@@ -7,6 +7,7 @@ use App\Http\Controllers\pengguna\BeritaController as LandingBeritaController;
 use App\Http\Controllers\admin\FaqController;
 use App\Http\Controllers\pengguna\FaqController as LandingFaqController;
 use App\Http\Controllers\admin\DownloadController as DownloadControllerAdmin;
+use App\Http\Controllers\admin\FileDownloadController;
 use App\Http\Controllers\admin\Header\HeaderBeritaController;
 use App\Http\Controllers\admin\Header\HeaderDownloadController;
 use App\Http\Controllers\admin\Header\HeaderKontakController;
@@ -112,7 +113,16 @@ Route::prefix('admin')->name('admin.')->group(function () {
 
     Route::resource('layanan', LayananKamiController::class);
 
-    Route::resource('download', DownloadControllerAdmin::class)->names('kontenDownload');
+    Route::resource('kategori-download', DownloadControllerAdmin::class)->names('kontenDownload');
+
+    Route::prefix('download')->name('fileDownload.')->group(function () {
+        Route::get('/{slug?}', [FileDownloadController::class, 'index'])->name('index');
+        Route::get('/create/{slug?}', [FileDownloadController::class, 'create'])->name('create');
+        Route::post('/', [FileDownloadController::class, 'store'])->name('store');
+        Route::get('/{id}/edit/{kategori?}', [FileDownloadController::class, 'edit'])->name('edit');
+        Route::put('/{id}', [FileDownloadController::class, 'update'])->name('update');
+        Route::delete('/{id}', [FileDownloadController::class, 'destroy'])->name('destroy');
+    });
 
     Route::resource('berita', BeritaController::class);
 
