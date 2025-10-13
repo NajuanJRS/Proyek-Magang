@@ -20,7 +20,7 @@
         {{-- KOLOM KIRI: KONTEN UTAMA --}}
         <div class="col-lg-8">
             <article class="ds-article-card">
-                <h1 class="ds-article-title mb-4">Pejabat Dinas Sosial Kalimantan Selatan</h1>
+                <h2 class="ds-article-title mb-4">Pejabat Dinas Sosial Kalimantan Selatan</h2>
 
                 {{-- KARTU KEPALA DINAS (GAYA BARU) --}}
                 @if($pejabatKepala)

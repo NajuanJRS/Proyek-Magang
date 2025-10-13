@@ -22,7 +22,7 @@
         <div class="col-lg-8">
           <article class="ds-article-card">
             {{-- JUDUL KONTEN --}}
-            <h1 class="ds-article-title">{{ $activeCategory->judul_konten }}</h1>
+            <h2 class="ds-article-title">{{ $activeCategory->judul_konten }}</h2>
             <hr class="my-4">
 
             {{-- ISI KONTEN (DINAMIS DAN FLEKSIBEL) --}}

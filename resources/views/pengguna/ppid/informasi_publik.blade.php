@@ -17,7 +17,7 @@
         {{-- KOLOM KIRI: DAFTAR FILE --}}
         <div class="col-lg-8">
           <article class="ds-article-card">
-            <h1 class="ds-article-title mb-4">{{ $pageContent['title'] }}</h1>
+            <h2 class="ds-article-title mb-4">{{ $pageContent['title'] }}</h2>
             <div class="ds-download-list">
               @foreach($pageContent['files'] as $file)
                 <div class="ds-download-item">
@@ -52,7 +52,7 @@
             <div class="ds-sidebar-list">
               @foreach($allPpidItems as $item)
                 <a href="{{ $item->url }}" class="ds-sidebar-item-layanan {{ $item->active ? 'active' : '' }}">
-                  <img src="{{ asset('storage/kontenDownload/' . $item->icon) }}" alt="{{ $item->nama_kategori }}">
+                  <img src="{{ asset('storage/icon/' . $item->icon) }}" alt="{{ $item->nama_kategori }}">
                   <h6 class="ds-sidebar-item-title">{{ $item->nama_kategori }}</h6>
                 </a>
               @endforeach
