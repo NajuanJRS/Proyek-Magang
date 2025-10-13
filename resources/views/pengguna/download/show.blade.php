@@ -34,7 +34,7 @@
                         <span class="ds-download-meta">File PDF</span>
                     </div>
                     {{-- Menggunakan properti objek 'path_file' --}}
-                    <a href="{{ route('download.file', ['filename' => $file->path_file]) }}" class="btn btn-outline-primary ms-auto ds-download-btn">
+                    <a href="{{ route('download.file', ['filename' => $file->file]) }}" class="btn btn-outline-primary ms-auto ds-download-btn">
                         <i class="bi bi-download me-2"></i>Download
                     </a>
                 </div>
@@ -61,7 +61,7 @@
             <div class="ds-sidebar-list">
             @foreach($allDownloads as $item)
                 <a href="{{ $item->url }}" class="ds-sidebar-item-layanan {{ $item->active ? 'active' : '' }}">
-                <img src="{{ asset('storage/icon/' . $item->icon) }}" alt="{{ $item->nama_kategori }}">
+                <img src="{{ asset('storage/kontenDownload/' . $item->icon) }}" alt="{{ $item->nama_kategori }}">
                 <h6 class="ds-sidebar-item-title">{{ $item->nama_kategori }}</h6>
                 </a>
             @endforeach

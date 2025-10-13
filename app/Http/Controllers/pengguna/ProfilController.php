@@ -8,83 +8,70 @@ use Illuminate\View\View;
 use App\Models\admin\Header;
 use App\Models\admin\Pejabat;
 use App\Models\admin\Jabatan;
+use App\Models\admin\KategoriKonten;
 
 class ProfilController extends Controller
 {
     public function index(): View
     {
-        // Ambil data header dari database di mana id_kategori_header adalah 2
-        // Kita gunakan 'first()' karena kita hanya butuh satu data header untuk halaman ini
+        // Ambil data header dari database (id_kategori_header = 2)
         $header = Header::where('id_kategori_header', 2)->first();
 
-        // Kirim data header ke view
+        // Ambil semua kartu kategori yang termasuk dalam 'profil'
+        $cards = KategoriKonten::where('nama_menu_kategori', 'profil')->get();
+
         return view('pengguna.profil.index', [
-            'header' => $header
+            'header' => $header,
+            'cards' => $cards // Perbaikan typo dari 'crads' menjadi 'cards'
         ]);
     }
 
     public function show(string $slug): View
     {
-        // --- DATA DUMMY (Nanti ini akan diambil dari database) ---
-
-        $allProfiles = [
-            ['title' => 'Sejarah Dinas Sosial', 'img' => 'sejarah.png', 'slug' => 'sejarah'],
-            ['title' => 'Visi dan Misi Dinas Sosial', 'img' => 'visi-misi.png', 'slug' => 'visi-misi'],
-            ['title' => 'Tugas Pokok dan Fungsi', 'img' => 'tupoksi.png', 'slug' => 'tugas-pokok-fungsi'],
-            ['title' => 'Struktur Organisasi', 'img' => 'struktur.png', 'slug' => 'struktur-organisasi'],
-            ['title' => 'Ruang Lingkup', 'img' => 'ruang-lingkup.png', 'slug' => 'ruang-lingkup'],
-            ['title' => 'Profil Singkat Pejabat', 'img' => 'pejabat.png', 'slug' => 'pejabat'],
-            ['title' => 'Peraturan, Keputusan, dan Kebijakan', 'img' => 'peraturan.png', 'slug' => 'peraturan'],
-        ];
-
-        $profilesWithStatus = array_map(function ($profile) use ($slug) {
-            $profile['active'] = $profile['slug'] == $slug;
-            $profile['url'] = url('/profil/' . $profile['slug']);
+        // Ambil semua item profil dari database untuk sidebar
+        $allProfiles = KategoriKonten::where('nama_menu_kategori', 'profil')->get()->map(function ($profile) use ($slug) {
+            $profile->active = $profile->slug_konten == $slug;
+            $profile->url = route('profil.show', $profile->slug_konten);
             return $profile;
-        }, $allProfiles);
+        });
 
-        $viewName = 'pengguna.profil.show'; // Default view
+        $viewName = 'pengguna.profil.show'; // Default view untuk halaman profil biasa
         $viewData = [];
 
-        // === LOGIKA BARU UNTUK HALAMAN SPESIFIK ===
+        // Logika untuk menangani halaman-halaman spesifik
         if ($slug == 'pejabat') {
-            $viewName = 'pengguna.profil.pejabat';
+            $viewName = 'pengguna.profil.pejabat'; // Gunakan view khusus untuk halaman pejabat
 
-            // Ambil ID Jabatan untuk 'Kepala Dinas'
             $jabatanKepalaDinas = Jabatan::where('nama_jabatan', 'Kepala Dinas')->first();
-
-            // Ambil data Kepala Dinas
-            $pejabatKepala = Pejabat::with('jabatan')
-                                    ->where('id_jabatan', $jabatanKepalaDinas->id_jabatan)
-                                    ->first();
-
-            // Ambil data pejabat lainnya (selain Kepala Dinas)
-            $pejabatLainnya = Pejabat::with('jabatan')
-                                     ->where('id_jabatan', '!=', $jabatanKepalaDinas->id_jabatan)
-                                     ->get();
-
-            // Ambil gambar background dari tabel header dengan id_header = 8
+            $pejabatKepala = $jabatanKepalaDinas ? Pejabat::with('jabatan')->where('id_jabatan', $jabatanKepalaDinas->id_jabatan)->first() : null;
+            $pejabatLainnya = $jabatanKepalaDinas ? Pejabat::with('jabatan')->where('id_jabatan', '!=', $jabatanKepalaDinas->id_jabatan)->get() : collect();
             $kadisBackground = Header::where('id_kategori_header', 8)->first();
 
             $viewData['pejabatKepala'] = $pejabatKepala;
             $viewData['pejabatLainnya'] = $pejabatLainnya;
             $viewData['kadisBackground'] = $kadisBackground;
 
-        }elseif ($slug == 'struktur-organisasi') {
-            $viewName = 'pengguna.profil.struktur'; // Gunakan view baru untuk struktur
+        } elseif ($slug == 'struktur-organisasi') {
+            $viewName = 'pengguna.profil.struktur'; // Gunakan view khusus untuk struktur
+
+            $activeCategory = KategoriKonten::where('slug_konten', $slug)->firstOrFail();
+            $konten = $activeCategory->konten;
+
             $viewData['pageData'] = [
-                'title' => 'Struktur Organisasi Dinas Sosial Provinsi Kalimantan Selatan',
-                'image' => 'struktur-organisasi.jpg'
+                'title' => $activeCategory->judul_konten,
+                'image' => $konten->gambar1_konten ?? 'default.jpg' // Ambil gambar dari tabel konten
             ];
-        }else {
-            // Logika untuk halaman profil lainnya (contoh: Sejarah)
-            $viewData['profileContent'] = [
-                'title' => 'Sejarah Dinas Sosial',
-                'content' => "<p>Cikal bakal lembaga yang menangani kesejahteraan sosial di Indonesia dimulai sesaat setelah proklamasi kemerdekaan...</p>"
-            ];
+
+        } else {
+            // Logika untuk halaman profil lainnya (Sejarah, Visi Misi, dll.)
+            $activeCategory = KategoriKonten::where('slug_konten', $slug)->firstOrFail();
+            $profileContent = $activeCategory->konten;
+
+            $viewData['activeCategory'] = $activeCategory;
+            $viewData['profileContent'] = $profileContent;
         }
 
-        $viewData['allProfiles'] = $profilesWithStatus;
+        $viewData['allProfiles'] = $allProfiles;
 
         return view($viewName, $viewData);
     }

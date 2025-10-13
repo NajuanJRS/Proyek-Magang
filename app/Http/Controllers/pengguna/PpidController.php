@@ -7,52 +7,64 @@ use Illuminate\Http\Request;
 use Illuminate\View\View;
 use App\Models\admin\Header;
 use App\Models\admin\KategoriDownload;
+use App\Models\admin\KategoriKonten; // Pastikan model ini di-import
+use App\Models\admin\Konten;       // Pastikan model ini di-import
 
 class PpidController extends Controller
 {
     public function index(): View
     {
+        // Ambil header untuk halaman PPID (asumsi id_kategori_header = 6)
         $header = Header::where('id_kategori_header', 6)->first();
-        $keterbukaanCard = KategoriDownload::where('halaman_induk', 'ppid')->first();
-        return view('pengguna.ppid.index', compact('header', 'keterbukaanCard'));
+        
+        // Ambil semua kartu dari kedua tabel yang halaman induknya 'ppid'
+        $kategoriKonten = KategoriKonten::where('nama_menu_kategori', 'ppid')->get();
+        $kategoriDownload = KategoriDownload::where('halaman_induk', 'ppid')->get();
+
+        // Gabungkan keduanya untuk ditampilkan sebagai kartu
+        $cards = $kategoriKonten->concat($kategoriDownload);
+
+        return view('pengguna.ppid.index', [
+            'header' => $header,
+            'cards' => $cards
+        ]);
     }
 
     public function show(string $slug): View
     {
-        // Ambil semua item PPID dari database untuk sidebar
-        $allPpidItems = KategoriDownload::where('halaman_induk', 'ppid')->get()->map(function ($item) use ($slug) {
+        // Siapkan data untuk sidebar dengan menggabungkan item dari kedua tabel
+        $allPpidKonten = KategoriKonten::where('nama_menu_kategori', 'ppid')->get();
+        $allPpidDownload = KategoriDownload::where('halaman_induk', 'ppid')->get();
+        $allPpidItems = $allPpidKonten->concat($allPpidDownload)->map(function ($item) use ($slug) {
+            // Normalisasi properti agar seragam
+            $item->slug = $item->slug_konten ?? $item->slug;
+            $item->judul = $item->judul_konten ?? $item->nama_kategori;
+            $item->icon = $item->icon_konten ?? $item->icon;
             $item->active = $item->slug == $slug;
             $item->url = route('ppid.show', $item->slug);
             return $item;
         });
 
-        // Tentukan view dan data berdasarkan slug
-        if ($slug == 'informasi-publik') {
-            $activeCategory = KategoriDownload::where('slug', $slug)->firstOrFail();
-            $files = $activeCategory->files; // Mengambil file melalui relasi
+        // Cek apakah slug yang diminta adalah untuk kategori download
+        $kategoriDownload = KategoriDownload::where('slug', $slug)->first();
 
-            $pageContent = [
-                'title' => $activeCategory->nama_kategori,
-                'files' => $files,
+        if ($kategoriDownload) {
+            // Jika ya, tampilkan halaman daftar unduhan
+            $viewName = 'pengguna.ppid.informasi_publik';
+            $viewData['pageContent'] = [
+                'title' => $kategoriDownload->nama_kategori,
+                'files' => $kategoriDownload->files, // Mengambil relasi files
             ];
-            
-            return view('pengguna.ppid.informasi_publik', [
-                'pageContent' => $pageContent,
-                'allPpidItems' => $allPpidItems
-            ]);
-
-        } elseif ($slug == 'profil') {
-            // Logika untuk halaman Profil PPID
-            $pageContent = [ 'title' => 'Profil PPID', 'content' => '...' ]; // Isi konten Anda di sini
-            return view('pengguna.ppid.show', ['pageContent' => $pageContent, 'allPpidItems' => $allPpidItems]);
-
-        } elseif ($slug == 'prosedur-permohonan-keberatan') {
-            // Logika untuk halaman Prosedur
-            $pageContent = [ 'title' => 'Prosedur Permohonan & Keberatan', 'content' => '...' ]; // Isi konten Anda di sini
-            return view('pengguna.ppid.prosedur', ['pageContent' => $pageContent, 'allPpidItems' => $allPpidItems]);
+        } else {
+            // Jika tidak, cari di kategori konten biasa
+            $activeCategory = KategoriKonten::where('slug_konten', $slug)->firstOrFail();
+            $viewName = 'pengguna.ppid.show'; // View default untuk konten teks/gambar
+            $viewData['activeCategory'] = $activeCategory;
+            $viewData['pageContent'] = $activeCategory->konten;
         }
 
-        // Jika slug tidak cocok, tampilkan halaman 404
-        abort(404);
+        $viewData['allPpidItems'] = $allPpidItems;
+        
+        return view($viewName, $viewData);
     }
 }

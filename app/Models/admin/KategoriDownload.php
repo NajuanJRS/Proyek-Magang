@@ -10,7 +10,7 @@ class KategoriDownload extends Model
     use HasFactory;
 
     protected $table = 'kategori_download';
-    protected $primaryKey = 'id';
+    protected $primaryKey = 'id_kategori';
     public $timestamps = false;
 
     protected $fillable = [
@@ -22,6 +22,6 @@ class KategoriDownload extends Model
 
     public function files()
     {
-        return $this->hasMany(FileDownload::class, 'id_kategori_download');
+        return $this->hasMany(FileDownload::class, 'id_kategori');
     }
 }

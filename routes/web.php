@@ -31,11 +31,6 @@ use App\Http\Controllers\pengguna\PpidController;
 use App\Http\Controllers\pengguna\KontakController as VioletController;
 
 
-
-Route::view('/layanan/penerbitan-surat-tanda-pendaftaran', 'layanan.penerbitan');
-Route::view('/layanan/prosedur-pengangkatan-anak', 'layanan.pengangkatan');
-Route::view('/layanan/penyaluran-logistik-bufferstock-bencana', 'layanan.bufferstock');
-
 Route::get('/', [BerandaController::class, 'index'])->name('beranda');
 
 // profil

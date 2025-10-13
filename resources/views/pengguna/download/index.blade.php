@@ -35,7 +35,7 @@
               <div class="col-12 col-md-6 col-lg-3 d-flex">
                 <a href="{{ url('/download/' . $card->slug) }}" class="card ds-layanan-card text-center w-100 text-decoration-none text-dark">
                   <div class="ds-layanan-icon-wrapper">
-                    <img src="{{ asset('storage/icon/' . $card->icon) }}" alt="{{ $card->nama_kategori }}">
+                    <img src="{{ asset('storage/kontenDownload/' . $card->icon) }}" alt="{{ $card->nama_kategori }}">
                   </div>
                   <div class="card-body">
                     <h6 class="card-title fw-semibold">{{ $card->nama_kategori }}</h6>
@@ -53,7 +53,7 @@
               <div class="col-6">
                 <a href="{{ url('/download/' . $card->slug) }}" class="card ds-layanan-card ds-card-compact text-center h-100 text-decoration-none text-dark">
                   <div class="ds-layanan-icon-wrapper">
-                    <img src="{{ asset('storage/icon/' . $card->icon) }}" alt="{{ $card->nama_kategori }}">
+                    <img src="{{ asset('kontenDownload/icon/' . $card->icon) }}" alt="{{ $card->nama_kategori }}">
                   </div>
                   <div class="card-body p-3">
                     <h6 class="card-title fw-semibold mb-0 ds-title-compact">{{ $card->nama_kategori }}</h6>
