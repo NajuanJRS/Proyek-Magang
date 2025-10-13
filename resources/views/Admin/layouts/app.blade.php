@@ -55,7 +55,7 @@
             $openMenu = 'menuLayanan';
         } elseif (request()->routeIs('admin.headerBerita.index') || request()->routeIs('admin.kontenBerita.index')) {
             $openMenu = 'menuBerita';
-        } elseif (request()->routeIs('admin.headerDownload.index') || request()->routeIs('admin.kontenDownload.index')) {
+        } elseif (request()->routeIs('admin.headerDownload.index') || request()->routeIs('admin.kontenDownload.index') || request()->routeIs('admin.fileDownload.index')) {
             $openMenu = 'menuDownload';
         } elseif (request()->routeIs('admin.headerPpid.index') || request()->routeIs('admin.kontenPpid.index')) {
             $openMenu = 'menuPPID';
@@ -161,7 +161,7 @@
 
             <!-- Download -->
             <li class="nav-item">
-                <a class="nav-link d-flex justify-content-between align-items-center {{ request()->routeIs('admin.headerDownload.index') || request()->routeIs('admin.kontenDownload.index') ? 'active' : '' }}"
+                <a class="nav-link d-flex justify-content-between align-items-center {{ request()->routeIs('admin.headerDownload.index') || request()->routeIs('admin.kontenDownload.index') || request()->routeIs('admin.fileDownload.index') ? 'active' : '' }}"
                     data-bs-toggle="collapse" href="#menuDownload" role="button" aria-expanded="false"
                     aria-controls="menuDownload" onclick="toggleArrow(this)">
                     <span><i class="bi bi-download"></i> Download</span>
@@ -172,8 +172,8 @@
                         <li><a href="{{ route('admin.headerDownload.index') }}"
                                 class="nav-link {{ request()->routeIs('admin.headerDownload.index') ? 'active' : '' }}">Header</a>
                         </li>
-                        <li><a href="{{ route('admin.kontenDownload.index') }}"
-                                class="nav-link {{ request()->routeIs('admin.kontenDownload.index') ? 'active' : '' }}">Konten Download</a></li>
+                        <li><a href="{{ route('admin.kontenDownload.index')}}"
+                                class="nav-link {{ request()->routeIs('admin.kontenDownload.index') || request()->routeIs('admin.fileDownload.index') ? 'active' : '' }}">Konten Download</a></li>
                     </ul>
                 </div>
             </li>

@@ -14,6 +14,7 @@ class FileDownload extends Model
     public $timestamps = false;
 
     protected $fillable = [
+        'id_user',
         'id_kategori',
         'nama_file',
         'file',
@@ -21,6 +22,6 @@ class FileDownload extends Model
 
     public function kategoriDownload()
     {
-        return $this->belongsTo(KategoriDownload::class, 'id_kategori');
+        return $this->belongsTo(KategoriDownload::class, 'id_kategori', 'id_kategori');
     }
 }

@@ -22,6 +22,6 @@ class KategoriDownload extends Model
 
     public function files()
     {
-        return $this->hasMany(FileDownload::class, 'id_kategori');
+        return $this->hasMany(FileDownload::class, 'id_kategori', 'id_kategori');
     }
 }
