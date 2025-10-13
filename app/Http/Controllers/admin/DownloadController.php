@@ -77,8 +77,8 @@ class DownloadController extends Controller
     {
         $kartuDownload = KategoriFile::findOrFail($id);
         // hapus file icon juga
-        if ($kartuDownload->icon && Storage::disk('public')->exists($kartuDownload->icon)) {
-            Storage::disk('public')->delete($kartuDownload->icon);
+        if ($kartuDownload->icon && Storage::disk('public')->exists('kontenDownload/' . $kartuDownload->icon)) {
+            Storage::disk('public')->delete('kontenDownload/' . $kartuDownload->icon);
         }
 
         $kartuDownload->delete();

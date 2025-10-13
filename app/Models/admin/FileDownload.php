@@ -10,17 +10,18 @@ class FileDownload extends Model
     use HasFactory;
 
     protected $table = 'file_download';
-    protected $primaryKey = 'id';
+    protected $primaryKey = 'id_file';
     public $timestamps = false;
 
     protected $fillable = [
-        'id_kategori_download',
+        'id_user',
+        'id_kategori',
         'nama_file',
-        'path_file',
+        'file',
     ];
 
     public function kategoriDownload()
     {
-        return $this->belongsTo(KategoriDownload::class, 'id_kategori_download');
+        return $this->belongsTo(KategoriDownload::class, 'id_kategori', 'id_kategori');
     }
 }
