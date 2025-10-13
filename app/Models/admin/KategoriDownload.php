@@ -5,22 +5,23 @@ namespace App\Models\admin;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class FileDownload extends Model
+class KategoriDownload extends Model
 {
     use HasFactory;
 
-    protected $table = 'file_download';
+    protected $table = 'kategori_download';
     protected $primaryKey = 'id';
     public $timestamps = false;
 
     protected $fillable = [
-        'id_kategori_download',
-        'nama_file',
-        'path_file',
+        'nama_kategori',
+        'slug',
+        'icon',
+        'halaman_induk',
     ];
 
-    public function kategoriDownload()
+    public function files()
     {
-        return $this->belongsTo(KategoriDownload::class, 'id_kategori_download');
+        return $this->hasMany(FileDownload::class, 'id_kategori_download');
     }
 }

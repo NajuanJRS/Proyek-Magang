@@ -24,6 +24,6 @@ class Faq extends Model
     // === TAMBAHKAN FUNGSI RELASI INI ===
     public function kategoriFaq()
     {
-        return $this->belongsTo(KategoriFaq::class, 'id_kategori_faq', 'id_kategori_faq');
+        return $this->belongsTo(KategoriFaq::class, 'id_kategori_faq', ownerKey: 'id_kategori_faq');
     }
 }

@@ -7,69 +7,61 @@ use Illuminate\Http\Request;
 use Illuminate\View\View;
 use Illuminate\Support\Facades\Response; // <-- Pastikan ini ditambahkan
 use App\Models\admin\Header;
+use App\Models\admin\KategoriDownload;
+use App\Models\admin\FileDownload;
 
 class DownloadController extends Controller
 {
-        public function index(): View
+    public function index(): View
     {
-        // Ambil header untuk halaman download (asumsi id_kategori_header = 4)
+        // Ambil header untuk halaman download (asumsi id_kategori_header = 5)
         $header = Header::where('id_kategori_header', 5)->first();
+        
+        // Ambil semua kategori yang halaman_induk nya adalah 'download'
+        $cards = KategoriDownload::where('halaman_induk', 'download')->get();
 
-        // Kirim data header ke view
         return view('pengguna.download.index', [
-            'header' => $header
+            'header' => $header,
+            'cards' => $cards
         ]);
     }
+    
     public function show(string $slug): View
     {
-        // --- DATA DUMMY (Nanti ini akan diambil dari database) ---
+        // 1. Ambil data kategori yang aktif berdasarkan slug
+        $activeCategory = KategoriDownload::where('slug', $slug)->firstOrFail();
 
-        // Daftar semua kategori download untuk sidebar
-        $allDownloads = [
-            ['title' => 'Formulir Layanan', 'img' => 'formulir.png', 'slug' => 'formulir-layanan'],
-            ['title' => 'Peraturan & Kebijakan', 'img' => 'peraturan.png', 'slug' => 'peraturan-kebijakan'],
-            ['title' => 'Laporan Kinerja', 'img' => 'laporan.png', 'slug' => 'laporan-kinerja'],
-            ['title' => 'Materi Sosialisasi', 'img' => 'sosialisasi.png', 'slug' => 'materi-sosialisasi'],
-            ['title' => 'Standar Operasional Prosedur (SOP)', 'img' => 'sop.png', 'slug' => 'sop'],
-        ];
+        // 2. Ambil semua file yang termasuk dalam kategori tersebut menggunakan relasi
+        $files = $activeCategory->files;
 
-        // Menandai kategori mana yang sedang aktif
-        $downloadsWithStatus = array_map(function ($download) use ($slug) {
+        // 3. Siapkan data untuk sidebar
+        $allDownloads = KategoriDownload::where('halaman_induk', 'download')->get()->map(function ($download) use ($slug) {
             $download['active'] = $download['slug'] == $slug;
-            $download['url'] = url('/download/' . $download['slug']);
+            $download['url'] = url('/download/' . $download->slug);
             return $download;
-        }, $allDownloads);
+        });
 
-        // Konten utama untuk halaman "Formulir Layanan"
-        // 'url' diubah menjadi 'filename'
+        // 4. Siapkan data untuk dikirim ke view
         $pageContent = [
-            'title' => 'Formulir Layanan',
-            'files' => [
-                ['name' => 'Formulir Permohonan Pengangkatan Anak - 2025', 'filename' => 'sample.pdf'],
-                ['name' => 'Formulir Pendaftaran Bantuan UEP untuk Keluarga Miskin', 'filename' => 'sample.pdf'],
-                ['name' => 'Surat Pernyataan Calon Penerima Bantuan Rehabilitasi Rumah', 'filename' => 'sample.pdf'],
-            ]
+            'title' => $activeCategory->nama_kategori,
+            'files' => $files,
         ];
 
         return view('pengguna.download.show', [
             'pageContent' => $pageContent,
-            'allDownloads' => $downloadsWithStatus
+            'allDownloads' => $allDownloads
         ]);
     }
 
-    // === METHOD BARU UNTUK MENGUNDUH FILE ===
+    // Method untuk mengunduh file (tidak berubah)
     public function downloadFile(string $filename)
     {
-        // Tentukan path lengkap ke file di dalam folder public/downloads
-        $path = public_path('downloads/' . $filename);
+        $path = public_path('storage/upload/file/' . $filename);
 
-        // Periksa apakah file tersebut ada
         if (!file_exists($path)) {
-            // Jika tidak ada, kembalikan halaman error 404
             abort(404);
         }
 
-        // Jika file ada, kirim sebagai respons unduhan
         return Response::download($path);
     }
 }
