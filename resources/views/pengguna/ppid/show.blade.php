@@ -32,9 +32,9 @@
                     @if($pageContent->isi_konten1)
                         {!! $pageContent->isi_konten1 !!}
                     @endif
-                    @if($pageContent->gambar1_konten)
+                    @if($pageContent->gambar1)
                         <div class="ds-image-zoom-wrapper mt-3" data-bs-toggle="modal" data-bs-target="#imageModal">
-                        <img src="{{ asset('storage/konten/' . $pageContent->gambar1_konten) }}" alt="Gambar Konten" class="img-fluid rounded shadow-sm">
+                        <img src="{{ asset('storage/konten/' . $pageContent->gambar1) }}" alt="Gambar Konten" class="img-fluid rounded shadow-sm">
                         <div class="ds-image-zoom-overlay">
                             <i class="bi bi-zoom-in"></i>
                             <span>Klik untuk memperbesar</span>
@@ -46,9 +46,9 @@
                     @if($pageContent->isi_konten2)
                         {!! $pageContent->isi_konten2 !!}
                     @endif
-                    @if($pageContent->gambar2_konten)
+                    @if($pageContent->gambar2)
                         <figure class="my-4 text-center">
-                            <img src="{{ asset('storage/konten/' . $pageContent->gambar2_konten) }}" class="img-fluid rounded shadow-sm">
+                            <img src="{{ asset('storage/konten/' . $pageContent->gambar2) }}" class="img-fluid rounded shadow-sm">
                         </figure>
                     @endif
 
@@ -56,9 +56,9 @@
                     @if($pageContent->isi_konten3)
                         {!! $pageContent->isi_konten3 !!}
                     @endif
-                    @if($pageContent->gambar3_konten)
+                    @if($pageContent->gambar3)
                         <figure class="my-4 text-center">
-                            <img src="{{ asset('storage/konten/' . $pageContent->gambar3_konten) }}" class="img-fluid rounded shadow-sm">
+                            <img src="{{ asset('storage/konten/' . $pageContent->gambar3) }}" class="img-fluid rounded shadow-sm">
                         </figure>
                     @endif
                 @else
@@ -99,7 +99,7 @@
   </section>
 
     {{-- MODAL UNTUK ZOOM GAMBAR --}}
-    @if($pageContent && $pageContent->gambar1_konten)
+    @if($pageContent && $pageContent->gambar1)
     <div class="modal fade" id="imageModal" tabindex="-1" aria-labelledby="imageModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-xl modal-dialog-centered">
         <div class="modal-content">
@@ -108,7 +108,7 @@
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body text-center">
-            <img src="{{ asset('storage/konten/' . $pageContent->gambar1_konten) }}" alt="{{ $activeCategory->judul_konten }}" class="img-fluid">
+            <img src="{{ asset('storage/konten/' . $pageContent->gambar1) }}" alt="{{ $activeCategory->judul_konten }}" class="img-fluid">
         </div>
         </div>
     </div>

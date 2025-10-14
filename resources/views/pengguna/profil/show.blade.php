@@ -32,9 +32,9 @@
                     @if($profileContent->isi_konten1)
                         {!! $profileContent->isi_konten1 !!}
                     @endif
-                    @if($profileContent->gambar1_konten)
+                    @if($profileContent->gambar1)
                         <figure class="my-4 text-center">
-                            <img src="{{ asset('storage/konten/' . $profileContent->gambar1_konten) }}" class="img-fluid rounded shadow-sm">
+                            <img src="{{ asset('storage/konten/' . $profileContent->gambar1) }}" class="img-fluid rounded shadow-sm">
                         </figure>
                     @endif
 
@@ -42,9 +42,9 @@
                     @if($profileContent->isi_konten2)
                         {!! $profileContent->isi_konten2 !!}
                     @endif
-                    @if($profileContent->gambar2_konten)
+                    @if($profileContent->gambar2)
                         <figure class="my-4 text-center">
-                            <img src="{{ asset('storage/konten/' . $profileContent->gambar2_konten) }}" class="img-fluid rounded shadow-sm">
+                            <img src="{{ asset('storage/konten/' . $profileContent->gambar2) }}" class="img-fluid rounded shadow-sm">
                         </figure>
                     @endif
 
@@ -52,9 +52,9 @@
                     @if($profileContent->isi_konten3)
                         {!! $profileContent->isi_konten3 !!}
                     @endif
-                    @if($profileContent->gambar3_konten)
+                    @if($profileContent->gambar3)
                         <figure class="my-4 text-center">
-                            <img src="{{ asset('storage/konten/' . $profileContent->gambar3_konten) }}" class="img-fluid rounded shadow-sm">
+                            <img src="{{ asset('storage/konten/' . $profileContent->gambar3) }}" class="img-fluid rounded shadow-sm">
                         </figure>
                     @endif
                 @else

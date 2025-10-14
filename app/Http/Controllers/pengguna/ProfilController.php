@@ -8,6 +8,7 @@ use Illuminate\View\View;
 use App\Models\admin\Header;
 use App\Models\admin\Pejabat;
 use App\Models\admin\Jabatan;
+use App\Models\admin\Konten;
 use App\Models\admin\KategoriKonten;
 
 class ProfilController extends Controller
@@ -18,7 +19,7 @@ class ProfilController extends Controller
         $header = Header::where('id_kategori_header', 2)->first();
 
         // Ambil semua kartu kategori yang termasuk dalam 'profil'
-        $cards = KategoriKonten::where('nama_menu_kategori', 'profil')->get();
+        $cards = KategoriKonten::where('menu_konten', 'profil')->get();
 
         return view('pengguna.profil.index', [
             'header' => $header,
@@ -29,9 +30,9 @@ class ProfilController extends Controller
     public function show(string $slug): View
     {
         // Ambil semua item profil dari database untuk sidebar
-        $allProfiles = KategoriKonten::where('nama_menu_kategori', 'profil')->get()->map(function ($profile) use ($slug) {
-            $profile->active = $profile->slug_konten == $slug;
-            $profile->url = route('profil.show', $profile->slug_konten);
+        $allProfiles = KategoriKonten::where('menu_konten', 'profil')->get()->map(function ($profile) use ($slug) {
+            $profile->active = $profile->slug == $slug;
+            $profile->url = route('profil.show', $profile->slug);
             return $profile;
         });
 
@@ -54,17 +55,17 @@ class ProfilController extends Controller
         } elseif ($slug == 'struktur-organisasi') {
             $viewName = 'pengguna.profil.struktur'; // Gunakan view khusus untuk struktur
 
-            $activeCategory = KategoriKonten::where('slug_konten', $slug)->firstOrFail();
+            $activeCategory = KategoriKonten::where('slug', $slug)->firstOrFail();
             $konten = $activeCategory->konten;
 
             $viewData['pageData'] = [
                 'title' => $activeCategory->judul_konten,
-                'image' => $konten->gambar1_konten ?? 'default.jpg' // Ambil gambar dari tabel konten
+                'image' => $konten->gambar1 ?? 'default.jpg' // Ambil gambar dari tabel konten
             ];
 
         } else {
             // Logika untuk halaman profil lainnya (Sejarah, Visi Misi, dll.)
-            $activeCategory = KategoriKonten::where('slug_konten', $slug)->firstOrFail();
+            $activeCategory = KategoriKonten::where('slug', $slug)->firstOrFail();
             $profileContent = $activeCategory->konten;
 
             $viewData['activeCategory'] = $activeCategory;

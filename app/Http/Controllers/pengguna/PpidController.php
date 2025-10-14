@@ -18,7 +18,7 @@ class PpidController extends Controller
         $header = Header::where('id_kategori_header', 6)->first();
         
         // Ambil semua kartu dari kedua tabel yang halaman induknya 'ppid'
-        $kategoriKonten = KategoriKonten::where('nama_menu_kategori', 'ppid')->get();
+        $kategoriKonten = KategoriKonten::where('menu_konten', 'ppid')->get();
         $kategoriDownload = KategoriDownload::where('halaman_induk', 'ppid')->get();
 
         // Gabungkan keduanya untuk ditampilkan sebagai kartu
@@ -33,11 +33,11 @@ class PpidController extends Controller
     public function show(string $slug): View
     {
         // Siapkan data untuk sidebar dengan menggabungkan item dari kedua tabel
-        $allPpidKonten = KategoriKonten::where('nama_menu_kategori', 'ppid')->get();
+        $allPpidKonten = KategoriKonten::where('menu_konten', 'ppid')->get();
         $allPpidDownload = KategoriDownload::where('halaman_induk', 'ppid')->get();
         $allPpidItems = $allPpidKonten->concat($allPpidDownload)->map(function ($item) use ($slug) {
             // Normalisasi properti agar seragam
-            $item->slug = $item->slug_konten ?? $item->slug;
+            $item->slug = $item->slug ?? $item->slug;
             $item->judul = $item->judul_konten ?? $item->nama_kategori;
             $item->icon = $item->icon_konten ?? $item->icon;
             $item->active = $item->slug == $slug;
@@ -57,7 +57,7 @@ class PpidController extends Controller
             ];
         } else {
             // Jika tidak, cari di kategori konten biasa
-            $activeCategory = KategoriKonten::where('slug_konten', $slug)->firstOrFail();
+            $activeCategory = KategoriKonten::where('slug', $slug)->firstOrFail();
             $viewName = 'pengguna.ppid.show'; // View default untuk konten teks/gambar
             $viewData['activeCategory'] = $activeCategory;
             $viewData['pageContent'] = $activeCategory->konten;

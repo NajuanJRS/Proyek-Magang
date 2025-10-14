@@ -33,7 +33,7 @@
           <div class="row ds-layanan-row g-3 justify-content-start">
             @foreach($cards as $card)
               <div class="col-12 col-md-6 col-lg-3 d-flex">
-                <a href="{{ route('layanan.show', $card->slug_konten) }}" class="card ds-layanan-card text-center w-100 text-decoration-none text-dark">
+                <a href="{{ route('layanan.show', $card->slug) }}" class="card ds-layanan-card text-center w-100 text-decoration-none text-dark">
                   <div class="ds-layanan-icon-wrapper">
                     <img src="{{ asset('storage/icon/' . $card->icon_konten) }}" alt="{{ $card->judul_konten }}">
                   </div>
@@ -50,7 +50,7 @@
           <div class="row g-2 ds-layanan-row-mobile">
             @foreach($cards as $card)
               <div class="col-6">
-                <a href="{{ route('layanan.show', $card->slug_konten) }}" class="card ds-layanan-card ds-card-compact text-center h-100 text-decoration-none text-dark">
+                <a href="{{ route('layanan.show', $card->slug) }}" class="card ds-layanan-card ds-card-compact text-center h-100 text-decoration-none text-dark">
                   <div class="ds-layanan-icon-wrapper">
                     <img src="{{ asset('storage/icon/' . $card->icon_konten) }}" alt="{{ $card->judul_konten }}">
                   </div>

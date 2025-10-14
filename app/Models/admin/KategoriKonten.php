@@ -19,6 +19,6 @@ class KategoriKonten extends Model
 
     public function konten()
     {
-        return $this->hasMany(Konten::class, 'id_kategori_konten', 'id_kategori_konten');
+        return $this->hasOne(Konten::class, 'id_kategori_konten', 'id_kategori_konten');
     }
 }
