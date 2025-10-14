@@ -34,9 +34,9 @@
       <div class="col-lg-3">
         <h6 class="fw-semibold mb-2">Tautan Link</h6>
         <ul class="list-unstyled ds-linklist">
-            <li><a href="#" class="link-underline-opacity-0">Kementerian Sosial</a></li>
-            <li><a href="#" class="link-underline-opacity-0">kalselprov.go.id</a></li>
-            <li><a href="#" class="link-underline-opacity-0">LAPOR!</a></li>
+            <li><a href="https://kemensos.go.id/" class="link-underline-opacity-0">Kementerian Sosial</a></li>
+            <li><a href="https://kalselprov.go.id/" class="link-underline-opacity-0">kalselprov.go.id</a></li>
+            <li><a href="https://latihan.lapor.go.id/instansi/dinas-sosial-provinsi-kalimantan-selatan" class="link-underline-opacity-0">LAPOR!</a></li>
             <li><a href="#" class="link-underline-opacity-0">BPBD Kalsel</a></li>
             <li><a href="{{ url('/faq') }}" class="link-underline-opacity-0">FAQ</a></li>
             <li><a href="#" class="link-underline-opacity-0" data-bs-toggle="modal" data-bs-target="#feedbackModal">Umpan Balik</a></li>

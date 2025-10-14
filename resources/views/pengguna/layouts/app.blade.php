@@ -21,42 +21,106 @@
 
   @include('pengguna.layouts.footer')
 
-  {{-- Bootstrap JS --}}
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-  @stack('scripts')
-    <div class="modal fade" id="feedbackModal" tabindex="-1" aria-labelledby="feedbackModalLabel" aria-hidden="true">
+  {{-- ====== MODAL UMPAN BALIK (GLOBAL) ====== --}}
+  <div class="modal fade" id="feedbackModal" tabindex="-1" aria-labelledby="feedbackModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content">
         <div class="modal-body p-4 p-lg-5">
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          
           <div class="text-center mb-4">
             <h4 class="modal-title fw-bold" id="feedbackModalLabel">Berikan Umpan Balik Anda</h4>
             <p class="text-muted">Kami sangat menghargai setiap umpan balik yang Anda berikan untuk membantu kami berkembang.</p>
           </div>
-          <form action="#" method="POST">
-            @csrf
-            <div class="row g-3">
-              <div class="col-md-6">
-                <input type="text" class="form-control" name="nama" placeholder="Nama" required>
+          
+          {{-- Notifikasi akan ditampilkan di sini --}}
+          @if(session('success'))
+              <div class="alert alert-success">
+                  {{ session('success') }}
               </div>
-              <div class="col-md-6">
-                <input type="tel" class="form-control" name="telepon" placeholder="Telepon" required>
+          @endif
+          @if(session('error'))
+              <div class="alert alert-danger">
+                  {{ session('error') }}
               </div>
-              <div class="col-12">
-                <input type="email" class="form-control" name="email" placeholder="Email" required>
+          @endif
+          @if ($errors->any())
+              <div class="alert alert-danger">
+                  <ul class="mb-0">
+                      @foreach ($errors->all() as $error)
+                          <li>{{ $error }}</li>
+                      @endforeach
+                  </ul>
               </div>
-              <div class="col-12">
-                <textarea class="form-control" name="pesan" rows="5" placeholder="Masukan Umpan Balik Anda" required></textarea>
+          @endif
+
+          <form action="{{ route('kontak.store') }}" method="POST" id="feedbackForm">
+              @csrf
+              <div class="row g-3">
+                  <div class="col-md-6">
+                      <input type="text" class="form-control" name="nama" placeholder="Nama" required value="{{ old('nama') }}">
+                  </div>
+                  <div class="col-md-6">
+                      <input type="tel" class="form-control" name="telepon" placeholder="Telepon" required value="{{ old('telepon') }}">
+                  </div>
+                  <div class="col-12">
+                      <input type="email" class="form-control" name="email" placeholder="Email" required value="{{ old('email') }}">
+                  </div>
+                  <div class="col-12">
+                      <textarea class="form-control" name="isi_pesan" rows="5" placeholder="Masukan Umpan Balik Anda" required>{{ old('isi_pesan') }}</textarea>
+                  </div>
               </div>
-            </div>
-            <div class="text-center mt-4">
-              <button type="submit" class="btn btn-primary w-100 fw-semibold">Kirim</button>
-            </div>
+              <div class="text-center mt-4">
+                  <button type="submit" class="btn btn-primary w-100 fw-semibold">Kirim</button>
+              </div>
           </form>
         </div>
       </div>
     </div>
   </div>
-</body>
 
+  {{-- Bootstrap JS --}}
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  
+  {{-- Script khusus per halaman --}}
+  @stack('scripts')
+  
+  {{-- ============================================= --}}
+  {{-- SCRIPT GLOBAL UNTUK MODAL FEEDBACK (DIPERBAIKI) --}}
+  {{-- ============================================= --}}
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const feedbackModalEl = document.getElementById('feedbackModal');
+        if (!feedbackModalEl) return;
+
+        const modalInstance = new bootstrap.Modal(feedbackModalEl);
+        const feedbackForm = document.getElementById('feedbackForm');
+
+        // Kondisi untuk menampilkan modal secara otomatis SETELAH submit form
+        @if (($errors->any() && old('isi_pesan')) || session('success') || session('error'))
+            modalInstance.show();
+        @endif
+
+        // Tambahkan event listener yang berjalan SETELAH modal selesai ditutup
+        feedbackModalEl.addEventListener('hidden.bs.modal', function () {
+            // Cari semua elemen notifikasi (.alert) di dalam modal
+            const alerts = feedbackModalEl.querySelectorAll('.alert');
+            
+            // Hapus setiap notifikasi yang ditemukan
+            alerts.forEach(function(alert) {
+                alert.remove();
+            });
+
+            // Jika form sebelumnya dikirim dengan sukses, kosongkan isinya.
+            // Jika gagal karena validasi, biarkan input tetap ada untuk diperbaiki pengguna.
+            @if (session('success'))
+                if (feedbackForm) {
+                    feedbackForm.reset();
+                }
+            @endif
+        });
+    });
+  </script>
+</body>
 </html>
+

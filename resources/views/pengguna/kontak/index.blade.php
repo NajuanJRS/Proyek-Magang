@@ -24,7 +24,7 @@
     </section>
   @endif
 
-  {{-- ====== KONTEN KONTAK (DIPERBARUI) ====== --}}
+  {{-- ====== KONTEN KONTAK ====== --}}
   <section class="py-5">
     <div class="container">
       <div class="ds-contact-card">
@@ -41,7 +41,6 @@
                     <i class="bi bi-geo-alt-fill ds-contact-icon"></i>
                     <div>
                       <h6 class="ds-contact-title">Alamat Kantor</h6>
-                      {{-- Menampilkan alamat dari database --}}
                       <div class="mb-0">{!! $kontak->alamat !!}</div>
                     </div>
                   </div>
@@ -64,7 +63,6 @@
                         <i class="bi bi-clock-fill ds-contact-icon"></i>
                         <div>
                             <h6 class="ds-contact-title">Jam Pelayanan</h6>
-                            {{-- Menampilkan data jam pelayanan dari database --}}
                             <div class="mb-0">{!! $kontak->jam_pelayanan !!}</div>
                         </div>
                     </div>
@@ -96,7 +94,6 @@
 
           {{-- Peta Lokasi --}}
             <div class="ds-map-container">
-            {{-- Memanggil HANYA URL dari database --}}
                 <iframe
                     src="{{ $kontak->map_url ?? '' }}"
                     width="600"
@@ -109,7 +106,6 @@
                 </iframe>
             </div>
         @else
-          {{-- Tampilan jika data kontak tidak ditemukan --}}
           <div class="text-center py-5">
               <p class="text-muted">Informasi kontak belum tersedia.</p>
           </div>
@@ -123,32 +119,55 @@
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
         <div class="modal-body p-4 p-lg-5">
-            {{-- Tombol "X" untuk menutup modal --}}
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 
             <div class="text-center mb-4">
             <h4 class="modal-title fw-bold" id="feedbackModalLabel">Berikan Umpan Balik Anda</h4>
             <p class="text-muted">Kami sangat menghargai setiap umpan balik yang Anda berikan untuk membantu kami berkembang.</p>
             </div>
+            
+            {{-- PERUBAHAN 1: Menampilkan notifikasi sukses atau gagal --}}
+            @if(session('success'))
+                <div class="alert alert-success">
+                    {{ session('success') }}
+                </div>
+            @endif
+            @if(session('error'))
+                <div class="alert alert-danger">
+                    {{ session('error') }}
+                </div>
+            @endif
 
-            <form action="#" method="POST">
+            {{-- Menampilkan error validasi jika ada --}}
+            @if ($errors->any())
+                <div class="alert alert-danger">
+                    <ul class="mb-0">
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
+
+            {{-- Form tidak diubah, sudah benar --}}
+            <form action="{{ route('kontak.store') }}" method="POST" id="feedbackForm">
             @csrf
             <div class="row g-3">
                 <div class="col-md-6">
                 <label for="feedbackName" class="form-label visually-hidden">Nama</label>
-                <input type="text" class="form-control" id="feedbackName" name="nama" placeholder="Nama" required>
+                <input type="text" class="form-control" id="feedbackName" name="nama" placeholder="Nama" required value="{{ old('nama') }}">
                 </div>
                 <div class="col-md-6">
                 <label for="feedbackPhone" class="form-label visually-hidden">Telepon</label>
-                <input type="tel" class="form-control" id="feedbackPhone" name="telepon" placeholder="Telepon" required>
+                <input type="tel" class="form-control" id="feedbackPhone" name="telepon" placeholder="Telepon" required value="{{ old('telepon') }}">
                 </div>
                 <div class="col-12">
                 <label for="feedbackEmail" class="form-label visually-hidden">Email</label>
-                <input type="email" class="form-control" id="feedbackEmail" name="email" placeholder="Email" required>
+                <input type="email" class="form-control" id="feedbackEmail" name="email" placeholder="Email" required value="{{ old('email') }}">
                 </div>
                 <div class="col-12">
                 <label for="feedbackMessage" class="form-label visually-hidden">Umpan Balik</label>
-                <textarea class="form-control" id="feedbackMessage" name="pesan" rows="5" placeholder="Masukan Umpan Balik Anda" required></textarea>
+                <textarea class="form-control" id="feedbackMessage" name="isi_pesan" rows="5" placeholder="Masukan Umpan Balik Anda" required>{{ old('isi_pesan') }}</textarea>
                 </div>
             </div>
             <div class="text-center mt-4">
@@ -159,6 +178,4 @@
         </div>
     </div>
     </div>
-
 @endsection
-
