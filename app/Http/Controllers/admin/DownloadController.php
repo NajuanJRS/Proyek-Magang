@@ -29,7 +29,7 @@ class DownloadController extends Controller
             'halaman_induk' => 'nullable|string|max:255',
         ]);
 
-        $path = $request->file('icon')->store('kontenDownload', 'public');
+        $path = $request->file('icon')->store('icon', 'public');
         $fileName = basename($path); // hanya ambil nama file
 
         KategoriFile::create([
@@ -59,12 +59,12 @@ class DownloadController extends Controller
         ];
 
         if ($request->hasFile('icon')) {
-            $oldFilePath = 'kontenDownload/' . $kartuDownload->icon;
+            $oldFilePath = 'icon/' . $kartuDownload->icon;
             if ($kartuDownload->icon && Storage::disk('public')->exists($oldFilePath)) {
                 Storage::disk('public')->delete($oldFilePath);
             }
 
-            $path = $request->file('icon')->store('kontenDownload', 'public');
+            $path = $request->file('icon')->store('icon', 'public');
             $data['icon'] = basename($path);
         }
 
@@ -77,8 +77,8 @@ class DownloadController extends Controller
     {
         $kartuDownload = KategoriFile::findOrFail($id);
         // hapus file icon juga
-        if ($kartuDownload->icon && Storage::disk('public')->exists('kontenDownload/' . $kartuDownload->icon)) {
-            Storage::disk('public')->delete('kontenDownload/' . $kartuDownload->icon);
+        if ($kartuDownload->icon && Storage::disk('public')->exists('icon/' . $kartuDownload->icon)) {
+            Storage::disk('public')->delete('icon/' . $kartuDownload->icon);
         }
 
         $kartuDownload->delete();

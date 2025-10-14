@@ -75,10 +75,6 @@
                                                                     Lihat selengkapnya
                                                                 </button>
                                                             @endif
-
-                                                            <div id="full-content-{{ $m->id_mitra }}" class="text-center">
-                                                                {{ $m->link_mitra ?? '-' }}
-                                                            </div>
                                                         </td>
 
                                                         <td class="text-center">

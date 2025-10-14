@@ -185,9 +185,9 @@ document.addEventListener("DOMContentLoaded", function () {
             }
         }
 
-        function previewImage(event) {
+        function previewImage(event, previewId) {
         const input = event.target;
-        const preview = document.getElementById('preview');
+        const preview = document.getElementById(previewId);
 
         if (input.files && input.files[0]) {
             const reader = new FileReader();
@@ -204,19 +204,25 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     }
 
-     function previewEditImage(event) {
+     function previewEditImage(event, oldPreviewId, newPreviewId) {
         const input = event.target;
-        const newPreview = document.getElementById('newPreview');
-        const oldPreview = document.getElementById('oldPreview');
+        const newPreview = document.getElementById(newPreviewId);
+        const oldPreview = document.getElementById(oldPreviewId);
 
         if (input.files && input.files[0]) {
             const reader = new FileReader();
 
             reader.onload = function(e) {
+                // Tampilkan gambar baru
                 newPreview.src = e.target.result;
                 newPreview.style.display = 'block';
+                newPreview.style.border = '1px solid #ddd';
+                newPreview.style.borderRadius = '8px';
+                newPreview.style.padding = '4px';
+                newPreview.style.maxWidth = '200px';
+                newPreview.style.marginTop = '10px';
 
-                // Sembunyikan gambar lama
+                // Sembunyikan gambar lama jika ada
                 if (oldPreview) {
                     oldPreview.style.display = 'none';
                 }
@@ -224,10 +230,10 @@ document.addEventListener("DOMContentLoaded", function () {
 
             reader.readAsDataURL(input.files[0]);
         } else {
+            // Jika batal memilih file, kembalikan kondisi awal
             newPreview.src = "#";
-            newPreview.style.display = "none";
+            newPreview.style.display = 'none';
 
-            // Kalau batal pilih file, tampilkan kembali gambar lama
             if (oldPreview) {
                 oldPreview.style.display = 'block';
             }

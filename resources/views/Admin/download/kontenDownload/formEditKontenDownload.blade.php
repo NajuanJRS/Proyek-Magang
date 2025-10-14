@@ -38,13 +38,13 @@
                                         <label for="icon" class="mb-2">Unggah Icon (Opsional)</label>
                                         <div class="mb-4">
                                             <input type="file" id="icon" name="icon" accept="image/*"
-                                                onchange="previewEditImage(event)">
+                                                onchange="previewEditImage(event, 'oldPreview', 'newPreview')">
 
                                             {{-- Gambar Lama --}}
                                             @if ($kartuDownload->icon)
                                                 <div class="mt-2">
                                                     <img id="oldPreview"
-                                                        src="{{ asset('storage/kontenDownload/' . $kartuDownload->icon) }}"
+                                                        src="{{ asset('storage/icon/' . $kartuDownload->icon) }}"
                                                         alt="Icon Heading" width="120"
                                                         style="border-radius: 8px; border:1px solid #ddd; padding:4px;">
                                                 </div>

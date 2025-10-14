@@ -49,7 +49,7 @@
         $openMenu = '';
         if (request()->routeIs('admin.slider.index') || request()->routeIs('admin.mitra.index')) {
             $openMenu = 'menuBeranda';
-        } elseif (request()->routeIs('admin.profile.index') || request()->routeIs('admin.pejabat.index')) {
+        } elseif (request()->routeIs('admin.profile.index') || request()->routeIs('admin.pejabat.index') || request()->routeIs('admin.headerProfile.index')) {
             $openMenu = 'menuProfil';
         } elseif (request()->routeIs('admin.layanan.index') || request()->routeIs('admin.layanan.index')) {
             $openMenu = 'menuLayanan';
@@ -112,7 +112,7 @@
                                 class="nav-link {{ request()->routeIs('admin.headerProfile.index') ? 'active' : '' }}">Header</a>
                         </li>
                         <li><a href="{{ route('admin.profile.index') }}"
-                                class="nav-link {{ request()->routeIs('admin.profile.index') ? 'active' : '' }}">Kelola
+                                class="nav-link {{ request()->routeIs('admin.profile.index') ? 'active' : '' }}">Konten
                                 Profil</a></li>
                         <li><a href="{{ route('admin.pejabat.index') }}"
                                 class="nav-link {{ request()->routeIs('admin.pejabat.index') ? 'active' : '' }}">Profil

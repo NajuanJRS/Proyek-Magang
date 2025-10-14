@@ -216,8 +216,8 @@
                                     </table>
                                 </div>
 
-                                <div class="mt-4">
-                                    {{ $berita->links() }}
+                                <div class="mt-4 d-flex justify-content-end">
+                                    {{ $berita->links('pagination::bootstrap-5') }}
                                 </div>
                             </div>
                         </div>

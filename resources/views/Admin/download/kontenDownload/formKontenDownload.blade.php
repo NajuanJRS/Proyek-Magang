@@ -41,7 +41,7 @@
                                     <label for="icon" class="mb-2">Unggah icon</label>
                                     <div class="mb-4">
                                         <input type="file" id="icon" name="icon" accept="image/*"
-                                            onchange="previewImage(event)">
+                                            onchange="previewImage(event, 'preview')">
                                         <div class="mt-3">
                                             <img id="preview" src="#" alt="Preview Icon"
                                                 style="display: none; max-width: 200px; border-radius: 8px; border: 1px solid #ddd; padding: 4px;">

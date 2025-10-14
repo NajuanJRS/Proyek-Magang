@@ -30,7 +30,7 @@
                                         <label for="gambar" class="mb-2">Unggah Gambar (Opsional)</label>
                                         <div class="mb-4">
                                             <input type="file" id="gambar" name="gambar" accept="image/*"
-                                                onchange="previewEditImage(event)">
+                                                onchange="previewEditImage(event, 'newPreview', 'oldPreview')">
 
                                             {{-- Gambar Lama --}}
                                             @if ($headerBerita->gambar)

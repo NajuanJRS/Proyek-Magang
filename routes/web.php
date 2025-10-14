@@ -15,6 +15,7 @@ use App\Http\Controllers\admin\Header\HeaderLayananController;
 use App\Http\Controllers\admin\Header\HeaderPpidController;
 use App\Http\Controllers\admin\Header\HeaderProfileController;
 use App\Http\Controllers\admin\KontakController;
+use App\Http\Controllers\admin\KontenProfileController;
 use App\Http\Controllers\admin\KotakMasukController;
 use App\Http\Controllers\admin\LayananKamiController;
 use App\Http\Controllers\pengguna\LayananController;
@@ -111,6 +112,8 @@ Route::prefix('admin')->name('admin.')->group(function () {
     Route::put('kartu-pejabat/{id}', [PejabatController::class, 'updateHeader'])
     ->name('headerKartu.update');
 
+    Route::resource('profile', KontenProfileController::class);
+
     Route::resource('layanan', LayananKamiController::class);
 
     Route::resource('kategori-download', DownloadControllerAdmin::class)->names('kontenDownload');
@@ -125,8 +128,6 @@ Route::prefix('admin')->name('admin.')->group(function () {
     });
 
     Route::resource('berita', BeritaController::class);
-
-    Route::resource('profile', ManajemenProfileController::class);
 
     Route::resource('kontak', KontakController::class);
 

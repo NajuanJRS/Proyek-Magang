@@ -3,10 +3,10 @@
 namespace App\Http\Controllers\admin;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
-use App\Models\admin\LayananKami;
+use App\Models\admin\ManajemenProfile;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 
@@ -18,12 +18,10 @@ class LayananKamiController extends Controller
     public function index(Request $request): View
     {
         $search = $request->input('search');
-        $layanan = LayananKami::when($search, function ($query, $search) {
-            $query->where('judul', 'like', "%$search%")
-                  ->orWhere('isi', 'like', "%$search%");
+        $profile = ManajemenProfile::when($search, function ($query, $search) {
+            $query->where('judul', 'like', "%$search%");
         })->paginate(10);
-
-        return view('Admin.konfigurasiKonten.layanan.layananKami', compact('layanan'));
+        return view('Admin.manajemenProfile.profile.profile', compact('profile'));
     }
 
     /**
@@ -31,7 +29,7 @@ class LayananKamiController extends Controller
      */
     public function create(): View
     {
-        return view('Admin.konfigurasiKonten.layanan.formLayananKami');
+        return view('Admin.manajemenProfile.profile.formProfile');
     }
 
     /**
@@ -40,64 +38,42 @@ class LayananKamiController extends Controller
     public function store(Request $request): RedirectResponse
     {
         $request->validate([
-            'judul' => 'required|string|max:255',
+            'id_user' => 'nullable|exists:user,id_user',
             'icon' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-            'isi_layanan1' => 'required|string|max:5000',
-            'gambar1' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-            'isi_layanan2' => 'nullable|string|max:5000',
-            'gambar2' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-            'isi_layanan3' => 'nullable|string|max:5000',
-            'gambar3' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'judul' => 'required|min:5',
+            'isi_konten' => 'required|min:5',
+            'gambar' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'tgl_posting' => 'nullable|date',
+            'dibaca' => 'nullable',
         ]);
 
-        // Upload icon (opsional)
-        $fileIcon = null;
-        if ($request->hasFile('icon')) {
-            $path4 = $request->file('icon')->store('icon', 'public');
-            $fileIcon = basename($path4);
-        }
+        $path1 = $request->file('icon')->store('icon', 'public');
+        $fileIcon = basename($path1);
 
-        // Upload gambar1 (wajib)
-        $path1 = $request->file('gambar1')->store('layanan', 'public');
-        $fileGambar1 = basename($path1);
+        $path2 = $request->file('gambar')->store('profile', 'public');
+        $fileGambar = basename($path2);
 
-        // Upload gambar2 (opsional)
-        $fileGambar2 = null;
-        if ($request->hasFile('gambar2')) {
-            $path2 = $request->file('gambar2')->store('layanan', 'public');
-            $fileGambar2 = basename($path2);
-        }
+        $idUser = Auth::check() && Auth::user()->role === 'admin'
+        ? 1
+        : Auth::id();
 
-        // Upload gambar3 (opsional)
-        $fileGambar3 = null;
-        if ($request->hasFile('gambar3')) {
-            $path3 = $request->file('gambar3')->store('layanan', 'public');
-            $fileGambar3 = basename($path3);
-        }
-
-            $idUser = Auth::check() && Auth::user()->role === 'admin'
-            ? 1
-            : Auth::id();
-
-        LayananKami::create([
+        ManajemenProfile::create([
             'id_user'    => $idUser,
             'icon' => $fileIcon,
             'judul' => $request->judul,
-            'isi_layanan1' => $request->isi_layanan1,
-            'gambar1' => $fileGambar1,
-            'isi_layanan2' => $request->isi_layanan2,
-            'gambar2' => $fileGambar2,
-            'isi_layanan3' => $request->isi_layanan3,
-            'gambar3' => $fileGambar3,
+            'isi_konten' => $request->isi_konten,
+            'gambar' => $fileGambar,
+            'tgl_posting' => now(),
+            'dibaca' => 0,
         ]);
 
-        return redirect()->route('admin.layanan.index')->with('success', 'Jabatan berhasil ditambahkan!');
+        return redirect()->route('admin.profile.index')->with('success', 'Data Pejabat Berhasil Disimpan!');
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(LayananKami $layananKami)
+    public function show(ManajemenProfile $manajemenProfile)
     {
         //
     }
@@ -107,104 +83,79 @@ class LayananKamiController extends Controller
      */
     public function edit($id): View
     {
-        $layananKami = LayananKami::findOrFail($id);
-        return view('Admin.konfigurasiKonten.layanan.formEditLayananKami', compact('layananKami'));
+        $profile = ManajemenProfile::findOrFail($id);
+        return view('Admin.manajemenProfile.profile.formEditProfile', compact('profile'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, $id): RedirectResponse
+    public function update(Request $request, $id)
     {
         $request->validate([
+            'id_user' => 'nullable|exists:user,id_user',
             'icon' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-            'judul' => 'required|string|max:255',
-            'isi_layanan1' => 'required|string|max:5000',
-            'gambar1' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-            'isi_layanan2' => 'nullable|string|max:5000',
-            'gambar2' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-            'isi_layanan3' => 'nullable|string|max:5000',
-            'gambar3' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'judul' => 'required|min:5',
+            'isi_konten' => 'required|min:5',
+            'gambar' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'tgl_posting' => 'nullable|date',
+            'dibaca' => 'nullable',
         ]);
+        $profile = ManajemenProfile::findOrFail($id);
 
-        $layananKami= LayananKami::findOrFail($id);
         $idUser = Auth::check() && Auth::user()->role === 'admin'
         ? 1
         : Auth::id();
 
         $data = [
             'id_user'    => $idUser,
-            'icon' => $request->icon,
-            'judul' => $request->judul,
-            'isi_layanan1' => $request->isi_layanan1,
-            'isi_layanan2' => $request->isi_layanan2,
-            'isi_layanan3' => $request->isi_layanan3,
+            'judul'      => $request->judul,
+            'isi_konten' => $request->isi_konten,
+            'dibaca'     => 0,
+            'tgl_posting'=> now(),
         ];
-    // Handle icon
-    if ($request->hasFile('icon')) {
-        if ($layananKami->icon && Storage::disk('public')->exists('icon/' . $layananKami->icon)) {
-            Storage::disk('public')->delete('icon/' . $layananKami->icon);
-        }
-        $path4 = $request->file('icon')->store('icon', 'public');
-        $data['icon'] = basename($path4);
-    }
-            // Handle Gambar 1
-    if ($request->hasFile('gambar1')) {
-        if ($layananKami->gambar1 && Storage::disk('public')->exists('layanan/' . $layananKami->gambar1)) {
-            Storage::disk('public')->delete('layanan/' . $layananKami->gambar1);
-        }
-        $path1 = $request->file('gambar1')->store('layanan', 'public');
-        $data['gambar1'] = basename($path1);
-    }
 
-    // Handle Gambar 2
-    if ($request->hasFile('gambar2')) {
-        if ($layananKami->gambar2 && Storage::disk('public')->exists('layanan/' . $layananKami->gambar2)) {
-            Storage::disk('public')->delete('layanan/' . $layananKami->gambar2);
+        if ($request->hasFile('icon')) {
+            if ($profile->icon && Storage::disk('public')->exists('icon/' . $profile->icon)) {
+                Storage::disk('public')->delete('icon/' . $profile->icon);
+            }
+
+            $path = $request->file('icon')->store('icon', 'public');
+            $data['icon'] = basename($path);
         }
-        $path2 = $request->file('gambar2')->store('layanan', 'public');
-        $data['gambar2'] = basename($path2);
-    }
 
-    // Handle Gambar 3
-    if ($request->hasFile('gambar3')) {
-        if ($layananKami->gambar3 && Storage::disk('public')->exists('layanan/' . $layananKami->gambar3)) {
-            Storage::disk('public')->delete('layanan/' . $layananKami->gambar3);
+        if ($request->hasFile('gambar')) {
+            if ($profile->gambar && Storage::disk('public')->exists('profile/' . $profile->gambar)) {
+                Storage::disk('public')->delete('profile/' . $profile->gambar);
+            }
+
+            $path = $request->file('gambar')->store('profile', 'public');
+            $data['gambar'] = basename($path);
         }
-        $path3 = $request->file('gambar3')->store('layanan', 'public');
-        $data['gambar3'] = basename($path3);
-    }
 
-        $layananKami->update($data);
+        $profile->update($data);
 
-        return redirect()->route('admin.layanan.index')->with('success', 'Data Slider Berhasil Diperbarui!');
+        return redirect()->route('admin.profile.index')->with('success', 'Data Berhasil Diupdate!');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy($id): RedirectResponse
+    public function destroy($id)
     {
-        $layananKami = LayananKami::findOrFail($id);
-        $filePath1 = 'icon/' . $layananKami->icon;
-        $filePath2 = 'layanan/' . $layananKami->gambar1;
-        $filePath3 = 'layanan/' . $layananKami->gambar2;
-        $filePath4 = 'layanan/' . $layananKami->gambar3;
+        $profile = ManajemenProfile::findOrFail($id);
+        $filePath1 = 'icon/' . $profile->icon;
 
-        if ($layananKami->icon && Storage::disk('public')->exists($filePath1)) {
+        if ($profile->gambar && Storage::disk('public')->exists($filePath1)) {
             Storage::disk('public')->delete($filePath1);
         }
-        if ($layananKami->gambar1 && Storage::disk('public')->exists($filePath2)) {
+        $filePath2 = 'profile/' . $profile->gambar;
+
+        if ($profile->gambar && Storage::disk('public')->exists($filePath2)) {
             Storage::disk('public')->delete($filePath2);
         }
-        if ($layananKami->gambar2 && Storage::disk('public')->exists($filePath3)) {
-            Storage::disk('public')->delete($filePath3);
-        }
-        if ($layananKami->gambar3 && Storage::disk('public')->exists($filePath4)) {
-            Storage::disk('public')->delete($filePath4);
-        }
-        $layananKami->delete();
 
-        return redirect()->route('admin.layanan.index')->with('success', 'Layanan berhasil dihapus!');
+        $profile->delete();
+        return redirect()->route('admin.profile.index')->with('success', 'Data Berhasil Dihapus!');
     }
 }
