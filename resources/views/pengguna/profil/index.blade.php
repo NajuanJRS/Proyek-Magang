@@ -1,6 +1,5 @@
 @extends('pengguna.layouts.app')
 
-{{-- aktifkan background abstrak hanya di halaman ini (opsional) --}}
 @section('page_bg', 'ds-bg-abstract')
 
 @section('content')
@@ -13,7 +12,7 @@
     </ol>
   </nav>
 
-  {{-- ====== HERO (sekarang dinamis dari database) ====== --}}
+  {{-- ====== HERO (dinamis) ====== --}}
   @if($header)
     <section class="ds-hero ds-hero-profil">
       <img src="{{ asset('storage/header/' . $header->gambar) }}" alt="{{ $header->headline }}" class="ds-hero-bg" loading="lazy">
@@ -25,60 +24,48 @@
     </section>
   @endif
 
-  {{-- ====== GRID KARTU (pakai komponen kartu dari Beranda) ====== --}}
-  @php
-    $cards = [
-      ['title' => 'Sejarah Dinas Sosial',                      'img' => 'sejarah.png',        'url' => url('/profil/sejarah')],
-      ['title' => 'Visi dan Misi Dinas Sosial',               'img' => 'visi-misi.png',      'url' => url('/profil/visi-misi')],
-      ['title' => 'Tugas Pokok dan Fungsi',                   'img' => 'tupoksi.png',        'url' => url('/profil/tugas-pokok-fungsi')],
-      ['title' => 'Struktur Organisasi',                      'img' => 'struktur.png',       'url' => url('/profil/struktur-organisasi')],
-      ['title' => 'Ruang Lingkup',                            'img' => 'ruang-lingkup.png',  'url' => url('/profil/ruang-lingkup')],
-      ['title' => 'Profil Singkat Pejabat',                   'img' => 'pejabat.png',        'url' => url('/profil/pejabat')],
-      ['title' => 'Peraturan, Keputusan, dan Kebijakan',      'img' => 'peraturan.png',      'url' => url('/profil/peraturan')],
-    ];
-  @endphp
-
+  {{-- ====== GRID KARTU (dinamis dari database) ====== --}}
   <section class="ds-layanan py-5">
     <div class="konten-utama">
-
-        {{-- DESKTOP/TABLET: grid 4 kolom (lg) dan 2 kolom (md) --}}
+      @if($cards->isNotEmpty())
+        {{-- DESKTOP --}}
         <div class="d-none d-md-block">
-        <div class="row ds-layanan-row g-3 justify-content-start">
-            @foreach($cards as $c)
-            <div class="col-12 col-md-6 col-lg-3 d-flex">
-                {{-- Tag <a> sekarang membungkus seluruh kartu --}}
-                <a href="{{ $c['url'] }}" class="card ds-layanan-card text-center w-100 text-decoration-none text-dark">
-                <div class="ds-layanan-icon-wrapper">
-                    <img src="{{ asset('images/profil/'.$c['img']) }}" alt="{{ $c['title'] }}">
-                </div>
-                <div class="card-body">
-                    <h6 class="card-title fw-semibold">{{ $c['title'] }}</h6>
-                </div>
+          <div class="row ds-layanan-row g-3 justify-content-start">
+            @foreach($cards as $card)
+              <div class="col-12 col-md-6 col-lg-3 d-flex">
+                {{-- Arahkan ke route profil.show dengan slug_konten --}}
+                <a href="{{ route('profil.show', $card->slug_konten) }}" class="card ds-layanan-card text-center w-100 text-decoration-none text-dark">
+                  <div class="ds-layanan-icon-wrapper">
+                    <img src="{{ asset('storage/icon/' . $card->icon_konten) }}" alt="{{ $card->judul_konten }}">
+                  </div>
+                  <div class="card-body">
+                    <h6 class="card-title fw-semibold">{{ $card->judul_konten }}</h6>
+                  </div>
                 </a>
-            </div>
+              </div>
             @endforeach
-        </div>
-        </div>
-
-{{-- MOBILE: grid 2 kolom, kartu kompak & seluruh kartu bisa ditekan --}}
-<div class="d-md-none">
-  <div class="row g-2 ds-layanan-row-mobile">
-    @foreach($cards as $c)
-      <div class="col-6">
-        <a href="{{ $c['url'] }}" class="card ds-layanan-card ds-card-compact text-center h-100">
-          <div class="ds-layanan-icon-wrapper">
-            <img src="{{ asset('images/profil/'.$c['img']) }}" alt="{{ $c['title'] }}">
           </div>
-          <div class="card-body p-3 d-flex flex-column">
-            <h6 class="card-title fw-semibold mb-0 ds-title-compact">{{ $c['title'] }}</h6>
+        </div>
+        {{-- MOBILE --}}
+        <div class="d-md-none">
+          <div class="row g-2 ds-layanan-row-mobile">
+            @foreach($cards as $card)
+              <div class="col-6">
+                <a href="{{ route('profil.show', $card->slug_konten) }}" class="card ds-layanan-card ds-card-compact text-center h-100 text-decoration-none text-dark">
+                  <div class="ds-layanan-icon-wrapper">
+                    <img src="{{ asset('storage/icon/' . $card->icon_konten) }}" alt="{{ $card->judul_konten }}">
+                  </div>
+                  <div class="card-body p-3">
+                    <h6 class="card-title fw-semibold mb-0 ds-title-compact">{{ $card->judul_konten }}</h6>
+                  </div>
+                </a>
+              </div>
+            @endforeach
           </div>
-        </a>
-      </div>
-    @endforeach
-  </div>
-</div>
-
+        </div>
+      @endif
     </div>
   </section>
 
 @endsection
+

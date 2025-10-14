@@ -8,6 +8,7 @@ use App\Models\admin\Berita;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 use App\Models\admin\Mitra;
+use App\Models\admin\KategoriKonten;
 
 class BerandaController extends Controller
 {
@@ -19,12 +20,15 @@ class BerandaController extends Controller
         $berita = Berita::orderBy('tgl_posting', 'desc')->take(5)->get();
         // mitra
         $mitra = Mitra::all();
+        // layanan
+        $layanan = KategoriKonten::where('nama_menu_kategori', 'layanan')->take(4)->get();
 
         // Kirim data ke view beranda
         return view('pengguna.beranda', [
             'heroSlides' => $heroSlides,
             'berita' => $berita,
-            'mitra' => $mitra
+            'mitra' => $mitra,
+            'layanan' => $layanan
         ]);
     }
 }

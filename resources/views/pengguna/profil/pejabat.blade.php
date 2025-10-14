@@ -20,7 +20,7 @@
         {{-- KOLOM KIRI: KONTEN UTAMA --}}
         <div class="col-lg-8">
             <article class="ds-article-card">
-                <h1 class="ds-article-title mb-4">Pejabat Dinas Sosial Kalimantan Selatan</h1>
+                <h2 class="ds-article-title mb-4">Pejabat Dinas Sosial Kalimantan Selatan</h2>
 
                 {{-- KARTU KEPALA DINAS (GAYA BARU) --}}
                 @if($pejabatKepala)
@@ -70,9 +70,9 @@
             <h5 class="ds-sidebar-title">Jelajahi Profil</h5>
             <div class="ds-sidebar-list">
               @foreach($allProfiles as $item)
-                <a href="{{ $item['url'] }}" class="ds-sidebar-item-layanan {{ $item['active'] ? 'active' : '' }}">
-                  <img src="{{ asset('images/profil/' . $item['img']) }}" alt="">
-                  <h6 class="ds-sidebar-item-title">{{ $item['title'] }}</h6>
+                <a href="{{ $item->url }}" class="ds-sidebar-item-layanan {{ $item->active ? 'active' : '' }}">
+                  <img src="{{ asset('storage/icon/' . $item->icon_konten) }}" alt="{{ $item->judul_konten }}">
+                  <h6 class="ds-sidebar-item-title">{{ $item->judul_konten }}</h6>
                 </a>
               @endforeach
             </div>

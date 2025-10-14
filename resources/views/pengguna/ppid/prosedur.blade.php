@@ -43,7 +43,7 @@
 
         {{-- KOLOM KANAN: SIDEBAR PPID --}}
         <div class="col-lg-4">
-          <div class="ds-sidebar-card"> 
+          <div class="ds-sidebar-card">
             <h5 class="ds-sidebar-title">PPID</h5>
             <div class="ds-sidebar-list">
               @foreach($allPpidItems as $item)

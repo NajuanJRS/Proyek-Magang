@@ -17,7 +17,7 @@
         {{-- KOLOM KIRI: DAFTAR FILE --}}
         <div class="col-lg-8">
           <article class="ds-article-card">
-            <h1 class="ds-article-title mb-4">{{ $pageContent['title'] }}</h1>
+            <h2 class="ds-article-title mb-4">{{ $pageContent['title'] }}</h2>
             <div class="ds-download-list">
               @foreach($pageContent['files'] as $file)
                 <div class="ds-download-item">
@@ -26,7 +26,7 @@
                     <h6 class="ds-download-title">{{ $file->nama_file }}</h6>
                     <span class="ds-download-meta">File PDF</span>
                   </div>
-                  <a href="{{ route('download.file', ['filename' => $file->path_file]) }}" class="btn btn-outline-primary ms-auto ds-download-btn">
+                  <a href="{{ route('download.file', ['filename' => $file->file]) }}" class="btn btn-outline-primary ms-auto ds-download-btn">
                     <i class="bi bi-download me-2"></i>Download
                   </a>
                 </div>

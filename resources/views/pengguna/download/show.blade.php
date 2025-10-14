@@ -34,7 +34,7 @@
                         <span class="ds-download-meta">File PDF</span>
                     </div>
                     {{-- Menggunakan properti objek 'path_file' --}}
-                    <a href="{{ route('download.file', ['filename' => $file->path_file]) }}" class="btn btn-outline-primary ms-auto ds-download-btn">
+                    <a href="{{ route('download.file', ['filename' => $file->file]) }}" class="btn btn-outline-primary ms-auto ds-download-btn">
                         <i class="bi bi-download me-2"></i>Download
                     </a>
                 </div>

@@ -1,6 +1,6 @@
 @extends('pengguna.layouts.app')
 
-@section('page_bg', 'ds-bg-plain') {{-- Menggunakan background polos --}}
+@section('page_bg', 'ds-bg-plain')
 
 @section('content')
 
@@ -9,7 +9,7 @@
     <ol class="breadcrumb small mb-0">
       <li class="breadcrumb-item"><a href="{{ url('/') }}">Beranda</a></li>
       <li class="breadcrumb-item"><a href="{{ url('/layanan') }}">Layanan</a></li>
-      <li class="breadcrumb-item active" aria-current="page">{{ Str::limit($service['title'], 35) }}</li>
+      <li class="breadcrumb-item active" aria-current="page">{{ $activeCategory->judul_konten }}</li>
     </ol>
   </nav>
 
@@ -20,14 +20,46 @@
         {{-- KOLOM KIRI: KONTEN UTAMA LAYANAN --}}
         <div class="col-lg-8">
           <article class="ds-article-card">
-            {{-- JUDUL LAYANAN --}}
-            <h2 class="ds-article-title">{{ $service['title'] }}</h2>
-            
+            {{-- JUDUL KONTEN --}}
+            <h2 class="ds-article-title">{{ $activeCategory->judul_konten }}</h2>
+
             <hr class="my-4">
 
-            {{-- KONTEN LAYANAN (Persyaratan, Prosedur, dll) --}}
+            {{-- ISI KONTEN (DINAMIS DAN FLEKSIBEL) --}}
             <div class="ds-article-content">
-              {!! $service['content'] !!} {{-- Menggunakan {!! !!} agar tag HTML dirender --}}
+                @if($layananContent)
+                    {{-- Blok Konten 1 --}}
+                    @if($layananContent->isi_konten1)
+                        {!! $layananContent->isi_konten1 !!}
+                    @endif
+                    @if($layananContent->gambar1_konten)
+                        <figure class="my-4 text-center">
+                            <img src="{{ asset('storage/konten/' . $layananContent->gambar1_konten) }}" class="img-fluid rounded shadow-sm">
+                        </figure>
+                    @endif
+
+                    {{-- Blok Konten 2 --}}
+                    @if($layananContent->isi_konten2)
+                        {!! $layananContent->isi_konten2 !!}
+                    @endif
+                    @if($layananContent->gambar2_konten)
+                        <figure class="my-4 text-center">
+                            <img src="{{ asset('storage/konten/' . $layananContent->gambar2_konten) }}" class="img-fluid rounded shadow-sm">
+                        </figure>
+                    @endif
+
+                    {{-- Blok Konten 3 --}}
+                    @if($layananContent->isi_konten3)
+                        {!! $layananContent->isi_konten3 !!}
+                    @endif
+                    @if($layananContent->gambar3_konten)
+                        <figure class="my-4 text-center">
+                            <img src="{{ asset('storage/konten/' . $layananContent->gambar3_konten) }}" class="img-fluid rounded shadow-sm">
+                        </figure>
+                    @endif
+                @else
+                    <p class="text-muted text-center">Konten untuk layanan ini belum tersedia.</p>
+                @endif
             </div>
 
             {{-- TOMBOL BAGIKAN --}}
@@ -37,29 +69,27 @@
               <div class="ds-share-buttons">
                 <a href="#" class="ds-share-btn-whatsapp" aria-label="Bagikan ke WhatsApp"><i class="bi bi-whatsapp"></i></a>
                 <a href="#" class="ds-share-btn-facebook" aria-label="Bagikan ke Facebook"><i class="bi bi-facebook"></i></a>
-                <a href="#" class="ds-share-btn-instagram" aria-label="Bagikan ke Telegram"><i class="bi bi-instagram"></i></a>
+                <a href="#" class="ds-share-btn-instagram" aria-label="Bagikan ke Instagram"><i class="bi bi-instagram"></i></a>
               </div>
             </div>
-
           </article>
         </div>
 
         {{-- KOLOM KANAN: SIDEBAR JELAJAHI LAYANAN --}}
         <div class="col-lg-4">
-        <div class="ds-sidebar-card">
+          <div class="ds-sidebar-card">
             <h5 class="ds-sidebar-title">Jelajahi Layanan</h5>
             <div class="ds-sidebar-list">
-            @foreach($allServices as $item)
-                <a href="{{ $item['url'] }}" class="ds-sidebar-item-layanan {{ $item['active'] ? 'active' : '' }}">
-                {{-- Menggunakan ikon dari gambar --}}
-                <img src="{{ asset('images/layanan/' . $item['img']) }}" alt="">
-                <h6 class="ds-sidebar-item-title">{{ $item['title'] }}</h6>
+              @foreach($allServices as $item)
+                <a href="{{ $item->url }}" class="ds-sidebar-item-layanan {{ $item->active ? 'active' : '' }}">
+                  <img src="{{ asset('storage/icon/' . $item->icon_konten) }}" alt="{{ $item->judul_konten }}">
+                  <h6 class="ds-sidebar-item-title">{{ $item->judul_konten }}</h6>
                 </a>
-            @endforeach
+              @endforeach
             </div>
+          </div>
         </div>
-        </div>
-        
+
       </div>
     </div>
   </section>

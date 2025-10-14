@@ -4,54 +4,108 @@ namespace App\Http\Controllers\pengguna;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use Illuminate\View\View;
+use App\Models\admin\Berita;
+use App\Models\admin\KategoriKonten;
+use App\Models\admin\FileDownload;
+use App\Models\admin\Faq;
+use Illuminate\Support\Collection;
 
 class SearchController extends Controller
 {
-    public function index(Request $request): View
+    public function index(Request $request)
     {
-        // Ambil input keyword dan kategori dari URL
+        // 1. Validasi input
+        $request->validate(['keyword' => 'required']);
         $keyword = $request->input('keyword');
-        $activeFilter = $request->input('kategori', 'semua'); // Defaultnya 'semua'
+        $kategoriAktif = $request->input('kategori', 'semua'); // Ambil kategori, default 'semua'
 
-        // Opsi filter untuk ditampilkan di view
+        // --- PENGAMBILAN SEMUA DATA UNTUK PENGHITUNGAN ---
+        $beritaResults = Berita::where('judul', 'LIKE', "%{$keyword}%")->get();
+        $infoResults = KategoriKonten::whereIn('nama_menu_kategori', ['profil', 'ppid'])
+            ->where('judul_konten', 'LIKE', "%{$keyword}%")
+            ->get();
+        $layananResults = KategoriKonten::where('nama_menu_kategori', 'layanan')
+            ->where('judul_konten', 'LIKE', "%{$keyword}%")
+            ->get();
+        $dokumenResults = FileDownload::where('nama_file', 'LIKE', "%{$keyword}%")->get();
+        $faqResults = Faq::where('pertanyaan', 'LIKE', "%{$keyword}%")->get();
+
+        // --- PENGHITUNGAN UNTUK FILTER ---
         $filters = [
-            ['name' => 'Semua', 'count' => 10, 'slug' => 'semua'],
-            ['name' => 'Berita & Kegiatan', 'count' => 4, 'slug' => 'berita'],
-            ['name' => 'Layanan', 'count' => 2, 'slug' => 'layanan'],
-            ['name' => 'Dokumen & Download', 'count' => 2, 'slug' => 'dokumen'],
-            ['name' => 'Profil & Informasi', 'count' => 2, 'slug' => 'profil'],
+            ['slug' => 'semua', 'name' => 'Semua', 'count' => $beritaResults->count() + $infoResults->count() + $layananResults->count() + $dokumenResults->count() + $faqResults->count()],
+            ['slug' => 'berita', 'name' => 'Berita & Kegiatan', 'count' => $beritaResults->count()],
+            ['slug' => 'informasi', 'name' => 'Profil & Informasi', 'count' => $infoResults->count()],
+            ['slug' => 'layanan', 'name' => 'Layanan', 'count' => $layananResults->count()],
+            ['slug' => 'dokumen', 'name' => 'Dokumen & Download', 'count' => $dokumenResults->count()],
+            ['slug' => 'faq', 'name' => 'FAQ', 'count' => $faqResults->count()],
         ];
 
-        // --- Data Dummy untuk Hasil Pencarian ---
-        $allResults = [
-            ['title' => 'Penyaluran Bantuan Logistik Tahap II untuk Korban Banjir', 'url' => '#', 'date' => '26/08/2025', 'category' => 'Berita', 'category_slug' => 'berita', 'summary' => 'Dinas Sosial Provinsi Kalimantan Selatan kembali menyalurkan bantuan logistik berupa sembako dan perlengkapan tidur untuk warga terdampak...'],
-            ['title' => 'Dinsos Kalsel Gelar Bimbingan Teknis Peningkatan Kapasitas Pendamping', 'url' => '#', 'date' => '22/08/2025', 'category' => 'Berita', 'category_slug' => 'berita', 'summary' => 'Sebanyak 150 pendamping Program Keluarga Harapan (PKH) dari seluruh kabupaten/kota mengikuti bimbingan teknis untuk meningkatkan kualitas...'],
-            ['title' => 'Gubernur Serahkan Bantuan UEP Secara Simbolis', 'url' => '#', 'date' => '20/08/2025', 'category' => 'Berita', 'category_slug' => 'berita', 'summary' => 'Bantuan Usaha Ekonomi Produktif (UEP) diserahkan secara langsung oleh Gubernur Kalimantan Selatan sebagai upaya pengentasan kemiskinan...'],
-            ['title' => 'Evaluasi Program RTLH Tahun Anggaran 2024 Capai Target', 'url' => '#', 'date' => '17/08/2025', 'category' => 'Berita', 'category_slug' => 'berita', 'summary' => 'Program rehabilitasi rumah tidak layak huni dilaporkan telah berhasil merealisasikan target tahunan dengan lebih dari 500 unit rumah diperbaiki...'],
-            ['title' => 'Prosedur Pengangkatan Anak', 'url' => '#', 'date' => '19/08/2025', 'category' => 'Layanan', 'category_slug' => 'layanan', 'summary' => 'Berikut adalah tahapan dan persyaratan yang harus dipenuhi untuk melakukan proses pengangkatan anak secara legal melalui Dinas Sosial...'],
-            ['title' => 'Pemulangan Orang Telantar', 'url' => '#', 'date' => '16/08/2025', 'category' => 'Layanan', 'category_slug' => 'layanan', 'summary' => 'Layanan ini bertujuan untuk membantu memulangkan orang telantar ke daerah asal mereka dengan aman dan bermartabat.'],
-            ['title' => 'Formulir Pendaftaran Lembaga Kesejahteraan Sosial', 'url' => '#', 'date' => '15/08/2025', 'category' => 'Dokumen', 'category_slug' => 'dokumen', 'summary' => 'Unduh formulir resmi untuk pendaftaran Lembaga Kesejahteraan Sosial (LKS) di wilayah Provinsi Kalimantan Selatan.'],
-            ['title' => 'Laporan Kinerja Tahun 2024', 'url' => '#', 'date' => '14/08/2025', 'category' => 'Dokumen', 'category_slug' => 'dokumen', 'summary' => 'Dokumen Laporan Akuntabilitas Kinerja Instansi Pemerintah (LAKIP) Dinas Sosial Provinsi Kalimantan Selatan untuk tahun anggaran 2024.'],
-            ['title' => 'Visi dan Misi Dinas Sosial', 'url' => '#', 'date' => '12/08/2025', 'category' => 'Profil', 'category_slug' => 'profil', 'summary' => 'Visi kami adalah Kalsel Maju (Kalimantan Selatan Makmur, Sejahtera, dan Berkelanjutan) sebagai gerbang menuju Ibu Kota Negara...'],
-            ['title' => 'Struktur Organisasi', 'url' => '#', 'date' => '10/08/2025', 'category' => 'Profil', 'category_slug' => 'profil', 'summary' => 'Lihat bagan struktur organisasi resmi Dinas Sosial Provinsi Kalimantan Selatan, lengkap dengan tugas pokok dan fungsi setiap bidang.'],
-        ];
+        // --- GABUNGKAN SEMUA HASIL JADI SATU KOLEKSI ---
+        $allResults = new Collection();
 
-        // --- Logika Filter ---
-        if ($activeFilter && $activeFilter !== 'semua') {
-            $filteredResults = array_filter($allResults, function ($result) use ($activeFilter) {
-                return $result['category_slug'] == $activeFilter;
-            });
-        } else {
-            $filteredResults = $allResults;
+        foreach ($beritaResults as $item) {
+            $allResults->push([
+                'title' => $item->judul,
+                'category' => 'Berita & Kegiatan',
+                'url' => route('berita.show', $item->slug),
+                'type' => 'berita'
+            ]);
+        }
+        foreach ($infoResults as $item) {
+            $routeName = ($item->nama_menu_kategori == 'profil') ? 'profil.show' : 'ppid.show';
+            $allResults->push([
+                'title' => $item->judul_konten,
+                'category' => 'Profil & Informasi',
+                'url' => route($routeName, $item->slug_konten),
+                'type' => 'informasi'
+            ]);
+        }
+        foreach ($layananResults as $item) {
+            $allResults->push([
+                'title' => $item->judul_konten,
+                'category' => 'Layanan',
+                'url' => route('layanan.show', $item->slug_konten),
+                'type' => 'layanan'
+            ]);
+        }
+        foreach ($dokumenResults as $item) {
+            $allResults->push([
+                'title' => $item->nama_file,
+                'category' => 'Dokumen & Download',
+                'url' => route('download.file', ['filename' => $item->file]), // URL untuk download langsung
+                'type' => 'dokumen',
+                'file_obj' => $item // Sertakan seluruh objek file untuk view
+            ]);
+        }
+        foreach ($faqResults as $item) {
+            $allResults->push([
+                'title' => $item->pertanyaan,
+                'answer' => $item->jawaban,
+                'category' => 'FAQ',
+                'url' => null, // Tidak ada URL detail untuk FAQ di pencarian
+                'type' => 'faq',
+            ]);
         }
 
-        // Kirim semua data yang diperlukan ke view
+        // --- FILTER HASIL BERDASARKAN KATEGORI YANG AKTIF ---
+        $filteredResults = $allResults;
+        if ($kategoriAktif !== 'semua') {
+            $filteredResults = $allResults->filter(function ($item) use ($kategoriAktif) {
+                return $item['type'] == $kategoriAktif;
+            });
+        }
+
+        // --- Pisahkan hasil FAQ dari hasil lainnya SETELAH difilter ---
+        $faq_results = $filteredResults->where('type', 'faq');
+        $other_results = $filteredResults->where('type', '!=', 'faq');
+
+        // --- KIRIM DATA KE VIEW ---
         return view('pengguna.pencarian.index', [
             'keyword' => $keyword,
+            'results' => $other_results,
+            'faq_results' => $faq_results,
             'filters' => $filters,
-            'results' => $filteredResults,
-            'activeFilter' => $activeFilter,
+            'kategoriAktif' => $kategoriAktif
         ]);
     }
 }

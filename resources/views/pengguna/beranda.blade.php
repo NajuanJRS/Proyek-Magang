@@ -42,53 +42,55 @@
 {{-- =====================
      LAYANAN UTAMA
 ===================== --}}
-@php
-  // Data ini nantinya juga bisa ditarik dari database tabel 'layanan'
-  $services = [
-    ['title' => 'Pemulangan Orang Telantar', 'img' => 'pemulangan_orang_telantar.png', 'url' => url('/layanan/pemulangan-orang-telantar')],
-    ['title' => 'Penerbitan Surat Tanda Pendaftaran Lembaga Kesejahteraan Sosial', 'img' => 'penerbitan_surat_tanda_pendaftaran_lembaga_kesejahteraan_sosial.png', 'url' => url('/layanan/pendaftaran-lks')],
-    ['title' => 'Prosedur Pengangkatan Anak', 'img' => 'prosedur_pengangkatan_anak.png', 'url' => url('/layanan/prosedur-pengangkatan-anak')],
-    ['title' => 'Penyaluran Logistik Bufferstock Bencana', 'img' => 'penyaluran_logistik_bufferstock_bencana.png', 'url' => url('/layanan/penyaluran-logistik-bencana')],
-  ];
-@endphp
 <section class="ds-layanan py-5">
   <div class="konten-utama">
-    <div class="text-center mb-4">
-      <h2 class="ds-section-title">Layanan Utama</h2>
+    <div class="container text-center">
+      <h2 class="ds-title-section-2">Layanan Utama</h2>
     </div>
-    {{-- Tampilan Desktop --}}
-    <div class="d-none d-md-block">
-      <div class="row ds-layanan-row g-3 justify-content-center">
-        @foreach($services as $s)
-          <div class="col-12 col-md-6 col-lg-3 d-flex">
-            <a href="{{ $s['url'] }}" class="card ds-layanan-card text-center w-100 text-decoration-none text-dark">
-              <div class="ds-layanan-icon-wrapper">
-                <img src="{{ asset('images/layanan/'.$s['img']) }}" alt="{{ $s['title'] }}">
-              </div>
-              <div class="card-body">
-                <h6 class="card-title fw-semibold">{{ $s['title'] }}</h6>
-              </div>
-            </a>
-          </div>
-        @endforeach
-      </div>
-    </div>
-    {{-- Tampilan Mobile --}}
-    <div class="d-md-none">
-      <div class="ds-vstack">
-        @foreach($services as $s)
-          <a href="{{ $s['url'] }}" class="ds-card-h d-flex align-items-center">
-            <img src="{{ asset('images/layanan/'.$s['img']) }}" alt="{{ $s['title'] }}">
-            <div class="flex-grow-1">
-              <h6 class="mb-0 fw-semibold">{{ $s['title'] }}</h6>
+
+    @if($layanan->isNotEmpty())
+      {{-- DESKTOP --}}
+      <div class="d-none d-md-block">
+        <div class="row ds-layanan-row g-3 justify-content-center">
+          @foreach($layanan as $item)
+            <div class="col-12 col-md-6 col-lg-3 d-flex">
+              <a href="{{ route('layanan.show', $item->slug_konten) }}" class="card ds-layanan-card text-center w-100 text-decoration-none text-dark">
+                <div class="ds-layanan-icon-wrapper">
+                  <img src="{{ asset('storage/icon/' . $item->icon_konten) }}" alt="{{ $item->judul_konten }}">
+                </div>
+                <div class="card-body">
+                  <h6 class="card-title fw-semibold">{{ $item->judul_konten }}</h6>
+                </div>
+              </a>
             </div>
-          </a>
-        @endforeach
+          @endforeach
+        </div>
       </div>
-    </div>
-    <div class="text-center mt-4">
-      <a href="{{ url('/layanan') }}" class="btn btn-primary">Lihat Semua Layanan</a>
-    </div>
+      {{-- MOBILE --}}
+      <div class="d-md-none">
+        <div class="row g-2 ds-layanan-row-mobile justify-content-center">
+          @foreach($layanan as $item)
+            <div class="col-6">
+              <a href="{{ route('layanan.show', $item->slug_konten) }}" class="card ds-layanan-card ds-card-compact text-center h-100 text-decoration-none text-dark">
+                <div class="ds-layanan-icon-wrapper">
+                  <img src="{{ asset('storage/icon/' . $item->icon_konten) }}" alt="{{ $item->judul_konten }}">
+                </div>
+                <div class="card-body p-3">
+                  <h6 class="card-title fw-semibold mb-0 ds-title-compact">{{ $item->judul_konten }}</h6>
+                </div>
+              </a>
+            </div>
+          @endforeach
+        </div>
+      </div>
+      <div class="text-center mt-4">
+        <a href="{{ route('layanan.index') }}" class="btn btn-primary">Lihat Semua Layanan</a>
+      </div>
+    @else
+        <div class="text-center">
+            <p>Belum ada layanan yang tersedia saat ini.</p>
+        </div>
+    @endif
   </div>
 </section>
 
