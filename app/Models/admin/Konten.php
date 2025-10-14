@@ -7,25 +7,22 @@ use Illuminate\Database\Eloquent\Model;
 
 class Konten extends Model
 {
-    use HasFactory;
-
     protected $table = 'konten';
-    protected $primaryKey = 'id_konten';
     public $timestamps = false;
-
+    protected $primaryKey = 'id_konten';
     protected $fillable = [
         'id_kategori_konten',
-        'gambar1_konten',
+        'id_user',
         'isi_konten1',
-        'gambar2_konten',
+        'gambar1',
         'isi_konten2',
-        'gambar3_konten',
+        'gambar2',
         'isi_konten3',
+        'gambar3',
     ];
 
-    // Relasi ke tabel KategoriKonten
-    public function kategori()
+    public function kategoriKonten()
     {
-        return $this->belongsTo(KategoriKonten::class, 'id_kategori_konten');
+        return $this->belongsTo(kategoriKonten::class, 'id_kategori_konten', 'id_kategori_konten');
     }
 }

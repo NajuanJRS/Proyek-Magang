@@ -30,7 +30,7 @@
                                         <label for="gambar" class="mb-2">Unggah Gambar (Opsional)</label>
                                         <div class="mb-4">
                                             <input type="file" id="gambar" name="gambar" accept="image/*"
-                                                onchange="previewEditImage(event)">
+                                                onchange="previewEditImage(event, 'newPreview', 'oldPreview')">
 
                                             {{-- Gambar Lama --}}
                                             @if ($headerProfile->gambar)
@@ -54,7 +54,7 @@
                                             <input type="text" class="form-control" id="headline" name="headline"
                                                 placeholder="Masukkan Headline untuk gambar heading profile" value="{{ old('headline', $headerProfile->headline) }}">
                                         </div>
-                                        
+
                                         <label for="sub_heading" class="mb-2">Sub Heading</label>
                                         <div class="mb-4">
                                             <textarea class="form-control" id="sub_heading" name="sub_heading" vrows="5"

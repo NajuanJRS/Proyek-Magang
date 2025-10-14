@@ -15,8 +15,10 @@ use App\Http\Controllers\admin\Header\HeaderLayananController;
 use App\Http\Controllers\admin\Header\HeaderPpidController;
 use App\Http\Controllers\admin\Header\HeaderProfileController;
 use App\Http\Controllers\admin\KontakController;
+use App\Http\Controllers\admin\PpidController as AdminPpidController;
+use App\Http\Controllers\admin\KontenProfileController;
 use App\Http\Controllers\admin\KotakMasukController;
-use App\Http\Controllers\admin\LayananKamiController;
+use App\Http\Controllers\admin\KontenLayananController;
 use App\Http\Controllers\pengguna\LayananController;
 use App\Http\Controllers\admin\ManajemenProfileController;
 use App\Http\Controllers\admin\MitraController;
@@ -97,6 +99,8 @@ Route::prefix('admin')->name('admin.')->group(function () {
 
     Route::resource('header-ppid', HeaderPpidController::class)->names('headerPpid');
 
+    Route::resource('ppid', AdminPpidController::class);
+
     Route::resource('header-kontak', HeaderKontakController::class)->names('headerKontak');
 
     Route::resource('pejabat', PejabatController::class);
@@ -107,7 +111,9 @@ Route::prefix('admin')->name('admin.')->group(function () {
     Route::put('kartu-pejabat/{id}', [PejabatController::class, 'updateHeader'])
     ->name('headerKartu.update');
 
-    Route::resource('layanan', LayananKamiController::class);
+    Route::resource('profile', KontenProfileController::class);
+
+    Route::resource('layanan', KontenLayananController::class);
 
     Route::resource('kategori-download', DownloadControllerAdmin::class)->names('kontenDownload');
 
@@ -122,8 +128,6 @@ Route::prefix('admin')->name('admin.')->group(function () {
 
     Route::resource('berita', BeritaController::class);
 
-    Route::resource('profile', ManajemenProfileController::class);
-
     Route::resource('kontak', KontakController::class);
 
     Route::resource('kotak-masuk', KotakMasukController::class)->names('kotakMasuk');
@@ -131,6 +135,4 @@ Route::prefix('admin')->name('admin.')->group(function () {
     Route::resource('admin-update', AdminUpdateController::class)->names('adminUpdate');
 
     Route::resource('faq', FaqController::class);
-
-    Route::resource('page-header', PageHeaderController::class)->names('pageHeader');
 });

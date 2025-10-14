@@ -9,9 +9,10 @@
                         <div class="card shadow-sm rounded-4">
                             <div class="card-body px-5 py-4">
 
+                                {{-- Validasi Error --}}
                                 @if ($errors->any())
                                     <div class="alert alert-danger">
-                                        <ul>
+                                        <ul class="mb-0">
                                             @foreach ($errors->all() as $error)
                                                 <li>{{ $error }}</li>
                                             @endforeach
@@ -19,24 +20,42 @@
                                     </div>
                                 @endif
 
-                                <h4 class="mb-5">Tambah Berita</h4>
+                                <h4 class="mb-5">Tambah Konten Layanan & Kategori</h4>
 
-                                <form method="POST" action="{{ route('admin.berita.store') }}"
+                                <form method="POST" action="{{ route('admin.layanan.store') }}"
                                     enctype="multipart/form-data">
                                     @csrf
 
-                                    {{-- Judul --}}
-                                    <label for="judul" class="mb-2">Judul</label>
+                                    {{-- ========== Bagian KATEGORI KONTEN ========== --}}
+                                    <h5 class="mb-3">Data Kategori Konten</h5>
+
+                                    {{-- Judul Konten --}}
+                                    <label for="judul_konten" class="mb-2">Judul Konten</label>
                                     <div class="mb-4">
-                                        <input type="text" class="form-control" id="judul" name="judul"
-                                            placeholder="Masukkan Judul Berita">
+                                        <input type="text" class="form-control" id="judul_konten" name="judul_konten"
+                                            placeholder="Masukkan judul utama konten" required>
                                     </div>
 
-                                    {{-- Isi Berita 1 --}}
-                                    <label for="isi_berita1" class="mb-2">Isi Berita 1</label>
+                                    {{-- Icon Konten --}}
+                                    <label for="icon_konten" class="mb-2">Unggah Icon Konten</label>
                                     <div class="mb-4">
-                                        <textarea class="form-control my-editor" id="isi_berita1" name="isi_berita1" rows="6"
-                                            placeholder="Masukkan Isi Berita"></textarea>
+                                        <input type="file" id="icon_konten" name="icon_konten" accept="image/*"
+                                            onchange="previewImage(event, 'previewIcon')">
+                                        <br>
+                                        <img id="previewIcon" src="#" alt="Preview Konten Icon"
+                                            style="display:none; width: 150px; margin-top:10px; border-radius:8px;">
+                                    </div>
+
+                                    <hr class="my-4">
+
+                                    {{-- ========== Bagian KONTEN DETAIL ========== --}}
+                                    <h5 class="mb-3">Data Isi Konten</h5>
+
+                                    {{-- Isi konten 1 --}}
+                                    <label for="isi_konten1" class="mb-2">Isi Konten 1</label>
+                                    <div class="mb-4">
+                                        <textarea class="form-control my-editor" id="isi_konten1" name="isi_konten1" rows="6"
+                                            placeholder="Masukkan isi konten pertama"></textarea>
                                     </div>
 
                                     {{-- Gambar 1 --}}
@@ -49,19 +68,19 @@
                                             style="display:none; width: 150px; margin-top:10px; border-radius:8px;">
                                     </div>
 
-                                    {{-- Tombol toggle berita 2 --}}
+                                    {{-- Tombol toggle konten 2 --}}
                                     <div class="mb-4">
                                         <button type="button" class="btn btn-sm btn-info" id="toggle-tombol2">
-                                            + Tambah Berita 2
+                                            + Tambah konten 2
                                         </button>
                                     </div>
 
-                                    {{-- Berita 2 --}}
+                                    {{-- konten 2 --}}
                                     <div id="tombol2" style="display: none;">
-                                        <label for="isi_berita2" class="mb-2">Isi Berita 2</label>
+                                        <label for="isi_konten2" class="mb-2">Isi Konten 2</label>
                                         <div class="mb-4">
-                                            <textarea class="form-control my-editor" id="isi_berita2" name="isi_berita2" rows="6"
-                                                placeholder="Masukkan Isi Berita"></textarea>
+                                            <textarea class="form-control my-editor" id="isi_konten2" name="isi_konten2" rows="6"
+                                                placeholder="Masukkan isi konten kedua"></textarea>
                                         </div>
 
                                         {{-- Gambar 2 --}}
@@ -75,20 +94,19 @@
                                         </div>
 
                                         <div class="mb-4">
-                                            <button type="button" class="btn btn-sm btn-info    " id="toggle-tombol3">
-                                                + Tambah Berita 3
+                                            <button type="button" class="btn btn-sm btn-info" id="toggle-tombol3">
+                                                + Tambah konten 3
                                             </button>
                                         </div>
                                     </div>
 
-                                    {{-- Berita 3 --}}
+                                    {{-- konten 3 --}}
                                     <div id="tombol3" style="display: none;">
-                                        <label for="isi_berita3" class="mb-2">Isi Berita 3</label>
+                                        <label for="isi_konten3" class="mb-2">Isi Konten 3</label>
                                         <div class="mb-4">
-                                            <textarea class="form-control my-editor" id="isi_berita3" name="isi_berita3" rows="6"
-                                                placeholder="Masukkan Isi Berita"></textarea>
+                                            <textarea class="form-control my-editor" id="isi_konten3" name="isi_konten3" rows="6"
+                                                placeholder="Masukkan isi konten ketiga"></textarea>
                                         </div>
-
                                         {{-- Gambar 3 --}}
                                         <label for="gambar3" class="mb-2">Unggah Gambar 3</label>
                                         <div class="mb-4">
@@ -100,9 +118,9 @@
                                         </div>
                                     </div>
 
-                                    {{-- Tombol submit --}}
+                                    {{-- Tombol Submit --}}
                                     <button type="submit" class="btn btn-info me-2">Simpan</button>
-                                    <a href="{{ route('admin.berita.index') }}" class="btn btn-danger">Batal</a>
+                                    <a href="{{ route('admin.layanan.index') }}" class="btn btn-danger">Batal</a>
                                 </form>
                             </div>
                         </div>

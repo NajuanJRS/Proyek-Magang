@@ -14,7 +14,7 @@
                         <div class="card h-100 shadow-sm">
                             <div class="card-body d-flex justify-content-between align-items-center">
                                 <div class="d-flex align-items-center">
-                                    <img src="{{ asset('storage/kontenDownload/' . $k->icon) }}" alt="icon"
+                                    <img src="{{ asset('storage/icon/' . $k->icon) }}" alt="icon"
                                         width="64" height="64" class="me-2 rounded" style="object-fit:cover;">
 
                                     <h6 class="mb-0">{{ $k->nama_kategori }}</h6>
