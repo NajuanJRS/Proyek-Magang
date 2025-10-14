@@ -57,7 +57,7 @@
             $openMenu = 'menuBerita';
         } elseif (request()->routeIs('admin.headerDownload.index') || request()->routeIs('admin.kontenDownload.index') || request()->routeIs('admin.fileDownload.index')) {
             $openMenu = 'menuDownload';
-        } elseif (request()->routeIs('admin.headerPpid.index') || request()->routeIs('admin.kontenPpid.index')) {
+        } elseif (request()->routeIs('admin.headerPpid.index') || request()->routeIs('admin.ppid.index')) {
             $openMenu = 'menuPPID';
         } elseif (request()->routeIs('admin.headerKontak.index') || request()->routeIs('admin.kontenKontak.index')) {
             $openMenu = 'menuKontak';
@@ -180,7 +180,7 @@
 
             <!-- PPID -->
             <li class="nav-item">
-                <a class="nav-link d-flex justify-content-between align-items-center {{ request()->routeIs('admin.headerPpid.index') || request()->routeIs('admin.kontenPpid.index') ? 'active' : '' }}"
+                <a class="nav-link d-flex justify-content-between align-items-center {{ request()->routeIs('admin.headerPpid.index') || request()->routeIs('admin.ppid.index') ? 'active' : '' }}"
                     data-bs-toggle="collapse" href="#menuPPID" role="button" aria-expanded="false"
                     aria-controls="menuPPID" onclick="toggleArrow(this)">
                     <span><i class="bi bi-people"></i> PPID</span>
@@ -191,8 +191,8 @@
                         <li><a href="{{ route('admin.headerPpid.index') }}"
                                 class="nav-link {{ request()->routeIs('admin.headerPpid.index') ? 'active' : '' }}">Header</a>
                         </li>
-                        <li><a href="{{ route('admin.headerPpid.index') }}"
-                                class="nav-link {{ request()->routeIs('admin.kontenPpid.index') ? 'active' : '' }}">Konten PPID</a></li>
+                        <li><a href="{{ route('admin.ppid.index') }}"
+                                class="nav-link {{ request()->routeIs('admin.ppid.index') ? 'active' : '' }}">Konten PPID</a></li>
                     </ul>
                 </div>
             </li>

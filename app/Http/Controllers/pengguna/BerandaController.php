@@ -21,7 +21,7 @@ class BerandaController extends Controller
         // mitra
         $mitra = Mitra::all();
         // layanan
-        $layanan = KategoriKonten::where('nama_menu_kategori', 'layanan')->take(4)->get();
+        $layanan = KategoriKonten::where('menu_konten', 'layanan')->take(4)->get();
 
         // Kirim data ke view beranda
         return view('pengguna.beranda', [

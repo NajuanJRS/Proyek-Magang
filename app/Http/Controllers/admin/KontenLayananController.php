@@ -5,13 +5,13 @@ namespace App\Http\Controllers\admin;
 use App\Http\Controllers\Controller;
 use App\Models\admin\KategoriKonten;
 use App\Models\admin\Konten;
-use Illuminate\Http\Request;
-use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\View\View;
 
-class KontenProfileController extends Controller
+class KontenLayananController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -20,10 +20,10 @@ class KontenProfileController extends Controller
     {
         $search = $request->input('search');
 
-        $kontenProfile = Konten::with('kategoriKonten')
+        $kontenLayanan = Konten::with('kategoriKonten')
             ->whereHas('kategoriKonten', function ($query) use ($search) {
-                // Hanya ambil kategori dengan menu_konten = 'Profil'
-                $query->where('menu_konten', 'Profil');
+                // Hanya ambil kategori dengan menu_konten = 'Layanan'
+                $query->where('menu_konten', 'Layanan');
 
                 // Jika ada pencarian, cari berdasarkan nama_kategori atau judul_konten
                 if (!empty($search)) {
@@ -35,13 +35,13 @@ class KontenProfileController extends Controller
             })
             ->paginate(10);
 
-        return view('Admin.profile.kontenProfile.kontenProfile', compact('kontenProfile'));
+        return view('Admin.layanan.kontenLayanan.kontenLayanan', compact('kontenLayanan'));
     }
 
 
     public function create(): View
     {
-        return view('Admin.profile.kontenProfile.formKontenProfile');
+        return view('Admin.layanan.kontenLayanan.formKontenLayanan');
     }
 
     public function store(Request $request): RedirectResponse
@@ -69,7 +69,7 @@ class KontenProfileController extends Controller
 
         // Simpan ke tabel kategori_konten
         $kategori = KategoriKonten::create([
-            'menu_konten'     => 'Profil', // <-- otomatis diisi
+            'menu_konten'     => 'Layanan', // <-- otomatis diisi
             'judul_konten'  => $request->judul_konten,
             'icon_konten'   => $iconKonten,
             'slug'          => str()->slug($request->judul_konten),
@@ -92,15 +92,15 @@ class KontenProfileController extends Controller
             'gambar3'             => $gambar3,
         ]);
 
-        return redirect()->route('admin.profile.index')
-            ->with('success', 'Kategori & Konten Profil berhasil ditambahkan!');
+        return redirect()->route('admin.layanan.index')
+            ->with('success', 'Kategori & Konten Layanan berhasil ditambahkan!');
     }
 
 
     /**
      * Display the specified resource.
      */
-    public function show(Konten $kontenProfile)
+    public function show(Konten $kontenLayanan)
     {
         //
     }
@@ -110,8 +110,8 @@ class KontenProfileController extends Controller
      */
     public function edit($id): View
     {
-        $kontenProfile = Konten::findOrFail($id);
-        return view('Admin.profile.kontenProfile.formEditKontenProfile', compact('kontenProfile'));
+        $kontenLayanan = Konten::findOrFail($id);
+        return view('Admin.layanan.kontenLayanan.formEditKontenLayanan', compact('kontenLayanan'));
     }
 
     /**
@@ -155,7 +155,7 @@ class KontenProfileController extends Controller
 
         // Update data kategori
         $kategori->update([
-            'menu_konten'   => 'Profil', // tetap otomatis "Profil"
+            'menu_konten'   => 'Layanan', // tetap otomatis "Layanan"
             'judul_konten'  => $request->judul_konten,
             'icon_konten'   => $iconKonten,
             'slug'          => str()->slug($request->judul_konten),
@@ -221,7 +221,7 @@ class KontenProfileController extends Controller
             'gambar3'            => $gambar3,
         ]);
 
-        return redirect()->route('admin.profile.index')->with('success', 'Kategori & Konten Profil berhasil diperbarui!');
+        return redirect()->route('admin.layanan.index')->with('success', 'Kategori & Konten Layanan berhasil diperbarui!');
     }
 
 
@@ -230,26 +230,26 @@ class KontenProfileController extends Controller
      */
     public function destroy($id): RedirectResponse
     {
-        $kontenProfile = Konten::findOrFail($id);
+        $kontenLayanan = Konten::findOrFail($id);
 
         // Paths for konten files
-        $filePath2 = 'konten/' . $kontenProfile->gambar1;
-        $filePath3 = 'konten/' . $kontenProfile->gambar2;
-        $filePath4 = 'konten/' . $kontenProfile->gambar3;
+        $filePath2 = 'konten/' . $kontenLayanan->gambar1;
+        $filePath3 = 'konten/' . $kontenLayanan->gambar2;
+        $filePath4 = 'konten/' . $kontenLayanan->gambar3;
 
         // Delete konten images if exist
-        if ($kontenProfile->gambar1 && Storage::disk('public')->exists($filePath2)) {
+        if ($kontenLayanan->gambar1 && Storage::disk('public')->exists($filePath2)) {
             Storage::disk('public')->delete($filePath2);
         }
-        if ($kontenProfile->gambar2 && Storage::disk('public')->exists($filePath3)) {
+        if ($kontenLayanan->gambar2 && Storage::disk('public')->exists($filePath3)) {
             Storage::disk('public')->delete($filePath3);
         }
-        if ($kontenProfile->gambar3 && Storage::disk('public')->exists($filePath4)) {
+        if ($kontenLayanan->gambar3 && Storage::disk('public')->exists($filePath4)) {
             Storage::disk('public')->delete($filePath4);
         }
 
         // Handle related kategori_konten deletion
-        $kategori = KategoriKonten::find($kontenProfile->id_kategori_konten);
+        $kategori = KategoriKonten::find($kontenLayanan->id_kategori_konten);
         if ($kategori) {
             // delete kategori icon if present
             if ($kategori->icon_konten && Storage::disk('public')->exists('icon/' . $kategori->icon_konten)) {
@@ -258,7 +258,7 @@ class KontenProfileController extends Controller
 
             // Only delete kategori if no other konten reference it (prevent accidental removal)
             $otherKontenCount = Konten::where('id_kategori_konten', $kategori->id_kategori_konten)
-                ->where('id_kategori_konten', '!=', $kontenProfile->id_kategori_konten)
+                ->where('id_kategori_konten', '!=', $kontenLayanan->id_kategori_konten)
                 ->count();
 
             if ($otherKontenCount === 0) {
@@ -267,8 +267,8 @@ class KontenProfileController extends Controller
         }
 
         // Finally delete the konten record
-        $kontenProfile->delete();
+        $kontenLayanan->delete();
 
-        return redirect()->route('admin.profile.index')->with('success', 'Konten dan data kategori terkait berhasil dihapus!');
+        return redirect()->route('admin.layanan.index')->with('success', 'Konten dan data kategori terkait berhasil dihapus!');
     }
 }
