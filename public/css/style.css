@@ -156,6 +156,7 @@ body {
   width: 70px;
 }
 
+
 .sidebar .nav-item {
   display: flex;
   align-items: center;
@@ -268,6 +269,7 @@ body {
         border-radius: 50%;
         margin-bottom: 0.5rem;
     }
+
     .sidebar .nav-link {
         color: #333;
         display: flex;
@@ -297,6 +299,29 @@ body {
             display: block !important;
             /* pastikan vertikal */
             flex-direction: column !important;
+        }
+
+
+
+        /* Pastikan submenu/dropdown tidak terpengaruh oleh padding-bottom pada .nav */
+        .sidebar .collapse,
+        .sidebar .collapse ul {
+            padding-bottom: 0;
+            margin-bottom: 0;
+        }
+
+        /* Cadangan ruang di bagian bawah sidebar agar scroll mencakup semua menu
+           tanpa memengaruhi posisi submenu yang meng-expand:
+           gunakan pseudo-elemen agar tidak memengaruhi layout/animasi saat submenu buka */
+        .sidebar {
+            box-sizing: border-box;
+        }
+        .sidebar::after {
+            content: '';
+            display: block;
+            padding-bottom: 65px;
+            height: 2.5rem; /* cadangan ruang di bawah sidebar */
+            pointer-events: none;
         }
 
         .sidebar .collapse .nav-link {
@@ -631,19 +656,26 @@ body {
 }
 
 
-/* Sidebar default */
-.sidebar {
-    width: 240px;
-    background: #fff;
-    border-right: 1px solid #ddd;
-    height: 100vh;
-    position: fixed;
-    top: 56px; /* tinggi navbar */
-    left: 0;
-    overflow-y: auto;
-    padding: 1rem;
-    transition: width 0.3s ease, left 0.3s ease;
+:root {
+  --navbar-height: 56px; /* sesuaikan jika navbar Anda 65px -> ubah di sini */
 }
+
+/* Pastikan sidebar selalu menghitung tinggi viewport dan scroll jika konten melebihi */
+.sidebar {
+  position: fixed;
+  top: var(--navbar-height);
+  bottom: 0;
+  left: 0;
+  width: 240px;
+  padding: 1rem;
+  background: #fff;
+  border-right: 1px solid #ddd;
+  box-shadow: 2px 0 6px rgba(0,0,0,0.05);
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch; /* smooth scroll mobile */
+  max-height: calc(100vh - var(--navbar-height));
+}
+
 
 /* Mode minimized (desktop) */
 .sidebar.sidebar-minimized {
@@ -858,7 +890,7 @@ body.no-scroll {
 
 /* Optional: styling scrollbar (modern browsers) */
 .sidebar.sidebar-scroll::-webkit-scrollbar {
-    width: 10px;
+    width: 0;
 }
 .sidebar.sidebar-scroll::-webkit-scrollbar-thumb {
     background: rgba(0,0,0,0.12);

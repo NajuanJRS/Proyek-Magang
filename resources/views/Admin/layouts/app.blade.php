@@ -45,30 +45,26 @@
 
     {{-- Sidebar --}}
     @php
-        // Tentukan menu yang terbuka berdasarkan route
-        $openMenu = '';
-        if (request()->routeIs('admin.slider.index') || request()->routeIs('admin.mitra.index')) {
-            $openMenu = 'menuBeranda';
-        } elseif (request()->routeIs('admin.profile.index') || request()->routeIs('admin.pejabat.index') || request()->routeIs('admin.headerProfile.index')) {
-            $openMenu = 'menuProfil';
-        } elseif (request()->routeIs('admin.layanan.index') || request()->routeIs('admin.layanan.index')) {
-            $openMenu = 'menuLayanan';
-        } elseif (request()->routeIs('admin.headerBerita.index') || request()->routeIs('admin.kontenBerita.index')) {
-            $openMenu = 'menuBerita';
-        } elseif (request()->routeIs('admin.headerDownload.index') || request()->routeIs('admin.kontenDownload.index') || request()->routeIs('admin.fileDownload.index')) {
-            $openMenu = 'menuDownload';
-        } elseif (request()->routeIs('admin.headerPpid.index') || request()->routeIs('admin.ppid.index')) {
-            $openMenu = 'menuPPID';
-        } elseif (request()->routeIs('admin.headerKontak.index') || request()->routeIs('admin.kontenKontak.index')) {
-            $openMenu = 'menuKontak';
-        } elseif (request()->routeIs('admin.faq.index')) {
-            $openMenu = '';
-        } elseif (request()->routeIs('admin.kotakMasuk.index')) {
-            $openMenu = '';
-        }
+    $activeMenu = '';
+
+    if (request()->routeIs('admin.slider.index') || request()->routeIs('admin.mitra.index')) {
+        $activeMenu = 'menuBeranda';
+    } elseif (request()->routeIs('admin.profile.index') || request()->routeIs('admin.pejabat.index') || request()->routeIs('admin.headerProfile.index')) {
+        $activeMenu = 'menuProfil';
+    } elseif (request()->routeIs('admin.headerLayanan.index') || request()->routeIs('admin.layanan.index')) {
+        $activeMenu = 'menuLayanan';
+    } elseif (request()->routeIs('admin.headerBerita.index') || request()->routeIs('admin.berita.index')) {
+        $activeMenu = 'menuBerita';
+    } elseif (request()->routeIs('admin.headerDownload.index') || request()->routeIs('admin.kontenDownload.index') || request()->routeIs('admin.fileDownload.index')) {
+        $activeMenu = 'menuDownload';
+    } elseif (request()->routeIs('admin.headerPpid.index') || request()->routeIs('admin.ppid.index')) {
+        $activeMenu = 'menuPPID';
+    } elseif (request()->routeIs('admin.headerKontak.index') || request()->routeIs('admin.kontak.index')) {
+        $activeMenu = 'menuKontak';
+    }
     @endphp
 
-    <div class="sidebar" id="sidebarMenu">
+    <div class="sidebar" id="sidebarMenu" data-active-menu="{{ $activeMenu }}">
         <div class="admin-profile mb-3 d-flex align-items-center" style="margin-left:-15px;">
             <img src="{{ asset('img/admin.png') }}" alt="Admin" class="rounded-circle me-3" width="64"
                 height="64">
@@ -79,6 +75,14 @@
         </div>
         <p class="text-muted">Menu</p>
         <ul class="nav flex-column">
+
+            <!-- Dashboard -->
+            <li class="nav-item">
+                <a href="{{ route('admin.dashboard') }}"
+                class="nav-link d-flex justify-content-between align-items-center {{ request()->routeIs('admin.dashboard') ? 'active' : '' }}">
+                    <span><i class="bi bi-speedometer2"></i> Dashboard</span>
+                </a>
+            </li>
 
             <!-- Beranda -->
             <li class="nav-item">
@@ -144,7 +148,7 @@
 
             <!-- Berita -->
             <li class="nav-item">
-                <a class="nav-link d-flex justify-content-between align-items-center {{ request()->routeIs('admin.headerBerita.index') || request()->routeIs('admin.kontenBerita.index') ? 'active' : '' }}"
+                <a class="nav-link d-flex justify-content-between align-items-center {{ request()->routeIs('admin.headerBerita.index') || request()->routeIs('admin.berita.index') ? 'active' : '' }}"
                     data-bs-toggle="collapse" href="#menuBerita" role="button" aria-expanded="false"
                     aria-controls="menuBerita" onclick="toggleArrow(this)">
                     <span><i class="bi bi-newspaper"></i> Berita</span>
@@ -246,8 +250,8 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <script src="{{ asset('js/custom.js') }}"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="{{ asset('js/custom.js') }}"></script>
     <!-- Tambahkan script TinyMCE -->
     <script src="https://cdn.tiny.cloud/1/gn30cjhxbd9tmt6en4rk9379il5jrfkmkmajtm1qx0kamzvo/tinymce/6/tinymce.min.js"
         referrerpolicy="origin"></script>

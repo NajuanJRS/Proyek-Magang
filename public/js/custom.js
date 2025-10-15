@@ -141,6 +141,36 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 document.addEventListener("DOMContentLoaded", function () {
+
+    function closeAllDropdowns() {
+        document.querySelectorAll('.sidebar .collapse.show').forEach(menu => {
+            menu.classList.remove('show');
+        });
+        document.querySelectorAll('.sidebar [data-bs-toggle="collapse"]').forEach(trigger => {
+            trigger.setAttribute('aria-expanded', 'false');
+        });
+    }
+
+    // Tutup semua dropdown jika klik menu tanpa dropdown (seperti Dashboard, FAQ, Kotak Masuk)
+    document.querySelectorAll('.sidebar .nav-link:not([data-bs-toggle="collapse"])').forEach(link => {
+        link.addEventListener('click', () => {
+            setTimeout(closeAllDropdowns, 200);
+        });
+    });
+
+    // Pastikan juga saat route non-dropdown aktif, semua tertutup
+    const noDropdownRoutes = ['admin.dashboard', 'admin.faq.index', 'admin.kotakMasuk.index'];
+    const currentRoute = "{{ Route::currentRouteName() }}";
+
+    setTimeout(() => {
+        if (noDropdownRoutes.includes(currentRoute)) {
+            closeAllDropdowns();
+        }
+    }, 200);
+});
+
+
+document.addEventListener("DOMContentLoaded", function () {
     const body = document.querySelector("body");
     const toggleBtn = document.querySelector("[data-toggle='minimize']");
 
@@ -243,9 +273,44 @@ document.addEventListener("DOMContentLoaded", function () {
     document.getElementById('sidebarToggle').addEventListener('click', function () {
     document.getElementById('sidebarMenu').classList.toggle('hidden');
     document.querySelector('.content').classList.toggle('full');
+    });
+
+    document.addEventListener("DOMContentLoaded", function () {
+    const sidebar = document.getElementById("sidebarMenu");
+    const activeMenu = sidebar.getAttribute("data-active-menu");
+
+    // Tutup semua collapse
+    document.querySelectorAll(".sidebar .collapse.show").forEach(menu => {
+        menu.classList.remove("show");
+    });
+
+    // Jika ada menu aktif dari route, buka hanya menu tersebut
+    if (activeMenu) {
+        const activeElement = document.getElementById(activeMenu);
+        if (activeElement) {
+            activeElement.classList.add("show");
+            const trigger = document.querySelector(`[href="#${activeMenu}"]`);
+            if (trigger) trigger.setAttribute("aria-expanded", "true");
+        }
+    }
+
+    // Jika klik menu non-dropdown (Dashboard, FAQ, dll), tutup semua menu
+    document.querySelectorAll('.sidebar .nav-link:not([data-bs-toggle="collapse"])').forEach(link => {
+        link.addEventListener('click', () => {
+            sessionStorage.setItem('forceCloseMenu', 'true');
+        });
+    });
+
+    if (sessionStorage.getItem('forceCloseMenu') === 'true') {
+        sessionStorage.removeItem('forceCloseMenu');
+        document.querySelectorAll(".sidebar .collapse.show").forEach(menu => {
+            menu.classList.remove("show");
+        });
+    }
 });
 
-document.getElementById('sidebarToggle').addEventListener('click', function () {
+
+    document.getElementById('sidebarToggle').addEventListener('click', function () {
         document.querySelector('.navbar').classList.toggle('nav-collapsed');
     });
 
@@ -269,6 +334,8 @@ document.getElementById('sidebarToggle').addEventListener('click', function () {
         }
     });
 });
+
+
 
 (function () {
   document.addEventListener('DOMContentLoaded', function () {
@@ -332,32 +399,35 @@ document.getElementById('sidebarToggle').addEventListener('click', function () {
 
 (function () {
   function updateSidebarScroll() {
-    var sidebar = document.getElementById('sidebarMenu') || document.querySelector('.sidebar');
+    const sidebar = document.getElementById('sidebarMenu') || document.querySelector('.sidebar');
+    const navbar = document.querySelector('.navbar') || document.querySelector('.navbar-custom');
     if (!sidebar) return;
 
-    // Height of fixed navbar (adjust if different)
-    var navbarHeight = 65;
-    // compute available viewport height for sidebar
-    var available = window.innerHeight - navbarHeight;
-    // actual content height
-    var contentHeight = sidebar.scrollHeight;
+    // hitung tinggi navbar secara dinamis
+    const navbarHeight = (navbar && navbar.offsetHeight) ? navbar.offsetHeight : 56;
+    // atur CSS variable (supaya CSS calc mengikuti nilai real)
+    document.documentElement.style.setProperty('--navbar-height', navbarHeight + 'px');
 
-    if (contentHeight > available) {
+    // set langsung max-height inline (fallback untuk browser lama)
+    sidebar.style.maxHeight = `calc(100vh - ${navbarHeight}px)`;
+
+    // jika konten lebih tinggi dari area yang tersedia, aktifkan kelas sidebar-scroll
+    const available = window.innerHeight - navbarHeight;
+    if (sidebar.scrollHeight > available) {
       sidebar.classList.add('sidebar-scroll');
     } else {
       sidebar.classList.remove('sidebar-scroll');
     }
   }
 
-  // run on load and resize, and after DOM changes (mutation observer)
   document.addEventListener('DOMContentLoaded', updateSidebarScroll);
   window.addEventListener('resize', updateSidebarScroll);
+  window.addEventListener('orientationchange', updateSidebarScroll);
 
-  // if sidebar content can change dynamically (collapses, ajax), observe mutations
-  var sidebarEl = document.getElementById('sidebarMenu') || document.querySelector('.sidebar');
+  // observe perubahan DOM di sidebar (menu collapse buka/tutup, AJAX, dll)
+  const sidebarEl = document.getElementById('sidebarMenu') || document.querySelector('.sidebar');
   if (sidebarEl && window.MutationObserver) {
-    var mo = new MutationObserver(function () {
-      // small debounce
+    const mo = new MutationObserver(function () {
       clearTimeout(window.__updateSidebarTimer);
       window.__updateSidebarTimer = setTimeout(updateSidebarScroll, 120);
     });
