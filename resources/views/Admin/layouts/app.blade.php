@@ -62,7 +62,9 @@
         } elseif (request()->routeIs('admin.headerKontak.index') || request()->routeIs('admin.kontenKontak.index')) {
             $openMenu = 'menuKontak';
         } elseif (request()->routeIs('admin.faq.index')) {
-            $openMenu = ''; // FAQ tidak memiliki submenu
+            $openMenu = '';
+        } elseif (request()->routeIs('admin.kotakMasuk.index')) {
+            $openMenu = '';
         }
     @endphp
 
@@ -221,6 +223,14 @@
                 <a href="{{ route('admin.faq.index') }}"
                     class="nav-link d-flex justify-content-between align-items-center {{ request()->routeIs('admin.faq.index') ? 'active' : '' }}">
                     <span><i class="bi bi-question-circle"></i> FAQ</span>
+                </a>
+            </li>
+
+            <!-- Kotak Masuk -->
+            <li class="nav-item">
+                <a href="{{ route('admin.kotakMasuk.index') }}"
+                    class="nav-link d-flex justify-content-between align-items-center {{ request()->routeIs('admin.kotakMasuk.index') ? 'active' : '' }}">
+                    <span><i class="bi bi-inbox"></i> Kotak Masuk</span>
                 </a>
             </li>
 

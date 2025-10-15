@@ -112,8 +112,8 @@
                                         </tbody>
                                     </table>
                                 </div>
-                                <div class="mt-4">
-                                    {{ $slider->links() }}
+                                <div class="mt-4 d-flex justify-content-end">
+                                    {{ $slider->links('pagination::bootstrap-5') }}
                                 </div>
                             </div>
                         </div>

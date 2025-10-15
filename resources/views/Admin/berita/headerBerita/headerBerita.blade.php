@@ -87,9 +87,6 @@
                                         </tbody>
                                     </table>
                                 </div>
-                                <div class="mt-4">
-                                    {{ $headerBerita->links() }}
-                                </div>
                             </div>
                         </div>
                     </div>
