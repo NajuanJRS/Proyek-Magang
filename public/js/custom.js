@@ -1,548 +1,282 @@
-console.log('custom.js loaded');
-
-// ====== Hapus (SweetAlert2) ======
+// Fungsi Hapus Data dengan SweetAlert2
 window.deleteData = function (id) {
-  if (typeof Swal === 'undefined') {
-    // fallback kalau Swal belum termuat
-    if (confirm('Yakin ingin menghapus data ini?')) {
-      const form = document.getElementById('delete-form-' + id);
-      if (form) form.submit();
+    if (typeof Swal === 'undefined') {
+        if (confirm('Yakin ingin menghapus data ini?')) {
+            document.getElementById('delete-form-' + id)?.submit();
+        }
+        return;
     }
-    return;
-  }
-
-  Swal.fire({
-    title: 'Apakah Anda yakin?',
-    text: 'Data ini akan dihapus secara permanen!',
-    icon: 'warning',
-    showCancelButton: true,
-    confirmButtonColor: '#d33',
-    cancelButtonColor: '#3085d6',
-    confirmButtonText: 'Ya, Hapus!',
-    cancelButtonText: 'Batal'
-  }).then((result) => {
-    if (result.isConfirmed) {
-      const form = document.getElementById('delete-form-' + id);
-      if (form) form.submit();
-    }
-  });
+    Swal.fire({
+        title: 'Apakah Anda yakin?',
+        text: 'Data ini akan dihapus secara permanen!',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#d33',
+        cancelButtonColor: '#3085d6',
+        confirmButtonText: 'Ya, Hapus!',
+        cancelButtonText: 'Batal'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            document.getElementById('delete-form-' + id)?.submit();
+        }
+    });
 };
 
-// ====== Lihat Selengkapnya (SweetAlert2) ======
-document.addEventListener('click', function (e) {
-  const btn = e.target.closest('.see-more');
-  if (!btn) return;
-
-  const id = btn.getAttribute('data-id');
-  const title = btn.getAttribute('data-judul') || 'Detail Data';
-  const contentEl = document.getElementById('full-content-' + id);
-  const htmlContent = contentEl ? contentEl.innerHTML : '';
-
-  if (typeof Swal === 'undefined') {
-    console.error('SweetAlert2 belum dimuat!');
-    return;
-  }
-
-  Swal.fire({
-    title: title,
-    html: '<div style="text-align:left;max-height:60vh;overflow:auto;">' + htmlContent + '</div>',
-    width: 800,
-    confirmButtonText: 'Tutup'
-  });
-});
-
-// ====== TinyMCE (opsional) ======
-document.addEventListener('DOMContentLoaded', function () {
-  if (typeof tinymce !== 'undefined') {
-    tinymce.init({
-      selector: 'textarea.my-editor',
-      height: 400,
-      setup: function (editor) {
-        editor.on('change', function () {
-          tinymce.triggerSave(); // penting: sinkron ke <textarea>
-        });
-      }
-    });
-  }
-});
-
-// Search logic
-const searchInput = document.getElementById("searchInput");
-const tableRows = document.querySelectorAll("tbody tr");
-
-if (searchInput && tableRows) {
-    searchInput.addEventListener("input", function () {
-        const searchTerm = this.value.toLowerCase();
-
-        tableRows.forEach((row) => {
-            // ambil teks dari kolom ke-2, 3, dan 4 (indeks 1, 2, 3)
-            const cells = row.querySelectorAll("td");
-            const combinedText =
-                (cells[1]?.textContent.toLowerCase() || "")
-                + " " +
-                (cells[2]?.textContent.toLowerCase() || "");
-
-            if (searchTerm.length >= 3 && combinedText.includes(searchTerm)) {
-                row.style.display = "";
-            } else if (searchTerm.length < 3) {
-                row.style.display = "";
-            } else {
-                row.style.display = "none";
-            }
-        });
-    });
+// Fungsi Toggle Password
+function togglePassword() {
+    var pwd = document.getElementById('password');
+    var icon = document.getElementById('toggleIcon');
+    if (pwd.type === 'password') {
+        pwd.type = 'text';
+        icon.classList.remove('bi-eye-slash');
+        icon.classList.add('bi-eye');
+    } else {
+        pwd.type = 'password';
+        icon.classList.remove('bi-eye');
+        icon.classList.add('bi-eye-slash');
+    }
 }
 
-document.addEventListener("DOMContentLoaded", function () {
+// Fungsi Image Preview (untuk tambah & edit)
+function previewImage(event, previewId) {
+    const input = event.target;
+    const preview = document.getElementById(previewId);
+    if (input.files && input.files[0]) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            preview.src = e.target.result;
+            preview.style.display = 'block';
+        };
+        reader.readAsDataURL(input.files[0]);
+    } else {
+        preview.src = "#";
+        preview.style.display = 'none';
+    }
+}
+
+function previewEditImage(event, oldPreviewId, newPreviewId) {
+    const input = event.target;
+    const newPreview = document.getElementById(newPreviewId);
+    const oldPreview = document.getElementById(oldPreviewId);
+    if (input.files && input.files[0]) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            newPreview.src = e.target.result;
+            newPreview.style.display = 'block';
+            if (oldPreview) oldPreview.style.display = 'none';
+        };
+        reader.readAsDataURL(input.files[0]);
+    } else {
+        newPreview.src = "#";
+        newPreview.style.display = 'none';
+        if (oldPreview) oldPreview.style.display = 'block';
+    }
+}
+
+// ====== BAGIAN 2: LISTENER "LIHAT SELENGKAPNYA" ======
+document.addEventListener('click', function (e) {
+    const seeMoreBtn = e.target.closest('.see-more');
+    if (seeMoreBtn) {
+        e.preventDefault();
+        const id = seeMoreBtn.getAttribute('data-id');
+        const title = seeMoreBtn.getAttribute('data-judul') || 'Detail Data';
+        const contentEl = document.getElementById('full-content-' + id);
+        const htmlContent = contentEl ? contentEl.innerHTML : '';
+        if (typeof Swal !== 'undefined') {
+            Swal.fire({
+                title: title,
+                html: '<div style="text-align:left;max-height:60vh;overflow:auto;">' + htmlContent + '</div>',
+                width: 800,
+                confirmButtonText: 'Tutup'
+            });
+        }
+    }
+});
+
+    // PENTING: Hancurkan (dispose) instance Bootstrap Collapse lama untuk mencegah konflik
+    document.querySelectorAll('.sidebar .collapse').forEach(el => {
+        const instance = bootstrap.Collapse.getInstance(el);
+        if (instance) {
+            instance.dispose();
+        }
+    });
+
+    // 1. Inisialisasi TinyMCE
+    if (typeof tinymce !== 'undefined') {
+        tinymce.remove('textarea.my-editor');
+        tinymce.init({
+            selector: 'textarea.my-editor',
+            height: 400,
+            setup: function (editor) {
+                editor.on('change', function () { tinymce.triggerSave(); });
+            }
+        });
+    }
+
+    // 2. Inisialisasi Logika Spesifik Halaman (Search, Tombol Tambah)
+    const searchInput = document.getElementById("searchInput");
+    if (searchInput) {
+        const tableRows = document.querySelectorAll("tbody tr");
+        searchInput.addEventListener("input", function () {
+            const searchTerm = this.value.toLowerCase();
+            tableRows.forEach((row) => {
+                const cells = row.querySelectorAll("td");
+                const combinedText = (cells[1]?.textContent.toLowerCase() || "") + " " + (cells[2]?.textContent.toLowerCase() || "");
+                row.style.display = (searchTerm.length < 3 || combinedText.includes(searchTerm)) ? "" : "none";
+            });
+        });
+    }
+
     const btn2 = document.getElementById("toggle-tombol2");
-    const btn3 = document.getElementById("toggle-tombol3");
-    const tombol2 = document.getElementById("tombol2");
-    const tombol3 = document.getElementById("tombol3");
-
     if (btn2) {
+        const btn3 = document.getElementById("toggle-tombol3");
+        const tombol2 = document.getElementById("tombol2");
+        const tombol3 = document.getElementById("tombol3");
         btn2.addEventListener("click", function () {
-            if (tombol2.style.display === "none" || tombol2.style.display === "") {
-                // buka berita 2
-                tombol2.style.display = "block";
-                btn2.innerText = "− Tutup 2";
-            } else {
-                // tutup tombol 2 dan otomatis tutup tombol 3
-                tombol2.style.display = "none";
-                btn2.innerText = "+ Tambah 2";
-
-                tombol3.style.display = "none"; // otomatis tertutup
+            const isTombol2Hidden = tombol2.style.display === "none" || tombol2.style.display === "";
+            tombol2.style.display = isTombol2Hidden ? "block" : "none";
+            btn2.innerText = isTombol2Hidden ? "− Tutup 2" : "+ Tambah 2";
+            if (!isTombol2Hidden) {
+                tombol3.style.display = "none";
                 if (btn3) btn3.innerText = "+ Tambah 3";
             }
         });
-    }
-
-    if (btn3) {
-        btn3.addEventListener("click", function () {
-            if (tombol3.style.display === "none" || tombol3.style.display === "") {
-                tombol3.style.display = "block";
-                btn3.innerText = "− Tutup 3";
-            } else {
-                tombol3.style.display = "none";
-                btn3.innerText = "+ Tambah 3";
-            }
-        });
-    }
-});
-
-document.addEventListener("DOMContentLoaded", function () {
-    const toggleBtn = document.querySelector(".navbar-toggler");
-    const sidebar = document.querySelector(".sidebar");
-
-    if (toggleBtn && sidebar) {
-        toggleBtn.addEventListener("click", function () {
-            sidebar.classList.toggle("active");
-        });
-    }
-});
-
-document.addEventListener("DOMContentLoaded", function () {
-
-    function closeAllDropdowns() {
-        document.querySelectorAll('.sidebar .collapse.show').forEach(menu => {
-            menu.classList.remove('show');
-        });
-        document.querySelectorAll('.sidebar [data-bs-toggle="collapse"]').forEach(trigger => {
-            trigger.setAttribute('aria-expanded', 'false');
-        });
-    }
-
-    // Tutup semua dropdown jika klik menu tanpa dropdown (seperti Dashboard, FAQ, Kotak Masuk)
-    document.querySelectorAll('.sidebar .nav-link:not([data-bs-toggle="collapse"])').forEach(link => {
-        link.addEventListener('click', () => {
-            setTimeout(closeAllDropdowns, 200);
-        });
-    });
-
-    // Pastikan juga saat route non-dropdown aktif, semua tertutup
-    const noDropdownRoutes = ['admin.dashboard', 'admin.faq.index', 'admin.kotakMasuk.index'];
-    const currentRoute = "{{ Route::currentRouteName() }}";
-
-    setTimeout(() => {
-        if (noDropdownRoutes.includes(currentRoute)) {
-            closeAllDropdowns();
-        }
-    }, 200);
-});
-
-
-document.addEventListener("DOMContentLoaded", function () {
-    const body = document.querySelector("body");
-    const toggleBtn = document.querySelector("[data-toggle='minimize']");
-
-    if (toggleBtn) {
-        toggleBtn.addEventListener("click", function () {
-            if (body.classList.contains("sidebar-icon-only")) {
-                body.classList.remove("sidebar-icon-only");
-            } else {
-                body.classList.add("sidebar-icon-only");
-            }
-        });
-    }
-});
-
-    document.addEventListener('DOMContentLoaded', function() {
-        var btn = document.getElementById('sidebarToggle');
-        if (btn) {
-            btn.onclick = function() {
-                var sidebar = document.querySelector('.sidebar');
-                if (sidebar) {
-                    sidebar.classList.toggle('sidebar-icon-only');
-                }
-                var content = document.querySelector('.content');
-                if (content) {
-                    content.classList.toggle('sidebar-minimized');
-                }
-            };
-        }
-    });
-
-    function togglePassword() {
-            var pwd = document.getElementById('password');
-            var icon = document.getElementById('toggleIcon');
-            if (pwd.type === 'password') {
-                pwd.type = 'text';
-                icon.classList.remove('bi-eye-slash');
-                icon.classList.add('bi-eye');
-            } else {
-                pwd.type = 'password';
-                icon.classList.remove('bi-eye');
-                icon.classList.add('bi-eye-slash');
-            }
-        }
-
-        function previewImage(event, previewId) {
-        const input = event.target;
-        const preview = document.getElementById(previewId);
-
-        if (input.files && input.files[0]) {
-            const reader = new FileReader();
-
-            reader.onload = function(e) {
-                preview.src = e.target.result;
-                preview.style.display = 'block';
-            };
-
-            reader.readAsDataURL(input.files[0]);
-        } else {
-            preview.src = "#";
-            preview.style.display = 'none';
-        }
-    }
-
-     function previewEditImage(event, oldPreviewId, newPreviewId) {
-        const input = event.target;
-        const newPreview = document.getElementById(newPreviewId);
-        const oldPreview = document.getElementById(oldPreviewId);
-
-        if (input.files && input.files[0]) {
-            const reader = new FileReader();
-
-            reader.onload = function(e) {
-                // Tampilkan gambar baru
-                newPreview.src = e.target.result;
-                newPreview.style.display = 'block';
-                newPreview.style.border = '1px solid #ddd';
-                newPreview.style.borderRadius = '8px';
-                newPreview.style.padding = '4px';
-                newPreview.style.maxWidth = '200px';
-                newPreview.style.marginTop = '10px';
-
-                // Sembunyikan gambar lama jika ada
-                if (oldPreview) {
-                    oldPreview.style.display = 'none';
-                }
-            };
-
-            reader.readAsDataURL(input.files[0]);
-        } else {
-            // Jika batal memilih file, kembalikan kondisi awal
-            newPreview.src = "#";
-            newPreview.style.display = 'none';
-
-            if (oldPreview) {
-                oldPreview.style.display = 'block';
-            }
-        }
-    }
-
-    document.getElementById('sidebarToggle').addEventListener('click', function () {
-    document.getElementById('sidebarMenu').classList.toggle('hidden');
-    document.querySelector('.content').classList.toggle('full');
-    });
-
-    document.addEventListener("DOMContentLoaded", function () {
-    const sidebar = document.getElementById("sidebarMenu");
-    const activeMenu = sidebar.getAttribute("data-active-menu");
-
-    // Tutup semua collapse
-    document.querySelectorAll(".sidebar .collapse.show").forEach(menu => {
-        menu.classList.remove("show");
-    });
-
-    // Jika ada menu aktif dari route, buka hanya menu tersebut
-    if (activeMenu) {
-        const activeElement = document.getElementById(activeMenu);
-        if (activeElement) {
-            activeElement.classList.add("show");
-            const trigger = document.querySelector(`[href="#${activeMenu}"]`);
-            if (trigger) trigger.setAttribute("aria-expanded", "true");
-        }
-    }
-
-    // Jika klik menu non-dropdown (Dashboard, FAQ, dll), tutup semua menu
-    document.querySelectorAll('.sidebar .nav-link:not([data-bs-toggle="collapse"])').forEach(link => {
-        link.addEventListener('click', () => {
-            sessionStorage.setItem('forceCloseMenu', 'true');
-        });
-    });
-
-    if (sessionStorage.getItem('forceCloseMenu') === 'true') {
-        sessionStorage.removeItem('forceCloseMenu');
-        document.querySelectorAll(".sidebar .collapse.show").forEach(menu => {
-            menu.classList.remove("show");
-        });
-    }
-});
-
-
-    document.getElementById('sidebarToggle').addEventListener('click', function () {
-        document.querySelector('.navbar').classList.toggle('nav-collapsed');
-    });
-
-   document.addEventListener('DOMContentLoaded', function () {
-    const sidebar = document.getElementById('sidebarMenu');
-    const sidebarToggle = document.getElementById('sidebarToggle');
-    const logoFull = document.getElementById('logoFull');
-    const logoMini = document.getElementById('logoMini');
-
-    sidebarToggle.addEventListener('click', function () {
-        sidebar.classList.toggle('sidebar-minimized');
-
-        if (sidebar.classList.contains('sidebar-minimized')) {
-            // tampilkan logo mini
-            logoFull.classList.add('d-none');
-            logoMini.classList.remove('d-none');
-        } else {
-            // tampilkan logo full
-            logoFull.classList.remove('d-none');
-            logoMini.classList.add('d-none');
-        }
-    });
-});
-
-
-
-(function () {
-  document.addEventListener('DOMContentLoaded', function () {
-    const sidebar = document.getElementById('sidebarMenu') || document.querySelector('.sidebar');
-    const mobileBtn = document.getElementById('mobileSidebarToggle') || document.querySelector('.navbar-toggler');
-    if (!sidebar || !mobileBtn) return;
-
-    function createBackdrop() {
-      let b = document.querySelector('.sidebar-backdrop');
-      if (!b) {
-        b = document.createElement('div');
-        b.className = 'sidebar-backdrop';
-        document.body.appendChild(b);
-        b.addEventListener('click', closeMobileSidebar);
-      }
-      return b;
-    }
-
-    function openMobileSidebar() {
-      if (window.innerWidth >= 992) return;
-      sidebar.classList.add('show');
-      document.body.classList.add('no-scroll');
-      document.body.classList.add('mobile-sidebar-open'); // <-- add class to trigger logo animation
-      const b = createBackdrop();
-      // small delay so transition works consistently
-      requestAnimationFrame(() => b.classList.add('show'));
-      mobileBtn.setAttribute('aria-expanded', 'true');
-    }
-
-    function closeMobileSidebar() {
-      if (window.innerWidth >= 992) return;
-      sidebar.classList.remove('show');
-      document.body.classList.remove('no-scroll');
-      document.body.classList.remove('mobile-sidebar-open'); // <-- remove class
-      const b = document.querySelector('.sidebar-backdrop');
-      if (b) {
-        b.classList.remove('show');
-        setTimeout(() => { if (b.parentNode) b.parentNode.removeChild(b); }, 300);
-      }
-      mobileBtn.setAttribute('aria-expanded', 'false');
-    }
-
-    mobileBtn.addEventListener('click', function (e) {
-      if (window.innerWidth >= 992) return;
-      if (sidebar.classList.contains('show')) closeMobileSidebar();
-      else openMobileSidebar();
-    });
-
-    // ensure mobile sidebar closed when resizing to desktop
-    window.addEventListener('resize', function () {
-      if (window.innerWidth >= 992) {
-        sidebar.classList.remove('show');
-        document.body.classList.remove('no-scroll');
-        document.body.classList.remove('mobile-sidebar-open'); // cleanup
-        const b = document.querySelector('.sidebar-backdrop');
-        if (b) b.remove();
-      }
-    });
-  });
-})();
-
-(function () {
-  function updateSidebarScroll() {
-    const sidebar = document.getElementById('sidebarMenu') || document.querySelector('.sidebar');
-    const navbar = document.querySelector('.navbar') || document.querySelector('.navbar-custom');
-    if (!sidebar) return;
-
-    // hitung tinggi navbar secara dinamis
-    const navbarHeight = (navbar && navbar.offsetHeight) ? navbar.offsetHeight : 56;
-    // atur CSS variable (supaya CSS calc mengikuti nilai real)
-    document.documentElement.style.setProperty('--navbar-height', navbarHeight + 'px');
-
-    // set langsung max-height inline (fallback untuk browser lama)
-    sidebar.style.maxHeight = `calc(100vh - ${navbarHeight}px)`;
-
-    // jika konten lebih tinggi dari area yang tersedia, aktifkan kelas sidebar-scroll
-    const available = window.innerHeight - navbarHeight;
-    if (sidebar.scrollHeight > available) {
-      sidebar.classList.add('sidebar-scroll');
-    } else {
-      sidebar.classList.remove('sidebar-scroll');
-    }
-  }
-
-  document.addEventListener('DOMContentLoaded', updateSidebarScroll);
-  window.addEventListener('resize', updateSidebarScroll);
-  window.addEventListener('orientationchange', updateSidebarScroll);
-
-  // observe perubahan DOM di sidebar (menu collapse buka/tutup, AJAX, dll)
-  const sidebarEl = document.getElementById('sidebarMenu') || document.querySelector('.sidebar');
-  if (sidebarEl && window.MutationObserver) {
-    const mo = new MutationObserver(function () {
-      clearTimeout(window.__updateSidebarTimer);
-      window.__updateSidebarTimer = setTimeout(updateSidebarScroll, 120);
-    });
-    mo.observe(sidebarEl, { childList: true, subtree: true, attributes: true });
-  }
-})();
-
-// Toggle arrow direction for dropdown menus
-function toggleArrow(element) {
-    const arrow = element.querySelector('.arrow-icon');
-    const expanded = element.getAttribute('aria-expanded') === 'true';
-    if (expanded) {
-        arrow.classList.add('bi-chevron-up');
-        arrow.classList.remove('bi-chevron-down');
-    } else {
-        arrow.classList.add('bi-chevron-down');
-        arrow.classList.remove('bi-chevron-up');
-    }
-}
-
-// Sync arrow on collapse events for all dropdown menus
-document.addEventListener('DOMContentLoaded', function () {
-    // Select all collapse triggers and collapse elements
-    const triggers = document.querySelectorAll('[data-bs-toggle="collapse"]');
-    triggers.forEach(function (trigger) {
-        const targetSelector = trigger.getAttribute('data-bs-target') || trigger.getAttribute('href');
-        const collapse = document.querySelector(targetSelector);
-
-        if (!collapse) return;
-
-        collapse.addEventListener('show.bs.collapse', function () {
-            // Reset all arrows to down except the current one
-            triggers.forEach(function (t) {
-                const arrow = t.querySelector('.arrow-icon');
-                if (arrow) {
-                    arrow.classList.add('bi-chevron-down');
-                    arrow.classList.remove('bi-chevron-up');
-                }
-                t.setAttribute('aria-expanded', 'false');
+        if (btn3) {
+            btn3.addEventListener("click", function () {
+                const isTombol3Hidden = tombol3.style.display === "none" || tombol3.style.display === "";
+                tombol3.style.display = isTombol3Hidden ? "block" : "none";
+                btn3.innerText = isTombol3Hidden ? "− Tutup 3" : "+ Tambah 3";
             });
-            // Set current arrow to up
-            const arrow = trigger.querySelector('.arrow-icon');
-            if (arrow) {
-                arrow.classList.add('bi-chevron-up');
-                arrow.classList.remove('bi-chevron-down');
-            }
-            trigger.setAttribute('aria-expanded', 'true');
-        });
-
-        collapse.addEventListener('hide.bs.collapse', function () {
-            const arrow = trigger.querySelector('.arrow-icon');
-            if (arrow) {
-                arrow.classList.add('bi-chevron-down');
-                arrow.classList.remove('bi-chevron-up');
-            }
-            trigger.setAttribute('aria-expanded', 'false');
-        });
-    });
-});
-
-document.addEventListener('DOMContentLoaded', function () {
-  const triggers = document.querySelectorAll('[data-bs-toggle="collapse"]');
-
-  function closeAllExcept(menuToKeep) {
-    document.querySelectorAll('.collapse').forEach(menu => {
-      if (menu !== menuToKeep) {
-        menu.classList.remove('show');
-        localStorage.setItem(menu.id, 'hide');
-        // update arrow
-        const trigger = document.querySelector(`[href="#${menu.id}"], [data-bs-target="#${menu.id}"]`);
-        if (trigger) trigger.querySelector('.arrow-icon')?.classList.remove('rotate');
-      }
-    });
-  }
-
-  // Restore state on load
-  let openedMenu = null;
-  triggers.forEach(trigger => {
-    const targetSelector = trigger.getAttribute('data-bs-target') || trigger.getAttribute('href');
-    const menu = document.querySelector(targetSelector);
-    if (!menu) return;
-
-    const menuId = menu.id;
-    const state = localStorage.getItem(menuId);
-
-    // Jika ada link aktif, buka menu ini
-    if (menu.querySelector('.nav-link.active')) {
-      new bootstrap.Collapse(menu, { toggle: true });
-      localStorage.setItem(menuId, 'show');
-      openedMenu = menu;
-    } else if (!openedMenu && state === 'show') {
-      // Kalau tidak ada menu aktif, gunakan localStorage
-      new bootstrap.Collapse(menu, { toggle: true });
-      openedMenu = menu;
-    } else {
-      new bootstrap.Collapse(menu, { toggle: false });
+        }
     }
-  });
 
-  // Tutup semua selain yang terbuka
-  if (openedMenu) closeAllExcept(openedMenu);
+    // 3. Inisialisasi Logika Final untuk Sidebar
+    const sidebar = document.getElementById('sidebarMenu');
+    if (sidebar) {
+        const activeMenuId = sidebar.getAttribute('data-active-menu');
+        sidebar.style.overflowY = 'hidden';
 
-  // Listener show/hide
-  document.querySelectorAll('.collapse').forEach(menu => {
-    menu.addEventListener('shown.bs.collapse', function () {
-      localStorage.setItem(menu.id, 'show');
-      closeAllExcept(menu);
-      const trigger = document.querySelector(`[href="#${menu.id}"], [data-bs-target="#${menu.id}"]`);
-      if (trigger) trigger.querySelector('.arrow-icon')?.classList.add('rotate');
-    });
-    menu.addEventListener('hidden.bs.collapse', function () {
-      localStorage.setItem(menu.id, 'hide');
-      const trigger = document.querySelector(`[href="#${menu.id}"], [data-bs-target="#${menu.id}"]`);
-      if (trigger) trigger.querySelector('.arrow-icon')?.classList.remove('rotate');
-    });
-  });
-});
+        const collapseElements = document.querySelectorAll('.sidebar .collapse');
+        const collapseInstances = Array.from(collapseElements).map(el => {
+            return new bootstrap.Collapse(el, { toggle: false });
+        });
+
+        collapseInstances.forEach(instance => {
+            const menuElement = instance._element;
+            const trigger = document.querySelector(`a[href="#${menuElement.id}"]`);
+            const arrow = trigger ? trigger.querySelector('.arrow-icon') : null;
+
+            if (menuElement.id === activeMenuId) {
+                if (arrow) {
+                    arrow.classList.remove('bi-chevron-down');
+                    arrow.classList.add('bi-chevron-up');
+                }
+                setTimeout(() => { instance.show(); }, 10);
+            } else {
+                instance.hide();
+                if (arrow) {
+                    arrow.classList.remove('bi-chevron-up');
+                    arrow.classList.add('bi-chevron-down');
+                }
+            }
+        });
+
+        document.querySelectorAll('.sidebar [data-bs-toggle="collapse"]').forEach(trigger => {
+            const targetMenu = document.querySelector(trigger.getAttribute('href'));
+            if (!targetMenu) return;
+
+            targetMenu.addEventListener('show.bs.collapse', function () {
+                const arrow = trigger.querySelector('.arrow-icon');
+                if (arrow) {
+                    arrow.classList.remove('bi-chevron-down');
+                    arrow.classList.add('bi-chevron-up');
+                }
+            });
+
+            targetMenu.addEventListener('hide.bs.collapse', function () {
+                const arrow = trigger.querySelector('.arrow-icon');
+                if (arrow) {
+                    arrow.classList.remove('bi-chevron-up');
+                    arrow.classList.add('bi-chevron-down');
+                }
+            });
+
+            targetMenu.addEventListener('shown.bs.collapse', function () {
+                sidebar.style.overflowY = 'auto';
+            });
+        });
+
+        const activeDropdown = document.querySelector(`.collapse#${activeMenuId}`);
+        if (!activeDropdown) {
+             setTimeout(() => { sidebar.style.overflowY = 'auto'; }, 100);
+        }
+
+        const sidebarToggle = document.getElementById('sidebarToggle');
+        if (sidebarToggle) {
+             sidebarToggle.addEventListener('click', function() {
+                document.body.classList.toggle('sidebar-is-minimized');
+                sidebar.classList.toggle('sidebar-minimized');
+                document.querySelector('.content').classList.toggle('sidebar-minimized');
+                const isMinimized = sidebar.classList.contains('sidebar-minimized');
+                document.getElementById('logoFull').classList.toggle('d-none', isMinimized);
+                document.getElementById('logoMini').classList.toggle('d-none', !isMinimized);
+            });
+        }
+
+        const mobileSidebarToggle = document.getElementById('mobileSidebarToggle');
+        if (mobileSidebarToggle) {
+            let backdrop = null;
+
+            const openMobileSidebar = () => {
+                if (window.innerWidth >= 992) return;
+                sidebar.classList.add('show');
+                document.body.classList.add('no-scroll');
+                if (!backdrop) {
+                    backdrop = document.createElement('div');
+                    backdrop.className = 'sidebar-backdrop';
+                    document.body.appendChild(backdrop);
+                    backdrop.addEventListener('click', closeMobileSidebar);
+                }
+                setTimeout(() => backdrop.classList.add('show'), 10);
+            };
+
+            const closeMobileSidebar = () => {
+                if (window.innerWidth >= 992) return;
+                sidebar.classList.remove('show');
+                document.body.classList.remove('no-scroll');
+                if (backdrop) {
+                    backdrop.classList.remove('show');
+                    setTimeout(() => {
+                        backdrop.remove();
+                        backdrop = null;
+                    }, 300);
+                }
+            };
+
+            mobileSidebarToggle.addEventListener('click', function() {
+                if (sidebar.classList.contains('show')) {
+                    closeMobileSidebar();
+                } else {
+                    openMobileSidebar();
+                }
+            });
+
+            window.addEventListener('resize', function() {
+                if (window.innerWidth >= 992) {
+                    closeMobileSidebar();
+                }
+            });
+        }
+
+        // Logika Hover-to-expand saat minimized
+        sidebar.addEventListener('click', function(event) {
+            if (sidebar.classList.contains('sidebar-minimized')) {
+                const trigger = event.target.closest('[data-bs-toggle="collapse"]');
+                if (trigger) {
+                    event.preventDefault();
+                    event.stopPropagation();
+                }
+            }
+        });
+    }
 

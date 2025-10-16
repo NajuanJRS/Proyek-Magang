@@ -5,6 +5,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dinsos Prov Kalsel</title>
+    <!-- Tambahkan script TinyMCE -->
+    <script src="https://cdn.tiny.cloud/1/gn30cjhxbd9tmt6en4rk9379il5jrfkmkmajtm1qx0kamzvo/tinymce/6/tinymce.min.js"
+        referrerpolicy="origin"></script>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="{{ asset('css/style.css') }}">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
@@ -47,7 +50,9 @@
     @php
     $activeMenu = '';
 
-    if (request()->routeIs('admin.slider.index') || request()->routeIs('admin.mitra.index')) {
+    if (request()->routeIs('admin.dashboard')) {
+        $activeMenu = 'dashboard';
+    } elseif (request()->routeIs('admin.slider.index') || request()->routeIs('admin.mitra.index')) {
         $activeMenu = 'menuBeranda';
     } elseif (request()->routeIs('admin.profile.index') || request()->routeIs('admin.pejabat.index') || request()->routeIs('admin.headerProfile.index')) {
         $activeMenu = 'menuProfil';
@@ -61,6 +66,12 @@
         $activeMenu = 'menuPPID';
     } elseif (request()->routeIs('admin.headerKontak.index') || request()->routeIs('admin.kontak.index')) {
         $activeMenu = 'menuKontak';
+    } elseif (request()->routeIs('admin.faq.index')) {
+        $activeMenu = 'faq';
+    } elseif (request()->routeIs('admin.kotakMasuk.index')) {
+        $activeMenu = 'kotakMasuk';
+    } else {
+        $activeMenu = '';
     }
     @endphp
 
@@ -88,7 +99,7 @@
             <li class="nav-item">
                 <a class="nav-link d-flex justify-content-between align-items-center {{ request()->routeIs('admin.slider.index') || request()->routeIs('admin.mitra.index') ? 'active' : '' }}"
                     data-bs-toggle="collapse" href="#menuBeranda" role="button" aria-expanded="false"
-                    aria-controls="menuBeranda" onclick="toggleArrow(this)">
+                    aria-controls="menuBeranda">
                     <span><i class="bi bi-house"></i> Beranda</span>
                     <i class="bi bi-chevron-down small arrow-icon"></i>
                 </a>
@@ -108,7 +119,7 @@
             <li class="nav-item">
                 <a class="nav-link d-flex justify-content-between align-items-center {{ request()->routeIs('admin.headerProfile.index') || request()->routeIs('admin.pejabat.index') || request()->routeIs('admin.profile.index') ? 'active' : '' }}"
                     data-bs-toggle="collapse" href="#menuProfil" role="button" aria-expanded="false"
-                    aria-controls="menuProfil" onclick="toggleArrow(this)">
+                    aria-controls="menuProfil">
                     <span><i class="bi bi-person"></i> Profil</span>
                     <i class="bi bi-chevron-down small arrow-icon"></i>
                 </a>
@@ -131,7 +142,7 @@
             <li class="nav-item">
                 <a class="nav-link d-flex justify-content-between align-items-center {{ request()->routeIs('admin.headerLayanan.index') || request()->routeIs('admin.layanan.index') ? 'active' : '' }}"
                     data-bs-toggle="collapse" href="#menuLayanan" role="button" aria-expanded="false"
-                    aria-controls="menuLayanan" onclick="toggleArrow(this)">
+                    aria-controls="menuLayanan">
                     <span><i class="bi bi-file-earmark-text"></i> Layanan</span>
                     <i class="bi bi-chevron-down small arrow-icon"></i>
                 </a>
@@ -150,7 +161,7 @@
             <li class="nav-item">
                 <a class="nav-link d-flex justify-content-between align-items-center {{ request()->routeIs('admin.headerBerita.index') || request()->routeIs('admin.berita.index') ? 'active' : '' }}"
                     data-bs-toggle="collapse" href="#menuBerita" role="button" aria-expanded="false"
-                    aria-controls="menuBerita" onclick="toggleArrow(this)">
+                    aria-controls="menuBerita">
                     <span><i class="bi bi-newspaper"></i> Berita</span>
                     <i class="bi bi-chevron-down small arrow-icon"></i>
                 </a>
@@ -169,7 +180,7 @@
             <li class="nav-item">
                 <a class="nav-link d-flex justify-content-between align-items-center {{ request()->routeIs('admin.headerDownload.index') || request()->routeIs('admin.kontenDownload.index') || request()->routeIs('admin.fileDownload.index') ? 'active' : '' }}"
                     data-bs-toggle="collapse" href="#menuDownload" role="button" aria-expanded="false"
-                    aria-controls="menuDownload" onclick="toggleArrow(this)">
+                    aria-controls="menuDownload">
                     <span><i class="bi bi-download"></i> Download</span>
                     <i class="bi bi-chevron-down small arrow-icon"></i>
                 </a>
@@ -188,7 +199,7 @@
             <li class="nav-item">
                 <a class="nav-link d-flex justify-content-between align-items-center {{ request()->routeIs('admin.headerPpid.index') || request()->routeIs('admin.ppid.index') ? 'active' : '' }}"
                     data-bs-toggle="collapse" href="#menuPPID" role="button" aria-expanded="false"
-                    aria-controls="menuPPID" onclick="toggleArrow(this)">
+                    aria-controls="menuPPID">
                     <span><i class="bi bi-people"></i> PPID</span>
                     <i class="bi bi-chevron-down small arrow-icon"></i>
                 </a>
@@ -207,7 +218,7 @@
             <li class="nav-item">
                 <a class="nav-link d-flex justify-content-between align-items-center {{ request()->routeIs('admin.headerKontak.index') || request()->routeIs('admin.kontak.index') ? 'active' : '' }}"
                     data-bs-toggle="collapse" href="#menuKontak" role="button" aria-expanded="false"
-                    aria-controls="menuKontak" onclick="toggleArrow(this)">
+                    aria-controls="menuKontak">
                     <span><i class="bi bi-envelope"></i> Kontak</span>
                     <i class="bi bi-chevron-down small arrow-icon"></i>
                 </a>
@@ -252,9 +263,7 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     <script src="{{ asset('js/custom.js') }}"></script>
-    <!-- Tambahkan script TinyMCE -->
-    <script src="https://cdn.tiny.cloud/1/gn30cjhxbd9tmt6en4rk9379il5jrfkmkmajtm1qx0kamzvo/tinymce/6/tinymce.min.js"
-        referrerpolicy="origin"></script>
+
 </body>
 
 </html>
