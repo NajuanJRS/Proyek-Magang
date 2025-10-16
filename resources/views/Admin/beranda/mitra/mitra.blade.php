@@ -103,8 +103,8 @@
                                         </tbody>
                                     </table>
                                 </div>
-                                <div class="mt-4">
-                                    {{ $mitra->links() }}
+                                <div class="mt-4 d-flex justify-content-end">
+                                    {{ $mitra->links('pagination::bootstrap-5') }}
                                 </div>
                             </div>
                         </div>

@@ -87,9 +87,6 @@
                                         </tbody>
                                     </table>
                                 </div>
-                                <div class="mt-4">
-                                    {{ $headerPpid->links() }}
-                                </div>
                             </div>
                         </div>
                     </div>

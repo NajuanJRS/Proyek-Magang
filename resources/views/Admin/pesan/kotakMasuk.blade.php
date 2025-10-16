@@ -1,17 +1,14 @@
-<!DOCTYPE html>
-<html lang="en">
+@extends('admin.layouts.app')
 
-<body>
-    <div class="container-scroller">
-
-        @include('Admin.navigasi.adminNavigasi')
-        @include('Admin.sidebar.sidebar')
-        <div class="main-panel">
+@section('content')
+    <div class="container py-4">
+        <div class="row justify-content-center">
             <div class="content-wrapper">
                 <div class="row">
-                    <div class="col-lg-12 grid-margin stretch-card">
-                        <div class="card">
-                            <div class="card-body">
+                    <div class="col-xl-12 col-lg-11">
+                        <div class="card shadow-sm rounded-4">
+                            <div class="card-body px-4 py-4">
+
 
                                 <div class="d-flex justify-content-between align-items-center mb-4">
                                     <h4 class="card-title mb-0">Kotak Masuk Pesan</h4>
@@ -21,9 +18,9 @@
                                     <form action="{{ route('admin.kotakMasuk.index') }}" method="GET" style="width: 270px;">
                                         <div class="input-group input-group-sm">
                                             <input type="text" id="searchInput" class="form-control"
-                                                placeholder="Cari" name="search">
-                                            <button class="btn btn-gradient-primary" type="submit">
-                                                <i class="mdi mdi-magnify"></i>
+                                                placeholder="Cari Pesan..." name="search">
+                                            <button class="btn btn-info" type="submit">
+                                                <i class="bi bi-search"></i>
                                             </button>
                                         </div>
                                     </form>
@@ -51,7 +48,8 @@
                                             <td>{{ $k->isi_pesan }}</td>
                                             <td>{{ $k->tgl_kirim }}</td>
                                             <td class="text-center">
-                                                <a href="#" class="btn btn-gradient-danger btn-sm" onclick="deleteData('{{ $k->id_kotak }}')" title="Hapus"><i class="mdi mdi-delete"></i></a>
+                                                <a href="#" class="btn btn-danger btn-sm" onclick="deleteData('{{ $k->id_kotak }}')" title="Hapus">
+                                                    <i class="bi bi-trash"></i> Hapus</a>
                                                 <form id="delete-form-{{ $k->id_kotak }}"
                                                     action="{{ route('admin.kotakMasuk.destroy', $k->id_kotak) }}"
                                                     method="POST" style="display: none;">
@@ -68,23 +66,14 @@
                                     </tbody>
                                 </table>
                                 </div>
-                                <div class="mt-4">
-                                    {{ $kotakMasuk->links() }}
+                                <div class="mt-4 d-flex justify-content-end">
+                                    {{ $kotakMasuk->links('pagination::bootstrap-5') }}
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-            <footer class="footer">
-                <div class="d-sm-flex justify-content-center justify-content-sm-between">
-                    <span class="text-muted text-center text-sm-left d-block d-sm-inline-block">Copyright © 2023 <a href="https://www.bootstrapdash.com/" target="_blank">BootstrapDash</a>. All rights reserved.</span>
-                    <span class="float-none float-sm-right d-block mt-1 mt-sm-0 text-center">Hand-crafted & made with <i class="mdi mdi-heart text-danger"></i></span>
-                </div>
-            </footer>
         </div>
     </div>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <script src="{{ asset('js/custom.js') }}"></script>
-</body>
-</html>
+@endsection

@@ -87,9 +87,6 @@
                                         </tbody>
                                     </table>
                                 </div>
-                                <div class="mt-4">
-                                    {{ $headerProfile->links() }}
-                                </div>
                             </div>
                         </div>
                     </div>

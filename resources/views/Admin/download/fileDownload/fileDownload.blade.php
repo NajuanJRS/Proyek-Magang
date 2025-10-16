@@ -103,10 +103,9 @@
                                     </table>
                                 </div>
 
-                                <div class="mt-4">
-                                    {{ $download->links() }}
+                                <div class="mt-4 d-flex justify-content-end">
+                                    {{ $download->links('pagination::bootstrap-5') }}
                                 </div>
-
                             </div>
                         </div>
                     </div>

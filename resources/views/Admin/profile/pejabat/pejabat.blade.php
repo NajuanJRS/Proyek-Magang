@@ -164,9 +164,9 @@
                                         </tbody>
                                     </table>
 
-                                    <div class="mt-4">
-                                        {{ $pejabat->links() }}
-                                    </div>
+                                    <div class="mt-4 d-flex justify-content-end">
+                                    {{ $pejabat->links('pagination::bootstrap-5') }}
+                                </div>
                                 </div>
 
                             </div>
