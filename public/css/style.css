@@ -928,15 +928,3 @@ body.no-scroll {
             color: #0d6efd !important; /* Bootstrap primary blue */
             font-weight: 600;
         }
-
-/* EFEK VISUAL SAAT TURBOLINKS LOADING */
-.turbolinks-progress-bar {
-  height: 3px;
-  background-color: #0d6efd; /* Warna biru, sesuaikan dengan tema Anda */
-}
-
-/* Efek fade out-in pada konten saat berganti halaman */
-html.turbolinks-visit .content {
-  opacity: 0.5;
-  transition: opacity 0.2s ease-out;
-}
