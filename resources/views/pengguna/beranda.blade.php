@@ -195,6 +195,46 @@
   </div>
 </section>
 
+{{-- =====================
+     GALERI
+===================== --}}
+<section class="ds-galeri py-5">
+  <div class="container">
+    <div class="konten-utama">
+    <div class="text-center mb-4">
+      <h2 class="ds-section-title">Galeri</h2>
+    </div>
+
+    @if($galeri->isNotEmpty())
+    <div class="ds-galeri-wrapper">
+      {{-- Tombol Navigasi Kiri --}}
+      <button class="ds-galeri-nav prev" id="galeri-prev" aria-label="Sebelumnya"><i class="bi bi-chevron-left"></i></button>
+
+      <div class="ds-galeri-track-wrapper">
+        <div class="ds-galeri-track" id="galeri-track">
+          @foreach($galeri as $item)
+            <div class="ds-galeri-card">
+              <img src="{{ asset('storage/galeri/' . $item->gambar) }}" alt="{{ $item->judul }}">
+              <div class="ds-galeri-overlay">
+                <span class="ds-galeri-title">{{ $item->judul }}</span>
+              </div>
+            </div>
+          @endforeach
+        </div>
+      </div>
+
+      {{-- Tombol Navigasi Kanan --}}
+      <button class="ds-galeri-nav next" id="galeri-next" aria-label="Berikutnya"><i class="bi bi-chevron-right"></i></button>
+    </div>
+    @endif
+
+        <div class="text-center mt-4">
+        {{-- Arahkan ke route profil.show dengan slug galeri --}}
+        <a href="{{ route('profil.show', 'galeri-kami') }}" class="btn btn-primary">Lihat semua galeri kami</a>
+        </div>
+    </div>
+  </div>
+</section>
 
 {{-- ======================
      UNIT & MITRA KERJA
@@ -242,5 +282,25 @@
 </section>
 
 
+@push('scripts')
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const track = document.getElementById('galeri-track');
+    const prevBtn = document.getElementById('galeri-prev');
+    const nextBtn = document.getElementById('galeri-next');
 
+    if (track && prevBtn && nextBtn) {
+        nextBtn.addEventListener('click', () => {
+            const cardWidth = track.querySelector('.ds-galeri-card').offsetWidth;
+            track.scrollLeft += cardWidth * 2; // Scroll sebanyak 2 kartu
+        });
+
+        prevBtn.addEventListener('click', () => {
+            const cardWidth = track.querySelector('.ds-galeri-card').offsetWidth;
+            track.scrollLeft -= cardWidth * 2; // Scroll sebanyak 2 kartu
+        });
+    }
+});
+</script>
+@endpush
 @endsection

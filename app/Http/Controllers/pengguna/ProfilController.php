@@ -8,7 +8,7 @@ use Illuminate\View\View;
 use App\Models\admin\Header;
 use App\Models\admin\Pejabat;
 use App\Models\admin\Jabatan;
-use App\Models\admin\Konten;
+use App\Models\admin\Galeri;
 use App\Models\admin\KategoriKonten;
 
 class ProfilController extends Controller
@@ -35,12 +35,21 @@ class ProfilController extends Controller
             $profile->url = route('profil.show', $profile->slug);
             return $profile;
         });
+        // KASUS KHUSUS: Jika slug adalah untuk halaman galeri
+        if ($slug == 'galeri-kami') { // Pastikan slug ini sama dengan yang ada di database Anda
+            $galeriItems = Galeri::orderBy('tanggal_upload', 'desc')->get();
+            
+            return view('pengguna.profil.galeri', [
+                'galeriItems' => $galeriItems,
+                'allProfiles' => $allProfiles
+            ]);
+        }
 
         $viewName = 'pengguna.profil.show'; // Default view untuk halaman profil biasa
         $viewData = [];
 
         // Logika untuk menangani halaman-halaman spesifik
-        if ($slug == 'pejabat') {
+        if ($slug == 'profil-singkat-pejabat') {
             $viewName = 'pengguna.profil.pejabat'; // Gunakan view khusus untuk halaman pejabat
 
             $jabatanKepalaDinas = Jabatan::where('nama_jabatan', 'Kepala Dinas')->first();
