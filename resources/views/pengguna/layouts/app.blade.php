@@ -27,12 +27,12 @@
       <div class="modal-content">
         <div class="modal-body p-4 p-lg-5">
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-          
+
           <div class="text-center mb-4">
             <h4 class="modal-title fw-bold" id="feedbackModalLabel">Berikan Umpan Balik Anda</h4>
             <p class="text-muted">Kami sangat menghargai setiap umpan balik yang Anda berikan untuk membantu kami berkembang.</p>
           </div>
-          
+
           {{-- Notifikasi akan ditampilkan di sini --}}
           @if(session('success'))
               <div class="alert alert-success">
@@ -79,12 +79,20 @@
     </div>
   </div>
 
+  {{-- ====== MODAL GALERI (GLOBAL) ====== --}}
+  <div class="ds-modal-overlay" id="galleryModal" hidden>
+    <div class="ds-modal-content">
+      <img src="" alt="" id="galleryModalImage" class="ds-modal-image">
+      <div class="ds-modal-caption" id="galleryModalCaption"></div>
+    </div>
+  </div>
+
   {{-- Bootstrap JS --}}
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-  
+
   {{-- Script khusus per halaman --}}
   @stack('scripts')
-  
+
   {{-- ============================================= --}}
   {{-- SCRIPT GLOBAL UNTUK MODAL FEEDBACK (DIPERBAIKI) --}}
   {{-- ============================================= --}}
@@ -105,7 +113,7 @@
         feedbackModalEl.addEventListener('hidden.bs.modal', function () {
             // Cari semua elemen notifikasi (.alert) di dalam modal
             const alerts = feedbackModalEl.querySelectorAll('.alert');
-            
+
             // Hapus setiap notifikasi yang ditemukan
             alerts.forEach(function(alert) {
                 alert.remove();
@@ -120,6 +128,49 @@
             @endif
         });
     });
+
+    document.addEventListener('DOMContentLoaded', function () {
+    const modal = document.getElementById('galleryModal');
+    if (!modal) return;
+
+    const modalImage = document.getElementById('galleryModalImage');
+    const modalCaption = document.getElementById('galleryModalCaption');
+
+    // Fungsi untuk membuka modal
+    function openModal(imageSrc, imageTitle) {
+        modalImage.src = imageSrc;
+        modalImage.alt = imageTitle;
+        modalCaption.textContent = imageTitle;
+        modal.hidden = false;
+    }
+
+    // Fungsi untuk menutup modal
+    function closeModal() {
+        modal.hidden = true;
+    }
+
+    // Tambahkan event listener ke semua kartu galeri
+    document.querySelectorAll('.ds-galeri-card').forEach(card => {
+        card.addEventListener('click', function(event) {
+            event.preventDefault(); // Mencegah link default jika ada
+
+            const image = this.querySelector('img');
+            const title = this.querySelector('.ds-galeri-title');
+
+            if (image && title) {
+                openModal(image.src, title.textContent);
+            }
+        });
+    });
+
+
+    // Event listener untuk klik di luar area konten (pada overlay)
+    modal.addEventListener('click', function(event) {
+        if (event.target === modal) {
+            closeModal();
+        }
+    });
+});
   </script>
 </body>
 </html>

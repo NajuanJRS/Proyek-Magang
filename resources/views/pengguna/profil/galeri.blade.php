@@ -9,7 +9,7 @@
     <ol class="breadcrumb small mb-0">
       <li class="breadcrumb-item"><a href="{{ url('/') }}">Beranda</a></li>
       <li class="breadcrumb-item"><a href="{{ url('/profil') }}">Profil</a></li>
-      <li class="breadcrumb-item active" aria-current="page">Struktur Organisasi</li>
+      <li class="breadcrumb-item active" aria-current="page">Galeri Kami</li>
     </ol>
   </nav>
 
@@ -17,20 +17,42 @@
     <div class="container">
       <div class="row gx-lg-5 justify-content-center">
 
-        {{-- KOLOM KIRI: KONTEN UTAMA --}}
+        {{-- KOLOM KIRI: KONTEN UTAMA GALERI --}}
         <div class="col-lg-8">
           <article class="ds-article-card">
-            <h2 class="ds-article-title">{{ $pageData['title'] }}</h2>
-            <hr class="my-4">
+            <h2 class="ds-article-title mb-4">Galeri Kami</h2>
 
-            {{-- GAMBAR YANG BISA DI-KLIK --}}
-            <div class="ds-image-zoom-wrapper" data-bs-toggle="modal" data-bs-target="#imageModal">
-              <img src="{{ asset('storage/konten/' . $pageData['image']) }}" alt="{{ $pageData['title'] }}" class="img-fluid rounded shadow-sm">
-              <div class="ds-image-zoom-overlay">
-                <i class="bi bi-zoom-in"></i>
-                <span>Klik untuk memperbesar</span>
-              </div>
-            </div>
+                {{-- Tampilan Desktop --}}
+                <div class="d-none d-md-block">
+                <div class="ds-galeri-grid">
+                    @forelse($galeriItems as $item)
+                    <div class="ds-galeri-card">
+                        <img src="{{ asset('storage/galeri/' . $item->gambar) }}" alt="{{ $item->judul }}">
+                        <div class="ds-galeri-overlay">
+                        <span class="ds-galeri-title">{{ $item->judul }}</span>
+                        </div>
+                    </div>
+                    @empty
+                    <p class="text-muted">Belum ada gambar di galeri.</p>
+                    @endforelse
+                </div>
+                </div>
+
+                {{-- Tampilan Mobile --}}
+                <div class="d-md-none">
+                <div class="ds-galeri-grid-mobile">
+                    @forelse($galeriItems as $item)
+                    <div class="ds-galeri-card">
+                        <img src="{{ asset('storage/galeri/' . $item->gambar) }}" alt="{{ $item->judul }}">
+                        <div class="ds-galeri-overlay">
+                        <span class="ds-galeri-title">{{ $item->judul }}</span>
+                        </div>
+                    </div>
+                    @empty
+                    <p class="text-muted">Belum ada gambar di galeri.</p>
+                    @endforelse
+                </div>
+                </div>
 
             {{-- TOMBOL BAGIKAN --}}
             <hr class="my-4">
@@ -39,13 +61,13 @@
               <div class="ds-share-buttons">
                 <a href="#" class="ds-share-btn-whatsapp" aria-label="Bagikan ke WhatsApp"><i class="bi bi-whatsapp"></i></a>
                 <a href="#" class="ds-share-btn-facebook" aria-label="Bagikan ke Facebook"><i class="bi bi-facebook"></i></a>
-                <a href="#" class="ds-share-btn-instagram   " aria-label="Bagikan ke Instagram"><i class="bi bi-instagram"></i></a>
+                <a href="#" class="ds-share-btn-instagram" aria-label="Bagikan ke Instagram"><i class="bi bi-instagram"></i></a>
               </div>
             </div>
           </article>
         </div>
 
-        {{-- KOLOM KANAN: SIDEBAR JELAJAHI PROFIL --}}
+        {{-- KOLOM KANAN: SIDEBAR --}}
         <div class="col-lg-4">
           <div class="ds-sidebar-card">
             <h5 class="ds-sidebar-title">Jelajahi Profil</h5>
@@ -63,20 +85,5 @@
       </div>
     </div>
   </section>
-
-  {{-- ====== MODAL UNTUK ZOOM GAMBAR ====== --}}
-  <div class="modal fade" id="imageModal" tabindex="-1" aria-labelledby="imageModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-xl modal-dialog-centered">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="imageModalLabel">{{ $pageData['title'] }}</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body text-center">
-          <img src="{{ asset('storage/konten/' . $pageData['image']) }}" alt="{{ $pageData['title'] }}" class="img-fluid">
-        </div>
-      </div>
-    </div>
-  </div>
 
 @endsection

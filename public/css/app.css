@@ -731,14 +731,14 @@
 }
 
 .konten-utama {
-  max-width: 940px; /* Ubah angka ini untuk mengatur lebar konten */
+  max-width: 950px; /* Ubah angka ini untuk mengatur lebar konten */
   margin-left: auto;
   margin-right: auto;
   padding-left: 15px;  /* Spasi aman di dalam container */
   padding-right: 15px; /* Spasi aman di dalam container */
 }
 .konten-berita {
-  max-width: 1100px; /* Ubah angka ini untuk mengatur lebar konten */
+  max-width: 950px; /* Ubah angka ini untuk mengatur lebar konten */
   margin-left: auto;
   margin-right: auto;
   padding-left: 15px;  /* Spasi aman di dalam container */
@@ -1546,4 +1546,194 @@ background-color: rgba(0, 0, 0, 0.40); /* Lapisan gelap 35% */
   color: #343a40;
   word-wrap: break-word; /* <-- TAMBAHKAN BARIS INI */
   overflow-wrap: break-word;
+}
+
+/* === GALERI SECTION === */
+.ds-galeri-wrapper {
+  position: relative;
+  width: 100%;
+}
+
+.ds-galeri-track-wrapper {
+  overflow: hidden; /* Sembunyikan scrollbar default */
+}
+
+.ds-galeri-track {
+  display: flex;
+  gap: 1rem;
+  scroll-behavior: smooth; /* Animasi scroll halus */
+  -webkit-overflow-scrolling: touch; /* Scrolling halus di iOS */
+  padding-top: 1rem;    /* Ruang agar bayangan tidak terpotong */
+  padding-bottom: 1rem; /* Ruang agar bayangan tidak terpotong */
+  overflow-x: auto; /* Fallback jika JS tidak aktif */
+  scrollbar-width: none; /* Sembunyikan scrollbar di Firefox */
+}
+
+.ds-galeri-track::-webkit-scrollbar {
+  display: none; /* Sembunyikan scrollbar di Chrome/Safari */
+}
+
+.ds-galeri-card {
+  flex: 0 0 calc(25% - 0.75rem); /* 4 item per baris di desktop */
+  position: relative;
+  overflow: hidden;
+  border-radius: 0.5rem;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  aspect-ratio: 3 / 4;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.ds-galeri-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.18);
+}
+
+.ds-galeri-card img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.4s ease;
+}
+
+.ds-galeri-card:hover img {
+  transform: scale(1.05);
+}
+
+.ds-galeri-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0) 60%);
+  display: flex;
+  align-items: flex-end;
+  padding: 1rem;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.ds-galeri-card:hover .ds-galeri-overlay {
+  opacity: 1;
+}
+
+.ds-galeri-title {
+  color: white;
+  font-weight: 500;
+  font-size: 0.9rem;
+  transform: translateY(10px);
+  opacity: 0;
+  transition: all 0.3s ease 0.1s;
+}
+
+.ds-galeri-card:hover .ds-galeri-title {
+  transform: translateY(0);
+  opacity: 1;
+}
+
+.ds-galeri-nav {
+  position: absolute;
+  top: calc(50% + 5px);
+  transform: translateY(-50%);
+  background-color: rgba(255, 255, 255, 0.9);
+  border: none;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  color: #333;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+  cursor: pointer;
+  z-index: 10;
+}
+
+.ds-galeri-nav.prev {
+  left: -20px;
+}
+
+.ds-galeri-nav.next {
+  right: -20px;
+}
+
+/* Responsif untuk Mobile */
+@media (max-width: 767px) {
+  .ds-galeri-card {
+    flex: 0 0 60%; /* Ukuran kartu di mobile */
+  }
+  .ds-galeri-nav {
+    display: none; /* Sembunyikan panah di mobile, andalkan swipe */
+  }
+}
+
+.ds-galeri-grid-mobile {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr); /* 2 kolom */
+  gap: 0.75rem; /* Jarak antar gambar */
+}
+/* === GRID PADA HALAMAN GALERI === */
+.ds-galeri-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+}
+
+/* Kita bisa menggunakan kembali style kartu galeri dari beranda */
+.ds-galeri-grid .ds-galeri-card {
+  flex: none; /* Hapus properti flex agar grid berfungsi */
+  width: 100%;
+}
+
+/* === MODAL GALERI === */
+.ds-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.75);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1050;
+  padding: 1rem;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+
+.ds-modal-overlay:not([hidden]) {
+  opacity: 1;
+}
+
+.ds-modal-content {
+  position: relative;
+  background-color: white;
+  border-radius: 0.3rem;
+  padding: 1rem;
+  max-width: 900px;
+  max-height: 90vh;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+  transform: scale(0.9) translateY(20px); /* Posisi awal: sedikit kecil dan di bawah */
+  transition: transform 0.4s ease, opacity 0.4s ease; /* Animasikan transform dan opacity */
+  opacity: 0; /* Mulai dari transparan */
+  display: table; /* Ganti menjadi table */
+  width: 1px;     /* Trik agar table menyusut pas dengan konten */
+}
+
+.ds-modal-overlay:not([hidden]) .ds-modal-content {
+    transform: scale(1) translateY(0); /* Posisi akhir: ukuran normal dan di tengah */
+    opacity: 1; /* Terlihat sepenuhnya */
+}
+
+.ds-modal-image {
+  display: block;
+  max-width: calc(100vw - 6rem);
+  max-height: calc(90vh - 8rem); /* <-- Sesuaikan nilai ini */
+  width: auto;
+  height: auto;
+  object-fit: contain;
+}
+
+.ds-modal-caption {
+  caption-side: bottom;     /* <-- Posisikan di bawah gambar */
+  padding-top: 1rem;        /* <-- Gunakan padding untuk jarak */
+  text-align: center;
+  color: #333;
+  font-weight: 600;
 }

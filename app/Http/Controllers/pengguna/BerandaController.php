@@ -8,6 +8,7 @@ use App\Models\admin\Berita;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 use App\Models\admin\Mitra;
+use App\Models\admin\Galeri;
 use App\Models\admin\KategoriKonten;
 
 class BerandaController extends Controller
@@ -22,13 +23,17 @@ class BerandaController extends Controller
         $mitra = Mitra::all();
         // layanan
         $layanan = KategoriKonten::where('menu_konten', 'layanan')->take(4)->get();
+        // galeri
+        $galeri = Galeri::orderBy('tanggal_upload', 'desc')->take(8)->get();
+
 
         // Kirim data ke view beranda
         return view('pengguna.beranda', [
             'heroSlides' => $heroSlides,
             'berita' => $berita,
             'mitra' => $mitra,
-            'layanan' => $layanan
+            'layanan' => $layanan,
+            'galeri' => $galeri
         ]);
     }
 }

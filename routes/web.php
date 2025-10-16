@@ -50,7 +50,6 @@ Route::get('/ppid', [PpidController::class, 'index'])->name('ppid.index');
 Route::get('/kontak', [VioletController::class, 'index'])->name('kontak.index');
 // Simpan pesan dari form kontak
 Route::post('/kontak', [App\Http\Controllers\pengguna\KontakController::class, 'store'])->name('kontak.store');
-
 // pencarian
 Route::get('/pencarian', [SearchController::class, 'index'])->name('pencarian.index');
 // kontak/FAQ
