@@ -41,7 +41,7 @@ class SliderController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'id_user' => 'nullable|exists:user,id_user',
+            'id_user' => 'nullable|exists:users,id_user',
             'id_kategori_header' => 'nullable|exists:kategori_header,id_kategori_header',
             'headline' => 'required|min:5', // Sesuaikan dengan view
             'sub_heading' => 'required|min:5', // Sesuaikan dengan view
@@ -91,7 +91,7 @@ class SliderController extends Controller
     public function update(Request $request, Header $slider)
     {
         $request->validate([
-            'id_user' => 'nullable|exists:user,id_user',
+            'id_user' => 'nullable|exists:users,id_user',
             'id_kategori_header' => 'nullable|exists:kategori_header,id_kategori_header',
             'headline' => 'required|min:5',
             'sub_heading' => 'required|min:5',

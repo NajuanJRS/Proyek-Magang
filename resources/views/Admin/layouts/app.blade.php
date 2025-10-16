@@ -54,7 +54,7 @@
         $activeMenu = 'dashboard';
     } elseif (request()->routeIs('admin.slider.index') || request()->routeIs('admin.mitra.index')) {
         $activeMenu = 'menuBeranda';
-    } elseif (request()->routeIs('admin.profile.index') || request()->routeIs('admin.pejabat.index') || request()->routeIs('admin.headerProfile.index')) {
+    } elseif (request()->routeIs('admin.profile.index') || request()->routeIs('admin.pejabat.index') || request()->routeIs('admin.headerProfile.index') || request()->routeIs('admin.galeri.index')) {
         $activeMenu = 'menuProfil';
     } elseif (request()->routeIs('admin.headerLayanan.index') || request()->routeIs('admin.layanan.index')) {
         $activeMenu = 'menuLayanan';
@@ -134,6 +134,9 @@
                         <li><a href="{{ route('admin.pejabat.index') }}"
                                 class="nav-link {{ request()->routeIs('admin.pejabat.index') ? 'active' : '' }}">Profil
                                 Pejabat</a></li>
+                        <li><a href="{{ route('admin.galeri.index') }}"
+                                class="nav-link {{ request()->routeIs('admin.galeri.index') ? 'active' : '' }}">
+                                Galeri</a></li>
                     </ul>
                 </div>
             </li>

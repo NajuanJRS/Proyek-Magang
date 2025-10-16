@@ -8,6 +8,7 @@ use App\Http\Controllers\admin\FaqController;
 use App\Http\Controllers\pengguna\FaqController as LandingFaqController;
 use App\Http\Controllers\admin\DownloadController as DownloadControllerAdmin;
 use App\Http\Controllers\admin\FileDownloadController;
+use App\Http\Controllers\admin\GaleriController;
 use App\Http\Controllers\admin\Header\HeaderBeritaController;
 use App\Http\Controllers\admin\Header\HeaderDownloadController;
 use App\Http\Controllers\admin\Header\HeaderKontakController;
@@ -112,6 +113,8 @@ Route::prefix('admin')->name('admin.')->group(function () {
     ->name('headerKartu.update');
 
     Route::resource('profile', KontenProfileController::class);
+
+    Route::resource('galeri', GaleriController::class);
 
     Route::resource('layanan', KontenLayananController::class);
 
