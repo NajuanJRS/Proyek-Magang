@@ -245,38 +245,53 @@
 
     @if($mitra->isNotEmpty())
       {{-- DESKTOP/TABLET: grid dinamis --}}
-      <div class="d-none d-md-flex ds-partner-grid">
-        @foreach($mitra as $m)
-          <div class="ds-partner-item">
-            {{-- Logika untuk menampilkan link jika ada --}}
-            @if($m->link_mitra)
-              <a href="{{ $m->link_mitra }}" target="_blank" rel="noopener">
-                <img src="{{ asset('storage/mitra/' . $m->gambar) }}" alt="{{ $m->nama_mitra }}">
-              </a>
-            @else
-              <img src="{{ asset('storage/mitra/' . $m->gambar) }}" alt="{{ $m->nama_mitra }}">
-            @endif
-          </div>
-        @endforeach
-      </div>
-
-      {{-- MOBILE: horizontal scroll dinamis --}}
-      <div class="d-md-none ds-partner-scroll">
-        <div class="ds-partner-track">
-          @foreach($mitra as $m)
-            <div class="ds-partner-item">
-              {{-- Logika yang sama untuk mobile --}}
-              @if($m->link_mitra)
-                <a href="{{ $m->link_mitra }}" target="_blank" rel="noopener">
-                  <img src="{{ asset('storage/mitra/' . $m->gambar) }}" alt="{{ $m->nama_mitra }}">
-                </a>
-              @else
-                <img src="{{ asset('storage/mitra/' . $m->gambar) }}" alt="{{ $m->nama_mitra }}">
-              @endif
+        <div class="d-none d-md-block">
+        @foreach($mitra->chunk(5) as $chunk)
+            <div class="ds-partner-grid">
+            @foreach($chunk as $m)
+                <div class="ds-partner-item">
+                @if($m->link_mitra)
+                    <a href="{{ $m->link_mitra }}" target="_blank" rel="noopener">
+                    <img src="{{ asset('storage/mitra/' . $m->gambar) }}" alt="{{ $m->nama_mitra }}">
+                    </a>
+                @else
+                    <img src="{{ asset('storage/mitra/' . $m->gambar) }}" alt="{{ $m->nama_mitra }}">
+                @endif
+                </div>
+            @endforeach
             </div>
-          @endforeach
+        @endforeach
         </div>
-      </div>
+
+        {{-- MOBILE: horizontal scroll dinamis --}}
+        <div class="d-md-none ds-partner-scroll">
+        <div class="ds-partner-track">
+            {{-- Loop pertama --}}
+            @foreach($mitra as $m)
+            <div class="ds-partner-item">
+                @if($m->link_mitra)
+                <a href="{{ $m->link_mitra }}" target="_blank" rel="noopener">
+                    <img src="{{ asset('storage/mitra/' . $m->gambar) }}" alt="{{ $m->nama_mitra }}">
+                </a>
+                @else
+                <img src="{{ asset('storage/mitra/' . $m->gambar) }}" alt="{{ $m->nama_mitra }}">
+                @endif
+            </div>
+            @endforeach
+            {{-- Loop kedua (untuk animasi seamless) --}}
+            @foreach($mitra as $m)
+            <div class="ds-partner-item">
+                @if($m->link_mitra)
+                <a href="{{ $m->link_mitra }}" target="_blank" rel="noopener">
+                    <img src="{{ asset('storage/mitra/' . $m->gambar) }}" alt="{{ $m->nama_mitra }}">
+                </a>
+                @else
+                <img src="{{ asset('storage/mitra/' . $m->gambar) }}" alt="{{ $m->nama_mitra }}">
+                @endif
+            </div>
+            @endforeach
+        </div>
+        </div>
     @endif
   </div>
 </section>
@@ -300,6 +315,39 @@ document.addEventListener('DOMContentLoaded', function() {
             track.scrollLeft -= cardWidth * 2; // Scroll sebanyak 2 kartu
         });
     }
+});
+document.addEventListener('DOMContentLoaded', function() {
+    const track = document.querySelector('.ds-partner-track');
+    if (!track) return;
+
+    let resumeTimeout;
+
+    function playAnimation() {
+        // Hapus timeout yang mungkin masih berjalan
+        clearTimeout(resumeTimeout);
+        // Lanjutkan animasi
+        track.style.animationPlayState = 'running';
+    }
+
+    function pauseAnimation() {
+        // Jeda animasi
+        track.style.animationPlayState = 'paused';
+        // Hapus timeout yang ada agar tidak menimpa
+        clearTimeout(resumeTimeout);
+    }
+
+    function scheduleResume() {
+        // Jadwalkan untuk melanjutkan animasi setelah 2 detik
+        resumeTimeout = setTimeout(playAnimation, 2000); // 2000 milidetik = 2 detik
+    }
+
+    // Event untuk desktop (mouse)
+    track.addEventListener('mouseover', pauseAnimation);
+    track.addEventListener('mouseout', scheduleResume);
+
+    // Event untuk mobile (sentuhan)
+    track.addEventListener('touchstart', pauseAnimation, { passive: true });
+    track.addEventListener('touchend', scheduleResume);
 });
 </script>
 @endpush

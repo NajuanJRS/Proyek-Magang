@@ -48,34 +48,6 @@
                                                     <tr>
                                                         <td class="text-center">{{ $loop->iteration }}</td>
                                                         <td class="text-center">{{ $g->judul ?? '-' }}</td>
-                                                        @php
-                                                            $fullText = trim(
-                                                                preg_replace(
-                                                                    '/\s+/',
-                                                                    ' ',
-                                                                    html_entity_decode(strip_tags($g->judul)),
-                                                                ),
-                                                            );
-                                                        @endphp
-
-                                                        <td class="isi-konten text-center">
-                                                            <div class="preview-text"
-                                                                style="max-width:520px; white-space:normal; overflow:hidden;">
-                                                                {{ \Illuminate\Support\Str::limit($fullText, 160) }}
-                                                            </div>
-
-                                                            @if (mb_strlen($fullText) > 160)
-                                                                <button type="button" class="btn btn-link p-0 see-more"
-                                                                    data-id="{{ $g->id_galeri }}" data-judul="sub_heading">
-                                                                    Lihat selengkapnya
-                                                                </button>
-                                                            @endif
-
-                                                            <div id="full-content-{{ $g->id_galeri }}" class="d-none">
-                                                                {{ $g->judul ?? '-' }}
-                                                            </div>
-                                                        </td>
-
                                                         <td class="text-center">
                                                             <img src="{{ asset('storage/galeri/' . $g->gambar) }}"
                                                                 width="150" alt="Gambar galeri">
