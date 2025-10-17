@@ -171,6 +171,60 @@
         }
     });
 });
+document.addEventListener('DOMContentLoaded', function() {
+    const shareButtonsContainer = document.querySelector('.ds-share-buttons');
+    if (!shareButtonsContainer) {
+        return;
+    }
+
+    const pageUrl = window.location.href;
+    let pageTitle = document.title;
+
+    const articleTitleElement = document.querySelector('.ds-article-title');
+    if (articleTitleElement) {
+        pageTitle = articleTitleElement.innerText;
+    }
+
+    const encodedUrl = encodeURIComponent(pageUrl);
+    const encodedTitle = encodeURIComponent(pageTitle);
+
+    const whatsappBtn = shareButtonsContainer.querySelector('.ds-share-btn-whatsapp');
+    const facebookBtn = shareButtonsContainer.querySelector('.ds-share-btn-facebook');
+    const instagramBtn = shareButtonsContainer.querySelector('.ds-share-btn-instagram');
+
+    if (whatsappBtn) {
+        whatsappBtn.href = `https://api.whatsapp.com/send?text=${encodedTitle} - ${encodedUrl}`;
+        whatsappBtn.target = '_blank'; // Buka di tab baru
+        whatsappBtn.rel = 'noopener';
+    }
+
+    if (facebookBtn) {
+        const facebookUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodedUrl}`;
+        facebookBtn.addEventListener('click', function(event) {
+            event.preventDefault();
+            // Buka di jendela popup baru yang lebih rapi
+            window.open(facebookUrl, 'facebook-share-dialog', 'width=800,height=600');
+        });
+    }
+
+    if (instagramBtn) {
+        instagramBtn.addEventListener('click', function(event) {
+            event.preventDefault();
+            // Coba salin ke clipboard
+            if (navigator.clipboard) {
+                navigator.clipboard.writeText(pageUrl).then(() => {
+                    alert('Link telah disalin! Silakan bagikan di Instagram Anda.');
+                }).catch(() => {
+                    // Gagal (kemungkinan karena bukan HTTPS), tampilkan fallback
+                    prompt("Salin link ini untuk dibagikan di Instagram:", pageUrl);
+                });
+            } else {
+                // Fallback untuk browser yang sangat lama
+                prompt("Salin link ini untuk dibagikan di Instagram:", pageUrl);
+            }
+        });
+    }
+});
   </script>
 </body>
 </html>

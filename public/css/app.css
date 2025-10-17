@@ -606,14 +606,15 @@
 
 /* Bungkus daftar misi agar tetap rata kiri tapi berada di tengah */
 .misi-wrapper {
-  text-align: center;         /* seluruh blok di tengah */
+  display: flex;
+  justify-content: center;        /* seluruh blok di tengah */
 }
 
-.misi-wrapper ol {
-  display: inline-block;      /* list jadi blok sejajar di tengah */
+.misi-wrapper ol { 
+  display: inline-block;
   text-align: left;           /* isi list tetap rata kiri */
-  margin: 0 auto;             /* tengah secara horizontal */
-  padding-left: 1.2rem;       /* indentasi nomor */
+  padding-left: 20px;       /* indentasi nomor */
+  max-width: 100%;
 }
 
 /* Warna judul dalam kartu */
@@ -1738,16 +1739,12 @@ background-color: rgba(0, 0, 0, 0.40); /* Lapisan gelap 35% */
   font-weight: 600;
 }
 
-/* resources/css/style.css */
-
-/* === BAGIAN MITRA KERJA (PENYESUAIAN BARU) === */
-
 /* --- Desktop Layout --- */
 .ds-partner-grid {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  gap: 2rem; /* Perlebar jarak antar logo di desktop */
+  gap: 4rem; /* Perlebar jarak antar logo di desktop */
   margin-bottom: 1.5rem;
 }
 
