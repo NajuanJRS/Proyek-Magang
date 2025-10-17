@@ -83,7 +83,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
         return view('Admin.adminDashboard');
     })->name('dashboard');
 
-    Route::resource('slider', SliderController::class);
+    Route::resource('hero-section', SliderController::class)->names('slider');
 
     Route::resource('mitra', MitraController::class);
 
