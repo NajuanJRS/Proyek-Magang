@@ -278,5 +278,19 @@ document.addEventListener('click', function (e) {
                 }
             }
         });
+
+        const successAlertElement = document.getElementById('session-success-toast');
+    if (successAlertElement) {
+        const message = successAlertElement.getAttribute('data-message');
+        if (message) {
+            Swal.fire({
+                title: 'Berhasil!',
+                text: message,
+                icon: 'success',
+                confirmButtonColor: '#3085d6', // Warna tombol OK
+                confirmButtonText: 'OK'
+            });
+        }
+    }
     }
 

@@ -40,10 +40,10 @@ class MitraController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'id_user' => 'nullable|exists:user,id_user',
+            'id_user' => 'nullable|exists:users,id_user',
             'nama_mitra' => 'required',
-            'link_mitra' => 'nullable|url',
-            'gambar'     => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'link_mitra' => 'nullable',
+            'gambar'     => 'required|image|mimes:jpeg,png,jpg,svg,webp|max:2048',
         ]);
 
         // Praktik terbaik untuk upload file
@@ -61,7 +61,7 @@ class MitraController extends Controller
             'gambar'     => $filename,
         ]);
 
-        return redirect()->route('admin.mitra.index')->with('success', 'Data Berhasil Disimpan!');
+        return redirect()->route('admin.mitra.index')->with('success', 'Mitra Berhasil Ditambahkan!');
     }
 
     /**
@@ -87,10 +87,10 @@ class MitraController extends Controller
     public function update(Request $request, Mitra $mitra)
     {
         $request->validate([
-            'id_user' => 'nullable|exists:user,id_user',
-            'nama_mitra' => 'nullable|min:5',
-            'link_mitra' => 'nullable|min:5',
-            'gambar_slider' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'id_user' => 'nullable|exists:users,id_user',
+            'nama_mitra' => 'nullable',
+            'link_mitra' => 'nullable',
+            'gambar_slider' => 'nullable|image|mimes:jpeg,png,gif,svg,webp|max:2048',
         ]);
 
         $idUser = Auth::check() && Auth::user()->role === 'admin'
@@ -119,7 +119,7 @@ class MitraController extends Controller
 
         $mitra->update($data);
 
-        return redirect()->route('admin.mitra.index')->with('success', 'Data Slider Berhasil Diperbarui!');
+        return redirect()->route('admin.mitra.index')->with('success', 'Mitra Berhasil Diperbarui!');
     }
 
     /**
@@ -136,6 +136,6 @@ class MitraController extends Controller
         // Hapus data dari database
         $mitra->delete();
 
-        return redirect()->route('admin.mitra.index')->with('success', 'Data Berhasil Dihapus!');
+        return redirect()->route('admin.mitra.index')->with('success', 'Mitra Berhasil Dihapus!');
     }
 }

@@ -93,7 +93,7 @@ class PpidController extends Controller
         ]);
 
         return redirect()->route('admin.ppid.index')
-            ->with('success', 'Kategori & Konten PPID berhasil ditambahkan!');
+            ->with('success', 'Konten PPID Berhasil Ditambahkan!');
     }
 
 
@@ -221,7 +221,7 @@ class PpidController extends Controller
             'gambar3'            => $gambar3,
         ]);
 
-        return redirect()->route('admin.ppid.index')->with('success', 'Kategori & Konten PPID berhasil diperbarui!');
+        return redirect()->route('admin.ppid.index')->with('success', 'Konten PPID Berhasil Diperbarui!');
     }
 
 
@@ -269,6 +269,6 @@ class PpidController extends Controller
         // Finally delete the konten record
         $kontenPpid->delete();
 
-        return redirect()->route('admin.ppid.index')->with('success', 'Konten dan data kategori terkait berhasil dihapus!');
+        return redirect()->route('admin.ppid.index')->with('success', 'Konten PPID Berhasil Dihapus!');
     }
 }

@@ -93,7 +93,7 @@ class KontenLayananController extends Controller
         ]);
 
         return redirect()->route('admin.layanan.index')
-            ->with('success', 'Kategori & Konten Layanan berhasil ditambahkan!');
+            ->with('success', 'Konten Layanan Berhasil Ditambahkan!');
     }
 
 
@@ -221,7 +221,7 @@ class KontenLayananController extends Controller
             'gambar3'            => $gambar3,
         ]);
 
-        return redirect()->route('admin.layanan.index')->with('success', 'Kategori & Konten Layanan berhasil diperbarui!');
+        return redirect()->route('admin.layanan.index')->with('success', 'Konten Layanan Berhasil Diperbarui!');
     }
 
 
@@ -269,6 +269,6 @@ class KontenLayananController extends Controller
         // Finally delete the konten record
         $kontenLayanan->delete();
 
-        return redirect()->route('admin.layanan.index')->with('success', 'Konten dan data kategori terkait berhasil dihapus!');
+        return redirect()->route('admin.layanan.index')->with('success', 'Konten Layanan Berhasil Dihapus!');
     }
 }

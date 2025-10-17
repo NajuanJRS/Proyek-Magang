@@ -18,7 +18,7 @@
                                         </ul>
                                     </div>
                                 @endif
-                                <h4 class="mb-5">Edit Slider</h4>
+                                <h4 class="mb-5">Edit Hero Section</h4>
 
                                 <form class="forms-sample" method="POST"
                                     action="{{ route('admin.slider.update', $slider->id_header) }}"
@@ -47,19 +47,6 @@
                                                 <img id="newPreview" src="#" alt="Preview Gambar Baru"
                                                     style="display:none; max-width: 200px; border-radius: 8px; border:1px solid #ddd; padding:4px;">
                                             </div>
-                                        </div>
-
-                                        <label for="id_kategori_header" class="mb-2">Kategori Header</label>
-                                        <div class="mb-4">
-                                            <select class="form-select" id="id_kategori_header" name="id_kategori_header">
-                                                <option value="" disabled>Pilih Kategori Header</option>
-                                                @foreach ($kategoriHeader as $k)
-                                                    <option value="{{ $k->id_kategori_header }}"
-                                                        {{ old('id_kategori_header', $slider->id_kategori_header) == $k->id_kategori_header ? 'selected' : '' }}>
-                                                        {{ $k->nama_kategori }}
-                                                    </option>
-                                                @endforeach
-                                            </select>
                                         </div>
 
                                         <label for="headline" class="mb-2">Headline</label>

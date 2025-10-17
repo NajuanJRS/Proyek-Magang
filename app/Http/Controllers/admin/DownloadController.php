@@ -39,7 +39,7 @@ class DownloadController extends Controller
             'halaman_induk' => $request->halaman_induk,
         ]);
 
-        return redirect()->route('admin.kontenDownload.index')->with('success', 'Kategori berhasil ditambahkan');
+        return redirect()->route('admin.kontenDownload.index')->with('success', 'Kartu Download Berhasil Ditambahkan!');
     }
 
     public function edit($id)
@@ -70,18 +70,26 @@ class DownloadController extends Controller
 
         $kartuDownload->update($data);
 
-        return redirect()->route('admin.kontenDownload.index')->with('success', 'Kartu berhasil diupdate!');
+        return redirect()->route('admin.kontenDownload.index')->with('success', 'Kartu Download Berhasil Diupdate!');
     }
 
     public function destroy($id)
     {
-        $kartuDownload = KategoriFile::findOrFail($id);
-        // hapus file icon juga
-        if ($kartuDownload->icon && Storage::disk('public')->exists('icon/' . $kartuDownload->icon)) {
-            Storage::disk('public')->delete('icon/' . $kartuDownload->icon);
-        }
+    $kartuDownload = KategoriFile::with('download')->findOrFail($id);
 
-        $kartuDownload->delete();
-        return redirect()->route('admin.kontenDownload.index')->with('success', 'Kartu berhasil dihapus');
+    foreach ($kartuDownload->download as $file) {
+        $filePath = 'upload/file/' . $file->file;
+        if ($file->file && Storage::disk('public')->exists($filePath)) {
+            Storage::disk('public')->delete($filePath);
+        }
+    }
+
+    if ($kartuDownload->icon && Storage::disk('public')->exists('icon/' . $kartuDownload->icon)) {
+        Storage::disk('public')->delete('icon/' . $kartuDownload->icon);
+    }
+
+    $kartuDownload->delete();
+
+    return redirect()->route('admin.kontenDownload.index')->with('success', 'Kartu Download dan Semua Filenya Berhasil Dihapus!');
     }
 }

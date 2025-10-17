@@ -42,7 +42,7 @@ class JabatanController extends Controller
             'nama_jabatan' => $request->nama_jabatan,
         ]);
 
-        return redirect()->route('admin.jabatan.index')->with('success', 'Jabatan berhasil ditambahkan!');
+        return redirect()->route('admin.jabatan.index')->with('success', 'Jabatan Berhasil Ditambahkan!');
     }
 
     /**
@@ -76,7 +76,7 @@ class JabatanController extends Controller
             'nama_jabatan' => $request->nama_jabatan,
         ]);
 
-        return redirect()->route('admin.jabatan.index')->with('success', 'Jabatan berhasil diperbarui!');
+        return redirect()->route('admin.jabatan.index')->with('success', 'Jabatan Berhasil Diperbarui!');
     }
 
     /**
@@ -87,6 +87,6 @@ class JabatanController extends Controller
         $jabatan = Jabatan::findOrFail($id);
         $jabatan->delete();
 
-        return redirect()->route('admin.jabatan.index')->with('success', 'Jabatan berhasil dihapus!');
+        return redirect()->route('admin.jabatan.index')->with('success', 'Jabatan Berhasil Dihapus!');
     }
 }

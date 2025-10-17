@@ -81,6 +81,6 @@ class HeaderDownloadController extends Controller
 
         $headerDownload->update($data);
 
-        return redirect()->route('admin.headerDownload.index')->with('success', 'Data Heading Berhasil Diperbarui!');
+        return redirect()->route('admin.headerDownload.index')->with('success', 'Heading Download Berhasil Diperbarui!');
     }
 }

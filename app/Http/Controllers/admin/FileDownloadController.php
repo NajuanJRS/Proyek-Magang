@@ -82,7 +82,7 @@ class FileDownloadController extends Controller
         $kategori = KategoriFile::find($request->id_kategori);
         return redirect()
             ->route('admin.fileDownload.index', $kategori->slug)
-            ->with('success', 'File berhasil ditambahkan!');
+            ->with('success', 'File Berhasil Ditambahkan!');
     }
 
     /**
@@ -134,7 +134,7 @@ class FileDownloadController extends Controller
         $kategori = KategoriFile::find($request->id_kategori);
         return redirect()
             ->route('admin.fileDownload.index', $kategori->slug)
-            ->with('success', 'File berhasil diperbarui!');
+            ->with('success', 'File Berhasil Diperbarui!');
     }
 
     /**
@@ -153,6 +153,6 @@ class FileDownloadController extends Controller
 
         return redirect()
             ->route('admin.fileDownload.index', $kategori->slug)
-            ->with('success', 'File berhasil dihapus!');
+            ->with('success', 'File Berhasil Dihapus!');
     }
 }

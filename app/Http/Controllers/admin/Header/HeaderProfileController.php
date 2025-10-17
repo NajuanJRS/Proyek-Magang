@@ -81,6 +81,6 @@ class HeaderProfileController extends Controller
 
         $headerProfile->update($data);
 
-        return redirect()->route('admin.headerProfile.index')->with('success', 'Data Heading Berhasil Diperbarui!');
+        return redirect()->route('admin.headerProfile.index')->with('success', 'Heading Profil Berhasil Diperbarui!');
     }
 }

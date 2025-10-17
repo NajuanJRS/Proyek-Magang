@@ -81,6 +81,6 @@ class HeaderKontakController extends Controller
 
         $headerKontak->update($data);
 
-        return redirect()->route('admin.headerKontak.index')->with('success', 'Data Heading Berhasil Diperbarui!');
+        return redirect()->route('admin.headerKontak.index')->with('success', 'Heading Kontak Berhasil Diperbarui!');
     }
 }

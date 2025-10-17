@@ -93,7 +93,7 @@ class KontenProfileController extends Controller
         ]);
 
         return redirect()->route('admin.profile.index')
-            ->with('success', 'Kategori & Konten Profil berhasil ditambahkan!');
+            ->with('success', 'Konten Profil Berhasil Ditambahkan!');
     }
 
 
@@ -221,7 +221,7 @@ class KontenProfileController extends Controller
             'gambar3'            => $gambar3,
         ]);
 
-        return redirect()->route('admin.profile.index')->with('success', 'Kategori & Konten Profil berhasil diperbarui!');
+        return redirect()->route('admin.profile.index')->with('success', 'Konten Profil Berhasil Diperbarui!');
     }
 
 
@@ -269,6 +269,6 @@ class KontenProfileController extends Controller
         // Finally delete the konten record
         $kontenProfile->delete();
 
-        return redirect()->route('admin.profile.index')->with('success', 'Konten dan data kategori terkait berhasil dihapus!');
+        return redirect()->route('admin.profile.index')->with('success', 'Konten Profil Berhasil Dihapus!');
     }
 }
