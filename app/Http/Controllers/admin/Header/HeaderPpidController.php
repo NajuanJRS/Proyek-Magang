@@ -81,6 +81,6 @@ class HeaderPpidController extends Controller
 
         $headerPpid->update($data);
 
-        return redirect()->route('admin.headerPpid.index')->with('success', 'Data Heading Berhasil Diperbarui!');
+        return redirect()->route('admin.headerPpid.index')->with('success', 'Heading PPID Berhasil Diperbarui!');
     }
 }

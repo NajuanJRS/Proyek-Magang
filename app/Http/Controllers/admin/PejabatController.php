@@ -76,7 +76,7 @@ class PejabatController extends Controller
             'gambar' => $filename,
         ]);
 
-        return redirect()->route('admin.pejabat.index')->with('success', 'Data Pejabat Berhasil Disimpan!');
+        return redirect()->route('admin.pejabat.index')->with('success', 'Informasi Pejabat Berhasil Ditambahkan!');
     }
 
     /**
@@ -134,7 +134,7 @@ class PejabatController extends Controller
 
         $pejabat->update($data);
 
-        return redirect()->route('admin.pejabat.index')->with('success', 'Data Pejabat Berhasil Diperbarui!');
+        return redirect()->route('admin.pejabat.index')->with('success', 'Informasi Pejabat Berhasil Diperbarui!');
     }
 
     public function updateHeader(Request $request, $id)
@@ -142,15 +142,8 @@ class PejabatController extends Controller
         $headerKartu = Header::findOrFail($id);
 
         $request->validate([
-            'headline' => 'nullable|min:5',
-            'sub_heading' => 'nullable|min:5',
             'gambar' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
-
-        $data = [
-            'headline' => $request->headline,
-            'sub_heading' => $request->sub_heading,
-        ];
 
         // Jika ada upload gambar baru
         if ($request->hasFile('gambar')) {
@@ -165,9 +158,13 @@ class PejabatController extends Controller
             $data['gambar'] = basename($path);
         }
 
+        $data = [
+            'gambar' => $headerKartu->gambar, // Tetap gunakan gambar lama sebagai default
+        ];
+        
         $headerKartu->update($data);
 
-        return redirect()->route('admin.pejabat.index')->with('success', 'Data Header Kartu berhasil diperbarui!');
+        return redirect()->route('admin.pejabat.index')->with('success', 'Background Kepala Pejabat Berhasil Diperbarui!');
     }
 
     /**
@@ -183,6 +180,6 @@ class PejabatController extends Controller
 
         $pejabat->delete();
 
-        return redirect()->route('admin.pejabat.index')->with('success', 'Data Pejabat Berhasil Dihapus!');
+        return redirect()->route('admin.pejabat.index')->with('success', 'Informasi Pejabat Berhasil Dihapus!');
     }
 }

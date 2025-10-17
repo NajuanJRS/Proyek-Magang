@@ -9,8 +9,8 @@
 
         <div class="row">
             @foreach ($kartuDownload as $k)
-                <div class="col-md-4 mb-4">
-                    <a href="{{ route('admin.fileDownload.index', $k->slug) }}" class="text-decoration-none text-dark">
+                <div class="col-md-4 mb-4" role="button" style="cursor:pointer;"
+                    onclick="if(!event.target.closest('.btn')) { window.location='{{ route('admin.fileDownload.index', $k->slug) }}'; }">
                         <div class="card h-100 shadow-sm">
                             <div class="card-body d-flex justify-content-between align-items-center">
                                 <div class="d-flex align-items-center">

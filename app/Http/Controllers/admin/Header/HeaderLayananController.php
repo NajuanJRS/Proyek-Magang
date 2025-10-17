@@ -81,6 +81,6 @@ class HeaderLayananController extends Controller
 
         $headerLayanan->update($data);
 
-        return redirect()->route('admin.headerLayanan.index')->with('success', 'Data Heading Berhasil Diperbarui!');
+        return redirect()->route('admin.headerLayanan.index')->with('success', 'Heading Layanan Berhasil Diperbarui!');
     }
 }

@@ -64,7 +64,7 @@ class SliderController extends Controller
             'gambar'     => $filename,
         ]);
 
-        return redirect()->route('admin.slider.index')->with('success', 'Data Berhasil Disimpan!');
+        return redirect()->route('admin.slider.index')->with('success', 'Hero Section Berhasil Ditambahkan!');
     }
 
     /**
@@ -123,7 +123,7 @@ class SliderController extends Controller
 
         $slider->update($data);
 
-        return redirect()->route('admin.slider.index')->with('success', 'Data Slider Berhasil Diperbarui!');
+        return redirect()->route('admin.slider.index')->with('success', 'Hero Section Berhasil Diperbarui!');
     }
 
     /**
@@ -140,6 +140,6 @@ class SliderController extends Controller
         // Hapus data dari database
         $slider->delete();
 
-        return redirect()->route('admin.slider.index')->with('success', 'Data Berhasil Dihapus!');
+        return redirect()->route('admin.slider.index')->with('success', 'Hero Section Berhasil Dihapus!');
     }
 }

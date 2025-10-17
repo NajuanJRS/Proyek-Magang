@@ -81,6 +81,6 @@ class HeaderBeritaController extends Controller
 
         $headerBerita->update($data);
 
-        return redirect()->route('admin.headerBerita.index')->with('success', 'Data Heading Berhasil Diperbarui!');
+        return redirect()->route('admin.headerBerita.index')->with('success', 'Heading Berita Berhasil Diperbarui!');
     }
 }

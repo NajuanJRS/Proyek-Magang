@@ -49,19 +49,6 @@
                                             </div>
                                         </div>
 
-                                        <label for="headline" class="mb-2">Headline</label>
-                                        <div class="mb-4">
-                                            <input type="text" class="form-control" id="headline" name="headline"
-                                                placeholder="Masukkan Headline untuk gambar heading profile" value="{{ old('headline', $headerKartu->headline) }}">
-                                        </div>
-
-                                        <label for="sub_heading" class="mb-2">Sub Heading</label>
-                                        <div class="mb-4">
-                                            <textarea class="form-control" id="sub_heading" name="sub_heading" vrows="5"
-                                                placeholder="Masukkan Sub Heading singkat untuk gambar heading profile">{{ old('sub_heading', $headerKartu->sub_heading) }}</textarea>
-                                        </div>
-
-
                                         <button type="submit" class="btn btn-info me-2">Simpan</button>
                                         <a href="{{ route('admin.pejabat.index') }}" class="btn btn-danger">Batal</a>
                                 </form>

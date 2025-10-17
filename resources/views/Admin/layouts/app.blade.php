@@ -41,6 +41,10 @@
         </div>
     </nav>
 
+    @if (session('success'))
+        <div id="session-success-toast" data-message="{{ session('success') }}" class="d-none"></div>
+    @endif
+
     {{-- Content --}}
     <div class="content">
         @yield('content')

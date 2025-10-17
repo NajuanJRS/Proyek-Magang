@@ -22,8 +22,6 @@
                                                 <th class="text-center">No.</th>
                                                 <th class="text-center">Gambar</th>
                                                 <th class="text-center">Kategori Header</th>
-                                                <th class="text-center">Headline</th>
-                                                <th class="text-center">Sub Heading</th>
                                                 <th class="text-center">Aksi</th>
                                             </tr>
                                         </thead>
@@ -37,33 +35,7 @@
                                                             <img src="{{ asset('storage/header/' . $h->gambar) }}" width="100">
                                                         </td>
                                                         <td class="text-center">{{ $h->kategoriHeader->nama_kategori ?? '-' }}</td>
-                                                        <td class="text-center">{{ $h->headline ?? '-' }}</td>
-
-                                                        @php
-                                                            $fullText = trim(preg_replace(
-                                                                '/\s+/',
-                                                                ' ',
-                                                                html_entity_decode(strip_tags($h->sub_heading)),
-                                                            ));
-                                                        @endphp
-
-                                                        <td class="isi-konten text-center">
-                                                            <div class="preview-text"
-                                                                style="max-width:520px; white-space:normal; overflow:hidden;">
-                                                                {{ \Illuminate\Support\Str::limit($fullText, 160) }}
-                                                            </div>
-
-                                                            @if (mb_strlen($fullText) > 160)
-                                                                <button type="button" class="btn btn-link p-0 see-more"
-                                                                    data-id="{{ $h->id_header }}" data-judul="sub_heading">
-                                                                    Lihat selengkapnya
-                                                                </button>
-                                                            @endif
-
-                                                            <div id="full-content-{{ $h->id_header }}" class="d-none">
-                                                                {{ $h->sub_heading ?? '-' }}
-                                                            </div>
-                                                        </td>
+                                                        
 
                                                         <td class="text-center">
                                                             <a href="{{ route('admin.headerKartu.edit', $h->id_header) }}"

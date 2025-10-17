@@ -119,7 +119,7 @@ class BeritaController extends Controller
                 'tgl_posting'=> now(),
             ]);
 
-        return redirect()->route('admin.berita.index')->with('success', 'Data Pejabat Berhasil Disimpan!');
+        return redirect()->route('admin.berita.index')->with('success', 'Berita Berhasil Ditambahkan!');
     }
 
     /**
@@ -217,7 +217,7 @@ class BeritaController extends Controller
     }
 
         $berita->update($data);
-        return redirect()->route('admin.berita.index')->with('success', 'Data Berhasil Diupdate!');
+        return redirect()->route('admin.berita.index')->with('success', 'Berita Berhasil Diperbarui!');
     }
 
     /**
@@ -233,6 +233,6 @@ class BeritaController extends Controller
         }
 
         $berita->delete();
-        return redirect()->route('admin.berita.index')->with('success', 'Data Berhasil Dihapus!');
+        return redirect()->route('admin.berita.index')->with('success', 'Berita Berhasil Dihapus!');
     }
 }

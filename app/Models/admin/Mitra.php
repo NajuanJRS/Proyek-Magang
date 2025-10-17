@@ -10,6 +10,7 @@ class Mitra extends Model
     protected $primaryKey = 'id_mitra';
     public $timestamps = false;
     protected $fillable = [
+        'id_user',
         'gambar',
         'nama_mitra',
         'link_mitra',

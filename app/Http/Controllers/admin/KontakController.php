@@ -40,6 +40,6 @@ class KontakController extends Controller
 
         $kontak->update($data);
 
-        return redirect()->route('admin.kontak.index')->with('success', 'Data Berhasil Diupdate!');
+        return redirect()->route('admin.kontak.index')->with('success', 'Kontak Berhasil Diperbarui!');
     }
 }

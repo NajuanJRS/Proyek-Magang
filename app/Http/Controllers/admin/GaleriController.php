@@ -59,7 +59,7 @@ class GaleriController extends Controller
             'tanggal_upload' => $request->tanggal_upload ?? now(),
         ]);
 
-        return redirect()->route('admin.galeri.index')->with('success', 'Data Berhasil Disimpan!');
+        return redirect()->route('admin.galeri.index')->with('success', 'Galeri Berhasil Ditambahkan!');
     }
 
     /**
@@ -114,7 +114,7 @@ class GaleriController extends Controller
 
         $galeri->update($data);
 
-        return redirect()->route('admin.galeri.index')->with('success', 'Data galeri Berhasil Diperbarui!');
+        return redirect()->route('admin.galeri.index')->with('success', 'Galeri Berhasil Diperbarui!');
     }
 
     /**
@@ -131,6 +131,6 @@ class GaleriController extends Controller
         // Hapus data dari database
         $galeri->delete();
 
-        return redirect()->route('admin.galeri.index')->with('success', 'Data Berhasil Dihapus!');
+        return redirect()->route('admin.galeri.index')->with('success', 'Galeri Berhasil Dihapus!');
     }
 }

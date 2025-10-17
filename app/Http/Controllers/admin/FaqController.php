@@ -61,7 +61,7 @@ class FaqController extends Controller
             'jawaban' => $request->jawaban,
         ]);
 
-        return redirect()->route('admin.faq.index')->with('success', 'Data Pejabat Berhasil Disimpan!');
+        return redirect()->route('admin.faq.index')->with('success', 'FAQ Berhasil Ditambahkan!');
     }
 
     /**
@@ -107,7 +107,7 @@ class FaqController extends Controller
 
         $faq->update($data);
 
-        return redirect()->route('admin.faq.index')->with('success', 'Data Berhasil Diupdate!');
+        return redirect()->route('admin.faq.index')->with('success', 'FAQ Berhasil Diperbarui!');
     }
 
     /**
@@ -118,6 +118,6 @@ class FaqController extends Controller
         $faq = Faq::findOrFail($id);
 
         $faq->delete();
-        return redirect()->route('admin.faq.index')->with('success', 'Data Berhasil Dihapus!');
+        return redirect()->route('admin.faq.index')->with('success', 'FAQ Berhasil Dihapus!');
     }
 }
