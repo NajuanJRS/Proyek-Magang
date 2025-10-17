@@ -89,38 +89,37 @@ class SliderController extends Controller
      */
     public function update(Request $request, $id)
     {
-        // Cari record secara eksplisit agar tidak bergantung pada route-model binding
         $slider = Header::findOrFail($id);
-
         $request->validate([
-            'id_user'     => 'nullable|exists:users,id', // perbaiki nama tabel/kolom
-            'headline'    => 'nullable|min:5',
+            'id_user' => 'nullable|exists:user,id_user',
+            'headline' => 'nullable|min:5',
             'sub_heading' => 'nullable|min:5',
-            'gambar'      => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'gambar' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
 
-        // tentukan id_user (sama seperti sebelumnya)
-        $idUser = Auth::check() && Auth::user()->role === 'admin' ? 1 : Auth::id();
+        $idUser = Auth::check() && Auth::user()->role === 'admin'
+        ? 1
+        : Auth::id();
 
         $data = [
-            'id_user'     => $idUser,
-            'headline'    => $request->input('headline'),
-            'sub_heading' => $request->input('sub_heading'),
+            'id_user'    => $idUser,
+            'headline' => $request->headline,
+            'sub_heading' => $request->sub_heading,
         ];
 
         if ($request->hasFile('gambar')) {
-            // hapus gambar lama jika ada
-            if (!empty($slider->gambar) && Storage::disk('public')->exists('header/' . $slider->gambar)) {
-                Storage::disk('public')->delete('header/' . $slider->gambar);
+            // Hapus gambar lama jika ada
+            $oldFilePath = 'header/' . $slider->gambar;
+            if ($slider->gambar && Storage::disk('public')->exists($oldFilePath)) {
+                Storage::disk('public')->delete($oldFilePath);
             }
-            // upload gambar baru
+
+            // Upload gambar baru
             $path = $request->file('gambar')->store('header', 'public');
             $data['gambar'] = basename($path);
         }
 
-        // Gunakan fill + save untuk menghindari masalah mass-assignment jika model belum diatur
-        $slider->fill($data);
-        $slider->save();
+        $slider->update($data);
 
         return redirect()->route('admin.slider.index')->with('success', 'Heading Berita Berhasil Diperbarui!');
     }
@@ -128,8 +127,9 @@ class SliderController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Header $slider)
+    public function destroy($id)
     {
+        $slider = Header::findOrFail($id);
         $filePath = 'header/' . $slider->gambar;
 
         if ($slider->gambar && Storage::disk('public')->exists($filePath)) {
