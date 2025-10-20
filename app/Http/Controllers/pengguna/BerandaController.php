@@ -8,6 +8,7 @@ use App\Models\admin\Berita;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 use App\Models\admin\Mitra;
+use App\Models\admin\Konten;
 use App\Models\admin\Galeri;
 use App\Models\admin\KategoriKonten;
 
@@ -23,6 +24,10 @@ class BerandaController extends Controller
         $mitra = Mitra::all();
         // layanan
         $layanan = KategoriKonten::where('menu_konten', 'layanan')->take(4)->get();
+        // visi misi
+        $visiMisi = Konten::whereHas('kategoriKonten', function ($query) {
+            $query->where('slug', 'visi-dan-misi-dinas-sosial');
+        })->first();
         // galeri
         $galeri = Galeri::orderBy('tanggal_upload', 'desc')->take(8)->get();
 
@@ -33,7 +38,8 @@ class BerandaController extends Controller
             'berita' => $berita,
             'mitra' => $mitra,
             'layanan' => $layanan,
-            'galeri' => $galeri
+            'galeri' => $galeri,
+            'visiMisi' => $visiMisi
         ]);
     }
 }

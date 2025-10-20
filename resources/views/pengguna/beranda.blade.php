@@ -170,28 +170,30 @@
       <h2 class="ds-section-title">Visi & Misi Kami</h2>
     </div>
 
-    <div class="ds-vm-card p-4">
-      <h4 class="text-primary text-center mb-3">Visi</h4>
-      <p class="text-center mb-4">
-        Kalsel Maju (Kalimantan Selatan Makmur, Sejahtera, dan Berkelanjutan)
-      </p>
+    {{-- Tambahkan pengecekan @if untuk menghindari error jika data tidak ada --}}
+    @if($visiMisi)
+      <div class="ds-vm-card p-4">
+        <h4 class="text-primary text-center mb-3">Visi</h4>
+        <div class="text-center mb-4">
+          {{-- Menampilkan Visi dari database --}}
+          {!! $visiMisi->isi_konten1 !!}
+        </div>
 
-      <h4 class="text-primary text-center mb-3">Misi</h4>
-
-      <!-- wrapper agar list berada di tengah -->
-      <div class="misi-wrapper">
-        <ol>
-          <li>Mengembangkan Sumber Daya Manusia yang Berkualitas dan Berbudi Pekerti Luhur</li>
-          <li>Mendorong Pertumbuhan Ekonomi yang Merata</li>
-          <li>Memperkuat Sarana Prasarana Dasar dan Perekonomian</li>
-          <li>Tata Kelola Pemerintah yang Lebih Fokus Pada Pelayanan Publik</li>
-          <li>Menjaga Kelestarian Lingkungan Hidup dan Memperkuat Ketahanan Bencana</li>
-        </ol>
+        <h4 class="text-primary text-center mb-3">Misi</h4>
+        
+        <div class="misi-wrapper">
+          {{-- Menampilkan Misi dari database --}}
+          {!! $visiMisi->isi_konten2 !!}
+        </div>
       </div>
+    @else
+      <p class="text-center text-muted">Konten Visi & Misi belum tersedia.</p>
+    @endif
+
+    <div class="text-center mt-4">
+      {{-- Arahkan ke halaman visi-misi di dalam profil --}}
+      <a href="{{ url('/profil') }}" class="btn btn-primary">Selengkapnya Tentang Kami</a>
     </div>
-      <div class="text-center mt-4">
-        <a href="{{ url('/profil') }}" class="btn btn-primary">Selengkapnya Tentang Kami</a>
-      </div>
   </div>
 </section>
 
@@ -245,38 +247,53 @@
 
     @if($mitra->isNotEmpty())
       {{-- DESKTOP/TABLET: grid dinamis --}}
-      <div class="d-none d-md-flex ds-partner-grid">
-        @foreach($mitra as $m)
-          <div class="ds-partner-item">
-            {{-- Logika untuk menampilkan link jika ada --}}
-            @if($m->link_mitra)
-              <a href="{{ $m->link_mitra }}" target="_blank" rel="noopener">
-                <img src="{{ asset('storage/mitra/' . $m->gambar) }}" alt="{{ $m->nama_mitra }}">
-              </a>
-            @else
-              <img src="{{ asset('storage/mitra/' . $m->gambar) }}" alt="{{ $m->nama_mitra }}">
-            @endif
-          </div>
-        @endforeach
-      </div>
-
-      {{-- MOBILE: horizontal scroll dinamis --}}
-      <div class="d-md-none ds-partner-scroll">
-        <div class="ds-partner-track">
-          @foreach($mitra as $m)
-            <div class="ds-partner-item">
-              {{-- Logika yang sama untuk mobile --}}
-              @if($m->link_mitra)
-                <a href="{{ $m->link_mitra }}" target="_blank" rel="noopener">
-                  <img src="{{ asset('storage/mitra/' . $m->gambar) }}" alt="{{ $m->nama_mitra }}">
-                </a>
-              @else
-                <img src="{{ asset('storage/mitra/' . $m->gambar) }}" alt="{{ $m->nama_mitra }}">
-              @endif
+        <div class="d-none d-md-block">
+        @foreach($mitra->chunk(5) as $chunk)
+            <div class="ds-partner-grid">
+            @foreach($chunk as $m)
+                <div class="ds-partner-item">
+                @if($m->link_mitra)
+                    <a href="{{ $m->link_mitra }}" target="_blank" rel="noopener">
+                    <img src="{{ asset('storage/mitra/' . $m->gambar) }}" alt="{{ $m->nama_mitra }}">
+                    </a>
+                @else
+                    <img src="{{ asset('storage/mitra/' . $m->gambar) }}" alt="{{ $m->nama_mitra }}">
+                @endif
+                </div>
+            @endforeach
             </div>
-          @endforeach
+        @endforeach
         </div>
-      </div>
+
+        {{-- MOBILE: horizontal scroll dinamis --}}
+        <div class="d-md-none ds-partner-scroll">
+        <div class="ds-partner-track">
+            {{-- Loop pertama --}}
+            @foreach($mitra as $m)
+            <div class="ds-partner-item">
+                @if($m->link_mitra)
+                <a href="{{ $m->link_mitra }}" target="_blank" rel="noopener">
+                    <img src="{{ asset('storage/mitra/' . $m->gambar) }}" alt="{{ $m->nama_mitra }}">
+                </a>
+                @else
+                <img src="{{ asset('storage/mitra/' . $m->gambar) }}" alt="{{ $m->nama_mitra }}">
+                @endif
+            </div>
+            @endforeach
+            {{-- Loop kedua (untuk animasi seamless) --}}
+            @foreach($mitra as $m)
+            <div class="ds-partner-item">
+                @if($m->link_mitra)
+                <a href="{{ $m->link_mitra }}" target="_blank" rel="noopener">
+                    <img src="{{ asset('storage/mitra/' . $m->gambar) }}" alt="{{ $m->nama_mitra }}">
+                </a>
+                @else
+                <img src="{{ asset('storage/mitra/' . $m->gambar) }}" alt="{{ $m->nama_mitra }}">
+                @endif
+            </div>
+            @endforeach
+        </div>
+        </div>
     @endif
   </div>
 </section>
@@ -300,6 +317,39 @@ document.addEventListener('DOMContentLoaded', function() {
             track.scrollLeft -= cardWidth * 2; // Scroll sebanyak 2 kartu
         });
     }
+});
+document.addEventListener('DOMContentLoaded', function() {
+    const track = document.querySelector('.ds-partner-track');
+    if (!track) return;
+
+    let resumeTimeout;
+
+    function playAnimation() {
+        // Hapus timeout yang mungkin masih berjalan
+        clearTimeout(resumeTimeout);
+        // Lanjutkan animasi
+        track.style.animationPlayState = 'running';
+    }
+
+    function pauseAnimation() {
+        // Jeda animasi
+        track.style.animationPlayState = 'paused';
+        // Hapus timeout yang ada agar tidak menimpa
+        clearTimeout(resumeTimeout);
+    }
+
+    function scheduleResume() {
+        // Jadwalkan untuk melanjutkan animasi setelah 2 detik
+        resumeTimeout = setTimeout(playAnimation, 2000); // 2000 milidetik = 2 detik
+    }
+
+    // Event untuk desktop (mouse)
+    track.addEventListener('mouseover', pauseAnimation);
+    track.addEventListener('mouseout', scheduleResume);
+
+    // Event untuk mobile (sentuhan)
+    track.addEventListener('touchstart', pauseAnimation, { passive: true });
+    track.addEventListener('touchend', scheduleResume);
 });
 </script>
 @endpush

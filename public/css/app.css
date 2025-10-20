@@ -606,14 +606,15 @@
 
 /* Bungkus daftar misi agar tetap rata kiri tapi berada di tengah */
 .misi-wrapper {
-  text-align: center;         /* seluruh blok di tengah */
+  display: flex;
+  justify-content: center;        /* seluruh blok di tengah */
 }
 
-.misi-wrapper ol {
-  display: inline-block;      /* list jadi blok sejajar di tengah */
+.misi-wrapper ol { 
+  display: inline-block;
   text-align: left;           /* isi list tetap rata kiri */
-  margin: 0 auto;             /* tengah secara horizontal */
-  padding-left: 1.2rem;       /* indentasi nomor */
+  padding-left: 20px;       /* indentasi nomor */
+  max-width: 100%;
 }
 
 /* Warna judul dalam kartu */
@@ -1736,4 +1737,68 @@ background-color: rgba(0, 0, 0, 0.40); /* Lapisan gelap 35% */
   text-align: center;
   color: #333;
   font-weight: 600;
+}
+
+/* --- Desktop Layout --- */
+.ds-partner-grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 4rem; /* Perlebar jarak antar logo di desktop */
+  margin-bottom: 1.5rem;
+}
+
+.ds-partner-item {
+  flex-shrink: 0;
+  height: 100px; /* Perbesar tinggi logo di desktop */
+  opacity: 0.8;
+  transition: opacity 0.3s ease;
+}
+
+.ds-partner-item:hover {
+  opacity: 1;
+}
+
+.ds-partner-item img {
+  height: 100%;
+  width: auto;
+  object-fit: contain;
+}
+
+/* --- Mobile Auto-Scroll --- */
+@media (max-width: 767px) {
+  .ds-partner-scroll {
+    overflow: hidden; /* Kembalikan ke hidden untuk menonaktifkan scroll manual */
+    position: relative;
+    width: 100%;
+    -webkit-mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
+    mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
+  }
+
+  .ds-partner-track {
+    display: flex;
+    width: max-content;
+    animation: scroll 20s linear infinite;
+  }
+
+  /* Tambahkan kembali ini untuk menghentikan animasi saat disentuh/hover */
+  .ds-partner-scroll:hover .ds-partner-track {
+    animation-play-state: paused;
+  }
+
+  .ds-partner-track .ds-partner-item {
+    width: auto;
+    height: 75px;
+    margin: 0 15px;
+  }
+}
+
+/* Keyframes untuk animasi scrolling */
+@keyframes scroll {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%); /* Geser sejauh setengah dari total lebar track */
+  }
 }
