@@ -54,7 +54,7 @@ class HeaderLayananController extends Controller
             'id_user' => 'nullable|exists:user,id_user',
             'headline' => 'nullable|min:5',
             'sub_heading' => 'nullable|min:5',
-            'gambar' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'gambar' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:400',
         ]);
 
         $idUser = Auth::check() && Auth::user()->role === 'admin'

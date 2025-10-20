@@ -52,31 +52,40 @@
 
     {{-- Sidebar --}}
     @php
-    $activeMenu = '';
-
-    if (request()->routeIs('admin.dashboard')) {
-        $activeMenu = 'dashboard';
-    } elseif (request()->routeIs('admin.slider.index') || request()->routeIs('admin.mitra.index')) {
-        $activeMenu = 'menuBeranda';
-    } elseif (request()->routeIs('admin.profile.index') || request()->routeIs('admin.pejabat.index') || request()->routeIs('admin.headerProfile.index') || request()->routeIs('admin.galeri.index')) {
-        $activeMenu = 'menuProfil';
-    } elseif (request()->routeIs('admin.headerLayanan.index') || request()->routeIs('admin.layanan.index')) {
-        $activeMenu = 'menuLayanan';
-    } elseif (request()->routeIs('admin.headerBerita.index') || request()->routeIs('admin.berita.index')) {
-        $activeMenu = 'menuBerita';
-    } elseif (request()->routeIs('admin.headerDownload.index') || request()->routeIs('admin.kontenDownload.index') || request()->routeIs('admin.fileDownload.index')) {
-        $activeMenu = 'menuDownload';
-    } elseif (request()->routeIs('admin.headerPpid.index') || request()->routeIs('admin.ppid.index')) {
-        $activeMenu = 'menuPPID';
-    } elseif (request()->routeIs('admin.headerKontak.index') || request()->routeIs('admin.kontak.index')) {
-        $activeMenu = 'menuKontak';
-    } elseif (request()->routeIs('admin.faq.index')) {
-        $activeMenu = 'faq';
-    } elseif (request()->routeIs('admin.kotakMasuk.index')) {
-        $activeMenu = 'kotakMasuk';
-    } else {
         $activeMenu = '';
-    }
+
+        if (request()->routeIs('admin.dashboard')) {
+            $activeMenu = 'dashboard';
+        } elseif (request()->routeIs('admin.slider.index') || request()->routeIs('admin.mitra.index')) {
+            $activeMenu = 'menuBeranda';
+        } elseif (
+            request()->routeIs('admin.profile.index') ||
+            request()->routeIs('admin.pejabat.index') ||
+            request()->routeIs('admin.headerProfile.index') ||
+            request()->routeIs('admin.galeri.index')
+        ) {
+            $activeMenu = 'menuProfil';
+        } elseif (request()->routeIs('admin.headerLayanan.index') || request()->routeIs('admin.layanan.index')) {
+            $activeMenu = 'menuLayanan';
+        } elseif (request()->routeIs('admin.headerBerita.index') || request()->routeIs('admin.berita.index')) {
+            $activeMenu = 'menuBerita';
+        } elseif (
+            request()->routeIs('admin.headerDownload.index') ||
+            request()->routeIs('admin.kontenDownload.index') ||
+            request()->routeIs('admin.fileDownload.index')
+        ) {
+            $activeMenu = 'menuDownload';
+        } elseif (request()->routeIs('admin.headerPpid.index') || request()->routeIs('admin.ppid.index')) {
+            $activeMenu = 'menuPPID';
+        } elseif (request()->routeIs('admin.headerKontak.index') || request()->routeIs('admin.kontak.index')) {
+            $activeMenu = 'menuKontak';
+        } elseif (request()->routeIs('admin.faq.index')) {
+            $activeMenu = 'faq';
+        } elseif (request()->routeIs('admin.kotakMasuk.index')) {
+            $activeMenu = 'kotakMasuk';
+        } else {
+            $activeMenu = '';
+        }
     @endphp
 
     <div class="sidebar" id="sidebarMenu" data-active-menu="{{ $activeMenu }}">
@@ -94,8 +103,9 @@
             <!-- Dashboard -->
             <li class="nav-item">
                 <a href="{{ route('admin.dashboard') }}"
-                class="nav-link d-flex justify-content-between align-items-center {{ request()->routeIs('admin.dashboard') ? 'active' : '' }}">
-                    <span><i class="bi bi-speedometer2"></i> Dashboard</span>
+                    class="nav-link d-flex align-items-center {{ request()->routeIs('admin.dashboard') ? 'active' : '' }}">
+                    <i class="bi bi-speedometer2"></i>
+                    <span class="menu-title">Dashboard</span>
                 </a>
             </li>
 
@@ -104,16 +114,21 @@
                 <a class="nav-link d-flex justify-content-between align-items-center {{ request()->routeIs('admin.slider.index') || request()->routeIs('admin.mitra.index') ? 'active' : '' }}"
                     data-bs-toggle="collapse" href="#menuBeranda" role="button" aria-expanded="false"
                     aria-controls="menuBeranda">
-                    <span><i class="bi bi-house"></i> Beranda</span>
+                    <div class="d-flex align-items-center">
+                        <i class="bi bi-house"></i>
+                        <span class="menu-title">Beranda</span>
+                    </div>
                     <i class="bi bi-chevron-down small arrow-icon"></i>
                 </a>
                 <div class="collapse ps-2" id="menuBeranda" data-bs-parent="#sidebarMenu">
                     <ul class="nav flex-column ms-3">
                         <li><a href="{{ route('admin.slider.index') }}"
-                                class="nav-link {{ request()->routeIs('admin.slider.index') ? 'active' : '' }}">Hero Section</a>
+                                class="nav-link {{ request()->routeIs('admin.slider.index') ? 'active' : '' }}">Hero
+                                Section</a>
                         </li>
                         <li><a href="{{ route('admin.mitra.index') }}"
-                                class="nav-link {{ request()->routeIs('admin.mitra.index') ? 'active' : '' }}">Unit Layanan
+                                class="nav-link {{ request()->routeIs('admin.mitra.index') ? 'active' : '' }}">Unit
+                                Layanan
                                 Dan Mitra</a></li>
                     </ul>
                 </div>
@@ -124,7 +139,10 @@
                 <a class="nav-link d-flex justify-content-between align-items-center {{ request()->routeIs('admin.headerProfile.index') || request()->routeIs('admin.pejabat.index') || request()->routeIs('admin.profile.index') ? 'active' : '' }}"
                     data-bs-toggle="collapse" href="#menuProfil" role="button" aria-expanded="false"
                     aria-controls="menuProfil">
-                    <span><i class="bi bi-person"></i> Profil</span>
+                    <div class="d-flex align-items-center">
+                        <i class="bi bi-person"></i>
+                        <span class="menu-title">Profil</span>
+                    </div>
                     <i class="bi bi-chevron-down small arrow-icon"></i>
                 </a>
                 <div class="collapse ps-2" id="menuProfil" data-bs-parent="#sidebarMenu">
@@ -150,7 +168,10 @@
                 <a class="nav-link d-flex justify-content-between align-items-center {{ request()->routeIs('admin.headerLayanan.index') || request()->routeIs('admin.layanan.index') ? 'active' : '' }}"
                     data-bs-toggle="collapse" href="#menuLayanan" role="button" aria-expanded="false"
                     aria-controls="menuLayanan">
-                    <span><i class="bi bi-file-earmark-text"></i> Layanan</span>
+                    <div class="d-flex align-items-center">
+                        <i class="bi bi-file-earmark-text"></i>
+                        <span class="menu-title">Layanan</span>
+                    </div>
                     <i class="bi bi-chevron-down small arrow-icon"></i>
                 </a>
                 <div class="collapse ps-2" id="menuLayanan" data-bs-parent="#sidebarMenu">
@@ -159,7 +180,8 @@
                                 class="nav-link {{ request()->routeIs('admin.headerLayanan.index') ? 'active' : '' }}">Header</a>
                         </li>
                         <li><a href="{{ route('admin.layanan.index') }}"
-                                class="nav-link {{ request()->routeIs('admin.layanan.index') ? 'active' : '' }}">Konten Layanan</a></li>
+                                class="nav-link {{ request()->routeIs('admin.layanan.index') ? 'active' : '' }}">Konten
+                                Layanan</a></li>
                     </ul>
                 </div>
             </li>
@@ -169,7 +191,10 @@
                 <a class="nav-link d-flex justify-content-between align-items-center {{ request()->routeIs('admin.headerBerita.index') || request()->routeIs('admin.berita.index') ? 'active' : '' }}"
                     data-bs-toggle="collapse" href="#menuBerita" role="button" aria-expanded="false"
                     aria-controls="menuBerita">
-                    <span><i class="bi bi-newspaper"></i> Berita</span>
+                    <div class="d-flex align-items-center">
+                        <i class="bi bi-newspaper"></i>
+                        <span class="menu-title">Berita</span>
+                    </div>
                     <i class="bi bi-chevron-down small arrow-icon"></i>
                 </a>
                 <div class="collapse ps-2" id="menuBerita" data-bs-parent="#sidebarMenu">
@@ -178,7 +203,8 @@
                                 class="nav-link {{ request()->routeIs('admin.headerBerita.index') ? 'active' : '' }}">Header</a>
                         </li>
                         <li><a href="{{ route('admin.berita.index') }}"
-                                class="nav-link {{ request()->routeIs('admin.berita.index') ? 'active' : '' }}">Konten Berita</a></li>
+                                class="nav-link {{ request()->routeIs('admin.berita.index') ? 'active' : '' }}">Konten
+                                Berita</a></li>
                     </ul>
                 </div>
             </li>
@@ -188,7 +214,10 @@
                 <a class="nav-link d-flex justify-content-between align-items-center {{ request()->routeIs('admin.headerDownload.index') || request()->routeIs('admin.kontenDownload.index') || request()->routeIs('admin.fileDownload.index') ? 'active' : '' }}"
                     data-bs-toggle="collapse" href="#menuDownload" role="button" aria-expanded="false"
                     aria-controls="menuDownload">
-                    <span><i class="bi bi-download"></i> Download</span>
+                    <div class="d-flex align-items-center">
+                        <i class="bi bi-download"></i>
+                        <span class="menu-title">Download</span>
+                    </div>
                     <i class="bi bi-chevron-down small arrow-icon"></i>
                 </a>
                 <div class="collapse ps-2" id="menuDownload" data-bs-parent="#sidebarMenu">
@@ -196,8 +225,9 @@
                         <li><a href="{{ route('admin.headerDownload.index') }}"
                                 class="nav-link {{ request()->routeIs('admin.headerDownload.index') ? 'active' : '' }}">Header</a>
                         </li>
-                        <li><a href="{{ route('admin.kontenDownload.index')}}"
-                                class="nav-link {{ request()->routeIs('admin.kontenDownload.index') || request()->routeIs('admin.fileDownload.index') ? 'active' : '' }}">Konten Download</a></li>
+                        <li><a href="{{ route('admin.kontenDownload.index') }}"
+                                class="nav-link {{ request()->routeIs('admin.kontenDownload.index') || request()->routeIs('admin.fileDownload.index') ? 'active' : '' }}">Konten
+                                Download</a></li>
                     </ul>
                 </div>
             </li>
@@ -207,7 +237,10 @@
                 <a class="nav-link d-flex justify-content-between align-items-center {{ request()->routeIs('admin.headerPpid.index') || request()->routeIs('admin.ppid.index') ? 'active' : '' }}"
                     data-bs-toggle="collapse" href="#menuPPID" role="button" aria-expanded="false"
                     aria-controls="menuPPID">
-                    <span><i class="bi bi-people"></i> PPID</span>
+                    <div class="d-flex align-items-center">
+                        <i class="bi bi-people"></i>
+                        <span class="menu-title">PPID</span>
+                    </div>
                     <i class="bi bi-chevron-down small arrow-icon"></i>
                 </a>
                 <div class="collapse ps-2" id="menuPPID" data-bs-parent="#sidebarMenu">
@@ -216,7 +249,8 @@
                                 class="nav-link {{ request()->routeIs('admin.headerPpid.index') ? 'active' : '' }}">Header</a>
                         </li>
                         <li><a href="{{ route('admin.ppid.index') }}"
-                                class="nav-link {{ request()->routeIs('admin.ppid.index') ? 'active' : '' }}">Konten PPID</a></li>
+                                class="nav-link {{ request()->routeIs('admin.ppid.index') ? 'active' : '' }}">Konten
+                                PPID</a></li>
                     </ul>
                 </div>
             </li>
@@ -226,7 +260,10 @@
                 <a class="nav-link d-flex justify-content-between align-items-center {{ request()->routeIs('admin.headerKontak.index') || request()->routeIs('admin.kontak.index') ? 'active' : '' }}"
                     data-bs-toggle="collapse" href="#menuKontak" role="button" aria-expanded="false"
                     aria-controls="menuKontak">
-                    <span><i class="bi bi-envelope"></i> Kontak</span>
+                    <div class="d-flex align-items-center">
+                        <i class="bi bi-envelope"></i>
+                        <span class="menu-title">Kontak</span>
+                    </div>
                     <i class="bi bi-chevron-down small arrow-icon"></i>
                 </a>
                 <div class="collapse ps-2" id="menuKontak" data-bs-parent="#sidebarMenu">
@@ -235,7 +272,8 @@
                                 class="nav-link {{ request()->routeIs('admin.headerKontak.index') ? 'active' : '' }}">Header</a>
                         </li>
                         <li><a href="{{ route('admin.kontak.index') }}"
-                                class="nav-link {{ request()->routeIs('admin.kontak.index') ? 'active' : '' }}">Konten Kontak</a></li>
+                                class="nav-link {{ request()->routeIs('admin.kontak.index') ? 'active' : '' }}">Konten
+                                Kontak</a></li>
                     </ul>
                 </div>
             </li>
@@ -243,25 +281,29 @@
             <!-- FAQ -->
             <li class="nav-item">
                 <a href="{{ route('admin.faq.index') }}"
-                    class="nav-link d-flex justify-content-between align-items-center {{ request()->routeIs('admin.faq.index') ? 'active' : '' }}">
-                    <span><i class="bi bi-question-circle"></i> FAQ</span>
+                    class="nav-link d-flex align-items-center {{ request()->routeIs('admin.faq.index') ? 'active' : '' }}">
+                    <i class="bi bi-question-circle"></i>
+                    <span class="menu-title">FAQ</span>
                 </a>
             </li>
 
             <!-- Kotak Masuk -->
             <li class="nav-item">
                 <a href="{{ route('admin.kotakMasuk.index') }}"
-                    class="nav-link d-flex justify-content-between align-items-center {{ request()->routeIs('admin.kotakMasuk.index') ? 'active' : '' }}">
-                    <span><i class="bi bi-inbox"></i> Kotak Masuk</span>
+                    class="nav-link d-flex align-items-center {{ request()->routeIs('admin.kotakMasuk.index') ? 'active' : '' }}">
+                    <i class="bi bi-inbox"></i>
+                    <span class="menu-title">Kotak Masuk</span>
                 </a>
             </li>
 
             <li>
-                <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: block;">
+                <a href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();"
+                    class="nav-link d-flex align-items-center">
+                    <i class="bi bi-box-arrow-right"></i>
+                    <span class="menu-title">Logout</span>
+                </a>
+                <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
                     @csrf
-                    <button type="submit" class="nav-link w-100 text-start" style="border: none; color: inherit;">
-                        <i class="bi bi-box-arrow-right"></i> Logout
-                    </button>
                 </form>
             </li>
         </ul>

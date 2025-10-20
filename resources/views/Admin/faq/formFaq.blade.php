@@ -30,7 +30,7 @@
                                     <label for="pertanyaan" class="mb-2">Pertanyaan</label>
                                     <div class="mb-4">
                                         <input type="text" class="form-control" id="pertanyaan" name="pertanyaan"
-                                            placeholder="Masukkan Pertanyaan FAQ">
+                                            placeholder="Masukkan Pertanyaan FAQ" required>
                                     </div>
 
                                     {{-- Kategori FAQ --}}
@@ -50,7 +50,7 @@
                                     <label for="jawaban" class="mb-2">Jawaban</label>
                                     <div class="mb-4">
                                         <textarea class="form-control my-editor" id="jawaban" name="jawaban" rows="6"
-                                            placeholder="Masukkan Jawaban FAQ"></textarea>
+                                            placeholder="Masukkan Jawaban FAQ" required></textarea>
                                     </div>
 
                                     {{-- Tombol submit --}}

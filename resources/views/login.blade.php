@@ -19,7 +19,15 @@
                 <h3 class="mb-1">Selamat Datang!</h3>
                 <div class="login-title mb-3">Login</div>
             </div>
-            <!-- filepath: c:\xampp\htdocs\Dinas_Sosial_Prov_Kalsel\resources\views\login.blade.php -->
+            @if ($errors->any())
+                <div class="alert alert-danger">
+                    <ul>
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
             <form action="{{ route('login') }}" method="POST" autocomplete="off">
                 @csrf
                 <div class="input-group mb-3">
@@ -44,6 +52,8 @@
         </div>
         <p class="copyright-text">Copyright © 2025 Dinas Sosial Provinsi Kalimantan Selatan</p>
     </div>
+
+<script src="{{ asset('js/custom.js') }}"></script>
 </body>
 
 </html>

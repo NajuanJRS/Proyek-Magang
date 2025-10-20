@@ -55,14 +55,14 @@
                                     <label for="isi_konten1" class="mb-2">Isi Konten 1</label>
                                     <div class="mb-4">
                                         <textarea class="form-control my-editor" id="isi_konten1" name="isi_konten1" rows="6"
-                                            placeholder="Masukkan isi konten pertama"></textarea>
+                                            placeholder="Masukkan isi konten pertama" required></textarea>
                                     </div>
 
                                     {{-- Gambar 1 --}}
                                     <label for="gambar1" class="mb-2">Unggah Gambar 1</label>
                                     <div class="mb-4">
                                         <input type="file" id="gambar1" name="gambar1" accept="image/*"
-                                            onchange="previewImage(event, 'preview1')">
+                                            onchange="previewImage(event, 'preview1')" required>
                                         <br>
                                         <img id="preview1" src="#" alt="Preview Gambar 1"
                                             style="display:none; width: 150px; margin-top:10px; border-radius:8px;">

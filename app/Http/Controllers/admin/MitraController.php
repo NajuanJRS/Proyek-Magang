@@ -43,7 +43,7 @@ class MitraController extends Controller
             'id_user' => 'nullable|exists:users,id_user',
             'nama_mitra' => 'required',
             'link_mitra' => 'nullable',
-            'gambar'     => 'required|image|mimes:jpeg,png,jpg,svg,webp|max:2048',
+            'gambar'     => 'required|image|mimes:jpeg,png,jpg,svg,webp|max:200',
         ]);
 
         // Praktik terbaik untuk upload file
@@ -90,7 +90,7 @@ class MitraController extends Controller
             'id_user' => 'nullable|exists:users,id_user',
             'nama_mitra' => 'nullable',
             'link_mitra' => 'nullable',
-            'gambar_slider' => 'nullable|image|mimes:jpeg,png,gif,svg,webp|max:2048',
+            'gambar_slider' => 'nullable|image|mimes:jpeg,png,gif,svg,webp|max:200',
         ]);
 
         $idUser = Auth::check() && Auth::user()->role === 'admin'

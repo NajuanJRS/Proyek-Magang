@@ -49,15 +49,15 @@ class KontenLayananController extends Controller
         $request->validate([
             // KategoriKonten
             'judul_konten'  => 'required|string|max:255',
-            'icon_konten'   => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'icon_konten'   => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:500',
 
             // Konten
             'isi_konten1'  => 'required|string',
-            'gambar1'       => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'gambar1'       => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:500',
             'isi_konten2'  => 'nullable|string',
-            'gambar2'       => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'gambar2'       => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:500',
             'isi_konten3'  => 'nullable|string',
-            'gambar3'       => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'gambar3'       => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:500',
         ]);
 
         // Upload icon kategori (optional)
@@ -122,15 +122,15 @@ class KontenLayananController extends Controller
         $request->validate([
             // KategoriKonten
             'judul_konten'  => 'required|string|max:255',
-            'icon_konten'   => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'icon_konten'   => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:500',
 
             // Konten
             'isi_konten1'  => 'required|string',
-            'gambar1'       => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'gambar1'       => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:500',
             'isi_konten2'  => 'nullable|string',
-            'gambar2'       => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'gambar2'       => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:500',
             'isi_konten3'  => 'nullable|string',
-            'gambar3'       => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'gambar3'       => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:500',
         ]);
 
         // Ambil data konten berdasarkan ID
