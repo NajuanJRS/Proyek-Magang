@@ -610,7 +610,7 @@
   justify-content: center;        /* seluruh blok di tengah */
 }
 
-.misi-wrapper ol { 
+.misi-wrapper ol {
   display: inline-block;
   text-align: left;           /* isi list tetap rata kiri */
   padding-left: 20px;       /* indentasi nomor */
@@ -1801,4 +1801,43 @@ background-color: rgba(0, 0, 0, 0.40); /* Lapisan gelap 35% */
   100% {
     transform: translateX(-50%); /* Geser sejauh setengah dari total lebar track */
   }
+}
+
+/* Style Tombol Filter FAQ (Default/Non-aktif) */
+.ds-faq-filter-btn {
+  background-color: #f8f9fa; /* Latar abu-abu sangat muda */
+  border-color: #dee2e6;
+  color: #6c757d; /* Teks abu-abu */
+  transition: all 0.2s ease-in-out;
+  display: flex; /* Untuk menyejajarkan teks dan count */
+  align-items: center;
+  justify-content: space-between; /* Memberi jarak antara teks dan count */
+  width: auto; /* Biarkan lebar menyesuaikan */
+  padding: 0.3rem 0.8rem; /* Sesuaikan padding jika perlu */
+}
+
+/* Style Tombol Filter FAQ (Aktif - MENYESUAIKAN GAMBAR) */
+.ds-faq-filter-btn.active {
+  background-color: #e9f0f7; /* Latar biru muda */
+  border-color: #c6d9ec; /* Border biru sedikit lebih gelap */
+  color: #2B5A9A; /* Warna teks biru gelap */
+  font-weight: 500;
+}
+
+/* Style untuk Jumlah di Filter (Default/Non-aktif - SUDAH ADA SEBELUMNYA) */
+.ds-filter-count {
+  background-color: #e9ecef;
+  color: #6c757d;
+  padding: 0.1rem 0.4rem;
+  border-radius: 0.25rem;
+  font-size: 0.8rem;
+  margin-left: 0.8rem; /* Beri jarak dari teks */
+  font-weight: 600;
+  vertical-align: middle;
+}
+
+/* Style untuk Jumlah saat filter AKTIF (MENYESUAIKAN GAMBAR) */
+.ds-faq-filter-btn.active .ds-filter-count {
+  background-color: #2B5A9A; /* Warna latar biru gelap */
+  color: #fff; /* Warna teks putih */
 }
