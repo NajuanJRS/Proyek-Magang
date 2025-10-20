@@ -24,8 +24,7 @@ class PejabatController extends Controller
         // Data pejabat
         $pejabat = Pejabat::with('jabatan')
             ->when($search, function ($query, $search) {
-                $query->where('nama_pejabat', 'like', "%$search%")
-                    ->orWhere('nip', 'like', "%$search%");
+                $query->where('nama_pejabat', 'like', "%$search%");
             })
             ->paginate(10);
 
@@ -55,10 +54,9 @@ class PejabatController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'nip' => 'required|min:5|max:18',
             'nama_pejabat' => 'required|min:5|max:100',
             'id_jabatan' => 'required|exists:jabatan,id_jabatan',
-            'gambar' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:500',
+            'gambar' => 'required|image|mimes:jpeg,png,jpg,svg,webp|max:500',
         ]);
 
         $idUser = Auth::check() && Auth::user()->role === 'admin'
@@ -70,7 +68,6 @@ class PejabatController extends Controller
 
         Pejabat::create([
             'id_user' => $idUser,
-            'nip' => $request->nip,
             'nama_pejabat' => $request->nama_pejabat,
             'id_jabatan' => $request->id_jabatan,
             'gambar' => $filename,
@@ -103,10 +100,9 @@ class PejabatController extends Controller
     public function update(Request $request, Pejabat $pejabat)
     {
         $request->validate([
-            'nip' => 'required|min:5|max:18',
             'nama_pejabat' => 'required|min:5|max:100',
             'id_jabatan' => 'required|exists:jabatan,id_jabatan',
-            'gambar' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:500',
+            'gambar' => 'nullable|image|mimes:jpeg,png,jpg,svg,webp|max:500',
         ]);
 
         $idUser = Auth::check() && Auth::user()->role === 'admin'
@@ -115,7 +111,6 @@ class PejabatController extends Controller
 
         $data = [
             'id_user' => $idUser,
-            'nip' => $request->nip,
             'nama_pejabat' => $request->nama_pejabat,
             'id_jabatan' => $request->id_jabatan,
         ];
@@ -142,8 +137,10 @@ class PejabatController extends Controller
         $headerKartu = Header::findOrFail($id);
 
         $request->validate([
-            'gambar' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:500',
+            'gambar' => 'nullable|image|mimes:jpeg,png,jpg,svg,webp|max:500',
         ]);
+
+        $data = [];
 
         // Jika ada upload gambar baru
         if ($request->hasFile('gambar')) {
@@ -158,11 +155,10 @@ class PejabatController extends Controller
             $data['gambar'] = basename($path);
         }
 
-        $data = [
-            'gambar' => $headerKartu->gambar, // Tetap gunakan gambar lama sebagai default
-        ];
 
+        if (!empty($data)) {
         $headerKartu->update($data);
+        }
 
         return redirect()->route('admin.pejabat.index')->with('success', 'Background Kepala Pejabat Berhasil Diperbarui!');
     }

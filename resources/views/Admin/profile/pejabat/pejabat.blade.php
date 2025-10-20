@@ -35,7 +35,7 @@
                                                             <img src="{{ asset('storage/header/' . $h->gambar) }}" width="100">
                                                         </td>
                                                         <td class="text-center">{{ $h->kategoriHeader->nama_kategori ?? '-' }}</td>
-                                                        
+
 
                                                         <td class="text-center">
                                                             <a href="{{ route('admin.headerKartu.edit', $h->id_header) }}"
@@ -96,7 +96,6 @@
                                                 <th class="text-center">No.</th>
                                                 <th class="text-center">Gambar</th>
                                                 <th class="text-center">Nama</th>
-                                                <th class="text-center">Nip</th>
                                                 <th class="text-center">Jabatan</th>
                                                 <th class="text-center">Aksi</th>
                                             </tr>
@@ -109,19 +108,18 @@
                                                         <img src="{{ asset('storage/pejabat/' . $p->gambar) }}" width="150" alt="foto pejabat">
                                                     </td>
                                                     <td class="text-center">{{ $p->nama_pejabat }}</td>
-                                                    <td class="text-center">{{ $p->nip }}</td>
                                                     <td class="text-center">{{ $p->jabatan->nama_jabatan }}</td>
                                                     <td class="text-center">
-                                                        <a href="{{ route('admin.pejabat.edit', $p->nip) }}" class="btn btn-info btn-sm">
+                                                        <a href="{{ route('admin.pejabat.edit', $p->id_pejabat) }}" class="btn btn-info btn-sm">
                                                             <i class="bi bi-pencil-square"></i> Ubah
                                                         </a>
                                                         <a href="#" class="btn btn-danger btn-sm"
-                                                            onclick="deleteData('{{ $p->nip }}')">
+                                                            onclick="deleteData('{{ $p->id_pejabat }}')">
                                                             <i class="bi bi-trash"></i> Hapus
                                                         </a>
 
-                                                        <form id="delete-form-{{ $p->nip }}"
-                                                            action="{{ route('admin.pejabat.destroy', $p->nip) }}"
+                                                        <form id="delete-form-{{ $p->id_pejabat }}"
+                                                            action="{{ route('admin.pejabat.destroy', $p->id_pejabat) }}"
                                                             method="POST" style="display: none;">
                                                             @csrf
                                                             @method('DELETE')

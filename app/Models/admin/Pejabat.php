@@ -10,14 +10,11 @@ class Pejabat extends Model
     use HasFactory;
 
     protected $table = 'pejabat';
-    protected $primaryKey = 'nip'; // Menggunakan NIP sebagai primary key
-    public $incrementing = false; // Karena NIP bukan auto-increment
-    protected $keyType = 'string';
+    protected $primaryKey = 'id_pejabat';
     public $timestamps = false;
 
     protected $fillable = [
         'id_user',
-        'nip',
         'id_jabatan',
         'nama_pejabat',
         'gambar',
