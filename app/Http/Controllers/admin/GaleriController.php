@@ -39,9 +39,9 @@ class GaleriController extends Controller
     {
         $request->validate([
             'id_user' => 'nullable|exists:users,id_user',
-            'judul' => 'required|min:5', // Sesuaikan dengan view
+            'judul' => 'required|min:5',
             'gambar'     => 'required|image|mimes:jpeg,png,jpg,svg,webp|max:2048',
-            'tanggal_upload' => 'nullable|date', // Sesuaikan dengan view
+            'tanggal_upload' => 'nullable|date',
         ]);
 
         // Praktik terbaik untuk upload file

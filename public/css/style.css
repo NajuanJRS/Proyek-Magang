@@ -584,8 +584,9 @@ body {
 .card {
     border-radius: 20px;
     box-shadow: 0 4px 16px rgba(0,0,0,0.07);
+    transition: box-shadow 0.2s;
 }
-.card:hover {
+.card-hover-animation:hover {
     transform: translateY(-3px);
 }
 .custom-table-container {
@@ -664,6 +665,21 @@ body {
   --navbar-height: 56px; /* sesuaikan jika navbar Anda 65px -> ubah di sini */
 }
 
+.logo-full, .logo-mini {
+    height: 40px; /* Menyamakan tinggi logo */
+    vertical-align: middle;
+}
+
+/* Atur transisi untuk grup konten yang akan bergeser */
+.navbar-main-content {
+    transition: margin-left 0.3s ease;
+}
+
+/* Saat sidebar minimize, geser grup konten ke kanan */
+body.sidebar-is-minimized .navbar-main-content {
+    margin-left: 20px;
+}
+
 /* Pastikan sidebar selalu menghitung tinggi viewport dan scroll jika konten melebihi */
 .sidebar {
   position: fixed;
@@ -683,12 +699,34 @@ body {
 
 /* Mode minimized (desktop) */
 .sidebar.sidebar-minimized {
-    width: 70px;
+    width: 100px; /* Lebar sidebar saat minimize */
 }
-.sidebar.sidebar-minimized .nav-link span,
-.sidebar.sidebar-minimized .user-info,
+
+/* Sembunyikan elemen-elemen ini saat sidebar minimize */
+.sidebar.sidebar-minimized .menu-title,
+.sidebar.sidebar-minimized .nav-link .arrow-icon,
+.sidebar.sidebar-minimized .admin-profile,
 .sidebar.sidebar-minimized p.text-muted {
-    display: none;
+    display: none !important;
+}
+
+/* Atur agar link dan ikon tetap di tengah saat minimize */
+.sidebar.sidebar-minimized .nav-link,
+.sidebar.sidebar-minimized .nav-link > div {
+    justify-content: center !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+}
+
+/* Styling ikon agar lebih menonjol dan tidak memiliki margin */
+.sidebar.sidebar-minimized .nav-link i {
+    margin-right: 0 !important;
+    font-size: 1.5rem; /* Ukuran ikon sedikit lebih besar */
+}
+
+/* Geser konten utama ke kanan sesuai lebar sidebar minimize */
+.content.sidebar-minimized {
+    margin-left: 100px;
 }
 .sidebar.sidebar-minimized .nav-link {
     justify-content: center;
@@ -699,7 +737,7 @@ body {
     font-size: 1.3rem;
 }
 .content.sidebar-minimized {
-    margin-left: 70px;
+    margin-left: 100px;
 }
 
 

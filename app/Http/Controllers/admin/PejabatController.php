@@ -58,7 +58,7 @@ class PejabatController extends Controller
             'nip' => 'required|min:5|max:18',
             'nama_pejabat' => 'required|min:5|max:100',
             'id_jabatan' => 'required|exists:jabatan,id_jabatan',
-            'gambar' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'gambar' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:500',
         ]);
 
         $idUser = Auth::check() && Auth::user()->role === 'admin'
@@ -106,7 +106,7 @@ class PejabatController extends Controller
             'nip' => 'required|min:5|max:18',
             'nama_pejabat' => 'required|min:5|max:100',
             'id_jabatan' => 'required|exists:jabatan,id_jabatan',
-            'gambar' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'gambar' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:500',
         ]);
 
         $idUser = Auth::check() && Auth::user()->role === 'admin'
@@ -142,7 +142,7 @@ class PejabatController extends Controller
         $headerKartu = Header::findOrFail($id);
 
         $request->validate([
-            'gambar' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'gambar' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:500',
         ]);
 
         // Jika ada upload gambar baru
@@ -161,7 +161,7 @@ class PejabatController extends Controller
         $data = [
             'gambar' => $headerKartu->gambar, // Tetap gunakan gambar lama sebagai default
         ];
-        
+
         $headerKartu->update($data);
 
         return redirect()->route('admin.pejabat.index')->with('success', 'Background Kepala Pejabat Berhasil Diperbarui!');

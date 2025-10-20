@@ -39,7 +39,7 @@ class LoginController extends Controller
         }
 
         return back()->withErrors([
-            'name' => 'username atau password tidak sesuai.',
+            'name' => 'Username atau Password tidak sesuai.',
         ])->withInput();
     }
 

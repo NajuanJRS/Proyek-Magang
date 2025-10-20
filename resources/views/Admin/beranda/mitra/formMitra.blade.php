@@ -27,7 +27,7 @@
                                     <label for="gambar" class="mb-2">Unggah Gambar</label>
                                     <div class="mb-4">
                                         <input type="file" id="gambar" name="gambar" accept="image/*"
-                                            onchange="previewImage(event, 'preview')">
+                                            onchange="previewImage(event, 'preview')" required>
                                         <div class="mt-3">
                                             <img id="preview" src="#" alt="Preview Gambar"
                                                 style="display: none; max-width: 200px; border-radius: 8px; border: 1px solid #ddd; padding: 4px;">
@@ -37,7 +37,7 @@
                                     <label for="nama_mitra" class="mb-2">Nama Mitra</label>
                                     <div class="mb-4">
                                         <input type="text" class="form-control" id="nama_mitra" name="nama_mitra"
-                                            placeholder="Masukkan nama mitra">
+                                            placeholder="Masukkan nama mitra" required>
                                     </div>
 
                                     <label for="link_mitra" class="mb-2">Link Mitra</label>

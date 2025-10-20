@@ -2,8 +2,8 @@
 
 @section('content')
     <div class="container mt-4">
-        <div class="d-flex justify-content-between align-items-center mb-3">
-            <h4>Download</h4>
+        <h4 class="mb-4">Download</h4>
+        <div class="d-flex justify-content-between align-items-center mb-4">
             <a href="{{ route('admin.kontenDownload.create') }}" class="btn btn-primary">Tambah Kartu Download</a>
         </div>
 
@@ -11,7 +11,7 @@
             @foreach ($kartuDownload as $k)
                 <div class="col-md-4 mb-4" role="button" style="cursor:pointer;"
                     onclick="if(!event.target.closest('.btn')) { window.location='{{ route('admin.fileDownload.index', $k->slug) }}'; }">
-                        <div class="card h-100 shadow-sm">
+                        <div class="card h-100 shadow-sm card-hover-animation">
                             <div class="card-body d-flex justify-content-between align-items-center">
                                 <div class="d-flex align-items-center">
                                     <img src="{{ asset('storage/icon/' . $k->icon) }}" alt="icon"

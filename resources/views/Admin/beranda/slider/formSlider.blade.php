@@ -27,7 +27,7 @@
                                     <label for="gambar" class="mb-2">Unggah Gambar</label>
                                     <div class="mb-4">
                                         <input type="file" id="gambar" name="gambar" accept="image/*"
-                                            onchange="previewImage(event, 'preview')">
+                                            onchange="previewImage(event, 'preview')" required>
                                         <div class="mt-3">
                                             <img id="preview" src="#" alt="Preview Gambar"
                                                 style="display: none; max-width: 200px; border-radius: 8px; border: 1px solid #ddd; padding: 4px;">
@@ -37,13 +37,13 @@
                                     <label for="headline" class="mb-2">Headline</label>
                                     <div class="mb-4">
                                         <input type="text" class="form-control" id="headline" name="headline"
-                                            placeholder="Masukkan Headline untuk gambar slider">
+                                            placeholder="Masukkan Headline untuk gambar slider" required>
                                     </div>
 
                                     <label for="sub_heading" class="mb-2">Sub Heading</label>
                                     <div class="mb-4">
                                         <textarea class="form-control" id="sub_heading" name="sub_heading" rows="5"
-                                            placeholder="Masukkan Sub Heading singkat untuk gambar slider"></textarea>
+                                            placeholder="Masukkan Sub Heading singkat untuk gambar slider" required></textarea>
                                     </div>
 
                                     <button type="submit" class="btn btn-info me-2">Simpan</button>
