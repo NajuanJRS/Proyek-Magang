@@ -21,10 +21,10 @@ class SearchController extends Controller
 
         // --- PENGAMBILAN SEMUA DATA UNTUK PENGHITUNGAN ---
         $beritaResults = Berita::where('judul', 'LIKE', "%{$keyword}%")->get();
-        $infoResults = KategoriKonten::whereIn('nama_menu_kategori', ['profil', 'ppid'])
+        $infoResults = KategoriKonten::whereIn('menu_konten', ['profil', 'ppid'])
             ->where('judul_konten', 'LIKE', "%{$keyword}%")
             ->get();
-        $layananResults = KategoriKonten::where('nama_menu_kategori', 'layanan')
+        $layananResults = KategoriKonten::where('menu_konten', 'layanan')
             ->where('judul_konten', 'LIKE', "%{$keyword}%")
             ->get();
         $dokumenResults = FileDownload::where('nama_file', 'LIKE', "%{$keyword}%")->get();
@@ -52,11 +52,11 @@ class SearchController extends Controller
             ]);
         }
         foreach ($infoResults as $item) {
-            $routeName = ($item->nama_menu_kategori == 'profil') ? 'profil.show' : 'ppid.show';
+            $routeName = ($item->menu_konten == 'profil') ? 'profil.show' : 'ppid.show';
             $allResults->push([
                 'title' => $item->judul_konten,
                 'category' => 'Profil & Informasi',
-                'url' => route($routeName, $item->slug_konten),
+                'url' => route($routeName, $item->slug),
                 'type' => 'informasi'
             ]);
         }
@@ -64,7 +64,7 @@ class SearchController extends Controller
             $allResults->push([
                 'title' => $item->judul_konten,
                 'category' => 'Layanan',
-                'url' => route('layanan.show', $item->slug_konten),
+                'url' => route('layanan.show', $item->slug),
                 'type' => 'layanan'
             ]);
         }

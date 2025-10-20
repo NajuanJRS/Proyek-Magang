@@ -22,51 +22,58 @@
         <p class="ds-faq-subtitle">Temukan jawaban cepat untuk pertanyaan umum seputar layanan, program, dan prosedur di Dinas Sosial. Ketik pertanyaan Anda di bawah atau jelajahi berdasarkan kategori.</p>
       </div>
 
-      {{-- Form Pencarian --}}
+      {{-- Form Pencarian (Diperbarui) --}}
       <div class="ds-faq-search-wrapper mx-auto my-4">
-        <form action="#" method="GET" class="input-group">
-          <input type="search" name="keyword" class="form-control" placeholder="Masukkan kata kunci..." aria-label="Cari FAQ">
+        {{-- Arahkan action ke route faq.index, sertakan kategori saat ini --}}
+        <form action="{{ route('faq.index', ['kategori' => $kategoriAktif]) }}" method="GET" class="input-group">
+          {{-- Tampilkan keyword saat ini jika ada --}}
+          <input type="search" name="keyword" class="form-control" placeholder="Masukkan kata kunci..." aria-label="Cari FAQ" value="{{ $keyword ?? '' }}">
           <button class="btn btn-primary" type="submit" aria-label="Tombol cari">
             <i class="bi bi-search"></i>
           </button>
         </form>
       </div>
 
-        {{-- Filter Kategori (diperbaiki) --}}
-        <div class="ds-faq-filters d-flex justify-content-center flex-wrap gap-2 mb-4">
-        @foreach($kategoriList as $kategori)
-            <a href="{{ route('faq.index', ['kategori' => $kategori->slug]) }}"
-            class="btn btn-sm ds-faq-filter-btn {{ $kategoriAktif == $kategori->slug ? 'active' : '' }}">
-            {{ $kategori->nama_kategori_faq }}
-            </a>
-        @endforeach
-        </div>
+{{-- Filter Kategori (Diperbarui dengan Jumlah) --}}
+<div class="ds-faq-filters d-flex justify-content-center flex-wrap gap-2 mb-4">
+  {{-- Tombol 'Semua' --}}
+  <a href="{{ route('faq.index', ['kategori' => 'semua', 'keyword' => $keyword]) }}"
+     class="btn btn-sm ds-faq-filter-btn {{ $kategoriAktif == 'semua' ? 'active' : '' }}">
+    Semua <span class="ds-filter-count">{{ $faqCounts['semua'] ?? 0 }}</span>
+  </a>
+  {{-- Loop kategori yang ada --}}
+  @foreach($kategoriList as $kategori)
+      <a href="{{ route('faq.index', ['kategori' => $kategori->slug, 'keyword' => $keyword]) }}"
+         class="btn btn-sm ds-faq-filter-btn {{ $kategoriAktif == $kategori->slug ? 'active' : '' }}">
+        {{ $kategori->nama_kategori_faq }} <span class="ds-filter-count">{{ $faqCounts[$kategori->slug] ?? 0 }}</span>
+      </a>
+  @endforeach
+</div>
 
-        {{-- Daftar Pertanyaan (Akordeon) --}}
-        <div class="ds-faq-accordion-wrapper mx-auto">
+      {{-- Daftar Pertanyaan (Akordeon) --}}
+      <div class="ds-faq-accordion-wrapper mx-auto">
         <div class="accordion" id="faqAccordion">
-            @forelse($faqs as $index => $faq)
+          @forelse($faqs as $index => $faq)
             <div class="accordion-item">
-                <h2 class="accordion-header" id="heading-{{ $index }}">
+              <h2 class="accordion-header" id="heading-{{ $index }}">
                 <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-{{ $index }}" aria-expanded="false" aria-controls="collapse-{{ $index }}">
-                    {{-- Menggunakan properti objek 'pertanyaan' --}}
-                    {{ $faq->pertanyaan }}
+                  {{ $faq->pertanyaan }}
                 </button>
-                </h2>
-                <div id="collapse-{{ $index }}" class="accordion-collapse collapse" aria-labelledby="heading-{{ $index }}" data-bs-parent="#faqAccordion">
+              </h2>
+              <div id="collapse-{{ $index }}" class="accordion-collapse collapse" aria-labelledby="heading-{{ $index }}" data-bs-parent="#faqAccordion">
                 <div class="accordion-body">
-                    {{-- Menggunakan properti objek 'jawaban' dan render HTML --}}
-                    {!! $faq->jawaban !!}
+                  {!! $faq->jawaban !!}
                 </div>
-                </div>
+              </div>
             </div>
-            @empty
+          @empty
+            {{-- Pesan jika tidak ada hasil --}}
             <div class="text-center text-muted py-5">
-                <p>Tidak ada pertanyaan yang ditemukan untuk kategori ini.</p>
+              <p>Tidak ada pertanyaan yang cocok dengan pencarian Anda "{{ $keyword ?? '' }}" {{$kategoriAktif != 'semua' ? 'dalam kategori ini' : ''}}.</p>
             </div>
-            @endforelse
+          @endforelse
         </div>
-        </div>
+      </div>
     </div>
   </section>
 @endsection
