@@ -22,16 +22,14 @@
                                 <div class="d-flex gap-2">
                                     {{-- Tombol Edit --}}
                                     <a href="{{ route('admin.kontenDownload.edit', $k->id_kategori) }}"
-                                        class="btn btn-warning btn-sm d-flex align-items-center justify-content-center"
-                                        style="width: 32px; height: 32px;">
-                                        <i class="bi bi-pencil-square fs-5"></i>
+                                        class="btn btn-info btn-sm btn-circle rounded-circle d-inline-flex me-1">
+                                        <i class="bi bi-pencil-square"></i>
                                     </a>
 
                                     {{-- Tombol Delete --}}
                                     <a href="#"
-                                        class="btn btn-danger btn-sm d-flex align-items-center justify-content-center"
-                                        style="width: 32px; height: 32px;" onclick="deleteData('{{ $k->id_kategori }}')">
-                                        <i class="bi bi-trash fs-5"></i>
+                                        class="btn btn-danger btn-sm btn-circle rounded-circle d-inline-flex" onclick="deleteData('{{ $k->id_kategori }}')">
+                                        <i class="bi bi-trash"></i>
                                     </a>
 
                                     <form id="delete-form-{{ $k->id_kategori }}"

@@ -79,12 +79,12 @@
 
                                                         <td class="text-center">
                                                             <a href="{{ route('admin.mitra.edit', $m->id_mitra) }}"
-                                                                class="btn btn-info btn-sm">
-                                                                <i class="bi bi-pencil-square"></i> Ubah
+                                                                class="btn btn-info btn-sm btn-circle rounded-circle d-inline-flex me-1">
+                                                                <i class="bi bi-pencil-square"></i>
                                                             </a>
-                                                            <a href="#" class="btn btn-danger btn-sm"
+                                                            <a href="#" class="btn btn-danger btn-sm btn-circle rounded-circle d-inline-flex"
                                                                 onclick="deleteData('{{ $m->id_mitra }}')">
-                                                                <i class="bi bi-trash"></i> Hapus
+                                                                <i class="bi bi-trash"></i>
                                                             </a>
 
                                                             <form id="delete-form-{{ $m->id_mitra }}"

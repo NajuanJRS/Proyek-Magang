@@ -73,8 +73,8 @@
 
                                                         <td class="text-center">
                                                             <a href="{{ route('admin.headerDownload.edit', $h->id_header) }}"
-                                                                class="btn btn-info btn-sm">
-                                                                <i class="bi bi-pencil-square"></i> Ubah
+                                                                class="btn btn-info btn-sm btn-circle rounded-circle d-inline-flex me-1">
+                                                                <i class="bi bi-pencil-square"></i>
                                                             </a>
                                                         </td>
                                                     </tr>

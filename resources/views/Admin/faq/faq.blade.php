@@ -50,9 +50,9 @@
                                                 <td class="text-center">{{ $f->kategoriFaq->nama_kategori_faq ?? '-' }}</td>
                                                 <td class="text-center">
                                                     {{-- Tombol lihat selengkapnya --}}
-                                                    <button type="button" title="Lihat Detail" class="btn btn-warning btn-sm see-more"
+                                                    <button type="button" title="Lihat Detail" class="btn btn-warning btn-sm btn-circle rounded-circle d-inline-flex me-1 see-more"
                                                         data-id="{{ $f->id_faq }}" data-judul="{{ $f->pertanyaan }}">
-                                                        <i class="bi bi-eye"></i> Jawaban
+                                                        <i class="bi bi-eye"></i>
                                                     </button>
 
                                                     {{-- Full content untuk SweetAlert --}}
@@ -60,11 +60,11 @@
                                                         {!! $f->jawaban !!}
                                                     </div>
                                                     <a href="{{ route('admin.faq.edit', $f->id_faq) }}"
-                                                        class="btn btn-info btn-sm" title="Ubah"><i
-                                                            class="bi bi-pencil"></i>Ubah</a>
-                                                    <a href="#" class="btn btn-danger btn-sm"
+                                                        class="btn btn-info btn-sm btn-circle rounded-circle d-inline-flex me-1" title="Ubah"><i
+                                                            class="bi bi-pencil"></i></a>
+                                                    <a href="#" class="btn btn-danger btn-sm btn-circle rounded-circle d-inline-flex"
                                                         onclick="deleteData('{{ $f->id_faq }}')" title="Hapus"><i
-                                                            class="bi bi-trash"></i>Hapus</a>
+                                                            class="bi bi-trash"></i></a>
 
                                                     <form id="delete-form-{{ $f->id_faq }}"
                                                         action="{{ route('admin.faq.destroy', $f->id_faq) }}"
