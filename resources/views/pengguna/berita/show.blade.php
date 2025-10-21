@@ -46,7 +46,7 @@
                 </figure>
 
                   @elseif ($chunk['type'] == 'text')
-                    {!! $chunk['content'] !!}
+                    {!! \App\Helpers\ContentHelper::embedYoutubeVideos($chunk['content']) !!}
                   @endif
 
                 @endforeach

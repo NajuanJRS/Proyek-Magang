@@ -30,7 +30,7 @@
                 @if($profileContent)
                     {{-- Blok Konten 1 --}}
                     @if($profileContent->isi_konten1)
-                        {!! $profileContent->isi_konten1 !!}
+                        {!! \App\Helpers\ContentHelper::embedYoutubeVideos($profileContent->isi_konten1) !!}
                     @endif
                     @if($profileContent->gambar1)
                         <figure class="my-4 text-center">
@@ -40,7 +40,7 @@
 
                     {{-- Blok Konten 2 --}}
                     @if($profileContent->isi_konten2)
-                        {!! $profileContent->isi_konten2 !!}
+                        {!! \App\Helpers\ContentHelper::embedYoutubeVideos($profileContent->isi_konten2) !!}
                     @endif
                     @if($profileContent->gambar2)
                         <figure class="my-4 text-center">
@@ -50,7 +50,7 @@
 
                     {{-- Blok Konten 3 --}}
                     @if($profileContent->isi_konten3)
-                        {!! $profileContent->isi_konten3 !!}
+                        {!! \App\Helpers\ContentHelper::embedYoutubeVideos($profileContent->isi_konten3) !!}
                     @endif
                     @if($profileContent->gambar3)
                         <figure class="my-4 text-center">

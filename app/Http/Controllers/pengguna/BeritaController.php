@@ -33,10 +33,13 @@ class BeritaController extends Controller
     {
         $article = Berita::where('slug', $slug)->firstOrFail();
 
+        //Hitungan Dibaca
+        $article->increment('dibaca');
+
         // Ambil 4 berita terbaru lainnya (selain yang sedang dibuka) untuk sidebar
         $latestNews = Berita::where('slug', '!=', $slug)
                             ->orderBy('tgl_posting', 'desc')
-                            ->take(4)
+                            ->take(5)
                             ->get();
 
         // Ubah struktur data agar sesuai dengan view yang ada
