@@ -30,7 +30,7 @@
                 @if($pageContent)
                     {{-- Blok Konten 1 --}}
                     @if($pageContent->isi_konten1)
-                        {!! $pageContent->isi_konten1 !!}
+                        {!! \App\Helpers\ContentHelper::embedYoutubeVideos($profileContent->isi_konten1) !!}
                     @endif
                     @if($pageContent->gambar1)
                         <div class="ds-image-zoom-wrapper mt-3" data-bs-toggle="modal" data-bs-target="#imageModal">
@@ -44,7 +44,7 @@
 
                     {{-- Blok Konten 2 --}}
                     @if($pageContent->isi_konten2)
-                        {!! $pageContent->isi_konten2 !!}
+                        {!! \App\Helpers\ContentHelper::embedYoutubeVideos($profileContent->isi_konten2) !!}
                     @endif
                     @if($pageContent->gambar2)
                         <figure class="my-4 text-center">
@@ -54,7 +54,7 @@
 
                     {{-- Blok Konten 3 --}}
                     @if($pageContent->isi_konten3)
-                        {!! $pageContent->isi_konten3 !!}
+                        {!! \App\Helpers\ContentHelper::embedYoutubeVideos($profileContent->isi_konten3) !!}
                     @endif
                     @if($pageContent->gambar3)
                         <figure class="my-4 text-center">
@@ -81,7 +81,7 @@
 
         {{-- KOLOM KANAN: SIDEBAR PPID --}}
         <div class="col-lg-4">
-          <div class="ds-sidebar-card"> 
+          <div class="ds-sidebar-card">
             <h5 class="ds-sidebar-title">PPID</h5>
             <div class="ds-sidebar-list">
               @foreach($allPpidItems as $item)
@@ -93,7 +93,7 @@
             </div>
           </div>
         </div>
-        
+
       </div>
     </div>
   </section>

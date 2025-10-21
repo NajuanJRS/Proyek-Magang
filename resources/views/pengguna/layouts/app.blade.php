@@ -226,6 +226,50 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 });
   </script>
+  @push('scripts')
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Fungsi untuk mengubah link YouTube menjadi iframe
+    function embedYouTubeVideos() {
+        // Cari semua elemen yang mungkin berisi konten (sesuaikan selector jika perlu)
+        const contentAreas = document.querySelectorAll('.ds-article-content, .ds-featured-summary, .ds-mnews-title'); // Tambahkan selector lain jika perlu
+
+        contentAreas.forEach(contentArea => {
+            if (!contentArea) return;
+
+            // Regex untuk mencari link YouTube (watch?v=...)
+            const youtubeRegex = /(?:https?:\/\/)?(?:www\.)?(?:youtube\.com|youtu\.be)\/(?:watch\?v=)?([a-zA-Z0-9_-]{11})(?:\S+)?/g;
+
+            // Regex untuk mencari link YouTube dalam tag <p> agar tidak merusak link lain
+            const paragraphYoutubeRegex = /<p>(https?:\/\/(?:www\.)?(?:youtube\.com\/watch\?v=|youtu\.be\/)([a-zA-Z0-9_-]{11})[^<]*)<\/p>/g;
+
+
+            let contentHTML = contentArea.innerHTML;
+
+            // Ganti link YouTube di dalam <p> menjadi iframe
+            contentHTML = contentHTML.replace(paragraphYoutubeRegex, (match, url, videoId) => {
+                 // Hanya ganti jika link berdiri sendiri dalam paragraf
+                if (url.trim().match(youtubeRegex)) {
+                    return `<div class="youtube-video-wrapper">
+                                <iframe src="https://www.youtube.com/embed/${videoId}"
+                                        frameborder="0"
+                                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                        allowfullscreen>
+                                </iframe>
+                            </div>`;
+                }
+                return match; // Kembalikan paragraf asli jika tidak cocok
+            });
+
+            contentArea.innerHTML = contentHTML;
+        });
+    }
+
+    // Jalankan fungsi saat halaman dimuat
+    embedYouTubeVideos();
+});
+</script>
+@endpush
 </body>
 </html>
 
