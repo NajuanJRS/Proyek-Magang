@@ -20,14 +20,11 @@
                                     </div>
                                 @endif
 
-                                <h4 class="mb-5">Tambah Konten Layanan & Kategori</h4>
+                                <h4 class="mb-5">Tambah Konten Layanan</h4>
 
                                 <form method="POST" action="{{ route('admin.layanan.store') }}"
                                     enctype="multipart/form-data">
                                     @csrf
-
-                                    {{-- ========== Bagian KATEGORI KONTEN ========== --}}
-                                    <h5 class="mb-3">Data Kategori Konten</h5>
 
                                     {{-- Judul Konten --}}
                                     <label for="judul_konten" class="mb-2">Judul Konten</label>
@@ -46,16 +43,33 @@
                                             style="display:none; width: 150px; margin-top:10px; border-radius:8px;">
                                     </div>
 
-                                    <hr class="my-4">
-
-                                    {{-- ========== Bagian KONTEN DETAIL ========== --}}
-                                    <h5 class="mb-3">Data Isi Konten</h5>
-
-                                    {{-- Isi konten 1 --}}
-                                    <label for="isi_konten1" class="mb-2">Isi Konten 1</label>
+                                    <!-- Editor 1 -->
                                     <div class="mb-4">
-                                        <textarea class="form-control my-editor" id="isi_konten1" name="isi_konten1" rows="6"
-                                            placeholder="Masukkan isi konten pertama" required></textarea>
+                                        <label class="form-label fw-bold">Isi Konten 1</label>
+                                        <div class="custom-editor-container">
+                                            <div class="editor-toolbar">
+                                                <button type="button" data-target="editor1" data-command="bold"><i
+                                                        class="bi bi-type-bold"></i></button>
+                                                <button type="button" data-target="editor1" data-command="italic"><i
+                                                        class="bi bi-type-italic"></i></button>
+                                                <button type="button" data-target="editor1" data-command="underline"><i
+                                                        class="bi bi-type-underline"></i></button>
+                                                <button type="button" data-target="editor1"
+                                                    data-command="insertUnorderedList"><i
+                                                        class="bi bi-list-ul"></i></button>
+                                                <button type="button" data-target="editor1"
+                                                    data-command="insertOrderedList"><i class="bi bi-list-ol"></i></button>
+                                                <button type="button" data-target="editor1" data-command="createLink"><i
+                                                        class="bi bi-link-45deg"></i></button>
+                                                <button type="button" data-target="editor1" data-command="insertImage"><i
+                                                        class="bi bi-image"></i></button>
+                                                <button type="button" data-target="editor1" data-command="removeFormat"><i
+                                                        class="bi bi-eraser"></i></button>
+                                            </div>
+                                            <div id="editor1" class="custom-editor" contenteditable="true">
+                                                {!! old('isi_konten1') !!}</div>
+                                            <textarea name="isi_konten1" id="hiddenContent1" style="display:none;"></textarea>
+                                        </div>
                                     </div>
 
                                     {{-- Gambar 1 --}}
@@ -75,58 +89,105 @@
                                         </button>
                                     </div>
 
-                                    {{-- konten 2 --}}
+                                    <!-- Editor 2 -->
                                     <div id="tombol2" style="display: none;">
-                                        <label for="isi_konten2" class="mb-2">Isi Konten 2</label>
-                                        <div class="mb-4">
-                                            <textarea class="form-control my-editor" id="isi_konten2" name="isi_konten2" rows="6"
-                                                placeholder="Masukkan isi konten kedua"></textarea>
-                                        </div>
-
-                                        {{-- Gambar 2 --}}
-                                        <label for="gambar2" class="mb-2">Unggah Gambar 2</label>
-                                        <div class="mb-4">
-                                            <input type="file" id="gambar2" name="gambar2" accept="image/*"
-                                                onchange="previewImage(event, 'preview2')">
-                                            <br>
-                                            <img id="preview2" src="#" alt="Preview Gambar 2"
-                                                style="display:none; width: 150px; margin-top:10px; border-radius:8px;">
-                                        </div>
-
-                                        <div class="mb-4">
-                                            <button type="button" class="btn btn-sm btn-info" id="toggle-tombol3">
-                                                + Tambah konten 3
-                                            </button>
-                                        </div>
-                                    </div>
-
-                                    {{-- konten 3 --}}
-                                    <div id="tombol3" style="display: none;">
-                                        <label for="isi_konten3" class="mb-2">Isi Konten 3</label>
-                                        <div class="mb-4">
-                                            <textarea class="form-control my-editor" id="isi_konten3" name="isi_konten3" rows="6"
-                                                placeholder="Masukkan isi konten ketiga"></textarea>
-                                        </div>
-                                        {{-- Gambar 3 --}}
-                                        <label for="gambar3" class="mb-2">Unggah Gambar 3</label>
-                                        <div class="mb-4">
-                                            <input type="file" id="gambar3" name="gambar3" accept="image/*"
-                                                onchange="previewImage(event, 'preview3')">
-                                            <br>
-                                            <img id="preview3" src="#" alt="Preview Gambar 3"
-                                                style="display:none; width: 150px; margin-top:10px; border-radius:8px;">
+                                    <div class="mb-4">
+                                        <label class="form-label fw-bold">Isi Konten 2</label>
+                                        <div class="custom-editor-container">
+                                            <div class="editor-toolbar">
+                                                <button type="button" data-target="editor2" data-command="bold"><i
+                                                        class="bi bi-type-bold"></i></button>
+                                                <button type="button" data-target="editor2" data-command="italic"><i
+                                                        class="bi bi-type-italic"></i></button>
+                                                <button type="button" data-target="editor2" data-command="underline"><i
+                                                        class="bi bi-type-underline"></i></button>
+                                                <button type="button" data-target="editor2"
+                                                    data-command="insertUnorderedList"><i
+                                                        class="bi bi-list-ul"></i></button>
+                                                <button type="button" data-target="editor2"
+                                                    data-command="insertOrderedList"><i
+                                                        class="bi bi-list-ol"></i></button>
+                                                <button type="button" data-target="editor2" data-command="createLink"><i
+                                                        class="bi bi-link-45deg"></i></button>
+                                                <button type="button" data-target="editor2"
+                                                    data-command="insertImage"><i class="bi bi-image"></i></button>
+                                                <button type="button" data-target="editor2"
+                                                    data-command="removeFormat"><i class="bi bi-eraser"></i></button>
+                                            </div>
+                                            <div id="editor2" class="custom-editor" contenteditable="true">
+                                                {!! old('isi_konten2') !!}</div>
+                                            <textarea name="isi_konten2" id="hiddenContent2" style="display:none;"></textarea>
                                         </div>
                                     </div>
 
-                                    {{-- Tombol Submit --}}
-                                    <button type="submit" class="btn btn-info me-2">Simpan</button>
-                                    <a href="{{ route('admin.layanan.index') }}" class="btn btn-danger">Batal</a>
-                                </form>
+                                    {{-- Gambar 2 --}}
+                                    <label for="gambar2" class="mb-2">Unggah Gambar 2</label>
+                                    <div class="mb-4">
+                                        <input type="file" id="gambar2" name="gambar2" accept="image/*"
+                                            onchange="previewImage(event, 'preview2')">
+                                        <br>
+                                        <img id="preview2" src="#" alt="Preview Gambar 2"
+                                            style="display:none; width: 150px; margin-top:10px; border-radius:8px;">
+                                    </div>
+
+                                    <div class="mb-4">
+                                        <button type="button" class="btn btn-sm btn-info" id="toggle-tombol3">
+                                            + Tambah konten 3
+                                        </button>
+                                    </div>
+                                </div>
+
+                            {{-- konten 3 --}}
+                            <div id="tombol3" style="display: none;">
+                                <!-- Editor 3 -->
+                                <div class="mb-4">
+                                    <label class="form-label fw-bold">Isi Konten 3</label>
+                                    <div class="custom-editor-container">
+                                        <div class="editor-toolbar">
+                                            <button type="button" data-target="editor3" data-command="bold"><i
+                                                    class="bi bi-type-bold"></i></button>
+                                            <button type="button" data-target="editor3" data-command="italic"><i
+                                                    class="bi bi-type-italic"></i></button>
+                                            <button type="button" data-target="editor3" data-command="underline"><i
+                                                    class="bi bi-type-underline"></i></button>
+                                            <button type="button" data-target="editor3"
+                                                data-command="insertUnorderedList"><i class="bi bi-list-ul"></i></button>
+                                            <button type="button" data-target="editor3"
+                                                data-command="insertOrderedList"><i class="bi bi-list-ol"></i></button>
+                                            <button type="button" data-target="editor3" data-command="createLink"><i
+                                                    class="bi bi-link-45deg"></i></button>
+                                            <button type="button" data-target="editor3" data-command="insertImage"><i
+                                                    class="bi bi-image"></i></button>
+                                            <button type="button" data-target="editor3" data-command="removeFormat"><i
+                                                    class="bi bi-eraser"></i></button>
+                                        </div>
+                                        <div id="editor3" class="custom-editor" contenteditable="true">
+                                            {!! old('isi_konten3') !!}</div>
+                                        <textarea name="isi_konten3" id="hiddenContent3" style="display:none;"></textarea>
+                                    </div>
+                                </div>
+
+                                {{-- Gambar 3 --}}
+                                <label for="gambar3" class="mb-2">Unggah Gambar 3</label>
+                                <div class="mb-4">
+                                    <input type="file" id="gambar3" name="gambar3" accept="image/*"
+                                        onchange="previewImage(event, 'preview3')">
+                                    <br>
+                                    <img id="preview3" src="#" alt="Preview Gambar 3"
+                                        style="display:none; width: 150px; margin-top:10px; border-radius:8px;">
+                                </div>
+                            </div>
+
+                            {{-- Tombol Submit --}}
+                            <button type="submit" class="btn btn-info me-2">Simpan</button>
+                            <a href="{{ route('admin.layanan.index') }}" class="btn btn-danger">Batal</a>
+                            </form>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+    </div>
     </div>
 @endsection

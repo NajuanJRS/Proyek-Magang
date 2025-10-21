@@ -22,7 +22,7 @@
                                 <h4 class="mb-5">Edit Pejabat</h4>
 
                                 <form class="forms-sample" method="POST"
-                                    action="{{ route('admin.pejabat.update', $pejabat->nip) }}"
+                                    action="{{ route('admin.pejabat.update', $pejabat->id_pejabat) }}"
                                     enctype="multipart/form-data">
                                     @csrf
                                     @method('PUT')
@@ -33,13 +33,6 @@
                                         <input class="form-control" id="nama_pejabat" name="nama_pejabat"
                                             value="{{ old('nama_pejabat', $pejabat->nama_pejabat) }}"
                                             placeholder="Masukkan Nama Pejabat">
-                                    </div>
-
-                                    {{-- NIP --}}
-                                    <label for="nip" class="mb-2">NIP</label>
-                                    <div class="mb-4">
-                                        <input class="form-control" id="nip" name="nip"
-                                            value="{{ old('nip', $pejabat->nip) }}" placeholder="Masukkan NIP">
                                     </div>
 
                                     {{-- Jabatan --}}

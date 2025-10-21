@@ -32,13 +32,6 @@
                                             value="{{ old('nama_pejabat') }}" placeholder="Masukkan Nama Pejabat" required>
                                     </div>
 
-                                    {{-- NIP --}}
-                                    <label for="nip" class="mb-2">NIP</label>
-                                    <div class="mb-4">
-                                        <input class="form-control" id="nip" name="nip"
-                                            value="{{ old('nip') }}" placeholder="Masukkan NIP" required>
-                                    </div>
-
                                     {{-- Jabatan --}}
                                     <label for="id_jabatan" class="mb-2">Jabatan</label>
                                     <div class="mb-4">

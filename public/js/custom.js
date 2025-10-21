@@ -113,19 +113,7 @@ document.addEventListener('click', function (e) {
         if (instance) {
             instance.dispose();
         }
-    });
-
-    // 1. Inisialisasi TinyMCE
-    if (typeof tinymce !== 'undefined') {
-        tinymce.remove('textarea.my-editor');
-        tinymce.init({
-            selector: 'textarea.my-editor',
-            height: 400,
-            setup: function (editor) {
-                editor.on('change', function () { tinymce.triggerSave(); });
-            }
-        });
-    }
+    })
 
     // 2. Inisialisasi Logika Spesifik Halaman (Search, Tombol Tambah)
     const searchInput = document.getElementById("searchInput");
@@ -163,6 +151,50 @@ document.addEventListener('click', function (e) {
             });
         }
     }
+
+    // === Multiple Custom Editors ===
+document.addEventListener("DOMContentLoaded", function () {
+    const allEditors = [
+        { id: "editor1", hidden: "hiddenContent1" },
+        { id: "editor2", hidden: "hiddenContent2" },
+        { id: "editor3", hidden: "hiddenContent3" },
+    ];
+
+    // Toolbar logic
+    document.querySelectorAll(".editor-toolbar button").forEach(btn => {
+        btn.addEventListener("click", () => {
+            const cmd = btn.dataset.command;
+            const target = btn.dataset.target;
+            const editor = document.getElementById(target);
+
+            if (!editor) return;
+
+            if (cmd === "createLink") {
+                const url = prompt("Masukkan URL:");
+                if (url) document.execCommand("createLink", false, url);
+            } else if (cmd === "insertImage") {
+                const imgUrl = prompt("Masukkan URL gambar:");
+                if (imgUrl) document.execCommand("insertImage", false, imgUrl);
+            } else {
+                document.execCommand(cmd, false, null);
+            }
+            editor.focus();
+        });
+    });
+
+    // Sync editor content before submit
+    const form = document.querySelector("form");
+    if (form) {
+        form.addEventListener("submit", () => {
+            allEditors.forEach(ed => {
+                const editor = document.getElementById(ed.id);
+                const hidden = document.getElementById(ed.hidden);
+                if (editor && hidden) hidden.value = editor.innerHTML;
+            });
+        });
+    }
+});
+
 
     // 3. Inisialisasi Logika Final untuk Sidebar
     const sidebar = document.getElementById('sidebarMenu');
@@ -307,4 +339,5 @@ document.addEventListener('click', function (e) {
         }
     }
     }
+
 

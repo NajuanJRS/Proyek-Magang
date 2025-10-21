@@ -19,10 +19,18 @@ class BeritaController extends Controller
     public function index(Request $request): View
     {
         $search = $request->input('search');
+
         $berita = Berita::when($search, function ($query, $search) {
-            $query->where('judul', 'like', "%$search%")
-                  ->orWhere('isi_berita', 'like', "%$search%");
-        })->paginate(10);
+            $query->where('judul', 'like', "%{$search}%")
+                  ->orWhere('isi_berita1', 'like', "%{$search}%")
+                  ->orWhere('isi_berita2', 'like', "%{$search}%")
+                  ->orWhere('isi_berita3', 'like', "%{$search}%");
+        })
+        ->orderBy('id_berita', 'desc')
+        ->paginate(10);
+
+        $berita->appends(['search' => $search]);
+
         return view('Admin.berita.kontenBerita.kontenBerita', compact('berita'));
     }
 
