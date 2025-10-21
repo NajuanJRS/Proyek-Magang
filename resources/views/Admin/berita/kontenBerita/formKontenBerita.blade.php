@@ -33,10 +33,32 @@
                                     </div>
 
                                     {{-- Isi Berita 1 --}}
-                                    <label for="isi_berita1" class="mb-2">Isi Berita 1</label>
                                     <div class="mb-4">
-                                        <textarea class="form-control my-editor" id="isi_berita1" name="isi_berita1" rows="6"
-                                            placeholder="Masukkan Isi Berita"></textarea>
+                                        <label class="form-label">Isi Konten 1</label>
+                                        <div class="custom-editor-container">
+                                            <div class="editor-toolbar">
+                                                <button type="button" data-target="editor1" data-command="bold"><i
+                                                        class="bi bi-type-bold"></i></button>
+                                                <button type="button" data-target="editor1" data-command="italic"><i
+                                                        class="bi bi-type-italic"></i></button>
+                                                <button type="button" data-target="editor1" data-command="underline"><i
+                                                        class="bi bi-type-underline"></i></button>
+                                                <button type="button" data-target="editor1"
+                                                    data-command="insertUnorderedList"><i
+                                                        class="bi bi-list-ul"></i></button>
+                                                <button type="button" data-target="editor1"
+                                                    data-command="insertOrderedList"><i class="bi bi-list-ol"></i></button>
+                                                <button type="button" data-target="editor1" data-command="createLink"><i
+                                                        class="bi bi-link-45deg"></i></button>
+                                                <button type="button" data-target="editor1" data-command="insertImage"><i
+                                                        class="bi bi-image"></i></button>
+                                                <button type="button" data-target="editor1" data-command="removeFormat"><i
+                                                        class="bi bi-eraser"></i></button>
+                                            </div>
+                                            <div id="editor1" class="custom-editor" contenteditable="true">
+                                                {!! old('isi_berita1') !!}</div>
+                                            <textarea name="isi_berita1" id="hiddenContent1" style="display:none;"></textarea>
+                                        </div>
                                     </div>
 
                                     {{-- Gambar 1 --}}
@@ -58,10 +80,35 @@
 
                                     {{-- Berita 2 --}}
                                     <div id="tombol2" style="display: none;">
-                                        <label for="isi_berita2" class="mb-2">Isi Berita 2</label>
                                         <div class="mb-4">
-                                            <textarea class="form-control my-editor" id="isi_berita2" name="isi_berita2" rows="6"
-                                                placeholder="Masukkan Isi Berita"></textarea>
+                                            <label class="form-label">Isi Konten 2</label>
+                                            <div class="custom-editor-container">
+                                                <div class="editor-toolbar">
+                                                    <button type="button" data-target="editor2" data-command="bold"><i
+                                                            class="bi bi-type-bold"></i></button>
+                                                    <button type="button" data-target="editor2" data-command="italic"><i
+                                                            class="bi bi-type-italic"></i></button>
+                                                    <button type="button" data-target="editor2"
+                                                        data-command="underline"><i
+                                                            class="bi bi-type-underline"></i></button>
+                                                    <button type="button" data-target="editor2"
+                                                        data-command="insertUnorderedList"><i
+                                                            class="bi bi-list-ul"></i></button>
+                                                    <button type="button" data-target="editor2"
+                                                        data-command="insertOrderedList"><i
+                                                            class="bi bi-list-ol"></i></button>
+                                                    <button type="button" data-target="editor2"
+                                                        data-command="createLink"><i
+                                                            class="bi bi-link-45deg"></i></button>
+                                                    <button type="button" data-target="editor2"
+                                                        data-command="insertImage"><i class="bi bi-image"></i></button>
+                                                    <button type="button" data-target="editor2"
+                                                        data-command="removeFormat"><i class="bi bi-eraser"></i></button>
+                                                </div>
+                                                <div id="editor2" class="custom-editor" contenteditable="true">
+                                                    {!! old('isi_berita2') !!}</div>
+                                                <textarea name="isi_berita2" id="hiddenContent2" style="display:none;"></textarea>
+                                            </div>
                                         </div>
 
                                         {{-- Gambar 2 --}}
@@ -83,10 +130,35 @@
 
                                     {{-- Berita 3 --}}
                                     <div id="tombol3" style="display: none;">
-                                        <label for="isi_berita3" class="mb-2">Isi Berita 3</label>
                                         <div class="mb-4">
-                                            <textarea class="form-control my-editor" id="isi_berita3" name="isi_berita3" rows="6"
-                                                placeholder="Masukkan Isi Berita"></textarea>
+                                            <label class="form-label">Isi Konten 3</label>
+                                            <div class="custom-editor-container">
+                                                <div class="editor-toolbar">
+                                                    <button type="button" data-target="editor3" data-command="bold"><i
+                                                            class="bi bi-type-bold"></i></button>
+                                                    <button type="button" data-target="editor3" data-command="italic"><i
+                                                            class="bi bi-type-italic"></i></button>
+                                                    <button type="button" data-target="editor3"
+                                                        data-command="underline"><i
+                                                            class="bi bi-type-underline"></i></button>
+                                                    <button type="button" data-target="editor3"
+                                                        data-command="insertUnorderedList"><i
+                                                            class="bi bi-list-ul"></i></button>
+                                                    <button type="button" data-target="editor3"
+                                                        data-command="insertOrderedList"><i
+                                                            class="bi bi-list-ol"></i></button>
+                                                    <button type="button" data-target="editor3"
+                                                        data-command="createLink"><i
+                                                            class="bi bi-link-45deg"></i></button>
+                                                    <button type="button" data-target="editor3"
+                                                        data-command="insertImage"><i class="bi bi-image"></i></button>
+                                                    <button type="button" data-target="editor3"
+                                                        data-command="removeFormat"><i class="bi bi-eraser"></i></button>
+                                                </div>
+                                                <div id="editor3" class="custom-editor" contenteditable="true">
+                                                    {!! old('isi_berita3') !!}</div>
+                                                <textarea name="isi_berita3" id="hiddenContent3" style="display:none;"></textarea>
+                                            </div>
                                         </div>
 
                                         {{-- Gambar 3 --}}

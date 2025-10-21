@@ -54,7 +54,7 @@
                                             @forelse($berita as $b)
                                                 <tr>
                                                     <td class="text-center">{{ $loop->iteration }}</td>
-                                                    <td class="text-center fw-bold">{{ $b->judul }}</td>
+                                                    <td class="text-center">{{ $b->judul }}</td>
 
                                                     {{-- Gambar 1 --}}
                                                     <td class="text-center">

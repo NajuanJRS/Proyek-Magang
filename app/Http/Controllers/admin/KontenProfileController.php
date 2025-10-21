@@ -22,10 +22,7 @@ class KontenProfileController extends Controller
 
         $kontenProfile = Konten::with('kategoriKonten')
             ->whereHas('kategoriKonten', function ($query) use ($search) {
-                // Hanya ambil kategori dengan menu_konten = 'Profil'
                 $query->where('menu_konten', 'Profil');
-
-                // Jika ada pencarian, cari berdasarkan nama_kategori atau judul_konten
                 if (!empty($search)) {
                     $query->where(function ($q) use ($search) {
                         $q->where('nama_kategori', 'like', "%$search%")
@@ -33,6 +30,7 @@ class KontenProfileController extends Controller
                     });
                 }
             })
+            ->orderBy('id_konten', 'desc')
             ->paginate(10);
 
         return view('Admin.profile.kontenProfile.kontenProfile', compact('kontenProfile'));

@@ -33,6 +33,7 @@ class PpidController extends Controller
                     });
                 }
             })
+            ->orderBy('id_konten', 'desc')
             ->paginate(10);
 
         return view('Admin.ppid.kontenPpid.kontenPpid', compact('kontenPpid'));

@@ -33,6 +33,7 @@ class KontenLayananController extends Controller
                     });
                 }
             })
+            ->orderBy('id_konten', 'desc')
             ->paginate(10);
 
         return view('Admin.layanan.kontenLayanan.kontenLayanan', compact('kontenLayanan'));

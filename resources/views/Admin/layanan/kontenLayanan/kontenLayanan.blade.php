@@ -83,7 +83,7 @@
                                                 </td>
 
                                                 {{-- ===== Isi konten 1 ===== --}}
-                                                <td class="isi-konten text-center">
+                                                <td class="isi-konten">
                                                     @php
                                                         $isi1 = trim(preg_replace('/\s+/', ' ', html_entity_decode(strip_tags($k->isi_konten1 ?? ''))));
                                                     @endphp
@@ -118,7 +118,7 @@
                                                 </td>
 
                                                 {{-- ===== Isi konten 2 ===== --}}
-                                                <td class="isi-konten text-center">
+                                                <td class="isi-konten">
                                                     @php
                                                         $isi2 = trim(preg_replace('/\s+/', ' ', html_entity_decode(strip_tags($k->isi_konten2 ?? ''))));
                                                     @endphp
@@ -153,7 +153,7 @@
                                                 </td>
 
                                                 {{-- ===== Isi konten 3 ===== --}}
-                                                <td class="isi-konten text-center">
+                                                <td class="isi-konten">
                                                     @php
                                                         $isi3 = trim(preg_replace('/\s+/', ' ', html_entity_decode(strip_tags($k->isi_konten3 ?? ''))));
                                                     @endphp
