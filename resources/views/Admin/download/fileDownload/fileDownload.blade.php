@@ -76,14 +76,14 @@
 
                                                     <td class="text-center">
                                                         <a href="{{ route('admin.fileDownload.edit', ['id' => $f->id_file, 'kategori' => $kategori->slug ?? '']) }}"
-                                                            class="btn btn-info btn-sm">
-                                                            <i class="bi bi-pencil-square"></i> Ubah
+                                                            class="btn btn-info btn-sm btn-circle rounded-circle d-inline-flex me-1">
+                                                            <i class="bi bi-pencil-square"></i>
                                                         </a>
 
                                                         {{-- Tombol Delete --}}
-                                                        <a href="#" class="btn btn-sm btn-danger"
+                                                        <a href="#" class="btn btn-danger btn-sm btn-circle rounded-circle d-inline-flex "
                                                             onclick="deleteData('{{ $f->id_file }}')">
-                                                            <i class="bi bi-trash"></i>Hapus</a>
+                                                            <i class="bi bi-trash"></i></a>
 
                                                         <form id="delete-form-{{ $f->id_file }}"
                                                             action="{{ route('admin.fileDownload.destroy', $f->id_file) }}"

@@ -26,6 +26,7 @@ class KontakController extends Controller
         $request->validate([
             'nomor_telepon' => 'required|numeric',
             'email' => 'required|email',
+            'jam_pelayanan' => 'required',
             'map' => 'required',
             'alamat' => 'required',
         ]);
@@ -34,6 +35,7 @@ class KontakController extends Controller
         $data = [
             'nomor_telepon'      => $request->nomor_telepon,
             'email' => $request->email,
+            'jam_pelayanan' => $request->jam_pelayanan,
             'map'     => $request->map,
             'alamat'=> $request->alamat,
         ];

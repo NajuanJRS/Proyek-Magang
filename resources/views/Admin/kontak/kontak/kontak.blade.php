@@ -42,6 +42,13 @@
                                             placeholder="Contoh: info@kalselprov.go.id">
                                     </div>
 
+                                    <label for="jam_pelayanan" class="mb-2">Jam Pelayanan</label>
+                                    <div class="mb-4">
+                                        <input type="text" class="form-control" id="jam_pelayanan" name="jam_pelayanan"
+                                            value="{{ old('jam_pelayanan', $kontak->jam_pelayanan) }}"
+                                            placeholder="Contoh: Senin - Jumat, 08.00 - 16.00 WITA">
+                                    </div>
+
                                     {{-- Map --}}
                                     <label for="map" class="mb-2">Map (Embed Link)</label>
                                     <div class="mb-4">
@@ -55,11 +62,23 @@
                                     </div>
 
                                     {{-- Alamat --}}
-                                    <label for="alamat" class="mb-2">Alamat</label>
                                     <div class="mb-4">
-                                        <textarea class="form-control my-editor" id="alamat" name="alamat" rows="10"
-                                            placeholder="Masukkan Alamat">{{ old('alamat', $kontak->alamat) }}</textarea>
+                                    <label class="form-label">Alamat</label>
+                                    <div class="custom-editor-container">
+                                        <div class="editor-toolbar">
+                                            <button type="button" data-target="editor1" data-command="bold"><i class="bi bi-type-bold"></i></button>
+                                            <button type="button" data-target="editor1" data-command="italic"><i class="bi bi-type-italic"></i></button>
+                                            <button type="button" data-target="editor1" data-command="underline"><i class="bi bi-type-underline"></i></button>
+                                            <button type="button" data-target="editor1" data-command="insertUnorderedList"><i class="bi bi-list-ul"></i></button>
+                                            <button type="button" data-target="editor1" data-command="insertOrderedList"><i class="bi bi-list-ol"></i></button>
+                                            <button type="button" data-target="editor1" data-command="createLink"><i class="bi bi-link-45deg"></i></button>
+                                            <button type="button" data-target="editor1" data-command="insertImage"><i class="bi bi-image"></i></button>
+                                            <button type="button" data-target="editor1" data-command="removeFormat"><i class="bi bi-eraser"></i></button>
+                                        </div>
+                                        <div id="editor1" class="custom-editor" contenteditable="true">{!! old('alamat', $kontak->alamat) !!}</div>
+                                        <textarea name="alamat" id="hiddenContent1" style="display:none;"></textarea>
                                     </div>
+                                </div>
 
                                     {{-- Tombol --}}
                                     <button type="submit" class="btn btn-info me-2">Simpan</button>

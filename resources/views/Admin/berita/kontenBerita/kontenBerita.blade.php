@@ -192,12 +192,12 @@
                                                     <td class="text-center">{{ $b->dibaca }}</td>
                                                     <td class="text-center">
                                                         <a href="{{ route('admin.berita.edit', $b->id_berita) }}"
-                                                            class="btn btn-info btn-sm">
-                                                            <i class="bi bi-pencil-square"></i> Ubah
+                                                            class="btn btn-info btn-sm btn-circle rounded-circle d-inline-flex me-1">
+                                                            <i class="bi bi-pencil-square"></i>
                                                         </a>
-                                                        <a href="#" class="btn btn-danger btn-sm"
+                                                        <a href="#" class="btn btn-danger btn-sm btn-circle rounded-circle d-inline-flex"
                                                             onclick="deleteData('{{ $b->id_berita }}')">
-                                                            <i class="bi bi-trash"></i> Hapus
+                                                            <i class="bi bi-trash"></i>
                                                         </a>
                                                         <form id="delete-form-{{ $b->id_berita }}"
                                                             action="{{ route('admin.berita.destroy', $b->id_berita) }}"

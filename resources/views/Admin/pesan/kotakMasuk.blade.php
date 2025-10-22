@@ -49,7 +49,7 @@
                                             <td>{{ $k->tgl_kirim }}</td>
                                             <td class="text-center">
                                                 {{-- Tombol lihat selengkapnya --}}
-                                                <button type="button" title="Lihat Detail" class="btn btn-warning btn-sm see-more"
+                                                <button type="button" title="Lihat Detail" class="btn btn-warning btn-sm btn-circle rounded-circle d-inline-flex me-1 see-more"
                                                     data-id="{{ $k->id_pesan }}" data-judul="{{ $k->isi_pesan }}">
                                                     <i class="bi bi-eye"></i>
                                                 </button>
@@ -58,7 +58,7 @@
                                                 <div id="full-content-{{ $k->id_pesan }}" class="d-none">
                                                     {!! $k->isi_pesan !!}
                                                 </div>
-                                                <a href="#" class="btn btn-danger btn-sm" onclick="deleteData('{{ $k->id_kotak }}')" title="Hapus">
+                                                <a href="#" class="btn btn-danger btn-sm btn-circle rounded-circle d-inline-flex me-1" onclick="deleteData('{{ $k->id_kotak }}')" title="Hapus">
                                                     <i class="bi bi-trash"></i></a>
                                                 <form id="delete-form-{{ $k->id_kotak }}"
                                                     action="{{ route('admin.kotakMasuk.destroy', $k->id_kotak) }}"
