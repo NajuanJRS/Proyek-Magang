@@ -1026,3 +1026,47 @@ body.no-scroll {
     border-color: #56a3f6;
     box-shadow: 0 0 0 2px rgba(86, 163, 246, 0.2);
 }
+
+/* Overlay submenu untuk mode minimized */
+.sidebar-mini-overlay {
+    position: fixed;
+    z-index: 1065;
+    min-width: 220px;
+    max-width: 320px;
+    max-height: calc(100vh - 80px);
+    overflow-y: auto;
+    background: #fff;
+    border: 1px solid rgba(0,0,0,0.08);
+    border-radius: 8px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+    padding: 6px 8px;
+    display: none;
+    transition: opacity .18s ease, transform .5s ease;
+    opacity: 0;
+    transform: translateY(-4px);
+}
+
+/* tampilkan overlay (state) */
+.sidebar-mini-overlay.show {
+    display: block;
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* gaya internal agar serupa submenu asli */
+.sidebar-mini-overlay .nav-link {
+    padding: 8px 12px;
+    display: block;
+    color: #333;
+    border-radius: 6px;
+}
+.sidebar-mini-overlay .nav-link:hover,
+.sidebar-mini-overlay .nav-link.active {
+    background: #f2f6ff;
+    color: #0d6efd;
+}
+
+/* responsif: jangan tampilkan overlay di mobile (mobile punya overlay sidebar sendiri) */
+@media (max-width: 991px) {
+    .sidebar-mini-overlay { display: none !important; }
+}
