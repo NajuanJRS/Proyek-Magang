@@ -9,7 +9,7 @@
     <ol class="breadcrumb small mb-0">
       <li class="breadcrumb-item"><a href="{{ url('/') }}">Beranda</a></li>
       <li class="breadcrumb-item"><a href="{{ url('/layanan') }}">Layanan</a></li>
-      <li class="breadcrumb-item active" aria-current="page">{{ $activeCategory->judul_konten }}</li>
+      <li class="breadcrumb-item active" aria-current="page">{{ Str::limit($activeCategory['slug'], 35) }}</li>
     </ol>
   </nav>
 
@@ -30,7 +30,7 @@
                 @if($layananContent)
                     {{-- Blok Konten 1 --}}
                     @if($layananContent->isi_konten1)
-                        {!! \App\Helpers\ContentHelper::embedYoutubeVideos($profileContent->isi_konten1) !!}
+                        {!! \App\Helpers\ContentHelper::embedYoutubeVideos($layananContent->isi_konten1) !!}
                     @endif
                     @if($layananContent->gambar1)
                         <figure class="my-4 text-center">
@@ -40,7 +40,7 @@
 
                     {{-- Blok Konten 2 --}}
                     @if($layananContent->isi_konten2)
-                        {!! \App\Helpers\ContentHelper::embedYoutubeVideos($profileContent->isi_konten2) !!}
+                        {!! \App\Helpers\ContentHelper::embedYoutubeVideos($layananContent->isi_konten2) !!}
                     @endif
                     @if($layananContent->gambar2)
                         <figure class="my-4 text-center">
@@ -50,7 +50,7 @@
 
                     {{-- Blok Konten 3 --}}
                     @if($layananContent->isi_konten3)
-                        {!! \App\Helpers\ContentHelper::embedYoutubeVideos($profileContent->isi_konten3) !!}
+                        {!! \App\Helpers\ContentHelper::embedYoutubeVideos($layananContent->isi_konten3) !!}
                     @endif
                     @if($layananContent->gambar3)
                         <figure class="my-4 text-center">
