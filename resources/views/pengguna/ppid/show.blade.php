@@ -10,7 +10,7 @@
       <li class="breadcrumb-item"><a href="{{ url('/') }}">Beranda</a></li>
       <li class="breadcrumb-item"><a href="{{ url('/ppid') }}">PPID</a></li>
       {{-- Judul diambil dari kategori yang aktif --}}
-      <li class="breadcrumb-item active" aria-current="page">{{ $activeCategory->judul_konten }}</li>
+      <li class="breadcrumb-item active" aria-current="page">{{ Str::limit($activeCategory['slug'], 35) }}</li>
     </ol>
   </nav>
 
@@ -30,7 +30,7 @@
                 @if($pageContent)
                     {{-- Blok Konten 1 --}}
                     @if($pageContent->isi_konten1)
-                        {!! \App\Helpers\ContentHelper::embedYoutubeVideos($profileContent->isi_konten1) !!}
+                        {!! \App\Helpers\ContentHelper::embedYoutubeVideos($pageContent->isi_konten1) !!}
                     @endif
                     @if($pageContent->gambar1)
                         <div class="ds-image-zoom-wrapper mt-3" data-bs-toggle="modal" data-bs-target="#imageModal">
@@ -44,7 +44,7 @@
 
                     {{-- Blok Konten 2 --}}
                     @if($pageContent->isi_konten2)
-                        {!! \App\Helpers\ContentHelper::embedYoutubeVideos($profileContent->isi_konten2) !!}
+                        {!! \App\Helpers\ContentHelper::embedYoutubeVideos($pageContent->isi_konten2) !!}
                     @endif
                     @if($pageContent->gambar2)
                         <figure class="my-4 text-center">
@@ -54,7 +54,7 @@
 
                     {{-- Blok Konten 3 --}}
                     @if($pageContent->isi_konten3)
-                        {!! \App\Helpers\ContentHelper::embedYoutubeVideos($profileContent->isi_konten3) !!}
+                        {!! \App\Helpers\ContentHelper::embedYoutubeVideos($pageContent->isi_konten3) !!}
                     @endif
                     @if($pageContent->gambar3)
                         <figure class="my-4 text-center">

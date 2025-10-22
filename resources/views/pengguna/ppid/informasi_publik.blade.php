@@ -45,15 +45,15 @@
           </article>
         </div>
 
-        {{-- KOLOM KANAN: SIDEBAR PPID (Sudah Benar) --}}
+        {{-- KOLOM KANAN: SIDEBAR PPID --}}
         <div class="col-lg-4">
           <div class="ds-sidebar-card">
             <h5 class="ds-sidebar-title">PPID</h5>
             <div class="ds-sidebar-list">
               @foreach($allPpidItems as $item)
                 <a href="{{ $item->url }}" class="ds-sidebar-item-layanan {{ $item->active ? 'active' : '' }}">
-                  <img src="{{ asset('storage/icon/' . $item->icon) }}" alt="{{ $item->nama_kategori }}">
-                  <h6 class="ds-sidebar-item-title">{{ $item->nama_kategori }}</h6>
+                  <img src="{{ asset('storage/icon/' . $item->icon) }}" alt="{{ $item->judul }}">
+                  <h6 class="ds-sidebar-item-title">{{ $item->judul }}</h6>
                 </a>
               @endforeach
             </div>

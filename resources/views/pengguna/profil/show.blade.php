@@ -9,7 +9,7 @@
     <ol class="breadcrumb small mb-0">
       <li class="breadcrumb-item"><a href="{{ url('/') }}">Beranda</a></li>
       <li class="breadcrumb-item"><a href="{{ url('/profil') }}">Profil</a></li>
-      <li class="breadcrumb-item active" aria-current="page">{{ $activeCategory->judul_konten }}</li>
+      <li class="breadcrumb-item active" aria-current="page">{{ Str::limit($activeCategory['slug'], 35) }}</li>
     </ol>
   </nav>
 
