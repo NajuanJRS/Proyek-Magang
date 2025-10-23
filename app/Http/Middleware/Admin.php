@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpFoundation\Response;
 
-class isAdmin
+class Admin
 {
     /**
      * Handle an incoming request.
@@ -20,6 +20,6 @@ class isAdmin
             return $next($request);
         }
 
-        return redirect()->route('login')->withErrors(['akses' => 'Akses ditolak.']);
+        return redirect()->route('login')->with('error', 'Anda tidak memiliki akses ke halaman admin.');
     }
 }
