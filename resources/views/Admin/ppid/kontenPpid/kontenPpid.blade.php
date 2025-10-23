@@ -69,7 +69,37 @@
                                                     @endif
                                                 </td>
 
-                                                <td class="fw-bold text-center">{{ $k->kategoriKonten->judul_konten }}</td>
+                                                <td class="kolom-judul">
+                                                    @php
+                                                            $fullText = trim(
+                                                                preg_replace(
+                                                                    '/\s+/',
+                                                                    ' ',
+                                                                    html_entity_decode(
+                                                                        strip_tags($k->kategoriKonten->judul_konten ?? ''),
+                                                                    ),
+                                                                ),
+                                                            );
+                                                        @endphp
+                                                        @if ($fullText)
+                                                            <div class="preview-text"
+                                                                style="max-width:420px; white-space:normal; overflow:hidden;">
+                                                                {{ \Illuminate\Support\Str::limit($fullText, 20) }}
+                                                            </div>
+                                                            @if (mb_strlen($fullText) > 20)
+                                                                <button type="button" class="btn btn-link p-0 see-more"
+                                                                    data-id="{{ $k->id_konten }}-4"
+                                                                    data-judul="Detail Judul">
+                                                                    Lihat selengkapnya
+                                                                </button>
+                                                            @endif
+                                                            <div id="full-content-{{ $k->id_konten }}-4" class="d-none">
+                                                                {!! $k->kategoriKonten->judul_konten !!}
+                                                            </div>
+                                                        @else
+                                                            -
+                                                        @endif
+                                                </td>
 
                                                 {{-- ===== Gambar 1 ===== --}}
                                                 <td class="text-center">
@@ -89,9 +119,9 @@
                                                     @endphp
                                                     @if ($isi1)
                                                         <div style="max-width:420px; white-space:normal; overflow:hidden;">
-                                                            {{ \Illuminate\Support\Str::limit($isi1, 120) }}
+                                                            {{ \Illuminate\Support\Str::limit($isi1, 90) }}
                                                         </div>
-                                                        @if (mb_strlen($isi1) > 120)
+                                                        @if (mb_strlen($isi1) > 90)
                                                             <button type="button" class="btn btn-link p-0 see-more"
                                                                 data-id="{{ $k->id_konten }}-1"
                                                                 data-judul="{{ $k->judul }}">
@@ -124,9 +154,9 @@
                                                     @endphp
                                                     @if ($isi2)
                                                         <div style="max-width:420px; white-space:normal; overflow:hidden;">
-                                                            {{ \Illuminate\Support\Str::limit($isi2, 120) }}
+                                                            {{ \Illuminate\Support\Str::limit($isi2, 90) }}
                                                         </div>
-                                                        @if (mb_strlen($isi2) > 120)
+                                                        @if (mb_strlen($isi2) > 90)
                                                             <button type="button" class="btn btn-link p-0 see-more"
                                                                 data-id="{{ $k->id_konten }}-2"
                                                                 data-judul="{{ $k->judul }}">
@@ -159,9 +189,9 @@
                                                     @endphp
                                                     @if ($isi3)
                                                         <div style="max-width:420px; white-space:normal; overflow:hidden;">
-                                                            {{ \Illuminate\Support\Str::limit($isi3, 120) }}
+                                                            {{ \Illuminate\Support\Str::limit($isi3, 90) }}
                                                         </div>
-                                                        @if (mb_strlen($isi3) > 120)
+                                                        @if (mb_strlen($isi3) > 90)
                                                             <button type="button" class="btn btn-link p-0 see-more"
                                                                 data-id="{{ $k->id_konten }}-3"
                                                                 data-judul="{{ $k->judul }}">

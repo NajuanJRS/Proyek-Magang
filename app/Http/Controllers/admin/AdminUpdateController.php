@@ -33,6 +33,6 @@ class AdminUpdateController extends Controller
 
         $adminUpdate->update($data);
 
-        return redirect()->route('admin.adminUpdate.index')->with('success', 'Data Berhasil Diupdate!');
+        return redirect()->route('admin.adminUpdate.index')->with('success', 'Akun Berhasil Diperbarui!');
     }
 }

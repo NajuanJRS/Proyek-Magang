@@ -67,7 +67,7 @@
                                                             );
                                                         @endphp
 
-                                                        <td class="isi-konten text-center">
+                                                        <td class="isi-konten">
                                                             <div class="preview-text"
                                                                 style="max-width:520px; white-space:normal; overflow:hidden;">
                                                                 {{ \Illuminate\Support\Str::limit($fullText, 160) }}

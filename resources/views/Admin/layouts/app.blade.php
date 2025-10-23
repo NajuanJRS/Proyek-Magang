@@ -36,7 +36,7 @@
                     <i class="bi bi-list"></i>
                 </button>
 
-                <span class="brand-text ms-1" id="brandText">Dinas Sosial Provinsi Kalimantan Selatan</span>
+                <span class="brand-text" id="brandText">Dinas Sosial Provinsi Kalimantan Selatan</span>
             </a>
         </div>
     </nav>
@@ -293,6 +293,15 @@
                     class="nav-link d-flex align-items-center {{ request()->routeIs('admin.kotakMasuk.index') ? 'active' : '' }}">
                     <i class="bi bi-inbox"></i>
                     <span class="menu-title">Kotak Masuk</span>
+                </a>
+            </li>
+
+            <!-- Kelola Akun -->
+            <li class="nav-item">
+                <a href="{{ route('admin.adminUpdate.index') }}"
+                    class="nav-link d-flex align-items-center {{ request()->routeIs('admin.kelolaAkun.index') ? 'active' : '' }}">
+                    <i class="bi bi-person-circle"></i>
+                    <span class="menu-title">Kelola Akun</span>
                 </a>
             </li>
 

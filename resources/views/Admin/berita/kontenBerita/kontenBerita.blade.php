@@ -38,7 +38,7 @@
                                         <thead>
                                             <tr>
                                                 <th class="text-center">No.</th>
-                                                <th class="text-center">Judul</th>
+                                                <th class="text-center kolom-judul">Judul</th>
                                                 <th class="text-center">Gambar 1</th>
                                                 <th class="text-center">Isi Berita 1</th>
                                                 <th class="text-center">Gambar 2</th>
@@ -54,7 +54,37 @@
                                             @forelse($berita as $b)
                                                 <tr>
                                                     <td class="text-center">{{ $loop->iteration }}</td>
-                                                    <td class="text-center">{{ $b->judul }}</td>
+                                                    <td class="kolom-judul">
+                                                        @php
+                                                            $fullText = trim(
+                                                                preg_replace(
+                                                                    '/\s+/',
+                                                                    ' ',
+                                                                    html_entity_decode(
+                                                                        strip_tags($b->judul ?? ''),
+                                                                    ),
+                                                                ),
+                                                            );
+                                                        @endphp
+                                                        @if ($fullText)
+                                                            <div class="preview-text"
+                                                                style="max-width:420px; white-space:normal; overflow:hidden;">
+                                                                {{ \Illuminate\Support\Str::limit($fullText, 20) }}
+                                                            </div>
+                                                            @if (mb_strlen($fullText) > 20)
+                                                                <button type="button" class="btn btn-link p-0 see-more"
+                                                                    data-id="{{ $b->id_berita }}-4"
+                                                                    data-judul="Detail Judul">
+                                                                    Lihat selengkapnya
+                                                                </button>
+                                                            @endif
+                                                            <div id="full-content-{{ $b->id_berita }}-4" class="d-none">
+                                                                {!! $b->judul !!}
+                                                            </div>
+                                                        @else
+                                                            -
+                                                        @endif
+                                                    </td>
 
                                                     {{-- Gambar 1 --}}
                                                     <td class="text-center">
@@ -83,9 +113,9 @@
                                                         @if ($fullText)
                                                             <div class="preview-text"
                                                                 style="max-width:420px; white-space:normal; overflow:hidden;">
-                                                                {{ \Illuminate\Support\Str::limit($fullText, 120) }}
+                                                                {{ \Illuminate\Support\Str::limit($fullText, 90) }}
                                                             </div>
-                                                            @if (mb_strlen($fullText) > 120)
+                                                            @if (mb_strlen($fullText) > 90)
                                                                 <button type="button" class="btn btn-link p-0 see-more"
                                                                     data-id="{{ $b->id_berita }}-1"
                                                                     data-judul="{{ $b->judul }}">
@@ -127,9 +157,9 @@
                                                         @if ($fullText)
                                                             <div class="preview-text"
                                                                 style="max-width:420px; white-space:normal; overflow:hidden;">
-                                                                {{ \Illuminate\Support\Str::limit($fullText, 120) }}
+                                                                {{ \Illuminate\Support\Str::limit($fullText, 90) }}
                                                             </div>
-                                                            @if (mb_strlen($fullText) > 120)
+                                                            @if (mb_strlen($fullText) > 90)
                                                                 <button type="button" class="btn btn-link p-0 see-more"
                                                                     data-id="{{ $b->id_berita }}-2"
                                                                     data-judul="{{ $b->judul }}">
@@ -171,9 +201,9 @@
                                                         @if ($fullText)
                                                             <div class="preview-text"
                                                                 style="max-width:420px; white-space:normal; overflow:hidden;">
-                                                                {{ \Illuminate\Support\Str::limit($fullText, 120) }}
+                                                                {{ \Illuminate\Support\Str::limit($fullText, 90) }}
                                                             </div>
-                                                            @if (mb_strlen($fullText) > 120)
+                                                            @if (mb_strlen($fullText) > 90)
                                                                 <button type="button" class="btn btn-link p-0 see-more"
                                                                     data-id="{{ $b->id_berita }}-3"
                                                                     data-judul="{{ $b->judul }}">

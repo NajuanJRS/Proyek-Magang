@@ -12,6 +12,20 @@ function togglePassword() {
     }
 }
 
+function toggleConfirmPassword() {
+    const input = document.getElementById('password_confirmation');
+    const icon = document.getElementById('toggleIconConfirm');
+    if (input.type === 'password') {
+        input.type = 'text';
+        icon.classList.remove('bi-eye-slash');
+        icon.classList.add('bi-eye');
+    } else {
+        input.type = 'password';
+        icon.classList.remove('bi-eye');
+        icon.classList.add('bi-eye-slash');
+    }
+}
+
 // Fungsi Hapus Data dengan SweetAlert2
 window.deleteData = function (id) {
     if (typeof Swal === 'undefined') {
@@ -93,7 +107,7 @@ document.addEventListener('click', function (e) {
     if (seeMoreBtn) {
         e.preventDefault();
         const id = seeMoreBtn.getAttribute('data-id');
-        const title = seeMoreBtn.getAttribute('data-judul') || 'Detail Data';
+        const title = seeMoreBtn.getAttribute('data-judul') || 'Detail Konten';
         const contentEl = document.getElementById('full-content-' + id);
         const htmlContent = contentEl ? contentEl.innerHTML : '';
         if (typeof Swal !== 'undefined') {
@@ -535,6 +549,32 @@ document.addEventListener('DOMContentLoaded', function () {
       }
     }, true);
   });
+
+  document.querySelectorAll('.sidebar [data-bs-toggle="collapse"]').forEach(trigger => {
+    const targetMenu = document.querySelector(trigger.getAttribute('href'));
+    if (!targetMenu) return;
+    const arrow = trigger.querySelector('.arrow-icon');
+
+    // Pastikan semua panah awal mengarah ke bawah
+    if (arrow) {
+        arrow.classList.remove('bi-chevron-up');
+        arrow.classList.add('bi-chevron-down');
+    }
+
+    // Saat menu mulai dibuka → arahkan ke atas
+    targetMenu.addEventListener('show.bs.collapse', () => {
+        if (arrow) {
+            arrow.classList.remove('bi-chevron-down');
+            arrow.classList.add('bi-chevron-up');
+        }
+    });
+
+    // Saat menu mulai ditutup → arahkan ke bawah
+    targetMenu.addEventListener('hide.bs.collapse', () => {
+        if (arrow) {
+            arrow.classList.remove('bi-chevron-up');
+            arrow.classList.add('bi-chevron-down');
+        }
+    });
+});
 })();
-
-

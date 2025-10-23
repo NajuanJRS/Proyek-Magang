@@ -43,10 +43,6 @@
                         <i class="bi bi-eye-slash" id="toggleIcon"></i>
                     </span>
                 </div>
-                <div class="form-check text-start mb-2 ms-1">
-                    <input class="form-check-input" type="checkbox" id="remember" name="remember">
-                    <label class="form-check-label" for="remember">Remember Me!</label>
-                </div>
                 <button type="submit" name="submit" class="btn login-btn w-100">Login</button>
             </form>
         </div>

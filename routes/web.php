@@ -111,7 +111,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
     Route::put('kartu-pejabat/{id}', [PejabatController::class, 'updateHeader'])
     ->name('headerKartu.update');
 
-    Route::resource('profile', KontenProfileController::class);
+    Route::resource('profil', KontenProfileController::class)->names('profile');
 
     Route::resource('galeri', GaleriController::class);
 
@@ -134,7 +134,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
 
     Route::resource('kotak-masuk', KotakMasukController::class)->names('kotakMasuk');
 
-    Route::resource('admin-update', AdminUpdateController::class)->names('adminUpdate');
+    Route::resource('kelola-akun', AdminUpdateController::class)->names('adminUpdate');
 
     Route::resource('faq', FaqController::class);
 });
