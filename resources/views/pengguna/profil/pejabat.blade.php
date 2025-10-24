@@ -1,6 +1,6 @@
 @extends('pengguna.layouts.app')
 
-@section('page_bg', 'ds-bg-plain')
+@section('page_bg', 'ds-bg-abstract')
 
 @section('content')
 
@@ -27,14 +27,14 @@
                     <div class="ds-kadis-card-new mb-5">
                         {{-- Menampilkan gambar background dari tabel header --}}
                         @if($kadisBackground)
-                            <div class="ds-kadis-background" style="background-image: url('{{ asset('storage/header/' . $kadisBackground->gambar) }}');"></div>
+                            <div class="ds-kadis-background" style="background-image: url('{{ asset('storage/' . $kadisBackground->gambar) }}');"></div>
                         @else
                             {{-- Fallback jika gambar tidak ditemukan --}}
                             <div class="ds-kadis-background" style="background-color: #e9ecef;"></div>
                         @endif
 
                         <div class="ds-kadis-info">
-                            <img src="{{ asset('storage/pejabat/' . $pejabatKepala->gambar) }}" class="ds-kadis-photo-new" alt="{{ $pejabatKepala->nama_pejabat }}">
+                            <img src="{{ asset('storage/' . $pejabatKepala->gambar) }}" class="ds-kadis-photo-new" alt="{{ $pejabatKepala->nama_pejabat }}">
                             <div class="ds-kadis-nameplate">
                                 <h4 class="mb-0">{{ $pejabatKepala->nama_pejabat }}</h4>
                                 <p class="text-muted mb-0">{{ $pejabatKepala->jabatan->nama_jabatan }}</p>
@@ -49,7 +49,7 @@
                         <div class="col-6 col-md-4">
                             <div class="ds-pejabat-card h-100">
                                 <div class="ds-pejabat-photo-wrapper">
-                                    <img src="{{ asset('storage/pejabat/' . $p->gambar) }}" alt="{{ $p->nama_pejabat }}" class="ds-pejabat-photo">
+                                    <img src="{{ asset('storage/' . $p->gambar) }}" alt="{{ $p->nama_pejabat }}" class="ds-pejabat-photo">
                                 </div>
                                 <div class="ds-pejabat-info">
                                     <h6 class="mb-0 fw-bold">{{ $p->nama_pejabat }}</h6>
@@ -71,7 +71,7 @@
             <div class="ds-sidebar-list">
               @foreach($allProfiles as $item)
                 <a href="{{ $item->url }}" class="ds-sidebar-item-layanan {{ $item->active ? 'active' : '' }}">
-                  <img src="{{ asset('storage/icon/' . $item->icon_konten) }}" alt="{{ $item->judul_konten }}">
+                  <img src="{{ asset('storage/' . $item->icon_konten) }}" alt="{{ $item->judul_konten }}">
                   <h6 class="ds-sidebar-item-title">{{ $item->judul_konten }}</h6>
                 </a>
               @endforeach

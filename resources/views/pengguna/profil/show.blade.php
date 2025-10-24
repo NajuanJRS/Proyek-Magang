@@ -34,7 +34,7 @@
                     @endif
                     @if($profileContent->gambar1)
                         <figure class="my-4 text-center">
-                            <img src="{{ asset('storage/konten/' . $profileContent->gambar1) }}" class="img-fluid rounded shadow-sm">
+                            <img src="{{ asset('storage/' . $profileContent->gambar1) }}" class="img-fluid rounded shadow-sm">
                         </figure>
                     @endif
 
@@ -44,7 +44,7 @@
                     @endif
                     @if($profileContent->gambar2)
                         <figure class="my-4 text-center">
-                            <img src="{{ asset('storage/konten/' . $profileContent->gambar2) }}" class="img-fluid rounded shadow-sm">
+                            <img src="{{ asset('storage/' . $profileContent->gambar2) }}" class="img-fluid rounded shadow-sm">
                         </figure>
                     @endif
 
@@ -54,7 +54,7 @@
                     @endif
                     @if($profileContent->gambar3)
                         <figure class="my-4 text-center">
-                            <img src="{{ asset('storage/konten/' . $profileContent->gambar3) }}" class="img-fluid rounded shadow-sm">
+                            <img src="{{ asset('storage/' . $profileContent->gambar3) }}" class="img-fluid rounded shadow-sm">
                         </figure>
                     @endif
                 @else
@@ -82,7 +82,7 @@
             <div class="ds-sidebar-list">
               @foreach($allProfiles as $item)
                 <a href="{{ $item->url }}" class="ds-sidebar-item-layanan {{ $item->active ? 'active' : '' }}">
-                  <img src="{{ asset('storage/icon/' . $item->icon_konten) }}" alt="{{ $item->judul_konten }}">
+                  <img src="{{ asset('storage' . $item->icon_konten) }}" alt="{{ $item->judul_konten }}">
                   <h6 class="ds-sidebar-item-title">{{ $item->judul_konten }}</h6>
                 </a>
               @endforeach

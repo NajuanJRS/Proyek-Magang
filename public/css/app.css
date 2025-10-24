@@ -38,6 +38,7 @@
   background-image:url('/images/pola-sasirangan.png');
   background-repeat:repeat;
   background-size:cover;              /* pola menyesuaikan bar */
+  background-position: center center;
   border-bottom:2px solid rgba(0,0,0,.25);
   padding-top:.25rem;                  /* tinggi ramping */
   padding-bottom:.25rem;

@@ -36,7 +36,7 @@
                                             @if ($headerProfile->gambar)
                                                 <div class="mt-2">
                                                     <img id="oldPreview"
-                                                        src="{{ asset('storage/header/' . $headerProfile->gambar) }}"
+                                                        src="{{ asset('storage/' . $headerProfile->gambar) }}"
                                                         alt="Gambar Heading" width="120"
                                                         style="border-radius: 8px; border:1px solid #ddd; padding:4px;">
                                                 </div>

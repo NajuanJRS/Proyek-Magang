@@ -17,7 +17,7 @@
 
                                 <div class="d-flex justify-content-end align-items-center mb-3 gap-2">
                                     <a href="{{ route('admin.kontenDownload.index') }}"
-                                        class="btn btn-secondary rounded-3 px-3 py-2">
+                                        class="btn btn-back rounded-3 px-3 py-2">
                                         <i class="bi bi-arrow-left"></i> Kembali
                                     </a>
                                     <a href="{{ route('admin.fileDownload.create', $kategori->slug ?? '') }}"

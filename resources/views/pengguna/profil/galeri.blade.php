@@ -27,7 +27,7 @@
                 <div class="ds-galeri-grid">
                     @forelse($galeriItems as $item)
                     <div class="ds-galeri-card">
-                        <img src="{{ asset('storage/galeri/' . $item->gambar) }}" alt="{{ $item->judul }}">
+                        <img src="{{ asset('storage/' . $item->gambar) }}" alt="{{ $item->judul }}">
                         <div class="ds-galeri-overlay">
                         <span class="ds-galeri-title">{{ $item->judul }}</span>
                         </div>
@@ -43,7 +43,7 @@
                 <div class="ds-galeri-grid-mobile">
                     @forelse($galeriItems as $item)
                     <div class="ds-galeri-card">
-                        <img src="{{ asset('storage/galeri/' . $item->gambar) }}" alt="{{ $item->judul }}">
+                        <img src="{{ asset('storage/' . $item->gambar) }}" alt="{{ $item->judul }}">
                         <div class="ds-galeri-overlay">
                         <span class="ds-galeri-title">{{ $item->judul }}</span>
                         </div>
@@ -74,7 +74,7 @@
             <div class="ds-sidebar-list">
               @foreach($allProfiles as $item)
                 <a href="{{ $item->url }}" class="ds-sidebar-item-layanan {{ $item->active ? 'active' : '' }}">
-                  <img src="{{ asset('storage/icon/' . $item->icon_konten) }}" alt="{{ $item->judul_konten }}">
+                  <img src="{{ asset('storage/' . $item->icon_konten) }}" alt="{{ $item->judul_konten }}">
                   <h6 class="ds-sidebar-item-title">{{ $item->judul_konten }}</h6>
                 </a>
               @endforeach

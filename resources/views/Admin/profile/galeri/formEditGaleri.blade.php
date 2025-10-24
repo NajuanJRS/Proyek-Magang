@@ -42,7 +42,7 @@
                                             @if ($galeri->gambar)
                                                 <div class="mt-2">
                                                     <img id="oldPreview"
-                                                        src="{{ asset('storage/galeri/' . $galeri->gambar) }}"
+                                                        src="{{ asset('storage/' . $galeri->gambar) }}"
                                                         alt="Gambar galeri" width="120"
                                                         style="border-radius: 8px; border:1px solid #ddd; padding:4px;">
                                                 </div>

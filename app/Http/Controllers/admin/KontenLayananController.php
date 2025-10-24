@@ -5,14 +5,19 @@ namespace App\Http\Controllers\admin;
 use App\Http\Controllers\Controller;
 use App\Models\admin\KategoriKonten;
 use App\Models\admin\Konten;
+use App\Traits\ManajemenGambarTrait; // 1. Panggil Trait
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Storage;
+// use Illuminate\Support\Facades\Storage; // Tidak perlu lagi
 use Illuminate\View\View;
+use Illuminate\Support\Str; // Import Str facade for slug generation
 
 class KontenLayananController extends Controller
 {
+    // 2. Gunakan Trait
+    use ManajemenGambarTrait;
+
     /**
      * Display a listing of the resource.
      */
@@ -22,15 +27,13 @@ class KontenLayananController extends Controller
 
         $kontenLayanan = Konten::with('kategoriKonten')
             ->whereHas('kategoriKonten', function ($query) use ($search) {
-                // Hanya ambil kategori dengan menu_konten = 'Layanan'
                 $query->where('menu_konten', 'Layanan');
-
-                // Jika ada pencarian, cari berdasarkan nama_kategori atau judul_konten
                 if (!empty($search)) {
-                    $query->where(function ($q) use ($search) {
-                        $q->where('nama_kategori', 'like', "%$search%")
-                        ->orWhere('judul_konten', 'like', "%$search%");
-                    });
+                    // Search in both KategoriKonten and Konten tables requires join or separate queries.
+                    // Simple search on KategoriKonten title for now.
+                     $query->where('judul_konten', 'like', "%{$search}%");
+                    // Consider adding search for isi_konten1 if needed, might impact performance.
+                    // $query->orWhereHas('konten', fn($q) => $q->where('isi_konten1', 'like', "%{$search}%"));
                 }
             })
             ->orderBy('id_konten', 'desc')
@@ -39,58 +42,88 @@ class KontenLayananController extends Controller
         return view('Admin.layanan.kontenLayanan.kontenLayanan', compact('kontenLayanan'));
     }
 
-
+    /**
+     * Show the form for creating a new resource.
+     */
     public function create(): View
     {
         return view('Admin.layanan.kontenLayanan.formKontenLayanan');
     }
 
+    /**
+     * Store a newly created resource in storage.
+     */
     public function store(Request $request): RedirectResponse
     {
+        // 3. Sesuaikan Validasi
         $request->validate([
-            // KategoriKonten
             'judul_konten'  => 'required|string|max:255',
-            'icon_konten'   => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:500',
-
-            // Konten
+            'icon_konten'   => 'nullable|image|mimes:jpeg,png,jpg,gif,svg,webp|max:1024', // Max 1MB for icon
             'isi_konten1'  => 'required|string',
-            'gambar1'       => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:500',
+            'gambar1'       => 'nullable|image|mimes:jpeg,png,jpg,gif,svg,webp|max:5120', // Max 5MB for content images
             'isi_konten2'  => 'nullable|string',
-            'gambar2'       => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:500',
+            'gambar2'       => 'nullable|image|mimes:jpeg,png,jpg,gif,svg,webp|max:5120',
             'isi_konten3'  => 'nullable|string',
-            'gambar3'       => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:500',
+            'gambar3'       => 'nullable|image|mimes:jpeg,png,jpg,gif,svg,webp|max:5120',
         ]);
 
-        // Upload icon kategori (optional)
-        $iconKonten = null;
+        // 4. Proses Icon Konten dengan Trait
+        $pathIconKonten = null;
         if ($request->hasFile('icon_konten')) {
-            $iconPath = $request->file('icon_konten')->store('icon', 'public');
-            $iconKonten = basename($iconPath);
+            $pathIconKonten = $this->prosesDanSimpanGambar($request->file('icon_konten'), 'icon', 'icon');
+             if (!$pathIconKonten) {
+                 return redirect()->back()->withErrors(['icon_konten' => 'Gagal memproses ikon.'])->withInput();
+            }
         }
 
         // Simpan ke tabel kategori_konten
         $kategori = KategoriKonten::create([
-            'menu_konten'     => 'Layanan', // <-- otomatis diisi
+            'menu_konten'     => 'Layanan',
             'judul_konten'  => $request->judul_konten,
-            'icon_konten'   => $iconKonten,
-            'slug'          => str()->slug($request->judul_konten),
+            'icon_konten'   => $pathIconKonten, // Gunakan path hasil Trait
+            'slug'          => Str::slug($request->judul_konten), // Gunakan Str::slug
         ]);
 
-        // Upload gambar konten (opsional)
-        $gambar1 = $request->hasFile('gambar1') ? basename($request->file('gambar1')->store('konten', 'public')) : null;
-        $gambar2 = $request->hasFile('gambar2') ? basename($request->file('gambar2')->store('konten', 'public')) : null;
-        $gambar3 = $request->hasFile('gambar3') ? basename($request->file('gambar3')->store('konten', 'public')) : null;
+        // 5. Proses Gambar Konten dengan Trait
+        $pathGambar1 = null;
+        $pathGambar2 = null;
+        $pathGambar3 = null;
+
+        if ($request->hasFile('gambar1')) {
+            $pathGambar1 = $this->prosesDanSimpanGambar($request->file('gambar1'), 'konten', 'konten');
+             if (!$pathGambar1) { // Error handling
+                 $kategori->delete(); // Rollback kategori creation
+                 return redirect()->back()->withErrors(['gambar1' => 'Gagal memproses gambar 1.'])->withInput();
+            }
+        }
+        if ($request->hasFile('gambar2')) {
+            $pathGambar2 = $this->prosesDanSimpanGambar($request->file('gambar2'), 'konten', 'konten');
+             if (!$pathGambar2) { // Error handling
+                 $this->hapusGambarLama($pathGambar1); // Rollback gambar1 if exists
+                 $kategori->delete();
+                 return redirect()->back()->withErrors(['gambar2' => 'Gagal memproses gambar 2.'])->withInput();
+            }
+        }
+        if ($request->hasFile('gambar3')) {
+            $pathGambar3 = $this->prosesDanSimpanGambar($request->file('gambar3'), 'konten', 'konten');
+             if (!$pathGambar3) { // Error handling
+                 $this->hapusGambarLama($pathGambar1);
+                 $this->hapusGambarLama($pathGambar2);
+                 $kategori->delete();
+                 return redirect()->back()->withErrors(['gambar3' => 'Gagal memproses gambar 3.'])->withInput();
+            }
+        }
 
         // Simpan ke tabel konten
         Konten::create([
-            'id_user'             => Auth::id() ?? 1,
+            'id_user'             => Auth::id() ?? 1, // Default user 1 jika tidak login (sesuaikan jika perlu)
             'id_kategori_konten'  => $kategori->id_kategori_konten,
             'isi_konten1'        => $request->isi_konten1,
-            'gambar1'             => $gambar1,
+            'gambar1'             => $pathGambar1, // Gunakan path hasil Trait
             'isi_konten2'        => $request->isi_konten2,
-            'gambar2'             => $gambar2,
+            'gambar2'             => $pathGambar2, // Gunakan path hasil Trait
             'isi_konten3'        => $request->isi_konten3,
-            'gambar3'             => $gambar3,
+            'gambar3'             => $pathGambar3, // Gunakan path hasil Trait
         ]);
 
         return redirect()->route('admin.layanan.index')
@@ -103,7 +136,7 @@ class KontenLayananController extends Controller
      */
     public function show(Konten $kontenLayanan)
     {
-        //
+        // Tidak digunakan
     }
 
     /**
@@ -111,7 +144,7 @@ class KontenLayananController extends Controller
      */
     public function edit($id): View
     {
-        $kontenLayanan = Konten::findOrFail($id);
+        $kontenLayanan = Konten::with('kategoriKonten')->findOrFail($id); // Eager load kategori
         return view('Admin.layanan.kontenLayanan.formEditKontenLayanan', compact('kontenLayanan'));
     }
 
@@ -120,107 +153,83 @@ class KontenLayananController extends Controller
      */
     public function update(Request $request, $id): RedirectResponse
     {
-        $request->validate([
-            // KategoriKonten
+        // 6. Sesuaikan Validasi Update
+         $request->validate([
             'judul_konten'  => 'required|string|max:255',
-            'icon_konten'   => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:500',
-
-            // Konten
+            'icon_konten'   => 'nullable|image|mimes:jpeg,png,jpg,gif,svg,webp|max:1024',
             'isi_konten1'  => 'required|string',
-            'gambar1'       => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:500',
+            'gambar1'       => 'nullable|image|mimes:jpeg,png,jpg,gif,svg,webp|max:5120',
             'isi_konten2'  => 'nullable|string',
-            'gambar2'       => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:500',
+            'gambar2'       => 'nullable|image|mimes:jpeg,png,jpg,gif,svg,webp|max:5120',
             'isi_konten3'  => 'nullable|string',
-            'gambar3'       => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:500',
+            'gambar3'       => 'nullable|image|mimes:jpeg,png,jpg,gif,svg,webp|max:5120',
         ]);
 
-        // Ambil data konten berdasarkan ID
         $konten = Konten::with('kategoriKonten')->findOrFail($id);
-
-        // ========================
-        // UPDATE TABEL KATEGORI_KONTEN
-        // ========================
         $kategori = $konten->kategoriKonten;
 
-        // Handle upload icon baru (jika ada)
-        $iconKonten = $kategori->icon_konten ?? null;
-        if ($request->hasFile('icon_konten')) {
-            // Hapus file lama jika ada
-            if ($iconKonten && Storage::disk('public')->exists('icon/' . $iconKonten)) {
-                Storage::disk('public')->delete('icon/' . $iconKonten);
-            }
-
-            $iconPath = $request->file('icon_konten')->store('icon', 'public');
-            $iconKonten = basename($iconPath);
-        }
-
-        // Update data kategori
-        $kategori->update([
-            'menu_konten'   => 'Layanan', // tetap otomatis "Layanan"
+        // --- Update Kategori Konten ---
+        $kategoriData = [
             'judul_konten'  => $request->judul_konten,
-            'icon_konten'   => $iconKonten,
-            'slug'          => str()->slug($request->judul_konten),
-        ]);
+            'slug'          => Str::slug($request->judul_konten), // Update slug jika judul berubah
+        ];
 
-        // ========================
-        // UPDATE TABEL KONTEN
-        // ========================
-        $idUser = Auth::check() && Auth::user()->role === 'admin' ? 1 : Auth::id();
+        // 7. Proses Update Icon Konten dengan Trait
+        if ($request->hasFile('icon_konten')) {
+            $this->hapusGambarLama($kategori->icon_konten); // Hapus ikon lama
+            $pathIconBaru = $this->prosesDanSimpanGambar($request->file('icon_konten'), 'icon', 'icon');
+            if (!$pathIconBaru) {
+                return redirect()->back()->withErrors(['icon_konten' => 'Gagal memproses ikon baru.'])->withInput();
+            }
+            $kategoriData['icon_konten'] = $pathIconBaru;
+        }
+        // Jangan lupa update slug jika judul berubah, meskipun tidak ada icon baru
+         if ($request->judul_konten !== $kategori->judul_konten) {
+             $kategoriData['slug'] = Str::slug($request->judul_konten);
+         }
 
-        // Handle gambar baru jika di-upload
-        $gambar1 = $konten->gambar1;
-        $gambar2 = $konten->gambar2;
-        $gambar3 = $konten->gambar3;
 
+        $kategori->update($kategoriData);
+
+        // --- Update Konten ---
+        $kontenData = [
+            'isi_konten1' => $request->isi_konten1,
+            'isi_konten2' => $request->isi_konten2,
+            'isi_konten3' => $request->isi_konten3,
+        ];
+
+        // 8. Proses Update Gambar Konten dengan Trait
         // Gambar 1
         if ($request->hasFile('gambar1')) {
-            if ($gambar1 && Storage::disk('public')->exists('konten/' . $gambar1)) {
-                Storage::disk('public')->delete('konten/' . $gambar1);
-            }
-            $gambar1 = basename($request->file('gambar1')->store('konten', 'public'));
+            $this->hapusGambarLama($konten->gambar1);
+            $pathGambar1Baru = $this->prosesDanSimpanGambar($request->file('gambar1'), 'konten', 'konten');
+             if (!$pathGambar1Baru) return redirect()->back()->withErrors(['gambar1' => 'Gagal memproses gambar 1.'])->withInput();
+            $kontenData['gambar1'] = $pathGambar1Baru;
         }
 
         // Gambar 2
         if ($request->hasFile('gambar2')) {
-            if ($gambar2 && Storage::disk('public')->exists('konten/' . $gambar2)) {
-                Storage::disk('public')->delete('konten/' . $gambar2);
-            }
-            $gambar2 = basename($request->file('gambar2')->store('konten', 'public'));
+            $this->hapusGambarLama($konten->gambar2);
+            $pathGambar2Baru = $this->prosesDanSimpanGambar($request->file('gambar2'), 'konten', 'konten');
+            if (!$pathGambar2Baru) return redirect()->back()->withErrors(['gambar2' => 'Gagal memproses gambar 2.'])->withInput();
+            $kontenData['gambar2'] = $pathGambar2Baru;
+        } elseif ($request->has('hapus_gambar2') && $request->hapus_gambar2 == 1) {
+            $this->hapusGambarLama($konten->gambar2);
+            $kontenData['gambar2'] = null;
         }
 
         // Gambar 3
         if ($request->hasFile('gambar3')) {
-            if ($gambar3 && Storage::disk('public')->exists('konten/' . $gambar3)) {
-                Storage::disk('public')->delete('konten/' . $gambar3);
-            }
-            $gambar3 = basename($request->file('gambar3')->store('konten', 'public'));
+            $this->hapusGambarLama($konten->gambar3);
+             $pathGambar3Baru = $this->prosesDanSimpanGambar($request->file('gambar3'), 'konten', 'konten');
+             if (!$pathGambar3Baru) return redirect()->back()->withErrors(['gambar3' => 'Gagal memproses gambar 3.'])->withInput();
+            $kontenData['gambar3'] = $pathGambar3Baru;
+        } elseif ($request->has('hapus_gambar3') && $request->hapus_gambar3 == 1) {
+            $this->hapusGambarLama($konten->gambar3);
+            $kontenData['gambar3'] = null;
         }
 
-        if ($request->has('hapus_gambar2') && $request->hapus_gambar2 == 1) {
-        if ($konten->gambar2 && Storage::disk('public')->exists('konten/'.$konten->gambar2)) {
-            Storage::disk('public')->delete('konten/'.$konten->gambar2);
-        }
-        $konten->gambar2 = null;
-        }
-
-        if ($request->has('hapus_gambar3') && $request->hapus_gambar3 == 1) {
-            if ($konten->gambar3 && Storage::disk('public')->exists('konten/'.$konten->gambar3)) {
-                Storage::disk('public')->delete('konten/'.$konten->gambar3);
-            }
-            $konten->gambar3 = null;
-        }
-
-        // Update konten
-        $konten->update([
-            'id_user'            => $idUser,
-            'id_kategori_konten' => $kategori->id_kategori_konten,
-            'isi_konten1'       => $request->isi_konten1,
-            'gambar1'            => $gambar1,
-            'isi_konten2'       => $request->isi_konten2,
-            'gambar2'            => $gambar2,
-            'isi_konten3'       => $request->isi_konten3,
-            'gambar3'            => $gambar3,
-        ]);
+        $konten->update($kontenData);
 
         return redirect()->route('admin.layanan.index')->with('success', 'Konten Layanan Berhasil Diperbarui!');
     }
@@ -231,43 +240,31 @@ class KontenLayananController extends Controller
      */
     public function destroy($id): RedirectResponse
     {
-        $kontenLayanan = Konten::findOrFail($id);
+        $kontenLayanan = Konten::with('kategoriKonten')->findOrFail($id); // Eager load kategori
 
-        // Paths for konten files
-        $filePath2 = 'konten/' . $kontenLayanan->gambar1;
-        $filePath3 = 'konten/' . $kontenLayanan->gambar2;
-        $filePath4 = 'konten/' . $kontenLayanan->gambar3;
+        // 9. Gunakan Trait untuk Hapus Gambar Konten
+        $this->hapusGambarLama($kontenLayanan->gambar1);
+        $this->hapusGambarLama($kontenLayanan->gambar2);
+        $this->hapusGambarLama($kontenLayanan->gambar3);
 
-        // Delete konten images if exist
-        if ($kontenLayanan->gambar1 && Storage::disk('public')->exists($filePath2)) {
-            Storage::disk('public')->delete($filePath2);
-        }
-        if ($kontenLayanan->gambar2 && Storage::disk('public')->exists($filePath3)) {
-            Storage::disk('public')->delete($filePath3);
-        }
-        if ($kontenLayanan->gambar3 && Storage::disk('public')->exists($filePath4)) {
-            Storage::disk('public')->delete($filePath4);
-        }
-
-        // Handle related kategori_konten deletion
-        $kategori = KategoriKonten::find($kontenLayanan->id_kategori_konten);
+        // Handle related kategori_konten deletion (termasuk icon)
+        $kategori = $kontenLayanan->kategoriKonten;
         if ($kategori) {
-            // delete kategori icon if present
-            if ($kategori->icon_konten && Storage::disk('public')->exists('icon/' . $kategori->icon_konten)) {
-                Storage::disk('public')->delete('icon/' . $kategori->icon_konten);
-            }
+            // Cek apakah ada Konten lain yang masih menggunakan Kategori ini
+            $otherKontenExists = Konten::where('id_kategori_konten', $kategori->id_kategori_konten)
+                                        ->where('id_konten', '!=', $id) // Exclude current konten
+                                        ->exists();
 
-            // Only delete kategori if no other konten reference it (prevent accidental removal)
-            $otherKontenCount = Konten::where('id_kategori_konten', $kategori->id_kategori_konten)
-                ->where('id_kategori_konten', '!=', $kontenLayanan->id_kategori_konten)
-                ->count();
-
-            if ($otherKontenCount === 0) {
+            if (!$otherKontenExists) {
+                // Jika tidak ada Konten lain, hapus Kategori beserta Icon-nya
+                $this->hapusGambarLama($kategori->icon_konten); // Hapus icon via Trait
                 $kategori->delete();
             }
+            // Jika masih ada Konten lain, Kategori (dan iconnya) tidak dihapus
         }
 
-        // Finally delete the konten record
+        // Hapus record Konten itu sendiri
+        // PENTING: Lakukan ini SETELAH pengecekan Kategori agar relasi masih ada
         $kontenLayanan->delete();
 
         return redirect()->route('admin.layanan.index')->with('success', 'Konten Layanan Berhasil Dihapus!');

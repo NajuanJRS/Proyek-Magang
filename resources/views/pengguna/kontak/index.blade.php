@@ -15,7 +15,7 @@
   {{-- ====== HERO (dinamis dari database) ====== --}}
   @if($header)
     <section class="ds-hero ds-hero-profil">
-        <img src="{{ asset('storage/header/' . $header->gambar) }}" alt="{{ $header->headline }}" class="ds-hero-bg" loading="lazy">
+        <img src="{{ asset('storage/' . $header->gambar) }}" alt="{{ $header->headline }}" class="ds-hero-bg" loading="lazy">
         <div class="ds-hero-overlay"></div>
         <div class="container ds-hero-inner text-center text-white">
         <h1 class="ds-hero-title">{!! $header->headline !!}</h1>
@@ -125,7 +125,7 @@
             <h4 class="modal-title fw-bold" id="feedbackModalLabel">Berikan Umpan Balik Anda</h4>
             <p class="text-muted">Kami sangat menghargai setiap umpan balik yang Anda berikan untuk membantu kami berkembang.</p>
             </div>
-            
+
             {{-- PERUBAHAN 1: Menampilkan notifikasi sukses atau gagal --}}
             @if(session('success'))
                 <div class="alert alert-success">

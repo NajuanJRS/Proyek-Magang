@@ -36,7 +36,7 @@
                                             @if ($headerPpid->gambar)
                                                 <div class="mt-2">
                                                     <img id="oldPreview"
-                                                        src="{{ asset('storage/header/' . $headerPpid->gambar) }}"
+                                                        src="{{ asset('storage/' . $headerPpid->gambar) }}"
                                                         alt="Gambar Heading" width="120"
                                                         style="border-radius: 8px; border:1px solid #ddd; padding:4px;">
                                                 </div>

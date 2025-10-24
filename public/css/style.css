@@ -549,6 +549,32 @@ body {
     vertical-align: middle;
 }
 
+/* Tombol Kembali - abu-abu*/
+.btn-back {
+    border-color: #0d6efd;
+    border-radius: 8px;
+    padding: 6px 18px;
+    font-size: 0.98rem;
+    font-weight: 500;
+    /* gunakan variabel CSS agar mudah mengubah warna teks tombol */
+    color: #0d6efd;
+    transition: box-shadow 0.2s, background 0.2s;
+    box-shadow: 0 2px 8px rgba(231, 76, 60, 0.08);
+}
+.btn-back:hover, .btn-back:focus {
+    background: #56a3f6;
+    color: #fff !important;
+    box-shadow: 0 4px 12px rgba(231, 76, 60, 0.18);
+}
+
+/* Ikon di tombol */
+.btn-info i,
+.btn-back i {
+    font-size: 1.1rem;
+    margin-right: 4px;
+    vertical-align: middle;
+}
+
 /* Tombol Warning (Kuning/Oranye) */
 .btn-warning {
     background: #f39c12; /* amber/orange */
