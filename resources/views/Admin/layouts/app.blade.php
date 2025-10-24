@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dinsos Prov Kalsel</title>
+    <title>@yield('title', 'Dinsos Prov Kalsel')</title>
     <!-- Tambahkan script TinyMCE -->
     <script src="https://cdn.tiny.cloud/1/gn30cjhxbd9tmt6en4rk9379il5jrfkmkmajtm1qx0kamzvo/tinymce/6/tinymce.min.js"
         referrerpolicy="origin"></script>
@@ -19,20 +19,17 @@
     <nav class="navbar navbar-expand-lg navbar-custom fixed-top">
         <div class="container-fluid d-flex align-items-center">
             <a class="navbar-brand d-flex align-items-center">
-                <!-- Logo besar -->
                 <img src="{{ asset('img/Logo dinsos.png') }}" alt="Logo Utama" class="logo-full" id="logoFull">
-                <!-- Logo mini -->
                 <img src="{{ asset('img/Logo mini.png') }}" alt="Logo Mini" class="d-none" id="logoMini">
 
-                <!-- Tombol hamburger (desktop: minimize, mobile: buka sidebar overlay) -->
                 <button id="sidebarToggle" class="btn btn-link text-white d-none d-lg-inline-flex" type="button"
                     aria-label="Toggle sidebar">
                     <i class="bi bi-list"></i>
                 </button>
 
                 <!-- Tombol khusus mobile untuk membuka sidebar sebagai overlay -->
-                <button id="mobileSidebarToggle" class="btn btn-link text-white ms-1 d-inline-flex d-lg-none"
-                    type="button" aria-label="Open menu">
+                <button id="mobileSidebarToggle" class="btn btn-link text-white me-2 d-inline-flex d-lg-none"
+                    type="button">
                     <i class="bi bi-list"></i>
                 </button>
 
