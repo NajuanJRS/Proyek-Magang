@@ -87,6 +87,7 @@ body {
 .sidebar .admin-profile p {
     font-size: 0.875rem;
     color: #6c757d;
+    margin-top: 3px;
 }
 
 .sidebar-menu {
@@ -188,23 +189,24 @@ body {
 
 /* NAVBAR */
 .navbar {
-  height: 65px;
-  padding-left: 1rem;
-  background: #4A90E2; /* biru */
-  color: #fff;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
-  z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    height: 65px;
+    padding: 0 15px;
 }
 
-.navbar .navbar-brand img {
-  height: 40px;
+.navbar-brand img {
+    height: 45px;
+    width: auto;
+    vertical-align: middle;
 }
 
 .navbar .navbar-brand {
   font-weight: bold;
   font-size: 1.2rem;
   color: #fff;
-  margin-left: 10px;
+  margin-left: 5px;
 }
 
 .navbar .navbar-toggler {
@@ -285,34 +287,25 @@ body {
         font-weight: bold;
     }
 
-    /* Main content */
+
     .content {
         margin-left: 240px;
         padding: 2rem;
-        margin-top: 56px; /* navbar height */
+        margin-top: 56px;
         background: #f5f5f5;
         min-height: 100vh;
     }
 
-    /* Pastikan submenu turun ke bawah */
         .sidebar .collapse ul {
             display: block !important;
-            /* pastikan vertikal */
             flex-direction: column !important;
         }
 
-
-
-        /* Pastikan submenu/dropdown tidak terpengaruh oleh padding-bottom pada .nav */
         .sidebar .collapse,
         .sidebar .collapse ul {
             padding-bottom: 0;
             margin-bottom: 0;
         }
-
-        /* Cadangan ruang di bagian bawah sidebar agar scroll mencakup semua menu
-           tanpa memengaruhi posisi submenu yang meng-expand:
-           gunakan pseudo-elemen agar tidak memengaruhi layout/animasi saat submenu buka */
         .sidebar {
             box-sizing: border-box;
         }
@@ -635,6 +628,7 @@ body {
 }
 .custom-table-container {
     overflow-x: auto;
+    white-space: nowrap;
     -webkit-overflow-scrolling: touch;
 }
 .custom-table-container table {
@@ -809,14 +803,28 @@ body.sidebar-is-minimized .navbar-main-content {
     margin-left: 0;
 }
 
+
 #sidebarToggle {
-    font-size: 2rem;        /* Membesarkan ikon */
-    padding: 0 15px 0 10px;    /* default (non-minimized) */
-    width: auto;
-    height: auto;
     display: flex;
-    align-items: start;
+    align-items: center;
     justify-content: center;
+    font-size: 1.6rem;
+    color: #fff;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 0 15px;
+    margin-left: 2px;
+}
+
+body.sidebar-is-minimized #sidebarToggle {
+    margin-left: 25px;
+}
+
+/* Ikon hamburger */
+#sidebarToggle i {
+    font-size: 1.8rem;
+    line-height: 1;
 }
 
 /* Ketika sidebar diminimize / collapsed, gunakan padding khusus */
@@ -844,27 +852,18 @@ body.nav-collapsed #sidebarToggle,
 
 .brand-text {
     font-size: 1.1rem;
-    font-weight: 500;
+    font-weight: 600;
+    color: #fff;
+    margin-left: 5px;
     white-space: nowrap;
 }
-
-
-.navbar.nav-collapsed .brand-text {
-    transform: translateX(25px);
-}
-
-.navbar.nav-collapsed #sidebarToggle {
-    transform: translateX(25px); /* hamburger geser ke kiri */
-}
-
 
 .logo-full {
     height: 40px;
     transition: opacity 0.2s;
 }
 body.sidebar-is-minimized .navbar-brand {
-    transform: translateX(-0px); /* Geser logo, tombol, dan teks sejauh 15px ke kanan */
-    transition: transform 0.3s ease;
+    transform: translateX(0);
 }
 /* Kalau sidebar minimize */
 body.nav-collapsed .logo-full {
@@ -878,52 +877,131 @@ body.nav-collapsed .brand-text {
     opacity: 0.7;
 }
 
-/* Mobile / responsive sidebar improvements */
 @media (max-width: 991px) {
-  /* sidebar hidden by default on mobile */
-  .sidebar {
-    left: -100%;
-    width: 300px;
-    position: fixed;
-    top: 56px; /* height navbar */
-    bottom: 0;
-    z-index: 1050;
-    transition: left 0.28s ease;
-    background: #fff;
-    box-shadow: 0 6px 20px rgba(0,0,0,0.12);
+  /* Pastikan body tidak bergeser */
+  html, body {
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+    background-color: #f8f9fa;
   }
+
+  /* Navbar selalu menempel di atas */
+  .navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 56px;
+    z-index: 1100;
+    background-color: #2e7ed9; /* sesuaikan warna kamu */
+    display: flex;
+    align-items: center;
+    padding: 0 10px;
+  }
+
+    /* Card & tabel agar rapi */
+  .card, .table-responsive {
+    width: 100%;
+    margin: 0 auto 1.2rem auto;
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+    overflow-x: auto;
+  }
+
+  /* Geser isi konten ke bawah navbar */
+  .main-panel,
+  .page-body-wrapper,
+  .content {
+    margin-top: 60px !important; /* cukup sekali */
+    padding: 1rem 1.2rem !important;
+    width: 95%;
+    max-width: 750px;
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  /* Sidebar tetap overlay */
+  .sidebar {
+    position: fixed;
+    left: -100%;
+    top: 56px;
+    bottom: 0;
+    width: 270px;
+    background: #fff;
+    z-index: 1050;
+    box-shadow: 2px 0 8px rgba(0, 0, 0, 0.1);
+    transition: left 0.3s ease;
+  }
+
   .sidebar.show {
     left: 0;
   }
-  /* content should not have left margin on mobile */
-  .content {
-    margin-left: 0 !important;
-    padding: 1rem;
-  }
-  /* smaller paddings for sidebar items */
-  .sidebar .nav-link {
-    padding: 0.65rem 1rem;
-  }
-  /* backdrop to dim page when sidebar open */
+
+  /* Backdrop */
   .sidebar-backdrop {
     position: fixed;
     inset: 0;
-    background: rgba(0,0,0,0.45);
+    background: rgba(0, 0, 0, 0.4);
     z-index: 1040;
     display: none;
-    transition: opacity 0.22s ease;
   }
+
   .sidebar-backdrop.show {
     display: block;
-    opacity: 1;
   }
-  /* ensure brand text not overflow */
-  .brand-text {
+
+  /* Table dan Card agar nyaman */
+  .card,
+  .table-responsive {
+    width: 100%;
+    margin: 0 auto 1rem auto;
+    border-radius: 10px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+    overflow-x: auto;
+  }
+
+  .table th,
+  .table td {
+    font-size: 0.9rem;
+    padding: 0.6rem;
+  }
+
+  /* Brand text & tombol di navbar */
+  .navbar .brand-text {
     font-size: 1rem;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
+    font-weight: 500;
+    color: #fff;
+    margin-left: 8px;
   }
+
+  #mobileSidebarToggle {
+    color: #fff;
+    font-size: 1.3rem;
+    margin-right: 8px;
+  }
+
+    /* Form input agar nyaman diketik */
+  input.form-control,
+  select.form-control,
+  textarea.form-control {
+    font-size: 0.95rem;
+    padding: 0.55rem 0.8rem;
+  }
+
+  .sidebar {
+    width: 270px;
+  }
+
+    /* Brand text agar tetap terlihat proporsional */
+  .brand-text {
+    font-size: 0.95rem;
+    font-weight: 500;
+  }
+
 }
 
 /* helper to prevent body scroll when sidebar overlay open */
@@ -1096,3 +1174,174 @@ body.no-scroll {
 @media (max-width: 991px) {
     .sidebar-mini-overlay { display: none !important; }
 }
+
+
+body:not(.sidebar-is-minimized) .navbar .brand-text{
+    transform: translateX(-5px); /* atur sejajar dengan hamburger */
+    margin-left: 20px !important;
+}
+
+.navbar .navbar-brand img {
+    margin-right: 10px !important;
+}
+
+/* Saat sidebar minimized: kembalikan ke posisi normal */
+body.sidebar-is-minimized .navbar .brand-text {
+    transform: translateX(0);
+}
+
+body:not(.sidebar-is-minimized) #sidebarToggle {
+    margin-left: -20px !important;
+    animation: slideInLeft 10s ease;
+}
+
+body.sidebar-is-minimized #sidebarToggle {
+    margin-left: 40px !important;
+    animation: slideInRight 10s ease;
+}
+
+body:not(.sidebar-is-minimized) .navbar .navbar-brand img {
+    margin-left: 4px !important;
+    transition: margin-left 0.3s ease;
+}
+
+body.sidebar-is-minimized .navbar .navbar-brand img {
+    margin-left: 4px !important;
+}
+
+.isi-konten {
+    min-width:450px;
+    max-width:500px;
+    white-space: normal;
+    text-align: justify;
+    text-justify: inter-word;
+    hyphens: auto;
+    -webkit-hyphens: auto;
+    -ms-hyphens: auto;
+    overflow-wrap: break-word;
+    word-break: break-word;
+    width: 1%;
+}
+
+.preview-text {
+    display: block;
+    overflow: hidden;
+    max-height: 6.5em;
+    line-height: 1.4em;
+}
+
+
+.kolom-judul {
+    font-size: 0.85rem;
+    line-height: 1.3;
+    max-width: 180px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: normal;
+    text-align: left;
+    word-break: break-word;
+}
+
+th.kolom-judul {
+    font-size: 0.9rem;
+    white-space: nowrap;
+}
+
+th,
+td.text-center {
+    white-space: nowrap;
+}
+
+
+.table td.isi-konten {
+    vertical-align: top;
+}
+
+table.table {
+    table-layout: auto;
+    width: 100%;
+}
+
+#main-content {
+    transition: opacity 0.3s ease;
+}
+
+/* ====== FIX NAVBAR MOBILE ALIGNMENT ====== */
+@media (max-width: 768px) {
+
+  .navbar {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start; /* agar isi mulai dari kiri */
+    padding: 0 10px;
+    height: 56px;
+  }
+
+  /* Tombol hamburger tetap di kiri */
+  #sidebarToggle {
+    margin-right: 10px;
+    margin-left: 0 !important;
+    font-size: 1.5rem;
+    color: #fff;
+  }
+
+  /* Logo & teks berdampingan rapi */
+  .navbar-brand {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  .navbar-brand img {
+    display: block !important; /* pastikan logo tampil */
+    height: 34px;
+    width: auto;
+  }
+
+  .navbar .brand-text {
+    display: inline-block;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #fff;
+    white-space: nowrap;
+  }
+
+  /* Hilangkan efek translateX yang mendorong konten */
+  .navbar:not(.nav-collapsed) #sidebarToggle {
+    transform: none !important;
+  }
+
+  /* Pastikan logo mini/full tidak hilang */
+  .navbar .navbar-brand .logo-mini,
+  .navbar .navbar-brand .logo-full {
+    display: inline-block !important;
+    max-height: 34px;
+  }
+
+  /* Sidebar responsive */
+  .sidebar {
+    top: 56px;
+    height: calc(100vh - 56px);
+  }
+}
+
+@media (max-width: 768px) {
+  #mobileSidebarToggle {
+    position: relative;
+    z-index: 1101; /* di atas navbar & backdrop */
+    cursor: pointer;
+  }
+
+  .navbar {
+    z-index: 1100;
+  }
+
+  .content {
+    position: relative;
+    z-index: 1;
+  }
+
+}
+

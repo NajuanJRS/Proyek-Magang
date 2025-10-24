@@ -33,7 +33,7 @@ use App\Http\Controllers\pengguna\SearchController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\pengguna\PpidController;
 use App\Http\Controllers\pengguna\KontakController as VioletController;
-
+use Illuminate\Support\Facades\Auth;
 
 Route::get('/', [BerandaController::class, 'index'])->name('beranda');
 
@@ -68,6 +68,15 @@ Route::get('/download/file/{filename}', [DownloadController::class, 'downloadFil
 // Route menampilkan halaman Profil PPID
 Route::get('/ppid/{slug}', [PpidController::class, 'show'])->name('ppid.show');
 
+Route::fallback(function () {
+    if (Auth::check()) {
+        $user = Auth::user();
+        if ($user->role === 'admin') {
+            return redirect()->route('admin.dashboard');
+        }
+    }
+    return redirect()->route('login');
+});
 
 Route::middleware('guest')->prefix('/')->group(function () {
     Route::get('login', [LoginController::class, 'index'])->name('login');
@@ -78,7 +87,7 @@ Route::post('logout', [LoginController::class, 'destroy'])
     ->middleware('auth')
     ->name('logout');
 
-Route::prefix('admin')->name('admin.')->group(function () {
+Route::middleware(['auth', 'Admin'])->prefix('admin')->name('admin.')->group(function () {
     Route::get('dashboard', function () {
         return view('Admin.adminDashboard');
     })->name('dashboard');
@@ -111,7 +120,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
     Route::put('kartu-pejabat/{id}', [PejabatController::class, 'updateHeader'])
     ->name('headerKartu.update');
 
-    Route::resource('profile', KontenProfileController::class);
+    Route::resource('profil', KontenProfileController::class)->names('profile');
 
     Route::resource('galeri', GaleriController::class);
 
@@ -134,7 +143,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
 
     Route::resource('kotak-masuk', KotakMasukController::class)->names('kotakMasuk');
 
-    Route::resource('admin-update', AdminUpdateController::class)->names('adminUpdate');
+    Route::resource('kelola-akun', AdminUpdateController::class)->names('adminUpdate');
 
     Route::resource('faq', FaqController::class);
 });

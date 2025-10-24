@@ -12,6 +12,20 @@ function togglePassword() {
     }
 }
 
+function toggleConfirmPassword() {
+    const input = document.getElementById('password_confirmation');
+    const icon = document.getElementById('toggleIconConfirm');
+    if (input.type === 'password') {
+        input.type = 'text';
+        icon.classList.remove('bi-eye-slash');
+        icon.classList.add('bi-eye');
+    } else {
+        input.type = 'password';
+        icon.classList.remove('bi-eye');
+        icon.classList.add('bi-eye-slash');
+    }
+}
+
 // Fungsi Hapus Data dengan SweetAlert2
 window.deleteData = function (id) {
     if (typeof Swal === 'undefined') {
@@ -93,7 +107,7 @@ document.addEventListener('click', function (e) {
     if (seeMoreBtn) {
         e.preventDefault();
         const id = seeMoreBtn.getAttribute('data-id');
-        const title = seeMoreBtn.getAttribute('data-judul') || 'Detail Data';
+        const title = seeMoreBtn.getAttribute('data-judul') || 'Detail Konten';
         const contentEl = document.getElementById('full-content-' + id);
         const htmlContent = contentEl ? contentEl.innerHTML : '';
         if (typeof Swal !== 'undefined') {
@@ -535,6 +549,162 @@ document.addEventListener('DOMContentLoaded', function () {
       }
     }, true);
   });
+
+  document.querySelectorAll('.sidebar [data-bs-toggle="collapse"]').forEach(trigger => {
+    const targetMenu = document.querySelector(trigger.getAttribute('href'));
+    if (!targetMenu) return;
+    const arrow = trigger.querySelector('.arrow-icon');
+
+    // Pastikan semua panah awal mengarah ke bawah
+    if (arrow) {
+        arrow.classList.remove('bi-chevron-up');
+        arrow.classList.add('bi-chevron-down');
+    }
+
+    // Saat menu mulai dibuka → arahkan ke atas
+    targetMenu.addEventListener('show.bs.collapse', () => {
+        if (arrow) {
+            arrow.classList.remove('bi-chevron-down');
+            arrow.classList.add('bi-chevron-up');
+        }
+    });
+
+    // Saat menu mulai ditutup → arahkan ke bawah
+    targetMenu.addEventListener('hide.bs.collapse', () => {
+        if (arrow) {
+            arrow.classList.remove('bi-chevron-up');
+            arrow.classList.add('bi-chevron-down');
+        }
+    });
+});
 })();
 
+document.addEventListener('DOMContentLoaded', function () {
+  const sidebar = document.querySelector('.sidebar');
+  const toggleDesktop = document.getElementById('sidebarToggle');
+  const toggleMobile = document.getElementById('mobileSidebarToggle');
 
+  // pastikan backdrop cuma satu
+  let backdrop = document.querySelector('.sidebar-backdrop');
+  if (!backdrop) {
+    backdrop = document.createElement('div');
+    backdrop.classList.add('sidebar-backdrop');
+    document.body.appendChild(backdrop);
+  }
+
+  const toggleSidebar = () => {
+    const isOpen = sidebar.classList.toggle('show');
+    backdrop.classList.toggle('show', isOpen);
+    document.body.classList.toggle('no-scroll', isOpen);
+  };
+
+  // event listener untuk dua tombol
+  [toggleDesktop, toggleMobile].forEach(btn => {
+    if (btn) {
+      btn.addEventListener('click', e => {
+        e.preventDefault();
+        e.stopPropagation();
+        toggleSidebar();
+      });
+    }
+  });
+
+  // backdrop click untuk menutup
+  backdrop.addEventListener('click', () => {
+    sidebar.classList.remove('show');
+    backdrop.classList.remove('show');
+    document.body.classList.remove('no-scroll');
+  });
+});
+
+document.addEventListener("DOMContentLoaded", function () {
+  const sidebar = document.querySelector(".sidebar");
+  const toggle = document.getElementById("sidebarToggle");
+
+  // Tambahkan backdrop
+  const backdrop = document.createElement("div");
+  backdrop.classList.add("sidebar-backdrop");
+  document.body.appendChild(backdrop);
+
+  // Toggle sidebar
+  if (toggle && sidebar) {
+    toggle.addEventListener("click", () => {
+      const isOpen = sidebar.classList.toggle("show");
+      backdrop.classList.toggle("show", isOpen);
+      document.body.classList.toggle("no-scroll", isOpen);
+    });
+  }
+
+  // Klik backdrop menutup sidebar
+  backdrop.addEventListener("click", () => {
+    sidebar.classList.remove("show");
+    backdrop.classList.remove("show");
+    document.body.classList.remove("no-scroll");
+  });
+});
+
+
+document.addEventListener('DOMContentLoaded', function () {
+  const brandText = document.querySelector('.brand-text');
+  const fullText = 'Dinas Sosial Provinsi Kalimantan Selatan';
+  const shortText = 'Dinsos Kalsel';
+
+  function updateBrandText() {
+    if (window.innerWidth <= 768) {
+      if (brandText) brandText.textContent = shortText;
+    } else {
+      if (brandText) brandText.textContent = fullText;
+    }
+  }
+
+  updateBrandText(); // jalankan saat load awal
+  window.addEventListener('resize', updateBrandText); // jalankan saat resize
+});
+
+// === FIX: Hapus duplikat backdrop & reset sidebar saat reload ===
+document.addEventListener('DOMContentLoaded', function () {
+  // Bersihkan backdrop ganda
+  document.querySelectorAll('.sidebar-backdrop').forEach((el, i) => {
+    if (i > 0) el.remove();
+  });
+
+  const sidebar = document.querySelector('.sidebar');
+  const backdrop = document.querySelector('.sidebar-backdrop');
+  if (sidebar && backdrop) {
+    sidebar.classList.remove('show');
+    backdrop.classList.remove('show');
+    document.body.classList.remove('no-scroll');
+  }
+
+  // Tutup sidebar otomatis saat klik menu di dalamnya
+// === FIX: Hapus duplikat backdrop & reset sidebar saat reload ===
+document.addEventListener('DOMContentLoaded', function () {
+  // Bersihkan backdrop ganda
+  document.querySelectorAll('.sidebar-backdrop').forEach((el, i) => {
+    if (i > 0) el.remove();
+  });
+
+  const sidebar = document.querySelector('.sidebar');
+  const backdrop = document.querySelector('.sidebar-backdrop');
+  if (sidebar && backdrop) {
+    sidebar.classList.remove('show');
+    backdrop.classList.remove('show');
+    document.body.classList.remove('no-scroll');
+  }
+
+  // Tutup sidebar hanya jika klik menu non-dropdown (tanpa data-bs-toggle="collapse")
+  document.querySelectorAll('.sidebar a').forEach(link => {
+    link.addEventListener('click', (e) => {
+      const isDropdownTrigger = link.hasAttribute('data-bs-toggle') && link.getAttribute('data-bs-toggle') === 'collapse';
+      if (!isDropdownTrigger) {
+        sidebar?.classList.remove('show');
+        backdrop?.classList.remove('show');
+        document.body.classList.remove('no-scroll');
+      } else {
+        // jika dropdown trigger diklik, cegah sidebar menutup
+        e.stopPropagation();
+      }
+    });
+  });
+});
+});
