@@ -61,7 +61,7 @@
                                                 {{-- Icon --}}
                                                 <td class="text-center">
                                                     @if (!empty($k->kategoriKonten->icon_konten))
-                                                        <img src="{{ asset('storage/icon/' . $k->kategoriKonten->icon_konten) }}"
+                                                        <img src="{{ asset('storage/' . $k->kategoriKonten->icon_konten) }}"
                                                             alt="icon" width="50" height="50"
                                                             style="object-fit:cover; border-radius:8px; border:1px solid #ddd;">
                                                     @else
@@ -104,7 +104,7 @@
                                                 {{-- ===== Gambar 1 ===== --}}
                                                 <td class="text-center">
                                                     @if ($k->gambar1)
-                                                        <img src="{{ asset('storage/konten/' . $k->gambar1) }}"
+                                                        <img src="{{ asset('storage/' . $k->gambar1) }}"
                                                             alt="gambar1" width="100"
                                                             style="border-radius:6px; border:1px solid #ddd;">
                                                     @else
@@ -139,7 +139,7 @@
                                                 {{-- ===== Gambar 2 ===== --}}
                                                 <td class="text-center">
                                                     @if ($k->gambar2)
-                                                        <img src="{{ asset('storage/konten/' . $k->gambar2) }}"
+                                                        <img src="{{ asset('storage/' . $k->gambar2) }}"
                                                             alt="gambar2" width="100"
                                                             style="border-radius:6px; border:1px solid #ddd;">
                                                     @else
@@ -174,7 +174,7 @@
                                                 {{-- ===== Gambar 3 ===== --}}
                                                 <td class="text-center">
                                                     @if ($k->gambar3)
-                                                        <img src="{{ asset('storage/konten/' . $k->gambar3) }}"
+                                                        <img src="{{ asset('storage/' . $k->gambar3) }}"
                                                             alt="gambar3" width="100"
                                                             style="border-radius:6px; border:1px solid #ddd;">
                                                     @else

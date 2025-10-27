@@ -52,7 +52,7 @@
             <div class="ds-sidebar-list">
               @foreach($allPpidItems as $item)
                 <a href="{{ $item->url }}" class="ds-sidebar-item-layanan {{ $item->active ? 'active' : '' }}">
-                  <img src="{{ asset('storage/icon/' . $item->icon) }}" alt="{{ $item->judul }}">
+                  <img src="{{ asset('storage/' . $item->icon) }}" alt="{{ $item->judul }}">
                   <h6 class="ds-sidebar-item-title">{{ $item->judul }}</h6>
                 </a>
               @endforeach

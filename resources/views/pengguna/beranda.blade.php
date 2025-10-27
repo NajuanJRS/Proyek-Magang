@@ -12,7 +12,7 @@
     <div class="carousel-inner">
       @foreach ($heroSlides as $index => $slide)
         <div class="carousel-item {{ $index === 0 ? 'active' : '' }}">
-          <div class="ds-hero-slide" style="background-image:url('{{ asset('storage/header/' . $slide->gambar) }}');"></div>
+          <div class="ds-hero-slide" style="background-image:url('{{ asset('storage/' . $slide->gambar) }}');"></div>
           <div class="ds-hero-overlay"></div>
           <div class="container ds-hero-content">
             <div class="col-12 col-lg-7">
@@ -56,7 +56,7 @@
             <div class="col-12 col-md-6 col-lg-3 d-flex">
               <a href="{{ route('layanan.show', $item->slug) }}" class="card ds-layanan-card text-center w-100 text-decoration-none text-dark">
                 <div class="ds-layanan-icon-wrapper">
-                  <img src="{{ asset('storage/icon/' . $item->icon_konten) }}" alt="{{ $item->judul_konten }}">
+                  <img src="{{ asset('storage/' . $item->icon_konten) }}" alt="{{ $item->judul_konten }}">
                 </div>
                 <div class="card-body">
                   <h6 class="card-title fw-semibold">{{ $item->judul_konten }}</h6>
@@ -73,7 +73,7 @@
             <div class="col-6">
               <a href="{{ route('layanan.show', $item->slug) }}" class="card ds-layanan-card ds-card-compact text-center h-100 text-decoration-none text-dark">
                 <div class="ds-layanan-icon-wrapper">
-                  <img src="{{ asset('storage/icon/' . $item->icon_konten) }}" alt="{{ $item->judul_konten }}">
+                  <img src="{{ asset('storage/' . $item->icon_konten) }}" alt="{{ $item->judul_konten }}">
                 </div>
                 <div class="card-body p-3">
                   <h6 class="card-title fw-semibold mb-0 ds-title-compact">{{ $item->judul_konten }}</h6>
@@ -109,7 +109,7 @@
         {{-- DESKTOP --}}
         <div class="d-none d-md-block">
             <a href="{{ route('berita.show', $unggulan->slug) }}" class="ds-featured-news text-decoration-none text-dark mb-4">
-                <img src="{{ asset('storage/berita/' . $unggulan->gambar1) }}" alt="{{ $unggulan->judul }}" class="ds-featured-img">
+                <img src="{{ asset('storage/' . $unggulan->gambar1) }}" alt="{{ $unggulan->judul }}" class="ds-featured-img">
                 <div class="ds-featured-body">
                     <h2 class="ds-featured-title">{{ $unggulan->judul }}</h2>
                     <p class="ds-featured-summary">{{ Str::limit(strip_tags($unggulan->isi_berita1), 200) }}</p>
@@ -124,7 +124,7 @@
                 @foreach($berita->slice(1, 4) as $item)
                 <div class="col-md-4 col-lg-3">
                     <a href="{{ route('berita.show', $item->slug) }}" class="ds-news-card">
-                        <img src="{{ asset('storage/berita/' . $item->gambar1) }}" alt="{{ $item->judul }}">
+                        <img src="{{ asset('storage/' . $item->gambar1) }}" alt="{{ $item->judul }}">
                         <div class="ds-news-card-body">
                             <h6 class="ds-news-title">{{ $item->judul }}</h6>
                             <div class="mt-auto ds-meta small">
@@ -141,13 +141,13 @@
         {{-- MOBILE --}}
         <div class="d-md-none">
             <a class="ds-mfeat" href="{{ route('berita.show', $unggulan->slug) }}">
-              <img src="{{ asset('storage/berita/' . $unggulan->gambar1) }}" alt="{{ $unggulan->judul }}">
+              <img src="{{ asset('storage/' . $unggulan->gambar1) }}" alt="{{ $unggulan->judul }}">
               <h3 class="mt-2">{{ $unggulan->judul }}</h3>
             </a>
             <div class="ds-mnews-list mt-3">
                 @foreach($berita->slice(1) as $item)
                     <a href="{{ route('berita.show', $item->slug) }}" class="ds-mnews-item">
-                        <img src="{{ asset('storage/berita/' . $item->gambar1) }}" alt="{{ $item->judul }}">
+                        <img src="{{ asset('storage/' . $item->gambar1) }}" alt="{{ $item->judul }}">
                         <div class="ds-mnews-title">{{ $item->judul }}</div>
                     </a>
                 @endforeach
@@ -180,7 +180,7 @@
         </div>
 
         <h4 class="text-primary text-center mb-3">Misi</h4>
-        
+
         <div class="misi-wrapper">
           {{-- Menampilkan Misi dari database --}}
           {!! $visiMisi->isi_konten2 !!}
@@ -216,7 +216,7 @@
         <div class="ds-galeri-track" id="galeri-track">
           @foreach($galeri as $item)
             <div class="ds-galeri-card">
-              <img src="{{ asset('storage/galeri/' . $item->gambar) }}" alt="{{ $item->judul }}">
+              <img src="{{ asset('storage/' . $item->gambar) }}" alt="{{ $item->judul }}">
               <div class="ds-galeri-overlay">
                 <span class="ds-galeri-title">{{ $item->judul }}</span>
               </div>
@@ -254,10 +254,10 @@
                 <div class="ds-partner-item">
                 @if($m->link_mitra)
                     <a href="{{ $m->link_mitra }}" target="_blank" rel="noopener">
-                    <img src="{{ asset('storage/mitra/' . $m->gambar) }}" alt="{{ $m->nama_mitra }}">
+                    <img src="{{ asset('storage/' . $m->gambar) }}" alt="{{ $m->nama_mitra }}">
                     </a>
                 @else
-                    <img src="{{ asset('storage/mitra/' . $m->gambar) }}" alt="{{ $m->nama_mitra }}">
+                    <img src="{{ asset('storage/' . $m->gambar) }}" alt="{{ $m->nama_mitra }}">
                 @endif
                 </div>
             @endforeach
@@ -273,10 +273,10 @@
             <div class="ds-partner-item">
                 @if($m->link_mitra)
                 <a href="{{ $m->link_mitra }}" target="_blank" rel="noopener">
-                    <img src="{{ asset('storage/mitra/' . $m->gambar) }}" alt="{{ $m->nama_mitra }}">
+                    <img src="{{ asset('storage/' . $m->gambar) }}" alt="{{ $m->nama_mitra }}">
                 </a>
                 @else
-                <img src="{{ asset('storage/mitra/' . $m->gambar) }}" alt="{{ $m->nama_mitra }}">
+                <img src="{{ asset('storage/' . $m->gambar) }}" alt="{{ $m->nama_mitra }}">
                 @endif
             </div>
             @endforeach
@@ -285,10 +285,10 @@
             <div class="ds-partner-item">
                 @if($m->link_mitra)
                 <a href="{{ $m->link_mitra }}" target="_blank" rel="noopener">
-                    <img src="{{ asset('storage/mitra/' . $m->gambar) }}" alt="{{ $m->nama_mitra }}">
+                    <img src="{{ asset('storage/' . $m->gambar) }}" alt="{{ $m->nama_mitra }}">
                 </a>
                 @else
-                <img src="{{ asset('storage/mitra/' . $m->gambar) }}" alt="{{ $m->nama_mitra }}">
+                <img src="{{ asset('storage/' . $m->gambar) }}" alt="{{ $m->nama_mitra }}">
                 @endif
             </div>
             @endforeach

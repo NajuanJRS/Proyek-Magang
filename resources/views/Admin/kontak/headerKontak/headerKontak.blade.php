@@ -35,7 +35,7 @@
                                                     <tr>
                                                         <td class="text-center">{{ $no++ }}</td>
                                                         <td class="text-center">
-                                                            <img src="{{ asset('storage/header/' . $h->gambar) }}"
+                                                            <img src="{{ asset('storage/' . $h->gambar) }}"
                                                                 width="100">
                                                         </td>
                                                         <td class="text-center">

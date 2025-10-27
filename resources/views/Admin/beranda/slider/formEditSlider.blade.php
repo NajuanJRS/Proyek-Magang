@@ -36,7 +36,7 @@
                                             @if ($slider->gambar)
                                                 <div class="mt-2">
                                                     <img id="oldPreview"
-                                                        src="{{ asset('storage/header/' . $slider->gambar) }}"
+                                                        src="{{ asset('storage/' . $slider->gambar) }}"
                                                         alt="Gambar Slider" width="120"
                                                         style="border-radius: 8px; border:1px solid #ddd; padding:4px;">
                                                 </div>

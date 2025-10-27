@@ -4,13 +4,18 @@ namespace App\Http\Controllers\admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\admin\Galeri;
+use App\Traits\ManajemenGambarTrait; // 1. Panggil Trait
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Storage;
+// use Illuminate\Support\Facades\Storage; // Tidak perlu lagi jika hanya pakai Trait
 use Illuminate\View\View;
+use Illuminate\Http\RedirectResponse; // Tambahkan ini untuk return type hinting
 
 class GaleriController extends Controller
 {
+    // 2. Gunakan Trait
+    use ManajemenGambarTrait;
+
     /**
      * Display a listing of the resource.
      */
@@ -27,36 +32,51 @@ class GaleriController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create(Galeri $galeri): View
+    public function create(): View // Hapus parameter $galeri yang tidak perlu
     {
-        return view('Admin.profile.galeri.formgaleri', compact('galeri'));
+        // Variabel $galeri tidak diperlukan saat membuat baru
+        return view('Admin.profile.galeri.formgaleri');
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(Request $request): RedirectResponse // Tambah return type
     {
+        // 3. Sesuaikan validasi
         $request->validate([
-            'id_user' => 'nullable|exists:users,id_user',
-            'judul' => 'required|min:5',
-            'gambar'     => 'required|image|mimes:jpeg,png,jpg,svg,webp|max:2048',
-            'tanggal_upload' => 'nullable|date',
+            // 'id_user' => 'nullable|exists:users,id_user', // Tidak perlu divalidasi, diambil dari Auth
+            'judul' => 'required|string|min:5|max:255',
+            'gambar' => 'required|image|mimes:jpeg,png,jpg,svg,webp|max:5120', // Naikkan max size
+            // 'tanggal_upload' => 'nullable|date', // Tidak perlu, otomatis 'now()'
         ]);
 
-        // Praktik terbaik untuk upload file
-        $path = $request->file('gambar')->store('galeri', 'public');
-        $filename = basename($path);
+        // 4. Panggil fungsi Trait
+        $pathGambar = null;
+        if ($request->hasFile('gambar')) {
+            $pathGambar = $this->prosesDanSimpanGambar(
+                $request->file('gambar'),
+                'galeri', // Tipe gambar
+                'galeri'  // Folder tujuan
+            );
+        }
 
-        $idUser = Auth::check() && Auth::user()->role === 'Admin'
-        ? 1
-        : Auth::id();
+        // Handle jika prosesDanSimpanGambar gagal (misal karena error permission)
+        if (!$pathGambar && $request->hasFile('gambar')) {
+             return redirect()->back()->withErrors(['gambar' => 'Gagal memproses gambar.'])->withInput();
+        }
 
+
+        $idUser = Auth::check() && Auth::user()->role === 'admin' // Perbaiki role 'Admin' menjadi 'admin'
+            ? 1
+            : Auth::id();
+
+        // 5. Gunakan path dari Trait
         Galeri::create([
             'id_user'    => $idUser,
             'judul' => $request->judul,
-            'gambar'     => $filename,
-            'tanggal_upload' => $request->tanggal_upload ?? now(),
+            'gambar'     => $pathGambar, // Gunakan path hasil Trait
+            'tanggal_upload' => now(), // Otomatis isi tanggal sekarang
         ]);
 
         return redirect()->route('admin.galeri.index')->with('success', 'Galeri Berhasil Ditambahkan!');
@@ -67,49 +87,52 @@ class GaleriController extends Controller
      */
     public function show(Galeri $galeri)
     {
-        //
+        // Tidak digunakan di admin
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Galeri $galeri)
+    public function edit(Galeri $galeri): View // Tambah return type View
     {
-        $galeri = Galeri::findOrFail($galeri->id_galeri);
+        // FindOrFail tidak perlu jika menggunakan Route Model Binding
+        // $galeri = Galeri::findOrFail($galeri->id_galeri);
         return view('Admin.profile.galeri.formEditGaleri', compact('galeri'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Galeri $galeri)
+    public function update(Request $request, Galeri $galeri): RedirectResponse // Tambah return type
     {
+        // 6. Sesuaikan validasi update
         $request->validate([
-            'id_user' => 'nullable|exists:users,id_user',
-            'judul' => 'nullable|min:5',
-            'gambar' => 'nullable|image|mimes:jpeg,png,jpg,svg,webp|max:2048',
-            'tanggal_upload' => 'nullable|date',
+            // 'id_user' => 'nullable|exists:users,id_user',
+            'judul' => 'required|string|min:5|max:255', // Judul tetap required saat update
+            'gambar' => 'nullable|image|mimes:jpeg,png,jpg,svg,webp|max:5120', // Naikkan max size
+            // 'tanggal_upload' => 'nullable|date', // Tanggal upload biasanya tidak diubah
         ]);
 
-        $idUser = Auth::check() && Auth::user()->role === 'Admin'
-        ? 1
-        : Auth::id();
+        $idUser = Auth::check() && Auth::user()->role === 'admin' // Perbaiki role 'Admin' menjadi 'admin'
+            ? 1
+            : Auth::id();
 
         $data = [
             'id_user'    => $idUser,
             'judul' => $request->judul,
+            // tanggal_upload tidak diupdate
         ];
 
+        // 7. Gunakan Trait untuk proses update gambar
         if ($request->hasFile('gambar')) {
-            // Hapus gambar lama jika ada
-            $oldFilePath = 'galeri/' . $galeri->gambar;
-            if ($galeri->gambar && Storage::disk('public')->exists($oldFilePath)) {
-                Storage::disk('public')->delete($oldFilePath);
-            }
+            $this->hapusGambarLama($galeri->gambar); // Hapus gambar lama
+            $pathGambarBaru = $this->prosesDanSimpanGambar($request->file('gambar'), 'galeri', 'galeri');
 
-            // Upload gambar baru
-            $path = $request->file('gambar')->store('galeri', 'public');
-            $data['gambar'] = basename($path);
+            // Handle jika proses gagal
+             if (!$pathGambarBaru) {
+                return redirect()->back()->withErrors(['gambar' => 'Gagal memproses gambar baru.'])->withInput();
+            }
+            $data['gambar'] = $pathGambarBaru; // Gunakan path baru
         }
 
         $galeri->update($data);
@@ -120,13 +143,10 @@ class GaleriController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Galeri $galeri)
+    public function destroy(Galeri $galeri): RedirectResponse // Tambah return type
     {
-        $filePath = 'galeri/' . $galeri->gambar;
-
-        if ($galeri->gambar && Storage::disk('public')->exists($filePath)) {
-            Storage::disk('public')->delete($filePath);
-        }
+        // 8. Gunakan Trait untuk menghapus gambar
+        $this->hapusGambarLama($galeri->gambar);
 
         // Hapus data dari database
         $galeri->delete();

@@ -36,7 +36,7 @@
                                             @if ($mitra->gambar)
                                                 <div class="mt-2">
                                                     <img id="oldPreview"
-                                                        src="{{ asset('storage/mitra/' . $mitra->gambar) }}"
+                                                        src="{{ asset('storage/' . $mitra->gambar) }}"
                                                         alt="Gambar Mitra" width="120"
                                                         style="border-radius: 8px; border:1px solid #ddd; padding:4px;">
                                                 </div>

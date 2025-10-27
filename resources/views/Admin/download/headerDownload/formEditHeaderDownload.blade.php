@@ -30,13 +30,13 @@
                                         <label for="gambar" class="mb-2">Unggah Gambar (Opsional)</label>
                                         <div class="mb-4">
                                             <input type="file" id="gambar" name="gambar" accept="image/*"
-                                                onchange="previewEditImage(event)">
+                                                onchange="previewEditImage(event, 'newPreview', 'oldPreview')">
 
                                             {{-- Gambar Lama --}}
                                             @if ($headerDownload->gambar)
                                                 <div class="mt-2">
                                                     <img id="oldPreview"
-                                                        src="{{ asset('storage/header/' . $headerDownload->gambar) }}"
+                                                        src="{{ asset('storage/' . $headerDownload->gambar) }}"
                                                         alt="Gambar Heading" width="120"
                                                         style="border-radius: 8px; border:1px solid #ddd; padding:4px;">
                                                 </div>

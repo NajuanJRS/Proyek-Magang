@@ -61,7 +61,7 @@
 
                                             {{-- Gambar lama --}}
                                             @if ($pejabat->gambar)
-                                                <img id="oldPreview" src="{{ asset('storage/pejabat/' . $pejabat->gambar) }}"
+                                                <img id="oldPreview" src="{{ asset('storage/' . $pejabat->gambar) }}"
                                                     alt="Gambar Lama" style="max-width:200px; border-radius:8px; border:1px solid #ddd; padding:4px;">
                                             @endif
                                         </div>

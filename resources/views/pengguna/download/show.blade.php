@@ -61,7 +61,7 @@
             <div class="ds-sidebar-list">
             @foreach($allDownloads as $item)
                 <a href="{{ $item->url }}" class="ds-sidebar-item-layanan {{ $item->active ? 'active' : '' }}">
-                <img src="{{ asset('storage/icon/' . $item->icon) }}" alt="{{ $item->nama_kategori }}">
+                <img src="{{ asset('storage/' . $item->icon) }}" alt="{{ $item->nama_kategori }}">
                 <h6 class="ds-sidebar-item-title">{{ $item->nama_kategori }}</h6>
                 </a>
             @endforeach

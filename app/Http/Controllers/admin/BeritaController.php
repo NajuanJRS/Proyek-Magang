@@ -4,15 +4,18 @@ namespace App\Http\Controllers\admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\admin\Berita;
+use App\Traits\ManajemenGambarTrait; // 1. Panggil Trait
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 
 class BeritaController extends Controller
 {
+    // 2. "Tempelkan" Trait ke Controller ini
+    use ManajemenGambarTrait;
+
     /**
      * Display a listing of the resource.
      */
@@ -34,36 +37,6 @@ class BeritaController extends Controller
         return view('Admin.berita.kontenBerita.kontenBerita', compact('berita'));
     }
 
-    // Fungsi untuk membuat slug unik (telah disesuaikan)
-    private function getUniqueSlug(string $title, ?int $exceptId = null): string
-    {
-        $slug = Str::slug($title, '-');
-        $originalSlug = $slug;
-        $count = 1;
-
-        // Query dasar untuk memeriksa slug
-        $query = Berita::where('slug', $slug);
-
-        // Jika sedang mengedit, kecualikan ID berita saat ini dari pemeriksaan
-        if ($exceptId !== null) {
-            $query->where('id_berita', '!=', $exceptId);
-        }
-
-        // Loop jika slug sudah ada
-        while ($query->exists()) {
-            $count++;
-            $slug = $originalSlug . '-' . $count;
-            // Perbarui query untuk memeriksa slug baru
-            $query = Berita::where('slug', $slug);
-            if ($exceptId !== null) {
-                $query->where('id_berita', '!=', $exceptId);
-            }
-        }
-
-        return $slug;
-    }
-
-
     /**
      * Show the form for creating a new resource.
      */
@@ -77,55 +50,49 @@ class BeritaController extends Controller
      */
     public function store(Request $request): RedirectResponse
     {
+        // 3. Naikkan batas ukuran file di validasi
         $request->validate([
-            'judul' => 'required|min:5',
+            'judul' => 'required|string|max:255|min:5',
             'isi_berita1' => 'required|min:5',
-            'gambar1' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:500',
+            'gambar1' => 'required|image|mimes:jpeg,png,jpg,gif,svg,webp|max:5120', // 5MB
             'isi_berita2' => 'nullable|min:5',
-            'gambar2' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:500',
+            'gambar2' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg,webp|max:5120', // 5MB
             'isi_berita3' => 'nullable|min:5',
-            'gambar3' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:500',
-            'tgl_posting' => 'nullable|date',
-            'dibaca' => 'nullable',
+            'gambar3' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg,webp|max:5120', // 5MB
         ]);
 
         $slug = $this->getUniqueSlug($request->judul);
 
-        // Upload gambar1 (wajib)
-        $path1 = $request->file('gambar1')->store('berita', 'public');
-        $fileGambar1 = basename($path1);
+        // 4. Panggil fungsi dari Trait untuk memproses setiap gambar
+        $pathGambar1 = null;
+        $pathGambar2 = null;
+        $pathGambar3 = null;
 
-        // Upload gambar2 (opsional)
-        $fileGambar2 = null;
+        if ($request->hasFile('gambar1')) {
+            $pathGambar1 = $this->prosesDanSimpanGambar($request->file('gambar1'), 'berita', 'berita');
+        }
         if ($request->hasFile('gambar2')) {
-            $path2 = $request->file('gambar2')->store('berita', 'public');
-            $fileGambar2 = basename($path2);
+            $pathGambar2 = $this->prosesDanSimpanGambar($request->file('gambar2'), 'berita', 'berita');
         }
-
-        // Upload gambar3 (opsional)
-        $fileGambar3 = null;
         if ($request->hasFile('gambar3')) {
-            $path3 = $request->file('gambar3')->store('berita', 'public');
-            $fileGambar3 = basename($path3);
+            $pathGambar3 = $this->prosesDanSimpanGambar($request->file('gambar3'), 'berita', 'berita');
         }
 
-            $idUser = Auth::check() && Auth::user()->role === 'admin'
-            ? 1
-            : Auth::id();
+        $idUser = Auth::check() && Auth::user()->role === 'admin' ? 1 : Auth::id();
 
-            Berita::create([
-                'id_user'    => $idUser,
-                'judul'      => $request->judul,
-                'slug'       => $slug,
-                'isi_berita1' => $request->isi_berita1,
-                'gambar1'     => $fileGambar1,
-                'isi_berita2' => $request->isi_berita2,
-                'gambar2'     => $fileGambar2,
-                'isi_berita3' => $request->isi_berita3,
-                'gambar3'     => $fileGambar3,
-                'dibaca'     => 0,
-                'tgl_posting'=> now(),
-            ]);
+        Berita::create([
+            'id_user'    => $idUser,
+            'judul'      => $request->judul,
+            'slug'       => $slug,
+            'isi_berita1' => $request->isi_berita1,
+            'gambar1'     => $pathGambar1,
+            'isi_berita2' => $request->isi_berita2,
+            'gambar2'     => $pathGambar2,
+            'isi_berita3' => $request->isi_berita3,
+            'gambar3'     => $pathGambar3,
+            'dibaca'     => 0,
+            'tgl_posting'=> now(),
+        ]);
 
         return redirect()->route('admin.berita.index')->with('success', 'Berita Berhasil Ditambahkan!');
     }
@@ -135,7 +102,7 @@ class BeritaController extends Controller
      */
     public function show(Berita $berita)
     {
-        //
+        // Tidak digunakan di admin
     }
 
     /**
@@ -150,25 +117,20 @@ class BeritaController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, $id): RedirectResponse
     {
         $request->validate([
-            'id_user' => 'nullable|exists:user,id_user',
-            'judul' => 'required|min:5',
+            'judul' => 'required|string|max:255|min:5',
             'isi_berita1' => 'required|min:5',
-            'gambar1' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:500',
+            'gambar1' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg,webp|max:5120', // 5MB
             'isi_berita2' => 'nullable|min:5',
-            'gambar2' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:500',
+            'gambar2' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg,webp|max:5120', // 5MB
             'isi_berita3' => 'nullable|min:5',
-            'gambar3' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:500',
-            'tgl_posting' => 'nullable|date',
-            'dibaca' => 'nullable',
+            'gambar3' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg,webp|max:5120', // 5MB
         ]);
 
         $berita = Berita::findOrFail($id);
-        $idUser = Auth::check() && Auth::user()->role === 'admin'
-        ? 1
-        : Auth::id();
+        $idUser = Auth::check() && Auth::user()->role === 'admin' ? 1 : Auth::id();
 
         $data = [
             'id_user'    => $idUser,
@@ -176,53 +138,35 @@ class BeritaController extends Controller
             'isi_berita1' => $request->isi_berita1,
             'isi_berita2' => $request->isi_berita2,
             'isi_berita3' => $request->isi_berita3,
-            'dibaca'     => 0,
-            'tgl_posting'=> now(),
         ];
-    if ($request->judul !== $berita->judul) {
-            // Panggil fungsi dengan ID berita saat ini untuk dikecualikan
+
+        if ($request->judul !== $berita->judul) {
             $data['slug'] = $this->getUniqueSlug($request->judul, $id);
-    }
-        // Handle Gambar 1
-    if ($request->hasFile('gambar1')) {
-        if ($berita->gambar1 && Storage::disk('public')->exists('berita/' . $berita->gambar1)) {
-            Storage::disk('public')->delete('berita/' . $berita->gambar1);
         }
-        $path1 = $request->file('gambar1')->store('berita', 'public');
-        $data['gambar1'] = basename($path1);
-    }
 
-    // Handle Gambar 2
-    if ($request->hasFile('gambar2')) {
-        if ($berita->gambar2 && Storage::disk('public')->exists('berita/' . $berita->gambar2)) {
-            Storage::disk('public')->delete('berita/' . $berita->gambar2);
+        // Handle Gambar 1 (jika ada file baru diupload)
+        if ($request->hasFile('gambar1')) {
+            $this->hapusGambarLama($berita->gambar1); // Hapus gambar lama
+            $data['gambar1'] = $this->prosesDanSimpanGambar($request->file('gambar1'), 'berita', 'berita');
         }
-        $path2 = $request->file('gambar2')->store('berita', 'public');
-        $data['gambar2'] = basename($path2);
-    }
 
-    // Handle Gambar 3
-    if ($request->hasFile('gambar3')) {
-        if ($berita->gambar3 && Storage::disk('public')->exists('berita/' . $berita->gambar3)) {
-            Storage::disk('public')->delete('berita/' . $berita->gambar3);
+        // Handle Gambar 2 (jika ada file baru ATAU jika dicentang untuk dihapus)
+        if ($request->hasFile('gambar2')) {
+            $this->hapusGambarLama($berita->gambar2);
+            $data['gambar2'] = $this->prosesDanSimpanGambar($request->file('gambar2'), 'berita', 'berita');
+        } elseif ($request->has('hapus_gambar2') && $request->hapus_gambar2 == 1) {
+            $this->hapusGambarLama($berita->gambar2);
+            $data['gambar2'] = null;
         }
-        $path3 = $request->file('gambar3')->store('berita', 'public');
-        $data['gambar3'] = basename($path3);
-    }
 
-    if ($request->has('hapus_gambar2') && $request->hapus_gambar2 == 1) {
-    if ($berita->gambar2 && Storage::disk('public')->exists('berita/'.$berita->gambar2)) {
-        Storage::disk('public')->delete('berita/'.$berita->gambar2);
-    }
-    $berita->gambar2 = null;
-    }
-
-    if ($request->has('hapus_gambar3') && $request->hapus_gambar3 == 1) {
-        if ($berita->gambar3 && Storage::disk('public')->exists('berita/'.$berita->gambar3)) {
-            Storage::disk('public')->delete('berita/'.$berita->gambar3);
+        // Handle Gambar 3 (jika ada file baru ATAU jika dicentang untuk dihapus)
+        if ($request->hasFile('gambar3')) {
+            $this->hapusGambarLama($berita->gambar3);
+            $data['gambar3'] = $this->prosesDanSimpanGambar($request->file('gambar3'), 'berita', 'berita');
+        } elseif ($request->has('hapus_gambar3') && $request->hapus_gambar3 == 1) {
+            $this->hapusGambarLama($berita->gambar3);
+            $data['gambar3'] = null;
         }
-        $berita->gambar3 = null;
-    }
 
         $berita->update($data);
         return redirect()->route('admin.berita.index')->with('success', 'Berita Berhasil Diperbarui!');
@@ -231,16 +175,43 @@ class BeritaController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy($id)
+    public function destroy($id): RedirectResponse
     {
         $berita = Berita::findOrFail($id);
-        $filePath = 'berita/' . $berita->gambar;
 
-        if ($berita->gambar && Storage::disk('public')->exists($filePath)) {
-            Storage::disk('public')->delete($filePath);
-        }
+        // Panggil fungsi hapus dari Trait untuk setiap gambar
+        $this->hapusGambarLama($berita->gambar1);
+        $this->hapusGambarLama($berita->gambar2);
+        $this->hapusGambarLama($berita->gambar3);
 
         $berita->delete();
         return redirect()->route('admin.berita.index')->with('success', 'Berita Berhasil Dihapus!');
+    }
+
+    /**
+     * Generate a unique slug for the news item.
+     */
+    private function getUniqueSlug(string $title, ?int $exceptId = null): string
+    {
+        $slug = Str::slug($title, '-');
+        $originalSlug = $slug;
+        $count = 1;
+
+        $query = Berita::where('slug', $slug);
+
+        if ($exceptId !== null) {
+            $query->where('id_berita', '!=', $exceptId);
+        }
+
+        while ($query->exists()) {
+            $count++;
+            $slug = $originalSlug . '-' . $count;
+            $query = Berita::where('slug', $slug);
+            if ($exceptId !== null) {
+                $query->where('id_berita', '!=', $exceptId);
+            }
+        }
+
+        return $slug;
     }
 }
