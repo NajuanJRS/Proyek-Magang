@@ -707,4 +707,23 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   });
 });
+$(document).ready(function () {
+    $('table.datatable').DataTable({
+        searching: false,
+        lengthChange: false,
+        paging: false,
+        info: false,
+
+        ordering: true,
+        responsive: true,
+        autoWidth: false,
+
+        language: {
+            zeroRecords: "Data tidak ditemukan",
+        },
+        columnDefs: [
+            { orderable: false, targets: -1 }
+        ]
+    });
+});
 });

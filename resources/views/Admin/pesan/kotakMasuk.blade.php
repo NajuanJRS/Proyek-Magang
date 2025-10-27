@@ -26,7 +26,7 @@
                                     </form>
                                 </div>
                                 <div class="table-responsive custom-table-container">
-                                <table class="table table-hover">
+                                <table class="table table-hover datatable">
                                     <thead>
                                         <tr>
                                             <th>No.</th>
@@ -50,12 +50,12 @@
                                             <td class="text-center">
                                                 {{-- Tombol lihat selengkapnya --}}
                                                 <button type="button" title="Lihat Detail" class="btn btn-warning btn-sm btn-circle rounded-circle d-inline-flex me-1 see-more"
-                                                    data-id="{{ $k->id_pesan }}" data-judul="{{ $k->isi_pesan }}">
+                                                    data-id="{{ $k->id_kotak }}" data-judul="{{ $k->nama }}">
                                                     <i class="bi bi-eye"></i>
                                                 </button>
 
                                                 {{-- Full content untuk SweetAlert --}}
-                                                <div id="full-content-{{ $k->id_pesan }}" class="d-none">
+                                                <div id="full-content-{{ $k->id_kotak }}" class="d-none">
                                                     {!! $k->isi_pesan !!}
                                                 </div>
                                                 <a href="#" class="btn btn-danger btn-sm btn-circle rounded-circle d-inline-flex me-1" onclick="deleteData('{{ $k->id_kotak }}')" title="Hapus">

@@ -32,7 +32,7 @@
                                     </form>
                                 </div>
                                 <div class="table-responsive custom-table-container">
-                                    <table class="table table-hover">
+                                    <table class="table table-hover datatable">
                                         <thead>
                                             <tr>
                                                 <th class="text-center">No.</th>
