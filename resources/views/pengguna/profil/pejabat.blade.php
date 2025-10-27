@@ -4,7 +4,6 @@
 
 @section('content')
 
-  {{-- ====== BREADCRUMB ====== --}}
   <nav aria-label="breadcrumb" class="container my-2">
     <ol class="breadcrumb small mb-0">
       <li class="breadcrumb-item"><a href="{{ url('/') }}">Beranda</a></li>
@@ -17,19 +16,15 @@
     <div class="container">
       <div class="row gx-lg-5 justify-content-center">
 
-        {{-- KOLOM KIRI: KONTEN UTAMA --}}
         <div class="col-lg-8">
             <article class="ds-article-card">
                 <h2 class="ds-article-title mb-4">Pejabat Dinas Sosial Kalimantan Selatan</h2>
 
-                {{-- KARTU KEPALA DINAS (GAYA BARU) --}}
                 @if($pejabatKepala)
                     <div class="ds-kadis-card-new mb-5">
-                        {{-- Menampilkan gambar background dari tabel header --}}
                         @if($kadisBackground)
                             <div class="ds-kadis-background" style="background-image: url('{{ asset('storage/' . $kadisBackground->gambar) }}');"></div>
                         @else
-                            {{-- Fallback jika gambar tidak ditemukan --}}
                             <div class="ds-kadis-background" style="background-color: #e9ecef;"></div>
                         @endif
 
@@ -42,8 +37,6 @@
                         </div>
                     </div>
                 @endif
-
-                {{-- GRID PEJABAT LAINNYA (DINAMIS) --}}
                 <div class="row g-3">
                     @foreach($pejabatLainnya as $p)
                         <div class="col-6 col-md-4">
@@ -59,12 +52,17 @@
                         </div>
                     @endforeach
                 </div>
-
-                {{-- ... Tombol Bagikan ... --}}
+            <hr class="my-4">
+            <div class="d-flex align-items-center gap-3">
+              <span class="fw-semibold">Bagikan:</span>
+              <div class="ds-share-buttons">
+                <a href="#" class="ds-share-btn-whatsapp" aria-label="Bagikan ke WhatsApp"><i class="bi bi-whatsapp"></i></a>
+                <a href="#" class="ds-share-btn-facebook" aria-label="Bagikan ke Facebook"><i class="bi bi-facebook"></i></a>
+                <a href="#" class="ds-share-btn-instagram" aria-label="Bagikan ke Instragram"><i class="bi bi-instagram"></i></a>
+              </div>
+            </div>
             </article>
         </div>
-
-        {{-- KOLOM KANAN: SIDEBAR JELAJAHI PROFIL --}}
         <div class="col-lg-4">
           <div class="ds-sidebar-card">
             <h5 class="ds-sidebar-title">Jelajahi Profil</h5>

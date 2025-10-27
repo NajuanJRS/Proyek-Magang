@@ -2,7 +2,6 @@
 @section('page_bg', 'ds-bg-plain')
 @section('content')
 
-  {{-- ====== BREADCRUMB ====== --}}
   <nav aria-label="breadcrumb" class="container my-2">
     <ol class="breadcrumb small mb-0">
       <li class="breadcrumb-item"><a href="{{ url('/') }}">Beranda</a></li>
@@ -14,7 +13,6 @@
   <section class="py-4">
     <div class="container">
       <div class="row gx-lg-5 justify-content-center">
-        {{-- KOLOM KIRI: DAFTAR FILE --}}
         <div class="col-lg-8">
           <article class="ds-article-card">
             <h2 class="ds-article-title mb-4">{{ $pageContent['title'] }}</h2>
@@ -32,7 +30,6 @@
                 </div>
               @endforeach
             </div>
-            {{-- ... Tombol Bagikan ... --}}
             <hr class="my-4">
             <div class="d-flex align-items-center gap-3">
               <span class="fw-semibold">Bagikan:</span>
@@ -45,7 +42,6 @@
           </article>
         </div>
 
-        {{-- KOLOM KANAN: SIDEBAR PPID --}}
         <div class="col-lg-4">
           <div class="ds-sidebar-card">
             <h5 class="ds-sidebar-title">PPID</h5>

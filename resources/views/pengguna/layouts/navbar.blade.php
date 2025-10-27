@@ -12,14 +12,12 @@
       <li class="nav-item"><a class="nav-link text-white px-3" href="{{ url('/download') }}">DOWNLOAD</a></li>
       <li class="nav-item"><a class="nav-link text-white px-3" href="{{ url('/ppid') }}">PPID</a></li>
       <li class="nav-item"><a class="nav-link text-white px-3" href="{{ url('/kontak') }}">KONTAK</a></li>
-      {{-- Tombol Ikon Pencarian Desktop --}}
       <li class="nav-item ms-2">
         <a id="search-icon-btn-desktop" class="nav-link text-white" href="#" aria-label="Cari"><i class="bi bi-search ds-icon"></i></a>
       </li>
     </ul>
 
     <div class="d-flex d-lg-none align-items-center gap-3 ms-auto">
-      {{-- Tombol Ikon Pencarian Mobile --}}
       <a id="search-icon-btn-mobile" class="nav-link text-white p-0" href="#" aria-label="Cari"><i class="bi bi-search ds-icon"></i></a>
       <button id="ds-hamburger"
               class="btn p-0 text-white"
@@ -33,7 +31,6 @@
   </div>
 </nav>
 
-{{-- === PANEL PENCARIAN BARU === --}}
 <div id="search-panel" class="ds-search-panel">
   <div class="container">
     <form action="{{ url('/pencarian') }}" method="GET" class="ds-search-box">
@@ -44,7 +41,6 @@
   </div>
 </div>
 
-{{-- Panel Menu Mobile --}}
 <div class="ds-mobile-panel" id="ds-mobile-panel" hidden>
   <div class="container ds-mobile-menu">
     <a class="nav-link" href="{{ url('/') }}">BERANDA</a>
@@ -57,12 +53,9 @@
   </div>
 </div>
 
-{{-- Overlay untuk Menu Mobile --}}
 <div class="ds-overlay" id="ds-overlay" hidden></div>
 
-{{-- SCRIPT --}}
 @push('scripts')
-{{-- Skrip untuk Menu Mobile --}}
 <script>
 (function () {
   const btn     = document.getElementById('ds-hamburger');
@@ -131,7 +124,6 @@
 })();
 </script>
 
-{{-- Skrip BARU untuk Panel Pencarian --}}
 <script>
 (function () {
   const searchButtons = [

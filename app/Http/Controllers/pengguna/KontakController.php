@@ -16,11 +16,9 @@ class KontakController extends Controller
         $header = Header::where('id_kategori_header', 7)->first();
         $kontak = Kontak::first();
 
-        // Cek jika data kontak dan peta ada
         if ($kontak && $kontak->map) {
-            // "Bedah" string iframe untuk mengambil URL di dalam src="..."
             preg_match('/src="([^"]+)"/', $kontak->map, $matches);
-            $kontak->map_url = $matches[1] ?? ''; // Ambil URL dan simpan ke properti baru
+            $kontak->map_url = $matches[1] ?? '';
         }
 
         return view('pengguna.kontak.index', [
@@ -30,7 +28,6 @@ class KontakController extends Controller
     }
     public function store(Request $request)
     {
-        // 1. Validasi input dari form
         $validatedData = $request->validate([
             'nama' => 'required|string|max:100',
             'email' => 'required|email|max:255',
@@ -38,14 +35,11 @@ class KontakController extends Controller
             'isi_pesan' => 'required|string',
         ]);
         try {
-            // 2. Coba simpan data ke tabel kotak_masuk
             KotakMasuk::create($validatedData);
 
-            // 3. Jika berhasil, redirect kembali dengan pesan sukses
             return redirect()->back()->with('success', 'Umpan Balik anda telah terkirim');
 
         } catch (\Exception $e) {
-            // 4. Jika gagal, redirect kembali dengan pesan error dan input sebelumnya
             return redirect()->back()->with('error', 'Gagal mengirim Umpan Balik')->withInput();
         }
     }

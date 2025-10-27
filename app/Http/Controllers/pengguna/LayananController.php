@@ -12,10 +12,8 @@ class LayananController extends Controller
 {
     public function index(): View
     {
-        // Ambil header untuk halaman layanan (asumsi id_kategori_header = 3)
         $header = Header::where('id_kategori_header', 3)->first();
 
-        // Ambil semua kartu kategori yang termasuk dalam 'layanan'
         $cards = KategoriKonten::where('menu_konten', 'layanan')->get();
 
         return view('pengguna.layanan.index', [
@@ -26,17 +24,14 @@ class LayananController extends Controller
 
     public function show(string $slug): View
     {
-        // Ambil item kategori yang aktif berdasarkan slug
         $activeCategory = KategoriKonten::where('slug', $slug)->firstOrFail();
 
-        // Ambil semua item layanan untuk sidebar
         $allServices = KategoriKonten::where('menu_konten', 'layanan')->get()->map(function ($service) use ($slug) {
             $service->active = $service->slug == $slug;
             $service->url = route('layanan.show', $service->slug);
             return $service;
         });
 
-        // Ambil konten detail yang terhubung dengan kategori ini
         $layananContent = $activeCategory->konten;
 
         return view('pengguna.layanan.show', [

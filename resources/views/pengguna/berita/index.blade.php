@@ -4,7 +4,6 @@
 
 @section('content')
 
-  {{-- ====== BREADCRUMB ====== --}}
   <nav aria-label="breadcrumb" class="container my-2">
     <ol class="breadcrumb small mb-0">
       <li class="breadcrumb-item"><a href="{{ url('/') }}">Beranda</a></li>
@@ -12,10 +11,9 @@
     </ol>
   </nav>
 
-    {{-- ====== HERO (dinamis dari database) ====== --}}
     @if($header)
     <section class="ds-hero ds-hero-profil">
-        <img src="{{ asset('storage/' . $header->gambar) }}" alt="{{ $header->headline }}" class="ds-hero-bg" loading="lazy">
+        <img src="{{ asset('storage/' . $header->gambar) }}" alt="{{ $header->headline }}" class="ds-hero-bg">
         <div class="ds-hero-overlay"></div>
         <div class="container ds-hero-inner text-center text-white">
         <h1 class="ds-hero-title">{!! $header->headline !!}</h1>
@@ -24,11 +22,9 @@
     </section>
     @endif
 
-  {{-- ====== KONTEN BERITA ====== --}}
   <section class="py-5">
     <div class="konten-berita">
 
-      {{-- LOGIKA TAMPILAN: Halaman 1 berbeda dengan halaman selanjutnya --}}
       @if ($berita->currentPage() == 1 && $berita->isNotEmpty())
 
         @php
@@ -36,11 +32,10 @@
           $regularNews = $berita->slice(1);
         @endphp
 
-        {{-- TAMPILAN DESKTOP --}}
         <div class="d-none d-md-block">
           @if($featuredNews)
             <a href="{{ route('berita.show', $featuredNews->slug) }}" class="ds-featured-news text-decoration-none text-dark mb-4">
-              <img src="{{ asset('storage/' . $featuredNews->gambar1) }}" alt="{{ $featuredNews->judul }}" class="ds-featured-img">
+              <img src="{{ asset('storage/' . $featuredNews->gambar1) }}" alt="{{ $featuredNews->judul }}" class="ds-featured-img" loading="lazy">
               <div class="ds-featured-body">
                 <h2 class="ds-featured-title">{{ $featuredNews->judul }}</h2>
                 <p class="ds-featured-summary">{{ Str::limit(strip_tags($featuredNews->isi_berita1), 200) }}</p>
@@ -56,7 +51,7 @@
             @foreach($regularNews as $item)
             <div class="col-12 col-md-4 col-lg-3">
               <a href="{{ route('berita.show', $item->slug) }}" class="ds-news-card h-100">
-                <img src="{{ asset('storage/' . $item->gambar1) }}" alt="{{ $item->judul }}">
+                <img src="{{ asset('storage/' . $item->gambar1) }}" alt="{{ $item->judul }}" loading="lazy">
                 <div class="ds-news-card-body">
                   <h6 class="ds-news-title">{{ $item->judul }}</h6>
                   <div class="mt-auto ds-meta small">
@@ -70,11 +65,10 @@
           </div>
         </div>
 
-        {{-- TAMPILAN MOBILE --}}
         <div class="d-md-none">
           @if($featuredNews)
             <a class="ds-mfeat" href="{{ route('berita.show', $featuredNews->slug) }}">
-              <img src="{{ asset('storage/' . $featuredNews->gambar1) }}" alt="{{ $featuredNews->judul }}">
+              <img src="{{ asset('storage/' . $featuredNews->gambar1) }}" alt="{{ $featuredNews->judul }}" loading="lazy">
               <h3 class="mt-2">{{ $featuredNews->judul }}</h3>
             </a>
             <hr class="my-4">
@@ -83,7 +77,7 @@
             @foreach($regularNews as $item)
               <div class="col-6">
                 <a href="{{ route('berita.show', $item->slug) }}" class="ds-news-card h-100">
-                  <img src="{{ asset('storage/' . $item->gambar1) }}" alt="{{ $item->judul }}">
+                  <img src="{{ asset('storage/' . $item->gambar1) }}" alt="{{ $item->judul }}" loading="lazy">
                   <div class="ds-news-card-body">
                     <h6 class="ds-news-title">{{ $item->judul }}</h6>
                     <div class="mt-auto ds-meta small">
@@ -104,7 +98,7 @@
           @foreach($berita as $item)
           <div class="col-6 col-md-4 col-lg-3">
             <a href="{{ route('berita.show', $item->slug) }}" class="ds-news-card h-100">
-              <img src="{{ asset('storage/' . $item->gambar1) }}" alt="{{ $item->judul }}">
+              <img src="{{ asset('storage/' . $item->gambar1) }}" alt="{{ $item->judul }}" loading="lazy">
               <div class="ds-news-card-body">
                 <h6 class="ds-news-title">{{ $item->judul }}</h6>
                 <div class="mt-auto ds-meta small">
@@ -116,19 +110,15 @@
           </div>
           @endforeach
         </div>
-
       @endif
-
-      {{-- NAVIGASI PAGINATION --}}
       <div class="d-flex flex-column align-items-center mt-5">
         {{ $berita->links('pengguna.vendor.pagination.custom-links-only') }}
-        @if ($berita->hasPages())
-          <p class="small text-muted mt-2">
-            Showing {{ $berita->firstItem() }} to {{ $berita->lastItem() }} of {{ $berita->total() }} results
-          </p>
+        @if ($berita->total() > 0)
+            <p class="small text-muted mt-2">
+                Menampilkan {{ $berita->count() }} dari {{ $berita->total() }} berita
+            </p>
         @endif
       </div>
-
     </div>
   </section>
 

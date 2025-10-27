@@ -4,7 +4,6 @@
 
 @section('content')
 
-  {{-- ====== BREADCRUMB ====== --}}
   <nav aria-label="breadcrumb" class="container my-2">
     <ol class="breadcrumb small mb-0">
       <li class="breadcrumb-item"><a href="{{ url('/') }}">Beranda</a></li>
@@ -13,20 +12,15 @@
     </ol>
   </nav>
 
-  {{-- ====== KONTEN FAQ ====== --}}
   <section class="ds-faq-section py-5">
     <div class="container">
-      {{-- Judul Halaman --}}
       <div class="text-center">
         <h2 class="ds-faq-title">FAQ (Pertanyaan Umum)</h2>
         <p class="ds-faq-subtitle">Temukan jawaban cepat untuk pertanyaan umum seputar layanan, program, dan prosedur di Dinas Sosial. Ketik pertanyaan Anda di bawah atau jelajahi berdasarkan kategori.</p>
       </div>
 
-      {{-- Form Pencarian (Diperbarui) --}}
       <div class="ds-faq-search-wrapper mx-auto my-4">
-        {{-- Arahkan action ke route faq.index, sertakan kategori saat ini --}}
         <form action="{{ route('faq.index', ['kategori' => $kategoriAktif]) }}" method="GET" class="input-group">
-          {{-- Tampilkan keyword saat ini jika ada --}}
           <input type="search" name="keyword" class="form-control" placeholder="Masukkan kata kunci..." aria-label="Cari FAQ" value="{{ $keyword ?? '' }}">
           <button class="btn btn-primary" type="submit" aria-label="Tombol cari">
             <i class="bi bi-search"></i>
@@ -34,14 +28,11 @@
         </form>
       </div>
 
-{{-- Filter Kategori (Diperbarui dengan Jumlah) --}}
 <div class="ds-faq-filters d-flex justify-content-center flex-wrap gap-2 mb-4">
-  {{-- Tombol 'Semua' --}}
   <a href="{{ route('faq.index', ['kategori' => 'semua', 'keyword' => $keyword]) }}"
      class="btn btn-sm ds-faq-filter-btn {{ $kategoriAktif == 'semua' ? 'active' : '' }}">
     Semua <span class="ds-filter-count">{{ $faqCounts['semua'] ?? 0 }}</span>
   </a>
-  {{-- Loop kategori yang ada --}}
   @foreach($kategoriList as $kategori)
       <a href="{{ route('faq.index', ['kategori' => $kategori->slug, 'keyword' => $keyword]) }}"
          class="btn btn-sm ds-faq-filter-btn {{ $kategoriAktif == $kategori->slug ? 'active' : '' }}">
@@ -50,7 +41,6 @@
   @endforeach
 </div>
 
-      {{-- Daftar Pertanyaan (Akordeon) --}}
       <div class="ds-faq-accordion-wrapper mx-auto">
         <div class="accordion" id="faqAccordion">
           @forelse($faqs as $index => $faq)
@@ -67,7 +57,6 @@
               </div>
             </div>
           @empty
-            {{-- Pesan jika tidak ada hasil --}}
             <div class="text-center text-muted py-5">
               <p>Tidak ada pertanyaan yang cocok dengan pencarian Anda "{{ $keyword ?? '' }}" {{$kategoriAktif != 'semua' ? 'dalam kategori ini' : ''}}.</p>
             </div>

@@ -13,13 +13,11 @@ class FaqController extends Controller
     public function index(Request $request, string $kategoriSlug = 'semua'): View
     {
         $keyword = $request->input('keyword');
-        $kategoriList = KategoriFaq::all(); // Ambil semua kategori
+        $kategoriList = KategoriFaq::all();
 
-        // --- Perhitungan Jumlah FAQ (Baru) ---
         $faqCounts = [];
         $totalCount = 0;
 
-        // Hitung total untuk 'Semua'
         $queryForAll = Faq::query();
         if ($keyword) {
             $queryForAll->where(function ($q) use ($keyword) {
@@ -30,7 +28,6 @@ class FaqController extends Controller
         $totalCount = $queryForAll->count();
         $faqCounts['semua'] = $totalCount;
 
-        // Hitung per kategori
         foreach ($kategoriList as $kategori) {
             $queryPerCategory = Faq::where('id_kategori_faq', $kategori->id_kategori_faq);
             if ($keyword) {
@@ -41,9 +38,7 @@ class FaqController extends Controller
             }
             $faqCounts[$kategori->slug] = $queryPerCategory->count();
         }
-        // --- Akhir Perhitungan ---
 
-        // Bangun query utama untuk menampilkan hasil FAQ
         $faqQuery = Faq::query();
         if ($kategoriSlug !== 'semua') {
             $faqQuery->whereHas('kategoriFaq', function ($query) use ($kategoriSlug) {
@@ -63,7 +58,7 @@ class FaqController extends Controller
             'kategoriList' => $kategoriList,
             'kategoriAktif' => $kategoriSlug,
             'keyword' => $keyword,
-            'faqCounts' => $faqCounts // <-- Kirim counts ke view
+            'faqCounts' => $faqCounts
         ]);
     }
 }

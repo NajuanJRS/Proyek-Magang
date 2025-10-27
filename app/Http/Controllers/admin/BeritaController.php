@@ -52,12 +52,12 @@ class BeritaController extends Controller
     {
         // 3. Naikkan batas ukuran file di validasi
         $request->validate([
-            'judul' => 'required|string|max:255|min:5',
-            'isi_berita1' => 'required|min:5',
+            'judul' => 'required|string|max:255',
+            'isi_berita1' => 'required|string',
             'gambar1' => 'required|image|mimes:jpeg,png,jpg,gif,svg,webp|max:5120', // 5MB
-            'isi_berita2' => 'nullable|min:5',
+            'isi_berita2' => 'nullable|string',
             'gambar2' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg,webp|max:5120', // 5MB
-            'isi_berita3' => 'nullable|min:5',
+            'isi_berita3' => 'nullable|string',
             'gambar3' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg,webp|max:5120', // 5MB
         ]);
 
@@ -120,12 +120,12 @@ class BeritaController extends Controller
     public function update(Request $request, $id): RedirectResponse
     {
         $request->validate([
-            'judul' => 'required|string|max:255|min:5',
-            'isi_berita1' => 'required|min:5',
+            'judul' => 'required|string|max:255',
+            'isi_berita1' => 'required|string',
             'gambar1' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg,webp|max:5120', // 5MB
-            'isi_berita2' => 'nullable|min:5',
+            'isi_berita2' => 'nullable|string',
             'gambar2' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg,webp|max:5120', // 5MB
-            'isi_berita3' => 'nullable|min:5',
+            'isi_berita3' => 'nullable|string',
             'gambar3' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg,webp|max:5120', // 5MB
         ]);
 

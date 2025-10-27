@@ -4,7 +4,6 @@
 
 @section('content')
 
- {{-- ====== BREADCRUMB ====== --}}
  <nav aria-label="breadcrumb" class="container my-2">
    <ol class="breadcrumb small mb-0">
      <li class="breadcrumb-item"><a href="{{ url('/') }}">Beranda</a></li>
@@ -15,18 +14,15 @@
  <section class="py-5">
    <div class="container">
 
-     {{-- Judul Halaman & Subtitle (Menggunakan style FAQ) --}}
      <div class="text-center">
        <h2 class="ds-faq-title">Hasil Pencarian</h2>
        @if(isset($keyword) && $keyword)
          <p class="ds-faq-subtitle">Menampilkan hasil pencarian untuk: "{{ $keyword }}"</p>
        @else
-         {{-- Teks Pengantar seperti di FAQ --}}
          <p class="ds-faq-subtitle">Temukan informasi seputar layanan, program, berita, dokumen, atau pertanyaan umum di Dinas Sosial. Ketik pertanyaan Anda di bawah atau jelajahi berdasarkan kategori.</p>
        @endif
      </div>
 
-     {{-- Form Pencarian (Menggunakan style FAQ) --}}
      <div class="ds-faq-search-wrapper mx-auto my-4">
        <form action="{{ route('pencarian.index', ['kategori' => $kategoriAktif]) }}" method="GET" class="input-group">
          <input type="search" name="keyword" class="form-control" placeholder="Masukkan kata kunci..." aria-label="Cari..." value="{{ $keyword ?? '' }}">
@@ -36,7 +32,6 @@
        </form>
      </div>
 
-     {{-- Filter Kategori (Menggunakan style FAQ) --}}
      <div class="ds-faq-filters d-flex justify-content-center flex-wrap gap-2 mb-4">
        @foreach ($filters as $filter)
          <a href="{{ route('pencarian.index', ['keyword' => $keyword, 'kategori' => $filter['slug']]) }}"
@@ -46,14 +41,11 @@
        @endforeach
      </div>
 
-     {{-- Hasil Pencarian (Dibuat terpusat) --}}
      <div class="ds-search-results-wrapper mx-auto">
        <div class="ds-results-card">
          <div class="ds-search-results-container">
-           {{-- Tampilkan hasil selain FAQ --}}
            @forelse ($results as $result)
              @if($result['type'] == 'dokumen')
-               {{-- Tampilan untuk Dokumen --}}
                <div class="ds-download-item no-border mb-3">
                  <div class="ds-download-icon">
                    <i class="bi bi-file-earmark-text"></i>
@@ -67,7 +59,6 @@
                  </a>
                </div>
              @else
-               {{-- Tampilan untuk hasil pencarian biasa --}}
                <div class="ds-search-result-item">
                  <a href="{{ $result['url'] }}" class="ds-result-title">{{ $result['title'] }}</a>
                  <div class="ds-result-meta">
@@ -76,7 +67,6 @@
                </div>
              @endif
            @empty
-             {{-- Pesan jika tidak ada hasil selain FAQ --}}
              @if($faq_results->isEmpty())
                <div class="text-center py-5">
                   <p class="text-muted">Tidak ada hasil yang ditemukan untuk "{{ $keyword ?? '' }}" {{$kategoriAktif != 'semua' ? 'dalam kategori ini' : ''}}.</p>
@@ -84,7 +74,6 @@
              @endif
            @endforelse
 
-           {{-- Tampilkan hasil FAQ dalam bentuk Akordeon --}}
            @if($faq_results->isNotEmpty())
              <div class="mt-4 @if($results->isNotEmpty()) pt-4 border-top @endif">
                <h5 class="mb-3">Pertanyaan Umum (FAQ) Terkait:</h5>
