@@ -26,7 +26,7 @@ function toggleConfirmPassword() {
     }
 }
 
-// Fungsi Hapus Data dengan SweetAlert2
+
 window.deleteData = function (id) {
     if (typeof Swal === 'undefined') {
         if (confirm('Yakin ingin menghapus data ini?')) {
@@ -50,7 +50,7 @@ window.deleteData = function (id) {
     });
 };
 
-// Fungsi Toggle Password
+
 function togglePassword() {
     var pwd = document.getElementById('password');
     var icon = document.getElementById('toggleIcon');
@@ -65,7 +65,7 @@ function togglePassword() {
     }
 }
 
-// Fungsi Image Preview (untuk tambah & edit)
+
 function previewImage(event, previewId) {
     const input = event.target;
     const preview = document.getElementById(previewId);
@@ -101,7 +101,7 @@ function previewEditImage(event, oldPreviewId, newPreviewId) {
     }
 }
 
-// ====== BAGIAN 2: LISTENER "LIHAT SELENGKAPNYA" ======
+
 document.addEventListener('click', function (e) {
     const seeMoreBtn = e.target.closest('.see-more');
     if (seeMoreBtn) {
@@ -121,7 +121,6 @@ document.addEventListener('click', function (e) {
     }
 });
 
-    // PENTING: Hancurkan (dispose) instance Bootstrap Collapse lama untuk mencegah konflik
     document.querySelectorAll('.sidebar .collapse').forEach(el => {
         const instance = bootstrap.Collapse.getInstance(el);
         if (instance) {
@@ -129,7 +128,6 @@ document.addEventListener('click', function (e) {
         }
     })
 
-    // 2. Inisialisasi Logika Spesifik Halaman (Search, Tombol Tambah)
     const searchInput = document.getElementById("searchInput");
     if (searchInput) {
         const tableRows = document.querySelectorAll("tbody tr");
@@ -166,7 +164,6 @@ document.addEventListener('click', function (e) {
         }
     }
 
-    // === Multiple Custom Editors ===
 document.addEventListener("DOMContentLoaded", function () {
     const allEditors = [
         { id: "editor1", hidden: "hiddenContent1" },
@@ -174,7 +171,6 @@ document.addEventListener("DOMContentLoaded", function () {
         { id: "editor3", hidden: "hiddenContent3" },
     ];
 
-    // Toolbar logic
     document.querySelectorAll(".editor-toolbar button").forEach(btn => {
         btn.addEventListener("click", () => {
             const cmd = btn.dataset.command;
@@ -196,7 +192,7 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     });
 
-    // Sync editor content before submit
+
     const form = document.querySelector("form");
     if (form) {
         form.addEventListener("submit", () => {
@@ -210,7 +206,6 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 
-    // === 3. Inisialisasi Logika Final untuk Sidebar ===
 document.addEventListener('DOMContentLoaded', function () {
     const sidebar = document.getElementById('sidebarMenu');
     if (!sidebar) return;
@@ -219,7 +214,6 @@ document.addEventListener('DOMContentLoaded', function () {
     const logoMini = document.getElementById('logoMini');
     const content = document.querySelector('.content');
 
-    // === 1. Pulihkan status sidebar lebih dulu ===
     const savedState = localStorage.getItem('sidebarState');
     const isMinimized = savedState === 'minimized';
 
@@ -241,7 +235,6 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     }
 
-    // === 2. Inisialisasi collapse setelah state sidebar diterapkan ===
     const activeMenuId = sidebar.getAttribute('data-active-menu');
     const collapseElements = sidebar.querySelectorAll('.collapse');
 
@@ -251,14 +244,12 @@ document.addEventListener('DOMContentLoaded', function () {
         const arrow = trigger ? trigger.querySelector('.arrow-icon') : null;
 
         if (isMinimized) {
-            // Saat sidebar minimized → pastikan semua tertutup
             instance.hide();
             if (arrow) {
                 arrow.classList.remove('bi-chevron-up');
                 arrow.classList.add('bi-chevron-down');
             }
         } else {
-            // Saat sidebar normal → buka menu aktif
             if (el.id === activeMenuId) {
                 if (arrow) {
                     arrow.classList.remove('bi-chevron-down');
@@ -275,7 +266,6 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     });
 
-    // === 3. Tombol toggle sidebar ===
     const sidebarToggle = document.getElementById('sidebarToggle');
     if (sidebarToggle) {
         sidebarToggle.addEventListener('click', function () {
@@ -283,16 +273,13 @@ document.addEventListener('DOMContentLoaded', function () {
             document.body.classList.toggle('sidebar-is-minimized', currentlyMinimized);
             if (content) content.classList.toggle('sidebar-minimized', currentlyMinimized);
 
-            // Simpan ke localStorage
             localStorage.setItem('sidebarState', currentlyMinimized ? 'minimized' : 'expanded');
 
-            // Tutup semua dropdown saat minimize
             document.querySelectorAll('.sidebar .collapse.show').forEach(el => {
                 const inst = bootstrap.Collapse.getInstance(el) || new bootstrap.Collapse(el, { toggle: false });
                 inst.hide();
             });
 
-            // Toggle logo
             if (logoFull && logoMini) {
                 logoFull.classList.toggle('d-none', currentlyMinimized);
                 logoMini.classList.toggle('d-none', !currentlyMinimized);
@@ -308,7 +295,7 @@ document.addEventListener('DOMContentLoaded', function () {
             title: 'Berhasil!',
             text: message,
             icon: 'success',
-            confirmButtonColor: '#3085d6', // Warna tombol OK
+            confirmButtonColor: '#3085d6',
             confirmButtonText: 'OK'
         });
     }
@@ -322,9 +309,9 @@ document.addEventListener('DOMContentLoaded', function () {
     if (!sidebar) return;
 
     const triggers = sidebar.querySelectorAll('[data-bs-toggle="collapse"]');
-    const overlays = {};      // overlay element per targetSelector
-    const timers = {};        // hide timers per targetSelector
-    const pinned = {};        // pinned state per targetSelector (true if clicked/pinned)
+    const overlays = {};
+    const timers = {};
+    const pinned = {};
 
     function makeOverlay(menuEl) {
       const ov = document.createElement('div');
@@ -332,7 +319,6 @@ document.addEventListener('DOMContentLoaded', function () {
       const clone = menuEl.cloneNode(true);
       clone.querySelectorAll('[id]').forEach(n => n.removeAttribute('id'));
       clone.classList.remove('collapse','show');
-      // remove any nested collapse triggers to avoid duplicated behavior
       clone.querySelectorAll('[data-bs-toggle]').forEach(n => n.removeAttribute('data-bs-toggle'));
       ov.appendChild(clone);
       document.body.appendChild(ov);
@@ -344,7 +330,6 @@ document.addEventListener('DOMContentLoaded', function () {
       const sbRect = sidebar.getBoundingClientRect();
       const left = sbRect.right + 8;
       let top = rect.top;
-      // adjust top so overlay fits in viewport
       if (top + ov.offsetHeight > window.innerHeight - 12) {
         top = Math.max(8, window.innerHeight - ov.offsetHeight - 12);
       }
@@ -357,7 +342,6 @@ document.addEventListener('DOMContentLoaded', function () {
     function hideOverlayImmediate(targetSelector, force = false) {
       const ov = overlays[targetSelector];
       if (!ov) return;
-      // if pinned and not forced, keep it
       if (pinned[targetSelector] && !force) return;
       ov.classList.remove('show');
       ov.style.display = 'none';
@@ -378,23 +362,19 @@ document.addEventListener('DOMContentLoaded', function () {
       const menuEl = document.querySelector(targetSelector);
       if (!menuEl) return;
 
-      // ensure initial states
       pinned[targetSelector] = false;
       timers[targetSelector] = null;
 
-      // create overlay on demand
       function ensureOverlay() {
         if (!overlays[targetSelector]) overlays[targetSelector] = makeOverlay(menuEl);
         return overlays[targetSelector];
       }
 
-      // hover: show overlay temporarily (unless pinned)
       trigger.addEventListener('mouseenter', () => {
         const isMin = sidebar.classList.contains('sidebar-minimized') ||
                       document.body.classList.contains('nav-collapsed') ||
                       document.body.classList.contains('sidebar-is-minimized');
         if (!isMin) return;
-        // hide other non-pinned overlays immediately
         Object.keys(overlays).forEach(sel => { if (!pinned[sel]) hideOverlayImmediate(sel); });
         const ov = ensureOverlay();
         clearTimeout(timers[targetSelector]);
@@ -403,14 +383,12 @@ document.addEventListener('DOMContentLoaded', function () {
         trigger.setAttribute('aria-expanded', 'true');
       });
 
-      // leave trigger -> schedule hide only if not pinned
       trigger.addEventListener('mouseleave', () => {
         if (pinned[targetSelector]) return;
         clearTimeout(timers[targetSelector]);
         timers[targetSelector] = setTimeout(() => hideOverlayImmediate(targetSelector), 120);
       });
 
-      // overlay mouseenter cancels hide timer
       document.addEventListener('mouseover', function (ev) {
         const ov = overlays[targetSelector];
         if (!ov) return;
@@ -419,24 +397,20 @@ document.addEventListener('DOMContentLoaded', function () {
         }
       });
 
-      // overlay mouseleave: hide only if not pinned
       document.addEventListener('mouseleave', function (ev) {
         const ov = overlays[targetSelector];
         if (!ov) return;
-        // ignore if leaving document; rely on global click to hide pinned
         if (!ov.contains(ev.target) && !sidebar.contains(ev.target) && !pinned[targetSelector]) {
           hideOverlayImmediate(targetSelector);
         }
       }, true);
 
-      // click toggles pinned state (kept visible until clicked again or clicked outside)
       trigger.addEventListener('click', function (e) {
         const isMin = sidebar.classList.contains('sidebar-minimized') ||
                       document.body.classList.contains('nav-collapsed') ||
                       document.body.classList.contains('sidebar-is-minimized');
-        if (!isMin) return; // in normal mode, allow default collapse
+        if (!isMin) return;
         e.preventDefault();
-        // hide other overlays (including pinned) to ensure exclusive pinned overlay
         hideAllOverlays(true);
         const ov = ensureOverlay();
         const rect = trigger.getBoundingClientRect();
@@ -446,13 +420,11 @@ document.addEventListener('DOMContentLoaded', function () {
       });
     });
 
-    // global: click outside -> hide all overlays (including pinned)
     document.addEventListener('click', function (e) {
       if (e.target.closest('.sidebar') || e.target.closest('.sidebar-mini-overlay')) return;
       hideAllOverlays(true);
     });
 
-    // hide overlays on resize/scroll to avoid stuck overlays
     window.addEventListener('resize', () => hideAllOverlays(true));
     window.addEventListener('scroll', () => hideAllOverlays(true), true);
   });
@@ -469,7 +441,6 @@ document.addEventListener('DOMContentLoaded', function () {
       if (t.dataset.origBsToggle) return;
       t.dataset.origBsToggle = t.getAttribute('data-bs-toggle') || '';
       t.dataset.origHref = t.getAttribute('href') || '';
-      // remove the bootstrap toggle so it cannot open the inline collapse
       t.removeAttribute('data-bs-toggle');
       if (t.getAttribute('href')) t.removeAttribute('href');
       t.setAttribute('aria-expanded', 'false');
@@ -501,13 +472,11 @@ document.addEventListener('DOMContentLoaded', function () {
       }
     }
 
-    // Initialize based on current state
     const isInitMin = sidebar.classList.contains('sidebar-minimized') ||
                       document.body.classList.contains('sidebar-is-minimized') ||
                       document.body.classList.contains('nav-collapsed');
     if (isInitMin) setCollapseTriggersDisabled(true);
 
-    // Listen to sidebar toggle(s) to update state
     const sidebarToggleButtons = [
       document.getElementById('sidebarToggle'),
       document.getElementById('mobileSidebarToggle')
@@ -515,7 +484,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
     sidebarToggleButtons.forEach(btn => {
       btn.addEventListener('click', function () {
-        // small timeout to allow class toggles in other handlers to apply first
         setTimeout(() => {
           const isMin = sidebar.classList.contains('sidebar-minimized') ||
                         document.body.classList.contains('sidebar-is-minimized') ||
@@ -525,18 +493,14 @@ document.addEventListener('DOMContentLoaded', function () {
       });
     });
 
-    // Ensure restoring when resizing to desktop and sidebar auto-restores
     window.addEventListener('resize', function () {
       if (window.innerWidth >= 992) {
-        // when switching back to desktop, always restore triggers
         setCollapseTriggersDisabled(false);
       } else {
-        // on mobile keep normal behavior (we don't want inline collapses while overlay)
         setCollapseTriggersDisabled(true);
       }
     });
 
-    // also ensure click inside minimized sidebar does not accidentally expand inline
     sidebar.addEventListener('click', function (event) {
       if (sidebar.classList.contains('sidebar-minimized') ||
           document.body.classList.contains('sidebar-is-minimized') ||
@@ -555,13 +519,11 @@ document.addEventListener('DOMContentLoaded', function () {
     if (!targetMenu) return;
     const arrow = trigger.querySelector('.arrow-icon');
 
-    // Pastikan semua panah awal mengarah ke bawah
     if (arrow) {
         arrow.classList.remove('bi-chevron-up');
         arrow.classList.add('bi-chevron-down');
     }
 
-    // Saat menu mulai dibuka → arahkan ke atas
     targetMenu.addEventListener('show.bs.collapse', () => {
         if (arrow) {
             arrow.classList.remove('bi-chevron-down');
@@ -569,7 +531,6 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     });
 
-    // Saat menu mulai ditutup → arahkan ke bawah
     targetMenu.addEventListener('hide.bs.collapse', () => {
         if (arrow) {
             arrow.classList.remove('bi-chevron-up');
@@ -584,7 +545,6 @@ document.addEventListener('DOMContentLoaded', function () {
   const toggleDesktop = document.getElementById('sidebarToggle');
   const toggleMobile = document.getElementById('mobileSidebarToggle');
 
-  // pastikan backdrop cuma satu
   let backdrop = document.querySelector('.sidebar-backdrop');
   if (!backdrop) {
     backdrop = document.createElement('div');
@@ -598,7 +558,6 @@ document.addEventListener('DOMContentLoaded', function () {
     document.body.classList.toggle('no-scroll', isOpen);
   };
 
-  // event listener untuk dua tombol
   [toggleDesktop, toggleMobile].forEach(btn => {
     if (btn) {
       btn.addEventListener('click', e => {
@@ -609,7 +568,6 @@ document.addEventListener('DOMContentLoaded', function () {
     }
   });
 
-  // backdrop click untuk menutup
   backdrop.addEventListener('click', () => {
     sidebar.classList.remove('show');
     backdrop.classList.remove('show');
@@ -621,12 +579,10 @@ document.addEventListener("DOMContentLoaded", function () {
   const sidebar = document.querySelector(".sidebar");
   const toggle = document.getElementById("sidebarToggle");
 
-  // Tambahkan backdrop
   const backdrop = document.createElement("div");
   backdrop.classList.add("sidebar-backdrop");
   document.body.appendChild(backdrop);
 
-  // Toggle sidebar
   if (toggle && sidebar) {
     toggle.addEventListener("click", () => {
       const isOpen = sidebar.classList.toggle("show");
@@ -635,7 +591,6 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 
-  // Klik backdrop menutup sidebar
   backdrop.addEventListener("click", () => {
     sidebar.classList.remove("show");
     backdrop.classList.remove("show");
@@ -657,13 +612,12 @@ document.addEventListener('DOMContentLoaded', function () {
     }
   }
 
-  updateBrandText(); // jalankan saat load awal
-  window.addEventListener('resize', updateBrandText); // jalankan saat resize
+  updateBrandText();
+  window.addEventListener('resize', updateBrandText);
 });
 
-// === FIX: Hapus duplikat backdrop & reset sidebar saat reload ===
 document.addEventListener('DOMContentLoaded', function () {
-  // Bersihkan backdrop ganda
+
   document.querySelectorAll('.sidebar-backdrop').forEach((el, i) => {
     if (i > 0) el.remove();
   });
@@ -676,10 +630,7 @@ document.addEventListener('DOMContentLoaded', function () {
     document.body.classList.remove('no-scroll');
   }
 
-  // Tutup sidebar otomatis saat klik menu di dalamnya
-// === FIX: Hapus duplikat backdrop & reset sidebar saat reload ===
 document.addEventListener('DOMContentLoaded', function () {
-  // Bersihkan backdrop ganda
   document.querySelectorAll('.sidebar-backdrop').forEach((el, i) => {
     if (i > 0) el.remove();
   });
@@ -692,7 +643,6 @@ document.addEventListener('DOMContentLoaded', function () {
     document.body.classList.remove('no-scroll');
   }
 
-  // Tutup sidebar hanya jika klik menu non-dropdown (tanpa data-bs-toggle="collapse")
   document.querySelectorAll('.sidebar a').forEach(link => {
     link.addEventListener('click', (e) => {
       const isDropdownTrigger = link.hasAttribute('data-bs-toggle') && link.getAttribute('data-bs-toggle') === 'collapse';
@@ -701,7 +651,6 @@ document.addEventListener('DOMContentLoaded', function () {
         backdrop?.classList.remove('show');
         document.body.classList.remove('no-scroll');
       } else {
-        // jika dropdown trigger diklik, cegah sidebar menutup
         e.stopPropagation();
       }
     });
