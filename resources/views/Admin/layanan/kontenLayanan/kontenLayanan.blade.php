@@ -38,7 +38,7 @@
 
                             {{-- Tabel --}}
                             <div class="table-responsive custom-table-container" style="overflow-x:auto; white-space:nowrap;">
-                                <table class="table table-hover align-middle">
+                                <table class="table table-hover align-middle datatable">
                                     <thead>
                                         <tr>
                                             <th class="text-center">No.</th>

@@ -34,7 +34,7 @@
 
                                     {{-- Isi Berita 1 --}}
                                     <div class="mb-4">
-                                        <label class="form-label">Isi Konten 1</label>
+                                        <label class="form-label">Isi Berita 1</label>
                                         <div class="custom-editor-container">
                                             <div class="editor-toolbar">
                                                 <button type="button" data-target="editor1" data-command="bold"><i
@@ -81,7 +81,7 @@
                                     {{-- Berita 2 --}}
                                     <div id="tombol2" style="display: none;">
                                         <div class="mb-4">
-                                            <label class="form-label">Isi Konten 2</label>
+                                            <label class="form-label">Isi Berita 2</label>
                                             <div class="custom-editor-container">
                                                 <div class="editor-toolbar">
                                                     <button type="button" data-target="editor2" data-command="bold"><i
@@ -131,7 +131,7 @@
                                     {{-- Berita 3 --}}
                                     <div id="tombol3" style="display: none;">
                                         <div class="mb-4">
-                                            <label class="form-label">Isi Konten 3</label>
+                                            <label class="form-label">Isi Berita 3</label>
                                             <div class="custom-editor-container">
                                                 <div class="editor-toolbar">
                                                     <button type="button" data-target="editor3" data-command="bold"><i

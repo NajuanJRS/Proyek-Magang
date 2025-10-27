@@ -15,7 +15,8 @@ class KotakMasukController extends Controller
      */
     public function index(): View
     {
-        $kotakMasuk = KotakMasuk::paginate(10);
+        $kotakMasuk = KotakMasuk::orderBy('id_kotak', 'desc')
+                    ->paginate(10);
         return view('Admin.pesan.kotakMasuk', compact('kotakMasuk'));
     }
 

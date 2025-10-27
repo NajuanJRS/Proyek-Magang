@@ -50,11 +50,23 @@
                                     </div>
 
                                     {{-- Jawaban --}}
-                                    <label for="jawaban" class="mb-2">Jawaban</label>
                                     <div class="mb-4">
-                                        <textarea class="form-control my-editor" id="jawaban" name="jawaban" rows="6"
-                                            placeholder="Masukkan Jawaban">{{ old('jawaban', $faq->jawaban) }}</textarea>
+                                    <label class="form-label">Jawaban</label>
+                                    <div class="custom-editor-container">
+                                        <div class="editor-toolbar">
+                                            <button type="button" data-target="editor1" data-command="bold"><i class="bi bi-type-bold"></i></button>
+                                            <button type="button" data-target="editor1" data-command="italic"><i class="bi bi-type-italic"></i></button>
+                                            <button type="button" data-target="editor1" data-command="underline"><i class="bi bi-type-underline"></i></button>
+                                            <button type="button" data-target="editor1" data-command="insertUnorderedList"><i class="bi bi-list-ul"></i></button>
+                                            <button type="button" data-target="editor1" data-command="insertOrderedList"><i class="bi bi-list-ol"></i></button>
+                                            <button type="button" data-target="editor1" data-command="createLink"><i class="bi bi-link-45deg"></i></button>
+                                            <button type="button" data-target="editor1" data-command="insertImage"><i class="bi bi-image"></i></button>
+                                            <button type="button" data-target="editor1" data-command="removeFormat"><i class="bi bi-eraser"></i></button>
+                                        </div>
+                                        <div id="editor1" class="custom-editor" contenteditable="true">{!! old('jawaban', $faq->jawaban) !!}</div>
+                                        <textarea name="jawaban" id="hiddenContent1" style="display:none;"></textarea>
                                     </div>
+                                </div>
 
                                     {{-- Tombol --}}
                                     <button type="submit" class="btn btn-info me-2">Simpan</button>

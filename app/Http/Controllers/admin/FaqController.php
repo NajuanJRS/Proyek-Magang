@@ -24,7 +24,8 @@ class FaqController extends Controller
                     ->orWhereHas('kategoriFaq', function ($q) use ($search) {
                         $q->where('nama_kategori_faq', 'like', "%$search%");
                     });
-            })->paginate(10);
+            })->orderBy('id_faq', 'desc')
+            ->paginate(10);
 
         return view('Admin.faq.faq', compact('faq'));
     }
