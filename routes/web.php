@@ -78,6 +78,7 @@ Route::fallback(function () {
     return redirect()->route('login');
 });
 
+
 Route::middleware('guest')->prefix('/')->group(function () {
     Route::get('login', [LoginController::class, 'index'])->name('login');
     Route::post('login', [LoginController::class, 'store']);

@@ -206,7 +206,7 @@ document.addEventListener('DOMContentLoaded', function() {
 <script>
 document.addEventListener('DOMContentLoaded', function() {
     function embedYouTubeVideos() {
-        const contentAreas = document.querySelectorAll('.ds-article-content, .ds-featured-summary, .ds-mnews-title'); 
+        const contentAreas = document.querySelectorAll('.ds-article-content, .ds-featured-summary, .ds-mnews-title');
 
         contentAreas.forEach(contentArea => {
             if (!contentArea) return;
