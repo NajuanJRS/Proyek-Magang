@@ -15,42 +15,37 @@ class ProfilController extends Controller
 {
     public function index(): View
     {
-        // Ambil data header dari database (id_kategori_header = 2)
         $header = Header::where('id_kategori_header', 2)->first();
 
-        // Ambil semua kartu kategori yang termasuk dalam 'profil'
         $cards = KategoriKonten::where('menu_konten', 'profil')->get();
 
         return view('pengguna.profil.index', [
             'header' => $header,
-            'cards' => $cards // Perbaikan typo dari 'crads' menjadi 'cards'
+            'cards' => $cards
         ]);
     }
 
     public function show(string $slug): View
     {
-        // Ambil semua item profil dari database untuk sidebar
         $allProfiles = KategoriKonten::where('menu_konten', 'profil')->get()->map(function ($profile) use ($slug) {
             $profile->active = $profile->slug == $slug;
             $profile->url = route('profil.show', $profile->slug);
             return $profile;
         });
-        // KASUS KHUSUS: Jika slug adalah untuk halaman galeri
-        if ($slug == 'galeri-kami') { // Pastikan slug ini sama dengan yang ada di database Anda
+        if ($slug == 'galeri-kami') {
             $galeriItems = Galeri::orderBy('tanggal_upload', 'desc')->get();
-            
+
             return view('pengguna.profil.galeri', [
                 'galeriItems' => $galeriItems,
                 'allProfiles' => $allProfiles
             ]);
         }
 
-        $viewName = 'pengguna.profil.show'; // Default view untuk halaman profil biasa
+        $viewName = 'pengguna.profil.show';
         $viewData = [];
 
-        // Logika untuk menangani halaman-halaman spesifik
         if ($slug == 'profil-singkat-pejabat') {
-            $viewName = 'pengguna.profil.pejabat'; // Gunakan view khusus untuk halaman pejabat
+            $viewName = 'pengguna.profil.pejabat';
 
             $jabatanKepalaDinas = Jabatan::where('nama_jabatan', 'Kepala Dinas')->first();
             $pejabatKepala = $jabatanKepalaDinas ? Pejabat::with('jabatan')->where('id_jabatan', $jabatanKepalaDinas->id_jabatan)->first() : null;
@@ -61,19 +56,7 @@ class ProfilController extends Controller
             $viewData['pejabatLainnya'] = $pejabatLainnya;
             $viewData['kadisBackground'] = $kadisBackground;
 
-        } elseif ($slug == 'struktur-organisasi') {
-            $viewName = 'pengguna.profil.struktur'; // Gunakan view khusus untuk struktur
-
-            $activeCategory = KategoriKonten::where('slug', $slug)->firstOrFail();
-            $konten = $activeCategory->konten;
-
-            $viewData['pageData'] = [
-                'title' => $activeCategory->judul_konten,
-                'image' => $konten->gambar1 ?? 'default.jpg' // Ambil gambar dari tabel konten
-            ];
-
         } else {
-            // Logika untuk halaman profil lainnya (Sejarah, Visi Misi, dll.)
             $activeCategory = KategoriKonten::where('slug', $slug)->firstOrFail();
             $profileContent = $activeCategory->konten;
 

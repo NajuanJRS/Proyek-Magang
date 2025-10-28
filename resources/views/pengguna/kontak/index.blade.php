@@ -4,7 +4,6 @@
 
 @section('content')
 
-  {{-- ====== BREADCRUMB ====== --}}
   <nav aria-label="breadcrumb" class="container my-2">
     <ol class="breadcrumb small mb-0">
       <li class="breadcrumb-item"><a href="{{ url('/') }}">Beranda</a></li>
@@ -12,7 +11,6 @@
     </ol>
   </nav>
 
-  {{-- ====== HERO (dinamis dari database) ====== --}}
   @if($header)
     <section class="ds-hero ds-hero-profil">
         <img src="{{ asset('storage/' . $header->gambar) }}" alt="{{ $header->headline }}" class="ds-hero-bg" loading="lazy">
@@ -24,18 +22,14 @@
     </section>
   @endif
 
-  {{-- ====== KONTEN KONTAK ====== --}}
   <section class="py-5">
     <div class="container">
       <div class="ds-contact-card">
         <h2 class="text-center fw-semibold mb-4">Dinas Sosial Pemerintah Provinsi Kalimantan Selatan</h2>
-
-        {{-- Pastikan data kontak ada sebelum ditampilkan --}}
         @if($kontak)
           <div class="row justify-content-center mt-4 mt-lg-5">
             <div class="col-lg-11 px-3 px-lg-5">
               <div class="row g-4 g-lg-5">
-                {{-- Alamat Kantor --}}
                 <div class="col-md-6">
                   <div class="ds-contact-item">
                     <i class="bi bi-geo-alt-fill ds-contact-icon"></i>
@@ -45,8 +39,6 @@
                     </div>
                   </div>
                 </div>
-
-                {{-- Telepon --}}
                 <div class="col-md-6">
                   <div class="ds-contact-item">
                     <i class="bi bi-telephone-fill ds-contact-icon"></i>
@@ -56,8 +48,6 @@
                     </div>
                   </div>
                 </div>
-
-                {{-- Jam Pelayanan --}}
                 <div class="col-md-6">
                     <div class="ds-contact-item">
                         <i class="bi bi-clock-fill ds-contact-icon"></i>
@@ -67,8 +57,6 @@
                         </div>
                     </div>
                 </div>
-
-                {{-- Email --}}
                 <div class="col-md-6">
                   <div class="ds-contact-item">
                     <i class="bi bi-envelope-fill ds-contact-icon"></i>
@@ -81,8 +69,6 @@
               </div>
             </div>
           </div>
-
-          {{-- Tombol FAQ & Umpan Balik --}}
           <div class="my-4 pt-3 d-grid gap-2 d-md-flex justify-content-md-center">
               <a href="{{ url('/faq') }}" class="btn btn-primary fw-semibold px-4 py-2">
                   <i class="bi bi-question-circle me-2"></i>Kunjungi Halaman FAQ
@@ -91,8 +77,6 @@
                   <i class="bi bi-chat-left-text me-2"></i>Berikan Umpan Balik Anda
               </button>
           </div>
-
-          {{-- Peta Lokasi --}}
             <div class="ds-map-container">
                 <iframe
                     src="{{ $kontak->map_url ?? '' }}"
@@ -113,8 +97,6 @@
       </div>
     </div>
   </section>
-
-    {{-- ====== MODAL UNTUK UMPAN BALIK ====== --}}
     <div class="modal fade" id="feedbackModal" tabindex="-1" aria-labelledby="feedbackModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
@@ -126,7 +108,6 @@
             <p class="text-muted">Kami sangat menghargai setiap umpan balik yang Anda berikan untuk membantu kami berkembang.</p>
             </div>
 
-            {{-- PERUBAHAN 1: Menampilkan notifikasi sukses atau gagal --}}
             @if(session('success'))
                 <div class="alert alert-success">
                     {{ session('success') }}
@@ -138,7 +119,6 @@
                 </div>
             @endif
 
-            {{-- Menampilkan error validasi jika ada --}}
             @if ($errors->any())
                 <div class="alert alert-danger">
                     <ul class="mb-0">
@@ -148,8 +128,6 @@
                     </ul>
                 </div>
             @endif
-
-            {{-- Form tidak diubah, sudah benar --}}
             <form action="{{ route('kontak.store') }}" method="POST" id="feedbackForm">
             @csrf
             <div class="row g-3">

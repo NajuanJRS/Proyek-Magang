@@ -7,20 +7,40 @@ use Illuminate\Http\Request;
 use Illuminate\View\View;
 use App\Models\admin\Berita;
 use App\Models\admin\Header;
+use Illuminate\Pagination\LengthAwarePaginator;
 
 class BeritaController extends Controller
 {
-        public function index(Request $request): View
+    public function index(Request $request): View
     {
-        // Ambil data header untuk halaman berita (asumsi id_kategori_header = 4)
         $header = Header::where('id_kategori_header', 4)->first();
-
-        // Logika pagination yang sudah ada
         $currentPage = $request->get('page', 1);
-        $perPage = ($currentPage == 1) ? 9 : 12;
-        $berita = Berita::orderBy('tgl_posting', 'desc')->paginate($perPage);
 
-        // Kirim data header dan berita ke view
+        $perPageFirst = 9;
+        $perPageOthers = 12;
+
+        $totalItems = Berita::count();
+
+        $offset = 0;
+        if ($currentPage > 1) {
+            $offset = $perPageFirst + ($currentPage - 2) * $perPageOthers;
+        }
+
+        $itemsToTake = ($currentPage == 1) ? $perPageFirst : $perPageOthers;
+
+        $beritaItems = Berita::orderBy('tgl_posting', 'desc')
+                            ->skip($offset)
+                            ->take($itemsToTake)
+                            ->get();
+
+        $berita = new LengthAwarePaginator(
+            $beritaItems,
+            $totalItems,
+            $perPageOthers,
+            $currentPage,
+            ['path' => $request->url(), 'query' => $request->query()]
+        );
+
         return view('pengguna.berita.index', [
             'header' => $header,
             'berita' => $berita
@@ -28,21 +48,17 @@ class BeritaController extends Controller
     }
 
 
-    // Method untuk halaman detail berita
     public function show(string $slug): View
     {
         $article = Berita::where('slug', $slug)->firstOrFail();
 
-        //Hitungan Dibaca
         $article->increment('dibaca');
 
-        // Ambil 4 berita terbaru lainnya (selain yang sedang dibuka) untuk sidebar
         $latestNews = Berita::where('slug', '!=', $slug)
                             ->orderBy('tgl_posting', 'desc')
                             ->take(5)
                             ->get();
 
-        // Ubah struktur data agar sesuai dengan view yang ada
         $content = [];
         if ($article->gambar1) {
             $content[] = ['type' => 'image', 'url' => $article->gambar1, 'caption' => 'Gambar Utama'];
@@ -59,10 +75,14 @@ class BeritaController extends Controller
         if ($article->gambar3) {
             $content[] = ['type' => 'image', 'url' => $article->gambar3, 'caption' => 'Gambar Pendukung 2'];
         }
+        if ($article->isi_berita3) {
+            $content[] = ['type' => 'text', 'content' => $article->isi_berita3];
+        }
+
 
         $articleData = [
             'title' => $article->judul,
-            'author' => 'Admin Dinsos', // Sementara
+            'author' => 'Admin Dinsos',
             'date' => \Carbon\Carbon::parse($article->tgl_posting)->isoFormat('dddd, D MMMM YYYY'),
             'views' => $article->dibaca,
             'content' => $content

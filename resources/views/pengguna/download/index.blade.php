@@ -4,7 +4,6 @@
 
 @section('content')
 
-  {{-- ====== BREADCRUMB ====== --}}
   <nav aria-label="breadcrumb" class="container my-2">
     <ol class="breadcrumb small mb-0">
       <li class="breadcrumb-item"><a href="{{ url('/') }}">Beranda</a></li>
@@ -12,7 +11,6 @@
     </ol>
   </nav>
 
-  {{-- ====== HERO (dinamis) ====== --}}
   @if($header)
     <section class="ds-hero ds-hero-profil">
       <img src="{{ asset('storage/' . $header->gambar) }}" alt="{{ $header->headline }}" class="ds-hero-bg" loading="lazy">
@@ -24,7 +22,6 @@
     </section>
   @endif
 
-  {{-- ====== GRID KARTU (sekarang dinamis dari database) ====== --}}
   <section class="ds-layanan py-5">
     <div class="konten-utama">
       @if($cards->isNotEmpty())
@@ -35,7 +32,7 @@
               <div class="col-12 col-md-6 col-lg-3 d-flex">
                 <a href="{{ url('/download/' . $card->slug) }}" class="card ds-layanan-card text-center w-100 text-decoration-none text-dark">
                   <div class="ds-layanan-icon-wrapper">
-                    <img src="{{ asset('storage/' . $card->icon) }}" alt="{{ $card->nama_kategori }}">
+                    <img src="{{ asset('storage/' . $card->icon) }}" alt="{{ $card->nama_kategori }}" loading="lazy">
                   </div>
                   <div class="card-body">
                     <h6 class="card-title fw-semibold">{{ $card->nama_kategori }}</h6>
@@ -46,14 +43,13 @@
           </div>
         </div>
 
-        {{-- MOBILE --}}
         <div class="d-md-none">
           <div class="row g-2 ds-layanan-row-mobile">
             @foreach($cards as $card)
               <div class="col-6">
                 <a href="{{ url('/download/' . $card->slug) }}" class="card ds-layanan-card ds-card-compact text-center h-100 text-decoration-none text-dark">
                   <div class="ds-layanan-icon-wrapper">
-                    <img src="{{ asset('storage/' . $card->icon) }}" alt="{{ $card->nama_kategori }}">
+                    <img src="{{ asset('storage/' . $card->icon) }}" alt="{{ $card->nama_kategori }}" loading="lazy">
                   </div>
                   <div class="card-body p-3">
                     <h6 class="card-title fw-semibold mb-0 ds-title-compact">{{ $card->nama_kategori }}</h6>

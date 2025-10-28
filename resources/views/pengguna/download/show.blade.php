@@ -54,7 +54,6 @@
           </article>
         </div>
 
-        {{-- KOLOM KANAN: SIDEBAR KATEGORI DOWNLOAD --}}
         <div class="col-lg-4">
         <div class="ds-sidebar-card">
             <h5 class="ds-sidebar-title">Download</h5>

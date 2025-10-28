@@ -1,10 +1,9 @@
 @extends('pengguna.layouts.app')
 
-@section('page_bg', 'ds-bg-plain') {{-- Menggunakan background polos --}}
+@section('page_bg', 'ds-bg-plain')
 
 @section('content')
 
-  {{-- ====== BREADCRUMB ====== --}}
   <nav aria-label="breadcrumb" class="container my-2">
     <ol class="breadcrumb small mb-0">
       <li class="breadcrumb-item"><a href="{{ url('/') }}">Beranda</a></li>
@@ -17,52 +16,49 @@
     <div class="container">
       <div class="row gx-lg-5 justify-content-center">
 
-        {{-- KOLOM KIRI: KONTEN UTAMA PROFIL --}}
         <div class="col-lg-8">
           <article class="ds-article-card">
-            {{-- JUDUL KONTEN --}}
             <h2 class="ds-article-title">{{ $activeCategory->judul_konten }}</h2>
 
             <hr class="my-4">
 
-            {{-- ISI KONTEN (DINAMIS DAN FLEKSIBEL) --}}
             <div class="ds-article-content">
                 @if($profileContent)
-                    {{-- Blok Konten 1 --}}
-                    @if($profileContent->isi_konten1)
-                        {!! \App\Helpers\ContentHelper::embedYoutubeVideos($profileContent->isi_konten1) !!}
-                    @endif
                     @if($profileContent->gambar1)
                         <figure class="my-4 text-center">
                             <img src="{{ asset('storage/' . $profileContent->gambar1) }}" class="img-fluid rounded shadow-sm">
                         </figure>
                     @endif
+                    @if($profileContent->isi_konten1)
+                        {!! \App\Helpers\ContentHelper::embedYoutubeVideos($profileContent->isi_konten1) !!}
+                    @endif
 
-                    {{-- Blok Konten 2 --}}
+                    @if($profileContent->gambar2)
+                        <div class="ds-image-zoom-wrapper mt-3" data-bs-toggle="modal" data-bs-target="#imageModal">
+                        <img src="{{ asset('storage/' . $profileContent->gambar2) }}" alt="Gambar Konten" class="img-fluid rounded shadow-sm">
+                        <div class="ds-image-zoom-overlay">
+                            <i class="bi bi-zoom-in"></i>
+                            <span>Klik untuk memperbesar</span>
+                        </div>
+                        </div>
+                    @endif
                     @if($profileContent->isi_konten2)
                         {!! \App\Helpers\ContentHelper::embedYoutubeVideos($profileContent->isi_konten2) !!}
                     @endif
-                    @if($profileContent->gambar2)
-                        <figure class="my-4 text-center">
-                            <img src="{{ asset('storage/' . $profileContent->gambar2) }}" class="img-fluid rounded shadow-sm">
-                        </figure>
-                    @endif
 
-                    {{-- Blok Konten 3 --}}
-                    @if($profileContent->isi_konten3)
-                        {!! \App\Helpers\ContentHelper::embedYoutubeVideos($profileContent->isi_konten3) !!}
-                    @endif
                     @if($profileContent->gambar3)
                         <figure class="my-4 text-center">
                             <img src="{{ asset('storage/' . $profileContent->gambar3) }}" class="img-fluid rounded shadow-sm">
                         </figure>
+                    @endif
+                    @if($profileContent->isi_konten3)
+                        {!! \App\Helpers\ContentHelper::embedYoutubeVideos($profileContent->isi_konten3) !!}
                     @endif
                 @else
                     <p class="text-muted text-center">Konten untuk halaman ini belum tersedia.</p>
                 @endif
             </div>
 
-            {{-- TOMBOL BAGIKAN --}}
             <hr class="my-4">
             <div class="d-flex align-items-center gap-3">
               <span class="fw-semibold">Bagikan:</span>
@@ -75,14 +71,13 @@
           </article>
         </div>
 
-        {{-- KOLOM KANAN: SIDEBAR JELAJAHI PROFIL --}}
         <div class="col-lg-4">
           <div class="ds-sidebar-card">
             <h5 class="ds-sidebar-title">Jelajahi Profil</h5>
             <div class="ds-sidebar-list">
               @foreach($allProfiles as $item)
                 <a href="{{ $item->url }}" class="ds-sidebar-item-layanan {{ $item->active ? 'active' : '' }}">
-                  <img src="{{ asset('storage' . $item->icon_konten) }}" alt="{{ $item->judul_konten }}">
+                  <img src="{{ asset('storage/' . $item->icon_konten) }}" alt="{{ $item->judul_konten }}">
                   <h6 class="ds-sidebar-item-title">{{ $item->judul_konten }}</h6>
                 </a>
               @endforeach
@@ -93,5 +88,19 @@
       </div>
     </div>
   </section>
-
+    @if($profileContent && $profileContent->gambar1)
+    <div class="modal fade" id="imageModal" tabindex="-1" aria-labelledby="imageModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-centered">
+        <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title" id="imageModalLabel">{{ $activeCategory->judul_konten }}</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body text-center">
+            <img src="{{ asset('storage/' . $profileContent->gambar1) }}" alt="{{ $activeCategory->judul_konten }}" class="img-fluid">
+        </div>
+        </div>
+    </div>
+    </div>
+    @endif
 @endsection

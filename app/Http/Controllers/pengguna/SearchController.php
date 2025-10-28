@@ -14,12 +14,10 @@ class SearchController extends Controller
 {
     public function index(Request $request)
     {
-        // 1. Validasi input
         $request->validate(['keyword' => 'required']);
         $keyword = $request->input('keyword');
-        $kategoriAktif = $request->input('kategori', 'semua'); // Ambil kategori, default 'semua'
+        $kategoriAktif = $request->input('kategori', 'semua');
 
-        // --- PENGAMBILAN SEMUA DATA UNTUK PENGHITUNGAN ---
         $beritaResults = Berita::where('judul', 'LIKE', "%{$keyword}%")->get();
         $infoResults = KategoriKonten::whereIn('menu_konten', ['profil', 'ppid'])
             ->where('judul_konten', 'LIKE', "%{$keyword}%")
@@ -30,7 +28,6 @@ class SearchController extends Controller
         $dokumenResults = FileDownload::where('nama_file', 'LIKE', "%{$keyword}%")->get();
         $faqResults = Faq::where('pertanyaan', 'LIKE', "%{$keyword}%")->get();
 
-        // --- PENGHITUNGAN UNTUK FILTER ---
         $filters = [
             ['slug' => 'semua', 'name' => 'Semua', 'count' => $beritaResults->count() + $infoResults->count() + $layananResults->count() + $dokumenResults->count() + $faqResults->count()],
             ['slug' => 'berita', 'name' => 'Berita & Kegiatan', 'count' => $beritaResults->count()],
@@ -40,7 +37,6 @@ class SearchController extends Controller
             ['slug' => 'faq', 'name' => 'FAQ', 'count' => $faqResults->count()],
         ];
 
-        // --- GABUNGKAN SEMUA HASIL JADI SATU KOLEKSI ---
         $allResults = new Collection();
 
         foreach ($beritaResults as $item) {
@@ -72,9 +68,9 @@ class SearchController extends Controller
             $allResults->push([
                 'title' => $item->nama_file,
                 'category' => 'Dokumen & Download',
-                'url' => route('download.file', ['filename' => $item->file]), // URL untuk download langsung
+                'url' => route('download.file', ['filename' => $item->file]),
                 'type' => 'dokumen',
-                'file_obj' => $item // Sertakan seluruh objek file untuk view
+                'file_obj' => $item
             ]);
         }
         foreach ($faqResults as $item) {
@@ -82,12 +78,11 @@ class SearchController extends Controller
                 'title' => $item->pertanyaan,
                 'answer' => $item->jawaban,
                 'category' => 'FAQ',
-                'url' => null, // Tidak ada URL detail untuk FAQ di pencarian
+                'url' => null,
                 'type' => 'faq',
             ]);
         }
 
-        // --- FILTER HASIL BERDASARKAN KATEGORI YANG AKTIF ---
         $filteredResults = $allResults;
         if ($kategoriAktif !== 'semua') {
             $filteredResults = $allResults->filter(function ($item) use ($kategoriAktif) {
@@ -95,11 +90,9 @@ class SearchController extends Controller
             });
         }
 
-        // --- Pisahkan hasil FAQ dari hasil lainnya SETELAH difilter ---
         $faq_results = $filteredResults->where('type', 'faq');
         $other_results = $filteredResults->where('type', '!=', 'faq');
 
-        // --- KIRIM DATA KE VIEW ---
         return view('pengguna.pencarian.index', [
             'keyword' => $keyword,
             'results' => $other_results,
