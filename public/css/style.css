@@ -1081,6 +1081,38 @@ body.no-scroll {
         transition: opacity 0.3s ease;
     }
 
+   .unread-message td {
+    background: #e4f1ff !important;
+    font-weight: 600 !important;
+    }
+
+    .unread-message:hover td {
+        background: #c4defb !important;
+    }
+
+    .read-message td {
+        background: #ffffff !important;
+        font-weight: normal !important;
+    }
+
+    .read-message:hover td {
+        background: #f7f7f7 !important;
+    }
+
+
+    .badge-unread {
+    background: #dc3545;     /* merah */
+    color: #fff;
+    font-size: .6rem;
+    line-height: 1;
+    padding: .15rem .35rem;
+    border-radius: 999px;
+    min-width: 0.9rem;
+    text-align: center;
+    box-shadow: 0 2px 6px rgba(220,53,69,.35);
+    margin-left: 5px;
+    }
+
 @media (max-width: 768px) {
 
   .navbar {
@@ -1151,6 +1183,5 @@ body.no-scroll {
     position: relative;
     z-index: 1;
   }
-
 }
 

@@ -14,6 +14,7 @@ class KotakMasuk extends Model
         'email',
         'telepon',
         'isi_pesan',
+        'status_dibaca',
         'tgl_kirim',
     ];
 }

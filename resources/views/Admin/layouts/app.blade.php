@@ -3,6 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@yield('title', 'Dinsos Prov Kalsel')</title>
     <!-- Tambahkan script TinyMCE -->
@@ -290,6 +291,9 @@
                     class="nav-link d-flex align-items-center {{ request()->routeIs('admin.kotakMasuk.index') ? 'active' : '' }}">
                     <i class="bi bi-inbox"></i>
                     <span class="menu-title">Kotak Masuk</span>
+                    <span class="badge bg-danger rounded-pill badge-unread {{ ($unreadKotakMasuk ?? 0) > 0 ? '' : 'd-none' }}">
+                    {{ $unreadKotakMasuk ?? 0 }}
+                    </span>
                 </a>
             </li>
 
