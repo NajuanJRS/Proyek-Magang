@@ -7,6 +7,7 @@ use App\Models\admin\KontakMasuk;
 use App\Models\admin\KotakMasuk;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 
 class KotakMasukController extends Controller
 {
@@ -68,5 +69,30 @@ class KotakMasukController extends Controller
         $kotakMasuk = KotakMasuk::findOrFail($id);
         $kotakMasuk->delete();
         return redirect()->route('admin.kotakMasuk.index')->with('success', 'Pesan Berhasil Dihapus!');
+    }
+
+    public function tandaiDibaca($id)
+    {
+        $pesan = KotakMasuk::findOrFail($id);
+
+        if ($pesan->status_dibaca == 0) {
+            $pesan->update(['status_dibaca' => 1]);
+        }
+
+        $count = KotakMasuk::where('status_dibaca', 0)->count();
+        Cache::put('unread_kotak_masuk_count', $count, 30); // cache ulang
+
+        return response()->json([
+            'success' => true,
+            'count' => $count
+        ]);
+    }
+
+    public function unreadCount()
+    {
+        $count = Cache::remember('unread_kotak_masuk_count', 30, function () {
+            return KotakMasuk::where('status_dibaca', 0)->count();
+        });
+        return response()->json(['count' => $count]);
     }
 }

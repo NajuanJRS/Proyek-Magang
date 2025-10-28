@@ -656,23 +656,76 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   });
 });
+document.querySelectorAll('.see-more').forEach(btn => {
+    btn.addEventListener('click', () => {
+        const id = btn.dataset.id;
+        const row = btn.closest('tr');
+        const statusCell = row.querySelector('.status-col');
+
+        // Abaikan jika sudah dibaca → tidak perlu request lagi
+        if (statusCell.textContent.trim() === "Sudah Dibaca") return;
+
+        fetch(`/admin/kotak-masuk/${id}/dibaca`, {
+            method: 'PUT',
+            headers: {
+                "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').content,
+                "Accept": "application/json",
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({ status_dibaca: 1 })
+        })
+        .then(res => res.json())
+        .then(() => {
+
+            // ✅ Update badge (teks & warna)
+            const badge = statusCell.querySelector('.status-badge');
+            badge.textContent = "Sudah Dibaca";
+            badge.classList.remove("bg-danger");
+            badge.classList.add("bg-success");
+
+            // ✅ Update baris highlight menjadi normal
+            row.classList.remove("unread-message");
+            row.classList.add("read-message");
+
+            // ✅ Update dataset agar DataTables tidak revert
+            btn.dataset.status_dibaca = 1;
+
+            // ✅ Update badge jumlah pesan belum dibaca di sidebar
+            const notifBadge = document.querySelector(".badge-unread");
+            if (notifBadge) {
+                let count = parseInt(notifBadge.textContent) || 0;
+                if (count > 1) {
+                    notifBadge.textContent = count - 1;
+                } else {
+                    notifBadge.style.display = "none";
+                }
+            }
+
+        })
+        .catch(err => console.error("ERR status_dibaca:", err));
+    });
+});
+
 $(document).ready(function () {
-    $('table.datatable').DataTable({
+    let table = $('.datatable').DataTable({
         searching: false,
         lengthChange: false,
         paging: false,
         info: false,
-
         ordering: true,
-        responsive: true,
         autoWidth: false,
-
-        language: {
-            zeroRecords: "Data tidak ditemukan",
-        },
+        responsive: true,
         columnDefs: [
             { orderable: false, targets: -1 }
-        ]
+        ],
+        createdRow: function(row, data, dataIndex) {
+            let status_dibaca = $(row).find('.see-more').data('dibaca');
+            if (status_dibaca == 0) {
+                $(row).addClass('unread-message');
+            } else {
+                $(row).addClass('read-message');
+            }
+        }
     });
 });
 });

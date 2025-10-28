@@ -5,6 +5,8 @@ namespace App\Providers;
 use Illuminate\Support\Facades\View; // <-- Tambahkan ini
 use Illuminate\Support\ServiceProvider;
 use App\Models\admin\Kontak; // <-- Tambahkan ini
+use App\Models\admin\KotakMasuk;
+use Illuminate\Support\Facades\Cache;
 
 class ViewServiceProvider extends ServiceProvider
 {
@@ -27,6 +29,11 @@ class ViewServiceProvider extends ServiceProvider
             $kontakInfo = Kontak::first();
             // Kirim data ke view dengan nama variabel 'kontakInfo'
             $view->with('kontakInfo', $kontakInfo);
+        });
+
+        View::composer('admin.*', function ($view) {
+            $count = KotakMasuk::where('status_dibaca', 0)->count();
+            $view->with('unreadKotakMasuk', $count);
         });
     }
 }

@@ -144,6 +144,12 @@ Route::middleware(['auth', 'Admin'])->prefix('admin')->name('admin.')->group(fun
 
     Route::resource('kotak-masuk', KotakMasukController::class)->names('kotakMasuk');
 
+    Route::put('kotak-masuk/{id}/dibaca', [KotakMasukController::class, 'tandaiDibaca'])
+        ->name('kotakMasuk.dibaca');
+
+    Route::get('kotak-masuk/unread-count', [KotakMasukController::class, 'unreadCount'])
+        ->name('kotakMasuk.unreadCount');
+
     Route::resource('kelola-akun', AdminUpdateController::class)->names('adminUpdate');
 
     Route::resource('faq', FaqController::class);
