@@ -38,6 +38,15 @@ class CspPolicy extends Basic
                 "https://cdn.datatables.net",
                 "https://code.jquery.com"
             ])
+            ->addDirective(Directive::FRAME, [
+                "'self'",
+                "https://www.youtube.com",
+                "https://www.youtube-nocookie.com",
+            ])
+            ->addDirective(Directive::MEDIA, [
+                "'self'",
+                "https://www.youtube.com",
+            ])
             ->addDirective(Directive::FONT, [
                 "'self'",
                 'https://cdn.jsdelivr.net'
