@@ -61,19 +61,19 @@ class BeritaController extends Controller
 
         $content = [];
         if ($article->gambar1) {
-            $content[] = ['type' => 'image', 'url' => $article->gambar1, 'caption' => 'Gambar Utama'];
+            $content[] = ['type' => 'image', 'url' => $article->gambar1];
         }
         if ($article->isi_berita1) {
             $content[] = ['type' => 'text', 'content' => $article->isi_berita1];
         }
         if ($article->gambar2) {
-            $content[] = ['type' => 'image', 'url' => $article->gambar2, 'caption' => 'Gambar Pendukung 1'];
+            $content[] = ['type' => 'image', 'url' => $article->gambar2];
         }
         if ($article->isi_berita2) {
             $content[] = ['type' => 'text', 'content' => $article->isi_berita2];
         }
         if ($article->gambar3) {
-            $content[] = ['type' => 'image', 'url' => $article->gambar3, 'caption' => 'Gambar Pendukung 2'];
+            $content[] = ['type' => 'image', 'url' => $article->gambar3];
         }
         if ($article->isi_berita3) {
             $content[] = ['type' => 'text', 'content' => $article->isi_berita3];
