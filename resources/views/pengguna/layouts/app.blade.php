@@ -83,7 +83,7 @@
     </div>
   </div>
 
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <script nonce="{{ csp_nonce() }}" src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 
   @stack('scripts')
 
@@ -206,7 +206,7 @@ document.addEventListener('DOMContentLoaded', function() {
 <script>
 document.addEventListener('DOMContentLoaded', function() {
     function embedYouTubeVideos() {
-        const contentAreas = document.querySelectorAll('.ds-article-content, .ds-featured-summary, .ds-mnews-title'); 
+        const contentAreas = document.querySelectorAll('.ds-article-content, .ds-featured-summary, .ds-mnews-title');
 
         contentAreas.forEach(contentArea => {
             if (!contentArea) return;
