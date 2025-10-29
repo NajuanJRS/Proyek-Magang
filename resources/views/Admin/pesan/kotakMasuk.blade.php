@@ -11,7 +11,7 @@
 
 
                                 <div class="d-flex justify-content-between align-items-center mb-4">
-                                    <h4 class="card-title mb-0">Kotak Masuk Pesan</h4>
+                                    <h4 class="card-title mb-0">Kotak Masuk</h4>
                                 </div>
 
                                 <div class="d-flex justify-content-end mb-4">
