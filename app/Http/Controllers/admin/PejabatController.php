@@ -12,6 +12,8 @@ use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse; // Tambahkan RedirectResponse
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Validator;
+
 // use Illuminate\Support\Facades\Storage; // Tidak perlu lagi
 
 class PejabatController extends Controller
@@ -36,7 +38,7 @@ class PejabatController extends Controller
 
 
         // Data headerKartu (Hanya ambil 1 data spesifik)
-        
+
         // Asumsi id_kategori_header = 8 untuk Kartu Pejabat
         $headerKartu = Header::with('kategoriHeader')
             ->when($search, function ($query, $search) {
@@ -63,34 +65,55 @@ class PejabatController extends Controller
      */
     public function store(Request $request): RedirectResponse // Tambah RedirectResponse return type
     {
-        // 3. Sesuaikan Validasi
-        $request->validate([
+        $messages = [
+        'nama_pejabat.required' => 'Nama pejabat wajib diisi.',
+        'nama_pejabat.min' => 'Nama pejabat minimal harus berisi :min karakter.',
+        'nama_pejabat.max' => 'Nama pejabat maksimal :max karakter.',
+        'id_jabatan.required' => 'Jabatan wajib dipilih.',
+        'id_jabatan.exists' => 'Jabatan yang dipilih tidak valid.',
+        'gambar.required' => 'Gambar pejabat wajib diunggah.',
+        'gambar.image' => 'File harus berupa gambar.',
+        'gambar.mimes' => 'Format gambar harus jpeg, png, jpg, svg, atau webp.',
+        'gambar.max' => 'Ukuran gambar maksimal :max KB.',
+        ];
+
+        $validator = Validator::make($request->all(),[
             'nama_pejabat' => 'required|string|min:5|max:100',
             'id_jabatan' => 'required|exists:jabatan,id_jabatan',
-            'gambar' => 'required|image|mimes:jpeg,png,jpg,svg,webp|max:2048', // Naikkan max size
-        ]);
+            'gambar' => 'required|image|mimes:jpeg,png,jpg,svg,webp|max:2048',
+        ], $messages);
 
+    $validator->after(function ($validator) use ($request) {
+        if (Pejabat::where('id_jabatan', $request->id_jabatan)->exists()) {
+            $validator->errors()->add('id_jabatan', 'Jabatan ini sudah diisi oleh pejabat lain.');
+        }
+    });
+
+        if ($validator->fails()) {
+        return back()
+        ->withErrors($validator)
+        ->withInput();
+        }
+
+        try {
         $idUser = Auth::check() && Auth::user()->role === 'admin'
             ? 1
             : Auth::id();
 
-        // 4. Proses Gambar Pejabat dengan Trait
         $pathGambar = null;
         if ($request->hasFile('gambar')) {
             $pathGambar = $this->prosesDanSimpanGambar(
                 $request->file('gambar'),
-                'pejabat',      // Tipe gambar
-                'pejabat'       // Folder tujuan
+                'pejabat',
+                'pejabat'
             );
              if (!$pathGambar) {
                  return redirect()->back()->withErrors(['gambar' => 'Gagal memproses gambar pejabat.'])->withInput();
             }
         } else {
-             // Gambar wajib ada saat create
              return redirect()->back()->withErrors(['gambar' => 'Gambar pejabat wajib diunggah.'])->withInput();
         }
 
-        // 5. Gunakan path dari Trait
         Pejabat::create([
             'id_user' => $idUser,
             'nama_pejabat' => $request->nama_pejabat,
@@ -99,6 +122,11 @@ class PejabatController extends Controller
         ]);
 
         return redirect()->route('admin.pejabat.index')->with('success', 'Informasi Pejabat Berhasil Ditambahkan!');
+        } catch (\Exception $e) {
+            return back()
+                ->withErrors(['general' => 'Terjadi kesalahan: ' . $e->getMessage()])
+                ->withInput();
+        }
     }
 
     /**
@@ -124,15 +152,43 @@ class PejabatController extends Controller
     /**
      * Update data pejabat
      */
-    public function update(Request $request, Pejabat $pejabat): RedirectResponse // Tambah RedirectResponse
+    public function update(Request $request, Pejabat $pejabat): RedirectResponse
     {
-        // 6. Sesuaikan Validasi Update Pejabat
-        $request->validate([
+        $messages = [
+        'nama_pejabat.required' => 'Nama pejabat wajib diisi.',
+        'nama_pejabat.min' => 'Nama pejabat minimal harus berisi :min karakter.',
+        'nama_pejabat.max' => 'Nama pejabat maksimal :max karakter.',
+        'id_jabatan.required' => 'Jabatan wajib dipilih.',
+        'id_jabatan.exists' => 'Jabatan yang dipilih tidak valid.',
+        'gambar.required' => 'Gambar pejabat wajib diunggah.',
+        'gambar.image' => 'File harus berupa gambar.',
+        'gambar.mimes' => 'Format gambar harus jpeg, png, jpg, svg, atau webp.',
+        'gambar.max' => 'Ukuran gambar maksimal :max KB.',
+        ];
+
+        $validator = Validator::make($request->all(),[
             'nama_pejabat' => 'required|string|min:5|max:100',
             'id_jabatan' => 'required|exists:jabatan,id_jabatan',
-            'gambar' => 'nullable|image|mimes:jpeg,png,jpg,svg,webp|max:2048', // Naikkan max size
-        ]);
+            'gambar' => 'nullable|image|mimes:jpeg,png,jpg,svg,webp|max:2048',
+        ], $messages);
 
+        $validator->after(function ($validator) use ($request, $pejabat) {
+            $jabatanSudahTerisi = Pejabat::where('id_jabatan', $request->id_jabatan)
+                ->where('id_pejabat', '!=', $pejabat->id_pejabat)
+                ->exists();
+
+            if ($jabatanSudahTerisi) {
+                $validator->errors()->add('id_jabatan', 'Jabatan ini sudah diisi oleh pejabat lain.');
+            }
+        });
+
+        if ($validator->fails()) {
+        return back()
+        ->withErrors($validator)
+        ->withInput();
+        }
+
+        try {
         $idUser = Auth::check() && Auth::user()->role === 'admin'
             ? 1
             : Auth::id();
@@ -143,19 +199,23 @@ class PejabatController extends Controller
             'id_jabatan' => $request->id_jabatan,
         ];
 
-        // 7. Proses Update Gambar Pejabat dengan Trait
         if ($request->hasFile('gambar')) {
-            $this->hapusGambarLama($pejabat->gambar); // Hapus gambar lama
+            $this->hapusGambarLama($pejabat->gambar);
             $pathGambarBaru = $this->prosesDanSimpanGambar($request->file('gambar'), 'pejabat', 'pejabat');
              if (!$pathGambarBaru) {
                  return redirect()->back()->withErrors(['gambar' => 'Gagal memproses gambar pejabat baru.'])->withInput();
             }
-            $data['gambar'] = $pathGambarBaru; // Gunakan path baru
+            $data['gambar'] = $pathGambarBaru;
         }
 
         $pejabat->update($data);
 
         return redirect()->route('admin.pejabat.index')->with('success', 'Informasi Pejabat Berhasil Diperbarui!');
+        } catch (\Exception $e) {
+            return back()
+                ->withErrors(['general' => 'Terjadi kesalahan: ' . $e->getMessage()])
+                ->withInput();
+        }
     }
 
     /**
@@ -165,41 +225,52 @@ class PejabatController extends Controller
     {
         $headerKartu = Header::findOrFail($id);
 
-        // 8. Sesuaikan Validasi Update Background
-        $request->validate([
+        $messages = [
+        'gambar.image' => 'File harus berupa gambar.',
+        'gambar.mimes' => 'Format gambar harus jpeg, png, jpg, svg, atau webp.',
+        'gambar.max' => 'Ukuran gambar maksimal :max KB.',
+        ];
+
+        $validator = Validator::make($request->all(),[
             'gambar' => 'required|image|mimes:jpeg,png,jpg,svg,webp|max:5120', // Gambar wajib, naikkan max size
-        ]);
+        ], $messages);
 
-        $data = []; // Hanya update gambar
+        if ($validator->fails()) {
+        return back()
+        ->withErrors($validator)
+        ->withInput();
+        }
 
-        // 9. Proses Update Gambar Background dengan Trait
+        $data = [];
+
+        try {
         if ($request->hasFile('gambar')) {
-            $this->hapusGambarLama($headerKartu->gambar); // Hapus gambar lama
+            $this->hapusGambarLama($headerKartu->gambar);
             $pathGambarBaru = $this->prosesDanSimpanGambar(
                 $request->file('gambar'),
-                'background_pejabat', // Tipe gambar background
-                'header'              // Simpan di folder header (sesuai Trait)
+                'background_pejabat',
+                'header'
             );
             if (!$pathGambarBaru) {
                  return redirect()->back()->withErrors(['gambar' => 'Gagal memproses gambar background baru.'])->withInput();
             }
-            $data['gambar'] = $pathGambarBaru; // Gunakan path baru
+            $data['gambar'] = $pathGambarBaru;
         } else {
-             // Gambar wajib diisi untuk method ini
              return redirect()->back()->withErrors(['gambar' => 'Gambar background wajib diunggah.'])->withInput();
         }
 
-        $headerKartu->update($data); // Update hanya field gambar
+        $headerKartu->update($data);
 
         return redirect()->route('admin.pejabat.index')->with('success', 'Background Kepala Pejabat Berhasil Diperbarui!');
+        } catch (\Exception $e) {
+            return back()
+                ->withErrors(['general' => 'Terjadi kesalahan: ' . $e->getMessage()])
+                ->withInput();
+        }
     }
 
-    /**
-     * Hapus data pejabat
-     */
-    public function destroy(Pejabat $pejabat): RedirectResponse // Tambah RedirectResponse
+    public function destroy(Pejabat $pejabat): RedirectResponse
     {
-        // 10. Gunakan Trait untuk Hapus Gambar Pejabat
         $this->hapusGambarLama($pejabat->gambar);
 
         $pejabat->delete();

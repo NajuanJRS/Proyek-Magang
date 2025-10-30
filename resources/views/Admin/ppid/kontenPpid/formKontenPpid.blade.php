@@ -76,7 +76,7 @@
                                     <label for="gambar1" class="mb-2">Unggah Gambar 1</label>
                                     <div class="mb-4">
                                         <input type="file" id="gambar1" name="gambar1" accept="image/*"
-                                            onchange="previewImage(event, 'preview1')" required>
+                                            onchange="previewImage(event, 'preview1')">
                                         <br>
                                         <img id="preview1" src="#" alt="Preview Gambar 1"
                                             style="display:none; width: 150px; margin-top:10px; border-radius:8px;">

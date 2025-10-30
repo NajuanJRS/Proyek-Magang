@@ -10,6 +10,8 @@ use Illuminate\Contracts\View\View; // Import View
 use Illuminate\Http\RedirectResponse; // Import RedirectResponse
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Validator;
+
 // use Illuminate\Support\Facades\Storage; // Tidak perlu lagi
 
 class SliderController extends Controller
@@ -46,13 +48,31 @@ class SliderController extends Controller
      */
     public function store(Request $request): RedirectResponse
     {
-        // 3. Sesuaikan Validasi
-        $request->validate([
-            'headline' => 'required|string|min:5|max:100',
-            'sub_heading' => 'required|string|min:5|max:255',
-            'gambar'     => 'required|image|mimes:jpeg,png,jpg,gif,svg,webp|max:5120', // Naikkan max 5MB
-        ]);
+        $messages = [
+            'headline.required' => 'Headline wajib diisi.',
+            'headline.min' => 'Headline minimal harus berisi :min karakter.',
+            'headline.max' => 'Headline maksimal :max karakter.',
+            'sub_heading.required' => 'Sub Heading wajib diisi.',
+            'sub_heading.max' => 'Sub Heading maksimal :max karakter.',
+            'gambar' => 'Gambar wajib diisi.',
+            'gambar.image' => 'File harus berupa gambar.',
+            'gambar.mimes' => 'Format gambar harus jpeg, png, jpg, svg, atau webp.',
+            'gambar.max' => 'Ukuran gambar maksimal :max KB.',
+        ];
 
+        $validator = Validator::make($request->all(),[
+            'headline' => 'required|string|min:5|max:100',
+            'sub_heading' => 'required|string|max:255',
+            'gambar'     => 'required|image|mimes:jpeg,png,jpg,gif,svg,webp|max:5120', // Naikkan max 5MB
+        ], $messages);
+
+        if ($validator->fails()) {
+        return back()
+        ->withErrors($validator)
+        ->withInput();
+        }
+
+        try {
         $idUser = Auth::check() && Auth::user()->role === 'admin'
             ? 1
             : Auth::id();
@@ -82,6 +102,11 @@ class SliderController extends Controller
         ]);
 
         return redirect()->route('admin.slider.index')->with('success', 'Hero Section Berhasil Ditambahkan!');
+        } catch (\Exception $e) {
+            return back()
+                ->withErrors(['general' => 'Terjadi kesalahan: ' . $e->getMessage()])
+                ->withInput();
+        }
     }
 
     /**
@@ -97,7 +122,7 @@ class SliderController extends Controller
      */
     public function edit($id): View
     {
-        $slider = Header::where('id_kategori_header', 1)->findOrFail($id); // Pastikan hanya edit slider
+        $slider = Header::where('id_kategori_header', 1)->findOrFail($id);
         return view('Admin.beranda.slider.formEditSlider', compact('slider'));
     }
 
@@ -106,15 +131,33 @@ class SliderController extends Controller
      */
     public function update(Request $request, $id): RedirectResponse
     {
-        $slider = Header::where('id_kategori_header', 1)->findOrFail($id); // Pastikan hanya update slider
+        $slider = Header::where('id_kategori_header', 1)->findOrFail($id);
 
-        // 6. Sesuaikan Validasi Update
-        $request->validate([
+        $messages = [
+            'headline.required' => 'Headline wajib diisi.',
+            'headline.min' => 'Headline minimal harus berisi :min karakter.',
+            'headline.max' => 'Headline maksimal :max karakter.',
+            'sub_heading.required' => 'Sub Heading wajib diisi.',
+            'sub_heading.max' => 'Sub Heading maksimal :max karakter.',
+            'gambar' => 'Gambar wajib diisi.',
+            'gambar.image' => 'File harus berupa gambar.',
+            'gambar.mimes' => 'Format gambar harus jpeg, png, jpg, svg, atau webp.',
+            'gambar.max' => 'Ukuran gambar maksimal :max KB.',
+        ];
+
+        $validator = Validator::make($request->all(),[
             'headline' => 'required|string|min:5|max:100',
             'sub_heading' => 'required|string|min:5|max:255',
-            'gambar' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg,webp|max:5120', // Naikkan max 5MB
+            'gambar' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg,webp|max:5120',
         ]);
+        
+        if ($validator->fails()) {
+        return back()
+        ->withErrors($validator)
+        ->withInput();
+        }
 
+        try {
         $idUser = Auth::check() && Auth::user()->role === 'admin'
             ? 1
             : Auth::id();
@@ -143,6 +186,11 @@ class SliderController extends Controller
         $slider->update($data);
 
         return redirect()->route('admin.slider.index')->with('success', 'Hero Section Berhasil Diperbarui!');
+        } catch (\Exception $e) {
+            return back()
+                ->withErrors(['general' => 'Terjadi kesalahan: ' . $e->getMessage()])
+                ->withInput();
+        }
     }
 
     /**

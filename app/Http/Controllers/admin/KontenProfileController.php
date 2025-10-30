@@ -5,13 +5,13 @@ namespace App\Http\Controllers\admin;
 use App\Http\Controllers\Controller;
 use App\Models\admin\KategoriKonten;
 use App\Models\admin\Konten;
-use App\Traits\ManajemenGambarTrait; // 1. Panggil Trait
+use App\Traits\ManajemenGambarTrait;
 use Illuminate\Http\Request;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
-// use Illuminate\Support\Facades\Storage; // Tidak perlu lagi
-use Illuminate\Support\Str; // Import Str facade
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Str;
 
 class KontenProfileController extends Controller
 {
@@ -27,9 +27,8 @@ class KontenProfileController extends Controller
 
         $kontenProfile = Konten::with('kategoriKonten')
             ->whereHas('kategoriKonten', function ($query) use ($search) {
-                $query->where('menu_konten', 'Profil'); // Filter berdasarkan 'Profil'
+                $query->where('menu_konten', 'Profil');
                 if (!empty($search)) {
-                    // Search simplified to judul_konten for performance
                     $query->where('judul_konten', 'like', "%{$search}%");
                 }
             })
@@ -52,19 +51,44 @@ class KontenProfileController extends Controller
      */
     public function store(Request $request): RedirectResponse
     {
-        // 3. Sesuaikan Validasi
-        $request->validate([
-            'judul_konten'  => 'required|string|max:255',
-            'icon_konten'   => 'nullable|image|mimes:jpeg,png,jpg,gif,svg,webp|max:1024', // Max 1MB for icon
-            'isi_konten1'  => 'required|string',
-            'gambar1'       => 'nullable|image|mimes:jpeg,png,jpg,gif,svg,webp|max:5120', // Max 5MB for content images
+        $messages = [
+            'judul_konten.required' => 'Judul wajib diisi.',
+            'judul_konten.min' => 'Judul minimal harus berisi :min karakter.',
+            'judul_konten.max' => 'Judul maksimal :max karakter.',
+            'icon_konten.required' => 'Icon mitra wajib diunggah.',
+            'icon_konten.image' => 'File harus berupa Icon.',
+            'icon_konten.mimes' => 'Format IconIcon harus jpeg, png, jpg, svg, atau webp.',
+            'icon_konten.max' => 'Ukuran Icon maksimal :max KB.',
+            'isi_konten1.required' => 'Isi Konten 1 wajib diisi.',
+            'isi_konten1.min' => 'Isi Konten 1 minimal harus berisi :min karakter.',
+            'gambar1.image' => 'File harus berupa gambar.',
+            'gambar1.mimes' => 'Format gambar 1 harus jpeg, png, jpg, svg, atau webp.',
+            'gambar1.max' => 'Ukuran gambar 1 maksimal :max KB.',
+            'gambar2.image' => 'File harus berupa gambar.',
+            'gambar2.mimes' => 'Format gambar 2 harus jpeg, png, jpg, svg, atau webp.',
+            'gambar2.max' => 'Ukuran gambar 2 maksimal :max KB.',
+            'gambar3.mimes' => 'Format gambar 3 harus jpeg, png, jpg, svg, atau webp.',
+            'gambar3.max' => 'Ukuran gambar 3 maksimal :max KB.',
+        ];
+
+        $validator = Validator::make($request->all(),[
+            'judul_konten'  => 'required|string|min:10|max:255',
+            'icon_konten'   => 'nullable|image|mimes:jpeg,png,jpg,gif,svg,webp|max:1024',
+            'isi_konten1'  => 'required|string|min:10',
+            'gambar1'       => 'nullable|image|mimes:jpeg,png,jpg,gif,svg,webp|max:5120',
             'isi_konten2'  => 'nullable|string',
             'gambar2'       => 'nullable|image|mimes:jpeg,png,jpg,gif,svg,webp|max:5120',
             'isi_konten3'  => 'nullable|string',
             'gambar3'       => 'nullable|image|mimes:jpeg,png,jpg,gif,svg,webp|max:5120',
-        ]);
+        ], $messages);
 
-        // 4. Proses Icon Konten dengan Trait
+        if ($validator->fails()) {
+        return back()
+        ->withErrors($validator)
+        ->withInput();
+        }
+
+        try {
         $pathIconKonten = null;
         if ($request->hasFile('icon_konten')) {
             $pathIconKonten = $this->prosesDanSimpanGambar($request->file('icon_konten'), 'icon', 'icon');
@@ -73,15 +97,13 @@ class KontenProfileController extends Controller
             }
         }
 
-        // Simpan ke tabel kategori_konten
         $kategori = KategoriKonten::create([
-            'menu_konten'     => 'Profil', // <-- Diubah ke 'Profil'
+            'menu_konten'     => 'Profil',
             'judul_konten'  => $request->judul_konten,
             'icon_konten'   => $pathIconKonten,
             'slug'          => Str::slug($request->judul_konten),
         ]);
 
-        // 5. Proses Gambar Konten dengan Trait
         $pathGambar1 = null;
         $pathGambar2 = null;
         $pathGambar3 = null;
@@ -99,7 +121,6 @@ class KontenProfileController extends Controller
              if (!$pathGambar3) { $this->hapusGambarLama($pathGambar1); $this->hapusGambarLama($pathGambar2); $kategori->delete(); return redirect()->back()->withErrors(['gambar3' => 'Gagal memproses gambar 3.'])->withInput(); }
         }
 
-        // Simpan ke tabel konten
         Konten::create([
             'id_user'             => Auth::id() ?? 1,
             'id_kategori_konten'  => $kategori->id_kategori_konten,
@@ -111,8 +132,13 @@ class KontenProfileController extends Controller
             'gambar3'             => $pathGambar3,
         ]);
 
-        return redirect()->route('admin.profile.index') // Sesuaikan route redirect
+        return redirect()->route('admin.profile.index')
             ->with('success', 'Konten Profil Berhasil Ditambahkan!');
+        } catch (\Exception $e) {
+            return back()
+                ->withErrors(['general' => 'Terjadi kesalahan: ' . $e->getMessage()])
+                ->withInput();
+        }
     }
 
 
@@ -121,7 +147,7 @@ class KontenProfileController extends Controller
      */
     public function show(Konten $kontenProfile)
     {
-        // Tidak digunakan
+
     }
 
     /**
@@ -129,7 +155,7 @@ class KontenProfileController extends Controller
      */
     public function edit($id): View
     {
-        $kontenProfile = Konten::with('kategoriKonten')->findOrFail($id); // Eager load
+        $kontenProfile = Konten::with('kategoriKonten')->findOrFail($id);
         return view('Admin.profile.kontenProfile.formEditKontenProfile', compact('kontenProfile'));
     }
 
@@ -138,28 +164,51 @@ class KontenProfileController extends Controller
      */
     public function update(Request $request, $id): RedirectResponse
     {
-        // 6. Sesuaikan Validasi Update
-        $request->validate([
-            'judul_konten'  => 'required|string|max:255',
+        $messages = [
+            'judul_konten.required' => 'Judul wajib diisi.',
+            'judul_konten.min' => 'Judul minimal harus berisi :min karakter.',
+            'judul_konten.max' => 'Judul maksimal :max karakter.',
+            'icon_konten.required' => 'Icon mitra wajib diunggah.',
+            'icon_konten.image' => 'File harus berupa Icon.',
+            'icon_konten.mimes' => 'Format IconIcon harus jpeg, png, jpg, svg, atau webp.',
+            'icon_konten.max' => 'Ukuran Icon maksimal :max KB.',
+            'isi_konten1.required' => 'Isi Konten 1 wajib diisi.',
+            'isi_konten1.min' => 'Isi Konten 1 minimal harus berisi :min karakter.',
+            'gambar1.image' => 'File harus berupa gambar.',
+            'gambar1.mimes' => 'Format gambar 1 harus jpeg, png, jpg, svg, atau webp.',
+            'gambar1.max' => 'Ukuran gambar 1 maksimal :max KB.',
+            'gambar2.image' => 'File harus berupa gambar.',
+            'gambar2.mimes' => 'Format gambar 2 harus jpeg, png, jpg, svg, atau webp.',
+            'gambar2.max' => 'Ukuran gambar 2 maksimal :max KB.',
+            'gambar3.mimes' => 'Format gambar 3 harus jpeg, png, jpg, svg, atau webp.',
+            'gambar3.max' => 'Ukuran gambar 3 maksimal :max KB.',
+        ];
+
+        $validator = Validator::make($request->all(),[
+            'judul_konten'  => 'required|string|min:10|max:255',
             'icon_konten'   => 'nullable|image|mimes:jpeg,png,jpg,gif,svg,webp|max:1024',
-            'isi_konten1'  => 'required|string',
+            'isi_konten1'  => 'required|string|min:10',
             'gambar1'       => 'nullable|image|mimes:jpeg,png,jpg,gif,svg,webp|max:5120',
             'isi_konten2'  => 'nullable|string',
             'gambar2'       => 'nullable|image|mimes:jpeg,png,jpg,gif,svg,webp|max:5120',
             'isi_konten3'  => 'nullable|string',
             'gambar3'       => 'nullable|image|mimes:jpeg,png,jpg,gif,svg,webp|max:5120',
-        ]);
+        ], $messages);
 
+        if ($validator->fails()) {
+        return back()
+        ->withErrors($validator)
+        ->withInput();
+        }
+
+        try {
         $konten = Konten::with('kategoriKonten')->findOrFail($id);
         $kategori = $konten->kategoriKonten;
 
-        // --- Update Kategori Konten ---
         $kategoriData = [
             'judul_konten'  => $request->judul_konten,
-            // 'menu_konten' => 'Profil' // Tidak perlu diupdate, sudah pasti Profil
         ];
 
-        // 7. Proses Update Icon Konten dengan Trait
         if ($request->hasFile('icon_konten')) {
             $this->hapusGambarLama($kategori->icon_konten);
             $pathIconBaru = $this->prosesDanSimpanGambar($request->file('icon_konten'), 'icon', 'icon');
@@ -169,23 +218,18 @@ class KontenProfileController extends Controller
             $kategoriData['icon_konten'] = $pathIconBaru;
         }
 
-        // Update slug HANYA jika judul berubah
         if ($request->judul_konten !== $kategori->judul_konten) {
             $kategoriData['slug'] = Str::slug($request->judul_konten);
         }
 
         $kategori->update($kategoriData);
 
-
-        // --- Update Konten ---
         $kontenData = [
             'isi_konten1' => $request->isi_konten1,
             'isi_konten2' => $request->isi_konten2,
             'isi_konten3' => $request->isi_konten3,
         ];
 
-        // 8. Proses Update Gambar Konten dengan Trait
-        // Gambar 1
         if ($request->hasFile('gambar1')) {
             $this->hapusGambarLama($konten->gambar1);
             $pathGambar1Baru = $this->prosesDanSimpanGambar($request->file('gambar1'), 'konten', 'konten');
@@ -193,7 +237,6 @@ class KontenProfileController extends Controller
             $kontenData['gambar1'] = $pathGambar1Baru;
         }
 
-        // Gambar 2
         if ($request->hasFile('gambar2')) {
             $this->hapusGambarLama($konten->gambar2);
             $pathGambar2Baru = $this->prosesDanSimpanGambar($request->file('gambar2'), 'konten', 'konten');
@@ -204,7 +247,6 @@ class KontenProfileController extends Controller
             $kontenData['gambar2'] = null;
         }
 
-        // Gambar 3
         if ($request->hasFile('gambar3')) {
             $this->hapusGambarLama($konten->gambar3);
             $pathGambar3Baru = $this->prosesDanSimpanGambar($request->file('gambar3'), 'konten', 'konten');
@@ -217,7 +259,12 @@ class KontenProfileController extends Controller
 
         $konten->update($kontenData);
 
-        return redirect()->route('admin.profile.index')->with('success', 'Konten Profil Berhasil Diperbarui!'); // Sesuaikan route
+        return redirect()->route('admin.profile.index')->with('success', 'Konten Profil Berhasil Diperbarui!');
+        } catch (\Exception $e) {
+            return back()
+                ->withErrors(['general' => 'Terjadi kesalahan: ' . $e->getMessage()])
+                ->withInput();
+        }
     }
 
 
@@ -226,30 +273,26 @@ class KontenProfileController extends Controller
      */
     public function destroy($id): RedirectResponse
     {
-        $kontenProfile = Konten::with('kategoriKonten')->findOrFail($id); // Eager load
+        $kontenProfile = Konten::with('kategoriKonten')->findOrFail($id);
 
-        // 9. Gunakan Trait untuk Hapus Gambar Konten
         $this->hapusGambarLama($kontenProfile->gambar1);
         $this->hapusGambarLama($kontenProfile->gambar2);
         $this->hapusGambarLama($kontenProfile->gambar3);
 
-        // Handle related kategori_konten deletion
         $kategori = $kontenProfile->kategoriKonten;
         if ($kategori) {
-            // Cek konten lain
             $otherKontenExists = Konten::where('id_kategori_konten', $kategori->id_kategori_konten)
                                         ->where('id_konten', '!=', $id)
                                         ->exists();
 
             if (!$otherKontenExists) {
-                $this->hapusGambarLama($kategori->icon_konten); // Hapus icon
-                $kategori->delete(); // Hapus kategori
+                $this->hapusGambarLama($kategori->icon_konten);
+                $kategori->delete();
             }
         }
 
-        // Hapus record Konten
         $kontenProfile->delete();
 
-        return redirect()->route('admin.profile.index')->with('success', 'Konten Profil Berhasil Dihapus!'); // Sesuaikan route
+        return redirect()->route('admin.profile.index')->with('success', 'Konten Profil Berhasil Dihapus!');
     }
 }
