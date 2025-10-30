@@ -15,10 +15,6 @@ return Application::configure(basePath: dirname(__DIR__))
     )
     ->withMiddleware(function (Middleware $middleware) {
 
-        $middleware->appendToGroup('web', [
-            App\Http\Middleware\FrameOptionsMiddleware::class,
-            \Spatie\Csp\AddCspHeaders::class,
-        ]);
 
         $middleware->alias([
             'Admin' => Admin::class,

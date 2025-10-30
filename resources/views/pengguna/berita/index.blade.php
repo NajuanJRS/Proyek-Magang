@@ -22,6 +22,8 @@
     </section>
     @endif
 
+    <script>alert('Jika ini muncul, CSP Anda GAGAL');</script>
+<button onclick="alert('CSP Gagal juga')">Tombol Tes</button>
   <section class="py-5">
     <div class="konten-berita">
 
