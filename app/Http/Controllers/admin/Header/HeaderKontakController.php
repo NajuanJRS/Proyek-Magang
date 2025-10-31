@@ -10,6 +10,7 @@ use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse; // Import RedirectResponse
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cache;
 // use Illuminate\Support\Facades\Storage; // Tidak perlu lagi
 
 class HeaderKontakController extends Controller
@@ -99,6 +100,8 @@ class HeaderKontakController extends Controller
         // Jika tidak ada gambar baru, $data['gambar'] tidak diset
 
         $headerKontak->update($data);
+
+        Cache::forget('header_kontak');
 
         return redirect()->route('admin.headerKontak.index')->with('success', 'Heading Kontak Berhasil Diperbarui!');
     }

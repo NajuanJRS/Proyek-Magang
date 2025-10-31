@@ -12,6 +12,7 @@ use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse; // Tambahkan RedirectResponse
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cache;
 // use Illuminate\Support\Facades\Storage; // Tidak perlu lagi
 
 class PejabatController extends Controller
@@ -98,6 +99,9 @@ class PejabatController extends Controller
             'gambar' => $pathGambar, // Path hasil Trait
         ]);
 
+        Cache::forget('profil_pejabat_kepala');
+        Cache::forget('profil_pejabat_lainnya');
+
         return redirect()->route('admin.pejabat.index')->with('success', 'Informasi Pejabat Berhasil Ditambahkan!');
     }
 
@@ -155,6 +159,11 @@ class PejabatController extends Controller
 
         $pejabat->update($data);
 
+        Cache::forget('profil_pejabat_kepala');
+        Cache::forget('profil_pejabat_lainnya');
+        // Juga bersihkan cache id jabatan kadin, untuk jaga-jaga
+        Cache::forget('jabatan_kepala_dinas_id');
+
         return redirect()->route('admin.pejabat.index')->with('success', 'Informasi Pejabat Berhasil Diperbarui!');
     }
 
@@ -191,6 +200,8 @@ class PejabatController extends Controller
 
         $headerKartu->update($data); // Update hanya field gambar
 
+        Cache::forget('profil_pejabat_background');
+
         return redirect()->route('admin.pejabat.index')->with('success', 'Background Kepala Pejabat Berhasil Diperbarui!');
     }
 
@@ -203,6 +214,9 @@ class PejabatController extends Controller
         $this->hapusGambarLama($pejabat->gambar);
 
         $pejabat->delete();
+
+        Cache::forget('profil_pejabat_kepala');
+        Cache::forget('profil_pejabat_lainnya');
 
         return redirect()->route('admin.pejabat.index')->with('success', 'Informasi Pejabat Berhasil Dihapus!');
     }

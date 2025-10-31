@@ -9,6 +9,7 @@ use App\Traits\ManajemenGambarTrait; // 1. Panggil Trait
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cache;
 // use Illuminate\Support\Facades\Storage; // Tidak perlu lagi
 use Illuminate\View\View;
 use Illuminate\Support\Str; // Import Str facade
@@ -111,6 +112,9 @@ class PpidController extends Controller
             'gambar3'             => $pathGambar3, // Path hasil Trait
         ]);
 
+        Cache::forget('ppid.kategori_konten');
+        Cache::forget('ppid.all_items_nav');
+
         return redirect()->route('admin.ppid.index') // Sesuaikan route
             ->with('success', 'Konten PPID Berhasil Ditambahkan!');
     }
@@ -152,6 +156,8 @@ class PpidController extends Controller
 
         $konten = Konten::with('kategoriKonten')->findOrFail($id);
         $kategori = $konten->kategoriKonten;
+        $slugLama = $kategori->slug;
+        $slugBaru = $slugLama; // Inisialisasi
 
         // --- Update Kategori Konten ---
         $kategoriData = [
@@ -172,6 +178,7 @@ class PpidController extends Controller
         // Update slug HANYA jika judul berubah
         if ($request->judul_konten !== $kategori->judul_konten) {
             $kategoriData['slug'] = Str::slug($request->judul_konten);
+            $slugBaru = $kategoriData['slug'];
         }
 
         $kategori->update($kategoriData);
@@ -216,6 +223,17 @@ class PpidController extends Controller
 
         $konten->update($kontenData);
 
+        Cache::forget('ppid.kategori_konten');
+        Cache::forget('ppid.all_items_nav');
+
+        // 2. Hapus cache halaman detail (slug lama)
+        Cache::forget("ppid.content.{$slugLama}");
+
+        // 3. Hapus cache halaman detail (slug baru, jika berubah)
+        if ($slugBaru !== $slugLama) {
+            Cache::forget("ppid.content.{$slugBaru}");
+        }
+
         return redirect()->route('admin.ppid.index')->with('success', 'Konten PPID Berhasil Diperbarui!'); // Sesuaikan route
     }
 
@@ -234,7 +252,9 @@ class PpidController extends Controller
 
         // Handle related kategori_konten deletion
         $kategori = $kontenPpid->kategoriKonten;
+        $slugYangDihapus = null;
         if ($kategori) {
+            $slugYangDihapus = $kategori->slug;
              // Cek konten lain
             $otherKontenExists = Konten::where('id_kategori_konten', $kategori->id_kategori_konten)
                                         ->where('id_konten', '!=', $id)
@@ -248,6 +268,14 @@ class PpidController extends Controller
 
         // Hapus record Konten
         $kontenPpid->delete();
+
+        Cache::forget('ppid.kategori_konten');
+        Cache::forget('ppid.all_items_nav');
+
+        // 2. Hapus cache halaman detail (jika slug-nya ada)
+        if ($slugYangDihapus) {
+            Cache::forget("ppid.content.{$slugYangDihapus}");
+        }
 
         return redirect()->route('admin.ppid.index')->with('success', 'Konten PPID Berhasil Dihapus!'); // Sesuaikan route
     }

@@ -12,6 +12,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
 // use Illuminate\Support\Facades\Storage; // Tidak perlu lagi
 use Illuminate\Support\Str; // Import Str facade
+use Illuminate\Support\Facades\Cache;
 
 class KontenProfileController extends Controller
 {
@@ -111,6 +112,9 @@ class KontenProfileController extends Controller
             'gambar3'             => $pathGambar3,
         ]);
 
+        Cache::forget('profil_cards_menu');
+        Cache::forget('profil_all_categories');
+
         return redirect()->route('admin.profile.index') // Sesuaikan route redirect
             ->with('success', 'Konten Profil Berhasil Ditambahkan!');
     }
@@ -153,6 +157,9 @@ class KontenProfileController extends Controller
         $konten = Konten::with('kategoriKonten')->findOrFail($id);
         $kategori = $konten->kategoriKonten;
 
+        $slugLama = $kategori->slug;
+        $slugBaru = $slugLama;
+
         // --- Update Kategori Konten ---
         $kategoriData = [
             'judul_konten'  => $request->judul_konten,
@@ -172,6 +179,7 @@ class KontenProfileController extends Controller
         // Update slug HANYA jika judul berubah
         if ($request->judul_konten !== $kategori->judul_konten) {
             $kategoriData['slug'] = Str::slug($request->judul_konten);
+            $slugBaru = $kategoriData['slug'];
         }
 
         $kategori->update($kategoriData);
@@ -217,6 +225,20 @@ class KontenProfileController extends Controller
 
         $konten->update($kontenData);
 
+        Cache::forget('profil_cards_menu');
+        Cache::forget('profil_all_categories');
+
+        // 2. Hapus cache halaman detail (slug lama)
+        Cache::forget('profil_kategori_' . $slugLama);
+
+        // 3. Hapus cache halaman detail (slug baru, jika berubah)
+        if ($slugBaru !== $slugLama) {
+            Cache::forget('profil_kategori_' . $slugBaru);
+        }
+
+        // 4. Hapus cache VisiMisi di Beranda (untuk jaga-jaga)
+        Cache::forget('beranda_visi_misi');
+
         return redirect()->route('admin.profile.index')->with('success', 'Konten Profil Berhasil Diperbarui!'); // Sesuaikan route
     }
 
@@ -235,7 +257,9 @@ class KontenProfileController extends Controller
 
         // Handle related kategori_konten deletion
         $kategori = $kontenProfile->kategoriKonten;
+        $slugYangDihapus = null;
         if ($kategori) {
+            $slugYangDihapus = $kategori->slug;
             // Cek konten lain
             $otherKontenExists = Konten::where('id_kategori_konten', $kategori->id_kategori_konten)
                                         ->where('id_konten', '!=', $id)
@@ -249,6 +273,17 @@ class KontenProfileController extends Controller
 
         // Hapus record Konten
         $kontenProfile->delete();
+
+        Cache::forget('profil_cards_menu');
+        Cache::forget('profil_all_categories');
+
+        // 2. Hapus cache halaman detail (jika slug-nya ada)
+        if ($slugYangDihapus) {
+            Cache::forget('profil_kategori_' . $slugYangDihapus);
+        }
+
+        // 3. Hapus cache VisiMisi di Beranda
+        Cache::forget('beranda_visi_misi');
 
         return redirect()->route('admin.profile.index')->with('success', 'Konten Profil Berhasil Dihapus!'); // Sesuaikan route
     }

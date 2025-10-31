@@ -10,6 +10,7 @@ use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse; // Import RedirectResponse
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cache;
 // use Illuminate\Support\Facades\Storage; // Tidak perlu lagi
 
 class HeaderDownloadController extends Controller
@@ -99,6 +100,8 @@ class HeaderDownloadController extends Controller
         // Jika tidak ada gambar baru, $data['gambar'] tidak diset
 
         $headerDownload->update($data);
+
+        Cache::forget('header_download');
 
         return redirect()->route('admin.headerDownload.index')->with('success', 'Heading Download Berhasil Diperbarui!');
     }

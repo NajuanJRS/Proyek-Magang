@@ -10,11 +10,12 @@ use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse; // Import RedirectResponse
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cache;
 // use Illuminate\Support\Facades\Storage; // Tidak perlu lagi
 
 class HeaderLayananController extends Controller
 {
-    // 2. Gunakan Trait
+    // 2. Gunakan Trai
     use ManajemenGambarTrait;
 
     /**
@@ -99,6 +100,8 @@ class HeaderLayananController extends Controller
         // Jika tidak ada gambar baru, $data['gambar'] tidak diset
 
         $headerLayanan->update($data);
+
+        Cache::forget('header_layanan');
 
         return redirect()->route('admin.headerLayanan.index')->with('success', 'Heading Layanan Berhasil Diperbarui!');
     }

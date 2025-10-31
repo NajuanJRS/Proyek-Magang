@@ -10,6 +10,7 @@ use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse; // Import RedirectResponse
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cache;
 // use Illuminate\Support\Facades\Storage; // Tidak perlu lagi
 
 class HeaderPpidController extends Controller
@@ -99,6 +100,8 @@ class HeaderPpidController extends Controller
         // Jika tidak ada gambar baru, $data['gambar'] tidak diset
 
         $headerPpid->update($data);
+
+        Cache::forget('header_ppid');
 
         return redirect()->route('admin.headerPpid.index')->with('success', 'Heading PPID Berhasil Diperbarui!');
     }

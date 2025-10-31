@@ -3,78 +3,80 @@
 namespace App\Http\Controllers\admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\admin\KategoriFile;
-use App\Traits\ManajemenGambarTrait; // 1. Panggil Trait
-use Illuminate\Contracts\View\View; // Import View
-use Illuminate\Http\RedirectResponse; // Import RedirectResponse
+use App\Models\admin\KategoriDownload;
+use App\Traits\ManajemenGambarTrait;
+use Illuminate\Contracts\View\View;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
-// use Illuminate\Support\Facades\Storage; // Tidak perlu lagi jika hanya pakai Trait
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Storage; // Pastikan ini ada
 
 class DownloadController extends Controller
 {
-    // 2. Gunakan Trait
     use ManajemenGambarTrait;
 
-    public function index(): View // Tambah View return type
+    public function index(): View
     {
-        $kartuDownload = KategoriFile::paginate(15);
+        $kartuDownload = KategoriDownload::paginate(15);
         return view('Admin.download.kontenDownload.kontenDownload', compact('kartuDownload'));
     }
 
-    public function create(): View // Tambah View return type
+    public function create(): View
     {
         return view('Admin.download.kontenDownload.formKontenDownload');
     }
 
-    public function store(Request $request): RedirectResponse // Hapus param $kategoriFile, tambah RedirectResponse
+    public function store(Request $request): RedirectResponse
     {
-        // 3. Sesuaikan Validasi Icon
         $request->validate([
             'nama_kategori' => 'required|string|max:255',
-            'icon' => 'nullable|image|mimes:jpeg,png,jpg,svg,webp|max:1024', // Max 1MB
-            'halaman_induk' => 'required|string|max:255', // Buat required agar jelas
+            'icon' => 'nullable|image|mimes:jpeg,png,jpg,svg,webp|max:1024',
+            'halaman_induk' => 'required|string|max:255',
         ]);
 
-        // 4. Proses Icon dengan Trait
         $pathIcon = null;
         if ($request->hasFile('icon')) {
             $pathIcon = $this->prosesDanSimpanGambar(
                 $request->file('icon'),
-                'icon', // Tipe gambar
-                'icon'  // Folder tujuan
+                'icon',
+                'icon'
             );
-             if (!$pathIcon && $request->file('icon')->isValid()) { // Cek jika file valid tapi proses gagal
+             if (!$pathIcon && $request->file('icon')->isValid()) {
                  return redirect()->back()->withErrors(['icon' => 'Gagal memproses ikon.'])->withInput();
             }
         }
-        // Jika icon nullable dan tidak diupload, $pathIcon akan tetap null
 
-        // 5. Gunakan path dari Trait
-        KategoriFile::create([
+        KategoriDownload::create([
             'nama_kategori' => $request->nama_kategori,
             'slug' => Str::slug($request->nama_kategori),
-            'icon' => $pathIcon, // Simpan path icon hasil Trait (bisa null)
+            'icon' => $pathIcon,
             'halaman_induk' => $request->halaman_induk,
         ]);
+
+        // === PERBAIKAN "SLEDGEHAMMER" ===
+        $this->clearAllListCaches();
+        // ===============================
 
         return redirect()->route('admin.kontenDownload.index')->with('success', 'Konten Download Berhasil Ditambahkan!');
     }
 
-    public function edit($id): View // Tambah View return type
+    public function edit($id): View
     {
-        $kartuDownload = KategoriFile::findOrFail($id);
+        $kartuDownload = KategoriDownload::findOrFail($id);
         return view('Admin.download.kontenDownload.formEditKontenDownload', compact('kartuDownload'));
     }
 
-    public function update(Request $request, $id): RedirectResponse // Tambah RedirectResponse return type
+    public function update(Request $request, $id): RedirectResponse
     {
-        $kartuDownload = KategoriFile::findOrFail($id);
+        $kartuDownload = KategoriDownload::findOrFail($id);
 
-        // 6. Sesuaikan Validasi Update Icon
+        $slugLama = $kartuDownload->slug;
+        $halamanIndukLama = $kartuDownload->halaman_induk;
+
          $request->validate([
             'nama_kategori' => 'required|string|max:255',
-            'icon' => 'nullable|image|mimes:jpeg,png,jpg,svg,webp|max:1024', // Max 1MB
+            'icon' => 'nullable|image|mimes:jpeg,png,jpg,svg,webp|max:1024',
             'halaman_induk' => 'required|string|max:255',
         ]);
 
@@ -85,46 +87,93 @@ class DownloadController extends Controller
             'halaman_induk' => $request->halaman_induk,
         ];
 
-        // 7. Proses Update Icon dengan Trait
         if ($request->hasFile('icon')) {
-            $this->hapusGambarLama($kartuDownload->icon); // Hapus icon lama
+            $this->hapusGambarLama($kartuDownload->icon);
             $pathIconBaru = $this->prosesDanSimpanGambar($request->file('icon'), 'icon', 'icon');
              if (!$pathIconBaru && $request->file('icon')->isValid()) {
                  return redirect()->back()->withErrors(['icon' => 'Gagal memproses ikon baru.'])->withInput();
             }
-            $data['icon'] = $pathIconBaru; // Gunakan path baru
+            $data['icon'] = $pathIconBaru;
         }
-        // Jika tidak ada file baru, $data['icon'] tidak di-set, nilai lama tetap
 
         $kartuDownload->update($data);
+        
+        $slugBaru = $data['slug'];
+        $halamanIndukBaru = $data['halaman_induk'];
+
+        // === PERBAIKAN "SLEDGEHAMMER" ===
+        $this->clearAllListCaches(); // Hapus semua cache list
+
+        // Hapus cache detail (per-slug) yang LAMA
+        if ($halamanIndukLama == 'download') {
+            Cache::forget("kategori_download_detail_{$slugLama}");
+        } elseif ($halamanIndukLama == 'ppid') {
+            Cache::forget("ppid.content.{$slugLama}");
+        }
+
+        // Hapus cache detail (per-slug) yang BARU (jika berubah)
+        if ($slugBaru !== $slugLama || $halamanIndukBaru !== $halamanIndukLama) {
+            if ($halamanIndukBaru == 'download') {
+                Cache::forget("kategori_download_detail_{$slugBaru}");
+            } elseif ($halamanIndukBaru == 'ppid') {
+                Cache::forget("ppid.content.{$slugBaru}");
+            }
+        }
+        // ===============================
 
         return redirect()->route('admin.kontenDownload.index')->with('success', 'Konten Download Berhasil Diupdate!');
     }
 
-    public function destroy($id): RedirectResponse // Tambah RedirectResponse return type
+    public function destroy($id): RedirectResponse
     {
-        $kartuDownload = KategoriFile::with('download')->findOrFail($id); // Eager load relasi
+        $kartuDownload = KategoriDownload::with('files')->findOrFail($id); // Eager load relasi
 
-        // Hapus file-file terkait (FileDownload) - Logika ini tetap
-        foreach ($kartuDownload->download as $file) {
-            // Pastikan path lengkap ke file
-            $filePath = 'upload/file/' . $file->file; // Sesuai FileDownloadController
-             // Gunakan helper Trait untuk hapus file ini juga (meskipun bukan gambar)
-             // Jika ingin Trait hanya untuk gambar, gunakan Storage::disk('public')->delete($filePath);
-            $this->hapusGambarLama($filePath); // Bisa digunakan untuk file apa saja di public disk
-            // Hapus record FileDownload itu sendiri jika perlu (tergantung relasi on cascade)
-            // $file->delete(); // Jika tidak on cascade
+        $slug = $kartuDownload->slug;
+        $halamanInduk = $kartuDownload->halaman_induk;
+
+        // Hapus file fisik dari storage
+        foreach ($kartuDownload->files as $file) {
+            if ($file->file && Storage::disk('public')->exists('upload/file/' . $file->file)) {
+                Storage::disk('public')->delete('upload/file/' . $file->file);
+            }
         }
-         // Hapus record FileDownload terkait (jika tidak ada ON DELETE CASCADE di DB)
-        $kartuDownload->download()->delete();
+        // Hapus record file di database
+        $kartuDownload->files()->delete();
 
 
-        // 8. Gunakan Trait untuk Hapus Icon Kategori
+        // Gunakan Trait untuk Hapus Icon Kategori
         $this->hapusGambarLama($kartuDownload->icon);
 
         // Hapus Kategori itu sendiri
         $kartuDownload->delete();
 
+        // === PERBAIKAN "SLEDGEHAMMER" ===
+        $this->clearAllListCaches(); // Hapus semua cache list
+
+        // Hapus cache detail (per-slug) yang spesifik
+        if ($halamanInduk == 'download') {
+            Cache::forget("kategori_download_detail_{$slug}");
+        } elseif ($halamanInduk == 'ppid') {
+            Cache::forget("ppid.content.{$slug}");
+        }
+        // ===============================
+
         return redirect()->route('admin.kontenDownload.index')->with('success', 'Konten Download dan Semua Filenya Berhasil Dihapus!');
+    }
+    
+    /**
+     * Menghapus semua cache list yang terkait dengan Download dan PPID.
+     */
+    private function clearAllListCaches()
+    {
+        // 1. Cache untuk halaman index /download (dari pengguna/DownloadController)
+        Cache::forget('kategori_download_semua');
+
+        // 2. Cache untuk halaman index /ppid (dari pengguna/PpidController)
+        Cache::forget('ppid.kategori_konten');
+        Cache::forget('ppid.kategori_download');
+
+        // 3. Cache untuk sidebar navigasi /ppid/show (dari pengguna/PpidController)
+        Cache::forget('ppid.all_items_nav');
     }
 }

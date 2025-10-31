@@ -10,6 +10,7 @@ use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse; // Import RedirectResponse
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cache;
 // use Illuminate\Support\Facades\Storage; // Tidak perlu lagi
 
 class HeaderProfileController extends Controller
@@ -70,7 +71,7 @@ class HeaderProfileController extends Controller
         $request->validate([
             'headline' => 'required|string|min:5|max:100', // Wajib diisi
             'sub_heading' => 'required|string|min:5|max:255', // Wajib diisi
-            'gambar' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg,webp|max:5120', // Max 5MB, nullable
+            'gambar' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg,webp|max:5120', // Max 5MB, nullabl
         ]);
 
         $idUser = Auth::check() && Auth::user()->role === 'admin'
@@ -99,6 +100,8 @@ class HeaderProfileController extends Controller
         // Jika tidak ada gambar baru, $data['gambar'] tidak diset
 
         $headerProfile->update($data);
+
+        Cache::forget('profil_header');
 
         return redirect()->route('admin.headerProfile.index')->with('success', 'Heading Profil Berhasil Diperbarui!');
     }

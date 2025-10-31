@@ -8,13 +8,19 @@ use Illuminate\View\View;
 use App\Models\admin\Header;
 use App\Models\admin\Kontak;
 use App\Models\admin\KotakMasuk;
+use Illuminate\Support\Facades\Cache;
 
 class KontakController extends Controller
 {
     public function index(): View
     {
-        $header = Header::where('id_kategori_header', 7)->first();
-        $kontak = Kontak::first();
+        $header = Cache::remember('header_kontak', now()->addHours(24), function () {
+            return Header::where('id_kategori_header', 7)->first();
+        });
+
+        $kontak = Cache::remember('kontak_page_data', now()->addHours(24), function () {
+            return Kontak::first();
+        });
 
         if ($kontak && $kontak->map) {
             preg_match('/src="([^"]+)"/', $kontak->map, $matches);
@@ -26,6 +32,7 @@ class KontakController extends Controller
             'kontak' => $kontak
         ]);
     }
+
     public function store(Request $request)
     {
         $validatedData = $request->validate([
@@ -36,6 +43,7 @@ class KontakController extends Controller
         ]);
         try {
             KotakMasuk::create($validatedData);
+            Cache::increment('unread_kotak_masuk_count');
 
             return redirect()->back()->with('success', 'Umpan Balik anda telah terkirim');
 
@@ -44,3 +52,4 @@ class KontakController extends Controller
         }
     }
 }
+

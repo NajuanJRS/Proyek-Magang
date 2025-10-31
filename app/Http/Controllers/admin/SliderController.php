@@ -10,6 +10,7 @@ use Illuminate\Contracts\View\View; // Import View
 use Illuminate\Http\RedirectResponse; // Import RedirectResponse
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cache;
 // use Illuminate\Support\Facades\Storage; // Tidak perlu lagi
 
 class SliderController extends Controller
@@ -81,6 +82,8 @@ class SliderController extends Controller
             'gambar'     => $pathGambar, // Path hasil Trait
         ]);
 
+        Cache::forget('beranda_hero_slides');
+
         return redirect()->route('admin.slider.index')->with('success', 'Hero Section Berhasil Ditambahkan!');
     }
 
@@ -142,6 +145,8 @@ class SliderController extends Controller
 
         $slider->update($data);
 
+        Cache::forget('beranda_hero_slides');
+
         return redirect()->route('admin.slider.index')->with('success', 'Hero Section Berhasil Diperbarui!');
     }
 
@@ -157,6 +162,8 @@ class SliderController extends Controller
 
         // Hapus data dari database
         $slider->delete();
+
+        Cache::forget('beranda_hero_slides');
 
         return redirect()->route('admin.slider.index')->with('success', 'Hero Section Berhasil Dihapus!');
     }

@@ -17,7 +17,7 @@
           <article class="ds-article-card">
             <h2 class="ds-article-title mb-4">{{ $pageContent['title'] }}</h2>
             <div class="ds-download-list">
-              @foreach($pageContent['files'] as $file)
+              @forelse($pageContent['files'] ?? [] as $file)
                 <div class="ds-download-item">
                   <div class="ds-download-icon"><i class="bi bi-file-earmark-pdf"></i></div>
                   <div class="ds-download-info">
@@ -28,7 +28,9 @@
                     <i class="bi bi-download me-2"></i>Download
                   </a>
                 </div>
-              @endforeach
+              @empty
+                <p class="text-center text-muted">Tidak ada File Terlampir</p>
+              @endforelse
             </div>
             <hr class="my-4">
             <div class="d-flex align-items-center gap-3">
@@ -55,7 +57,7 @@
             </div>
           </div>
         </div>
-        
+
       </div>
     </div>
   </section>

@@ -5,7 +5,7 @@
 @section('content')
 
 <section class="ds-hero position-relative">
-  <div id="heroCarousel" class="carousel slide carousel-fade" data-bs-ride="carousel" data-bs-interval="6000">
+  <div id="heroCarousel" class="carousel slide carousel-fade" data-bs-ride="carousel" data-bs-interval="5000">
     <div class="carousel-inner">
       @foreach ($heroSlides as $index => $slide)
         <div class="carousel-item {{ $index === 0 ? 'active' : '' }}">
