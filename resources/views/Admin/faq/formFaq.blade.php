@@ -9,7 +9,8 @@
                         <div class="card shadow-sm rounded-4">
                             <div class="card-body px-5 py-4">
 
-                                {{-- Error Handling --}}
+                                <h4 class="mb-5">Tambah FAQ</h4>
+
                                 @if ($errors->any())
                                     <div class="alert alert-danger">
                                         <ul class="mb-0">
@@ -19,9 +20,6 @@
                                         </ul>
                                     </div>
                                 @endif
-
-                                {{-- Judul --}}
-                                <h4 class="mb-5">Tambah FAQ</h4>
 
                                 <form method="POST" action="{{ route('admin.faq.store') }}">
                                     @csrf

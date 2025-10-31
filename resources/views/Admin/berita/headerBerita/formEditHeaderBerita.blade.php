@@ -9,6 +9,8 @@
                         <div class="card shadow-sm rounded-4">
                             <div class="card-body px-5 py-4">
 
+                                <h4 class="mb-5">Edit Header Berita</h4>
+                                
                                 @if ($errors->any())
                                     <div class="alert alert-danger">
                                         <ul>
@@ -18,7 +20,6 @@
                                         </ul>
                                     </div>
                                 @endif
-                                <h4 class="mb-5">Edit Header Berita</h4>
 
                                 <form class="forms-sample" method="POST"
                                     action="{{ route('admin.headerBerita.update', $headerBerita->id_header) }}"

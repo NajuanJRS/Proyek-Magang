@@ -3,19 +3,19 @@
 namespace App\Http\Controllers\admin;
 
 use App\Http\Controllers\Controller;
-// use App\Models\admin\KategoriHeader; // Tidak perlu
 use App\Models\admin\Header;
-use App\Traits\ManajemenGambarTrait; // 1. Panggil Trait
-use Illuminate\Contracts\View\View; // Import View
-use Illuminate\Http\RedirectResponse; // Import RedirectResponse
+use App\Traits\ManajemenGambarTrait;
+use Illuminate\Contracts\View\View;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
 // use Illuminate\Support\Facades\Storage; // Tidak perlu lagi
+use Illuminate\Support\Facades\Validator;
+
 
 class SliderController extends Controller
 {
-    // 2. Gunakan Trait
     use ManajemenGambarTrait;
 
     /**
@@ -24,7 +24,6 @@ class SliderController extends Controller
     public function index(Request $request): View
     {
         $search = $request->input('search');
-        // Filter hanya untuk id_kategori_header = 1 (Hero Section)
         $slider = Header::where('id_kategori_header', 1)
             ->when($search, function ($query, $search) {
                 $query->where('headline', 'like', "%{$search}%")
@@ -47,24 +46,41 @@ class SliderController extends Controller
      */
     public function store(Request $request): RedirectResponse
     {
-        // 3. Sesuaikan Validasi
-        $request->validate([
-            'headline' => 'required|string|min:5|max:100',
-            'sub_heading' => 'required|string|min:5|max:255',
-            'gambar'     => 'required|image|mimes:jpeg,png,jpg,gif,svg,webp|max:5120', // Naikkan max 5MB
-        ]);
+        $messages = [
+            'headline.required' => 'Headline wajib diisi.',
+            'headline.min' => 'Headline minimal harus berisi :min karakter.',
+            'headline.max' => 'Headline maksimal :max karakter.',
+            'sub_heading.required' => 'Sub Heading wajib diisi.',
+            'sub_heading.max' => 'Sub Heading maksimal :max karakter.',
+            'gambar' => 'Gambar wajib diisi.',
+            'gambar.image' => 'File harus berupa gambar.',
+            'gambar.mimes' => 'Format gambar harus jpeg, png, jpg, svg, atau webp.',
+            'gambar.max' => 'Ukuran gambar maksimal :max KB.',
+        ];
 
+        $validator = Validator::make($request->all(),[
+            'headline' => 'required|string|min:5|max:100',
+            'sub_heading' => 'required|string|max:255',
+            'gambar'     => 'required|image|mimes:jpeg,png,jpg,gif,svg,webp|max:5120',
+        ], $messages);
+
+        if ($validator->fails()) {
+        return back()
+        ->withErrors($validator)
+        ->withInput();
+        }
+
+        try {
         $idUser = Auth::check() && Auth::user()->role === 'admin'
             ? 1
             : Auth::id();
 
-        // 4. Proses Gambar Header dengan Trait (tipe 'slider_header')
         $pathGambar = null;
         if ($request->hasFile('gambar')) {
             $pathGambar = $this->prosesDanSimpanGambar(
                 $request->file('gambar'),
-                'slider_header', // <-- Gunakan tipe spesifik untuk slider
-                'header'         // Folder tujuan tetap 'header'
+                'slider_header',
+                'header'
             );
             if (!$pathGambar) {
                  return redirect()->back()->withErrors(['gambar' => 'Gagal memproses gambar slider.'])->withInput();
@@ -73,18 +89,22 @@ class SliderController extends Controller
              return redirect()->back()->withErrors(['gambar' => 'Gambar slider wajib diunggah.'])->withInput();
         }
 
-        // 5. Gunakan path dari Trait
         Header::create([
             'id_user'    => $idUser,
-            'id_kategori_header' => '1', // Selalu '1' untuk Hero Section
+            'id_kategori_header' => '1',
             'headline' => $request->headline,
             'sub_heading' => $request->sub_heading,
-            'gambar'     => $pathGambar, // Path hasil Trait
+            'gambar'     => $pathGambar,
         ]);
 
         Cache::forget('beranda_hero_slides');
 
         return redirect()->route('admin.slider.index')->with('success', 'Hero Section Berhasil Ditambahkan!');
+        } catch (\Exception $e) {
+            return back()
+                ->withErrors(['general' => 'Terjadi kesalahan: ' . $e->getMessage()])
+                ->withInput();
+        }
     }
 
     /**
@@ -100,7 +120,7 @@ class SliderController extends Controller
      */
     public function edit($id): View
     {
-        $slider = Header::where('id_kategori_header', 1)->findOrFail($id); // Pastikan hanya edit slider
+        $slider = Header::where('id_kategori_header', 1)->findOrFail($id);
         return view('Admin.beranda.slider.formEditSlider', compact('slider'));
     }
 
@@ -109,15 +129,33 @@ class SliderController extends Controller
      */
     public function update(Request $request, $id): RedirectResponse
     {
-        $slider = Header::where('id_kategori_header', 1)->findOrFail($id); // Pastikan hanya update slider
+        $slider = Header::where('id_kategori_header', 1)->findOrFail($id);
 
-        // 6. Sesuaikan Validasi Update
-        $request->validate([
+        $messages = [
+            'headline.required' => 'Headline wajib diisi.',
+            'headline.min' => 'Headline minimal harus berisi :min karakter.',
+            'headline.max' => 'Headline maksimal :max karakter.',
+            'sub_heading.required' => 'Sub Heading wajib diisi.',
+            'sub_heading.max' => 'Sub Heading maksimal :max karakter.',
+            'gambar' => 'Gambar wajib diisi.',
+            'gambar.image' => 'File harus berupa gambar.',
+            'gambar.mimes' => 'Format gambar harus jpeg, png, jpg, svg, atau webp.',
+            'gambar.max' => 'Ukuran gambar maksimal :max KB.',
+        ];
+
+        $validator = Validator::make($request->all(),[
             'headline' => 'required|string|min:5|max:100',
             'sub_heading' => 'required|string|min:5|max:255',
-            'gambar' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg,webp|max:5120', // Naikkan max 5MB
-        ]);
+            'gambar' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg,webp|max:5120',
+        ], $messages);
 
+        if ($validator->fails()) {
+        return back()
+        ->withErrors($validator)
+        ->withInput();
+        }
+
+        try {
         $idUser = Auth::check() && Auth::user()->role === 'admin'
             ? 1
             : Auth::id();
@@ -128,26 +166,29 @@ class SliderController extends Controller
             'sub_heading' => $request->sub_heading,
         ];
 
-        // 7. Proses Update Gambar Header dengan Trait (tipe 'slider_header')
         if ($request->hasFile('gambar')) {
-            $this->hapusGambarLama($slider->gambar); // Hapus gambar lama
+            $this->hapusGambarLama($slider->gambar);
             $pathGambarBaru = $this->prosesDanSimpanGambar(
                 $request->file('gambar'),
-                'slider_header', // <-- Gunakan tipe spesifik untuk slider
-                'header'         // Folder tujuan tetap 'header'
+                'slider_header',
+                'header'
             );
              if (!$pathGambarBaru) {
                  return redirect()->back()->withErrors(['gambar' => 'Gagal memproses gambar slider baru.'])->withInput();
             }
-            $data['gambar'] = $pathGambarBaru; // Gunakan path baru
+            $data['gambar'] = $pathGambarBaru;
         }
-        // Jika tidak ada gambar baru, $data['gambar'] tidak diset, gambar lama tetap
 
         $slider->update($data);
 
         Cache::forget('beranda_hero_slides');
 
         return redirect()->route('admin.slider.index')->with('success', 'Hero Section Berhasil Diperbarui!');
+        } catch (\Exception $e) {
+            return back()
+                ->withErrors(['general' => 'Terjadi kesalahan: ' . $e->getMessage()])
+                ->withInput();
+        }
     }
 
     /**
@@ -155,12 +196,10 @@ class SliderController extends Controller
      */
     public function destroy($id): RedirectResponse
     {
-        $slider = Header::where('id_kategori_header', 1)->findOrFail($id); // Pastikan hanya hapus slider
+        $slider = Header::where('id_kategori_header', 1)->findOrFail($id);
 
-        // 8. Gunakan Trait untuk Hapus Gambar Header
         $this->hapusGambarLama($slider->gambar);
 
-        // Hapus data dari database
         $slider->delete();
 
         Cache::forget('beranda_hero_slides');

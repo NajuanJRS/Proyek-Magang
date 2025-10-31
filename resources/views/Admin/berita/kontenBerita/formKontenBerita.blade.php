@@ -9,6 +9,8 @@
                         <div class="card shadow-sm rounded-4">
                             <div class="card-body px-5 py-4">
 
+                                <h4 class="mb-5">Tambah Berita</h4>
+
                                 @if ($errors->any())
                                     <div class="alert alert-danger">
                                         <ul>
@@ -18,8 +20,6 @@
                                         </ul>
                                     </div>
                                 @endif
-
-                                <h4 class="mb-5">Tambah Berita</h4>
 
                                 <form method="POST" action="{{ route('admin.berita.store') }}"
                                     enctype="multipart/form-data">
@@ -172,7 +172,6 @@
                                         </div>
                                     </div>
 
-                                    {{-- Tombol submit --}}
                                     <button type="submit" class="btn btn-info me-2">Simpan</button>
                                     <a href="{{ route('admin.berita.index') }}" class="btn btn-danger">Batal</a>
                                 </form>

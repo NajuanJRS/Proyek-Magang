@@ -9,6 +9,8 @@
                         <div class="card shadow-sm rounded-4">
                             <div class="card-body px-5 py-4">
 
+                                <h4 class="card-title mb-5">Kelola Akun Admin</h4>
+
                                 {{-- Validasi Error --}}
                                 @if ($errors->any())
                                     <div class="alert alert-danger">
@@ -19,8 +21,6 @@
                                         </ul>
                                     </div>
                                 @endif
-
-                                <h4 class="card-title mb-5">Kelola Akun Admin</h4>
 
                                 <form class="forms-sample" method="POST"
                                     action="{{ route('admin.adminUpdate.update', $adminUpdate->id_user) }}">
@@ -65,7 +65,6 @@
                                     </div>
 
                                     <button type="submit" class="btn btn-info me-2">Simpan</button>
-                                    <a href="{{ route('admin.adminUpdate.index') }}" class="btn btn-danger">Batal</a>
                                 </form>
                             </div>
                         </div>

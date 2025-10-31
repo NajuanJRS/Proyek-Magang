@@ -9,7 +9,8 @@
                         <div class="card shadow-sm rounded-4">
                             <div class="card-body px-5 py-4">
 
-                                {{-- Validasi Error --}}
+                                <h4 class="mb-5">Tambah Konten PPID</h4>
+
                                 @if ($errors->any())
                                     <div class="alert alert-danger">
                                         <ul class="mb-0">
@@ -19,8 +20,6 @@
                                         </ul>
                                     </div>
                                 @endif
-
-                                <h4 class="mb-5">Tambah Konten PPID</h4>
 
                                 <form method="POST" action="{{ route('admin.ppid.store') }}"
                                     enctype="multipart/form-data">
@@ -76,7 +75,7 @@
                                     <label for="gambar1" class="mb-2">Unggah Gambar 1</label>
                                     <div class="mb-4">
                                         <input type="file" id="gambar1" name="gambar1" accept="image/*"
-                                            onchange="previewImage(event, 'preview1')" required>
+                                            onchange="previewImage(event, 'preview1')">
                                         <br>
                                         <img id="preview1" src="#" alt="Preview Gambar 1"
                                             style="display:none; width: 150px; margin-top:10px; border-radius:8px;">

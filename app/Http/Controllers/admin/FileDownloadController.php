@@ -10,6 +10,7 @@ use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Validator;
 
 class FileDownloadController extends Controller
 {
@@ -60,12 +61,24 @@ class FileDownloadController extends Controller
      */
     public function store(Request $request): RedirectResponse
     {
-        $request->validate([
+        $messages = [
+            'nama_file.required' => 'Nama file wajib diisi.',
+            'file.file' => 'Format file tidak dikenali',
+            'file.mimes' => 'Format file harus pdf, doc, docx, xls, xlsx, ppt, pptx, zip, rar.',
+        ];
+        $validator = Validator::make($request->all(),[
             'id_kategori' => 'required|exists:kategori_download,id_kategori',
             'nama_file'   => 'required|string|max:255',
             'file'        => 'required|file|mimes:pdf,doc,docx,xls,xlsx,ppt,pptx,zip,rar',
-        ]);
+        ], $messages);
 
+        if ($validator->fails()) {
+        return back()
+        ->withErrors($validator)
+        ->withInput();
+        }
+
+        try {
         $idUser = Auth::check() && Auth::user()->role === 'admin' ? 1 : Auth::id();
 
         $file = $request->file('file');
@@ -83,6 +96,11 @@ class FileDownloadController extends Controller
         return redirect()
             ->route('admin.fileDownload.index', $kategori->slug)
             ->with('success', 'File Berhasil Ditambahkan!');
+        } catch (\Exception $e) {
+            return back()
+                ->withErrors(['general' => 'Terjadi kesalahan: ' . $e->getMessage()])
+                ->withInput();
+        }
     }
 
     /**
@@ -104,12 +122,24 @@ class FileDownloadController extends Controller
      */
     public function update(Request $request, $id): RedirectResponse
     {
-        $request->validate([
+        $messages = [
+            'nama_file.required' => 'Nama file wajib diisi.',
+            'file.file' => 'Format file tidak dikenali',
+            'file.mimes' => 'Format file harus pdf, doc, docx, xls, xlsx, ppt, pptx, zip, rar.',
+        ];
+        $validator = Validator::make($request->all(),[
             'id_kategori' => 'required|exists:kategori_download,id_kategori',
             'nama_file'   => 'required|string|max:255',
             'file'        => 'nullable|file|mimes:pdf,doc,docx,xls,xlsx,ppt,pptx,zip,rar',
-        ]);
+        ], $messages);
 
+        if ($validator->fails()) {
+        return back()
+        ->withErrors($validator)
+        ->withInput();
+        }
+
+        try {
         $fileDownload = FileDownload::findOrFail($id);
         $data = [
             'nama_file' => $request->nama_file,
@@ -135,6 +165,11 @@ class FileDownloadController extends Controller
         return redirect()
             ->route('admin.fileDownload.index', $kategori->slug)
             ->with('success', 'File Berhasil Diperbarui!');
+        } catch (\Exception $e) {
+            return back()
+                ->withErrors(['general' => 'Terjadi kesalahan: ' . $e->getMessage()])
+                ->withInput();
+        }
     }
 
     /**

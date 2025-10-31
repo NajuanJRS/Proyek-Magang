@@ -8,6 +8,7 @@ use App\Traits\ManajemenGambarTrait;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Storage; // Pastikan ini ada
@@ -29,12 +30,27 @@ class DownloadController extends Controller
 
     public function store(Request $request): RedirectResponse
     {
-        $request->validate([
+        $messages = [
+            'nama_kategori.required' => 'Nama sub kartu wajib diisi.',
+            'nama_kategori.max' => 'Nama sub kartu maksimal :max karakter.',
+            'icon.image' => 'File harus berupa gambar.',
+            'icon.mimes' => 'Format gambar 1 harus jpeg, png, jpg, svg, atau webp.',
+            'icon.max' => 'Ukuran gambar 1 maksimal :max KB.',
+            'halaman_induk.required' => 'Nama halaman wajib diisi.',
+        ];
+        $validator = Validator::make($request->all(),[
             'nama_kategori' => 'required|string|max:255',
             'icon' => 'nullable|image|mimes:jpeg,png,jpg,svg,webp|max:1024',
-            'halaman_induk' => 'required|string|max:255',
-        ]);
+            'halaman_induk' => 'required|string',
+        ], $messages);
 
+        if ($validator->fails()) {
+        return back()
+        ->withErrors($validator)
+        ->withInput();
+        }
+
+        try {
         $pathIcon = null;
         if ($request->hasFile('icon')) {
             $pathIcon = $this->prosesDanSimpanGambar(
@@ -59,6 +75,11 @@ class DownloadController extends Controller
         // ===============================
 
         return redirect()->route('admin.kontenDownload.index')->with('success', 'Konten Download Berhasil Ditambahkan!');
+        } catch (\Exception $e) {
+            return back()
+                ->withErrors(['general' => 'Terjadi kesalahan: ' . $e->getMessage()])
+                ->withInput();
+        }
     }
 
     public function edit($id): View
@@ -74,12 +95,27 @@ class DownloadController extends Controller
         $slugLama = $kartuDownload->slug;
         $halamanIndukLama = $kartuDownload->halaman_induk;
 
-         $request->validate([
+        $messages = [
+            'nama_kategori.required' => 'Nama sub kartu wajib diisi.',
+            'nama_kategori.max' => 'Nama sub kartu maksimal :max karakter.',
+            'icon.image' => 'File harus berupa gambar.',
+            'icon.mimes' => 'Format gambar 1 harus jpeg, png, jpg, svg, atau webp.',
+            'icon.max' => 'Ukuran gambar 1 maksimal :max KB.',
+            'halaman_induk.required' => 'Nama halaman wajib diisi.',
+        ];
+        $validator = Validator::make($request->all(),[
             'nama_kategori' => 'required|string|max:255',
             'icon' => 'nullable|image|mimes:jpeg,png,jpg,svg,webp|max:1024',
-            'halaman_induk' => 'required|string|max:255',
-        ]);
+            'halaman_induk' => 'required|string',
+        ], $messages);
 
+        if ($validator->fails()) {
+        return back()
+        ->withErrors($validator)
+        ->withInput();
+        }
+
+        try {
 
         $data = [
             'nama_kategori' => $request->nama_kategori,
@@ -122,6 +158,11 @@ class DownloadController extends Controller
         // ===============================
 
         return redirect()->route('admin.kontenDownload.index')->with('success', 'Konten Download Berhasil Diupdate!');
+        } catch (\Exception $e) {
+            return back()
+                ->withErrors(['general' => 'Terjadi kesalahan: ' . $e->getMessage()])
+                ->withInput();
+        }
     }
 
     public function destroy($id): RedirectResponse
@@ -144,7 +185,6 @@ class DownloadController extends Controller
         // Gunakan Trait untuk Hapus Icon Kategori
         $this->hapusGambarLama($kartuDownload->icon);
 
-        // Hapus Kategori itu sendiri
         $kartuDownload->delete();
 
         // === PERBAIKAN "SLEDGEHAMMER" ===

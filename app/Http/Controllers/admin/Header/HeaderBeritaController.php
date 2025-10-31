@@ -4,18 +4,17 @@ namespace App\Http\Controllers\admin\Header;
 
 use App\Http\Controllers\Controller;
 use App\Models\admin\Header;
-// use App\Models\admin\KategoriHeader; // Tidak perlu di sini
-use App\Traits\ManajemenGambarTrait; // 1. Panggil Trait
+use App\Traits\ManajemenGambarTrait;
 use Illuminate\Contracts\View\View;
-use Illuminate\Http\RedirectResponse; // Import RedirectResponse
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
 // use Illuminate\Support\Facades\Storage; // Tidak perlu lagi
+use Illuminate\Support\Facades\Validator;
 
 class HeaderBeritaController extends Controller
 {
-    // 2. Gunakan Trait
     use ManajemenGambarTrait;
 
     /**
@@ -24,13 +23,11 @@ class HeaderBeritaController extends Controller
     public function index(Request $request): View
     {
         $search = $request->input('search');
-        // Filter hanya untuk id_kategori_header = 4 (Heading Berita)
         $headerBerita = Header::where('id_kategori_header', 4)
             ->when($search, function ($query, $search) {
-                // Sesuaikan pencarian ke field yang ada di tabel 'header'
                 $query->where('headline', 'like', "%{$search}%")
                       ->orWhere('sub_heading', 'like', "%{$search}%");
-            })->paginate(10); // Ambil hanya 1 karena hanya ada 1 header berita
+            })->paginate(10);
 
         return view('Admin.berita.headerBerita.headerBerita', compact('headerBerita'));
     }
@@ -40,42 +37,54 @@ class HeaderBeritaController extends Controller
      */
     public function show(Header $headerBerita)
     {
-        // Tidak digunakan
+
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Header $headerBerita): View // Tambahkan View return type
+    public function edit(Header $headerBerita): View
     {
-        // FindOrFail tidak perlu jika menggunakan Route Model Binding
-        // $headerBerita = Header::findOrFail($headerBerita->id_header);
-        // Pastikan hanya bisa edit header berita (id_kategori_header = 4)
         if ($headerBerita->id_kategori_header != 4) {
-            abort(404); // Atau redirect dengan error
+            abort(404);
         }
-        // $kategoriHeader = KategoriHeader::all(); // Tidak perlu
         return view('Admin.berita.headerBerita.formEditHeaderBerita', compact('headerBerita'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Header $headerBerita): RedirectResponse // Tambahkan RedirectResponse
+    public function update(Request $request, Header $headerBerita): RedirectResponse
     {
-         // Pastikan hanya bisa update header berita (id_kategori_header = 4)
         if ($headerBerita->id_kategori_header != 4) {
-             abort(403, 'Unauthorized action.'); // Lebih sesuai dari 404
+             abort(403, 'Unauthorized action.');
         }
 
-        // 3. Sesuaikan Validasi
-        $request->validate([
-            // 'id_user' => 'nullable|exists:user,id_user', // Otomatis
-            'headline' => 'required|string|min:5|max:100', // Wajib diisi
-            'sub_heading' => 'required|string|min:5|max:255', // Wajib diisi
-            'gambar' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg,webp|max:5120', // Max 5MB, nullable karena mungkin tidak ganti gambar
-        ]);
+        $messages = [
+            'headline.required' => 'Headline wajib diisi.',
+            'headline.min' => 'Headline minimal harus berisi :min karakter.',
+            'headline.max' => 'Headline maksimal :max karakter.',
+            'sub_heading.required' => 'Sub Heading wajib diisi.',
+            'sub_heading.max' => 'Sub Heading maksimal :max karakter.',
+            'gambar' => 'Gambar wajib diisi.',
+            'gambar.image' => 'File harus berupa gambar.',
+            'gambar.mimes' => 'Format gambar harus jpeg, png, jpg, svg, atau webp.',
+            'gambar.max' => 'Ukuran gambar maksimal :max KB.',
+        ];
 
+        $validator = Validator::make($request->all(),[
+            'headline' => 'required|string|min:5|max:100',
+            'sub_heading' => 'required|string|max:255',
+            'gambar' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg,webp|max:5120',
+        ], $messages);
+
+        if ($validator->fails()) {
+        return back()
+        ->withErrors($validator)
+        ->withInput();
+        }
+
+        try {
         $idUser = Auth::check() && Auth::user()->role === 'admin'
             ? 1
             : Auth::id();
@@ -86,28 +95,29 @@ class HeaderBeritaController extends Controller
             'sub_heading' => $request->sub_heading,
         ];
 
-        // 4. Proses Update Gambar Header dengan Trait (tipe 'page_header')
         if ($request->hasFile('gambar')) {
-            $this->hapusGambarLama($headerBerita->gambar); // Hapus gambar lama
+            $this->hapusGambarLama($headerBerita->gambar);
             $pathGambarBaru = $this->prosesDanSimpanGambar(
                 $request->file('gambar'),
-                'page_header', // <-- Gunakan tipe untuk header halaman
-                'header'       // Folder tujuan tetap 'header'
+                'page_header',
+                'header'
             );
              if (!$pathGambarBaru) {
                  return redirect()->back()->withErrors(['gambar' => 'Gagal memproses gambar header baru.'])->withInput();
             }
-            $data['gambar'] = $pathGambarBaru; // Gunakan path baru
+            $data['gambar'] = $pathGambarBaru;
         }
-        // Jika tidak ada gambar baru, $data['gambar'] tidak diset, gambar lama tetap
 
         $headerBerita->update($data);
 
-        Cache::forget('header_berita');
+        Cache::forget(key: 'header_berita');
 
         return redirect()->route('admin.headerBerita.index')->with('success', 'Heading Berita Berhasil Diperbarui!');
+        } catch (\Exception $e) {
+            return back()
+                ->withErrors(['general' => 'Terjadi kesalahan: ' . $e->getMessage()])
+                ->withInput();
+        }
     }
 
-     // Method destroy() biasanya tidak ada untuk header halaman tunggal,
-     // Jika memang diperlukan, jangan lupa tambahkan hapusGambarLama()
 }

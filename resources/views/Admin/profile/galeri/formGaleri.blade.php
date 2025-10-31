@@ -9,6 +9,8 @@
                         <div class="card shadow-sm rounded-4">
                             <div class="card-body px-5 py-4">
 
+                                <h4 class="mb-5">Tambah Galeri</h4>
+                                
                                 @if ($errors->any())
                                     <div class="alert alert-danger">
                                         <ul>
@@ -18,7 +20,6 @@
                                         </ul>
                                     </div>
                                 @endif
-                                <h4 class="mb-5">Tambah Galeri</h4>
 
                                 <form class="forms-sample" method="POST" action="{{ route('admin.galeri.store') }}"
                                     enctype="multipart/form-data">
@@ -29,7 +30,7 @@
                                         <input type="text" class="form-control" id="judul" name="judul"
                                             placeholder="Masukkan judul untuk gambar galeri">
                                     </div>
-                                    
+
                                     <label for="gambar" class="mb-2">Unggah Gambar</label>
                                     <div class="mb-4">
                                         <input type="file" id="gambar" name="gambar" accept="image/*"
