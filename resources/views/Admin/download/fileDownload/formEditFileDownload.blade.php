@@ -4,6 +4,9 @@
     <div class="container py-4">
         <div class="card shadow-sm rounded-4">
             <div class="card-body px-4 py-4">
+
+                <h4 class="card-title mb-3">Edit File Download</h4>
+                
                 @if ($errors->any())
                     <div class="alert alert-danger">
                         <ul>
@@ -13,8 +16,6 @@
                         </ul>
                     </div>
                 @endif
-
-                <h4 class="card-title mb-3">Edit File Download</h4>
 
                 <form action="{{ route('admin.fileDownload.update', $fileDownload->id_file) }}" method="POST"
                     enctype="multipart/form-data">

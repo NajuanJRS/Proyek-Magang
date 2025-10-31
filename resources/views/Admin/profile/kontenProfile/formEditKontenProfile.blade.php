@@ -9,7 +9,8 @@
                     <div class="card shadow-sm rounded-4">
                         <div class="card-body px-5 py-4">
 
-                            {{-- Validasi Error --}}
+                            <h4 class="mb-5">Edit Konten Profil</h4>
+
                             @if ($errors->any())
                                 <div class="alert alert-danger">
                                     <ul class="mb-0">
@@ -19,8 +20,6 @@
                                     </ul>
                                 </div>
                             @endif
-
-                            <h4 class="mb-5">Edit Konten Profil</h4>
 
                             <form method="POST" action="{{ route('admin.profile.update', $kontenProfile->id_konten) }}" enctype="multipart/form-data">
                                 @csrf
