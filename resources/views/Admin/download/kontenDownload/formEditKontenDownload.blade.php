@@ -60,7 +60,7 @@
                                     {{-- Nama Halaman --}}
                                     <label for="halaman_induk" class="mb-2">Nama Halaman</label>
                                     <div class="mb-4">
-                                        <select class="form-control" id="halaman_induk" name="halaman_induk" required>
+                                        <select class="form-select" id="halaman_induk" name="halaman_induk" required>
                                             <option value="" disabled {{ old('halaman_induk', $kartuDownload->halaman_induk) ? '' : 'selected' }}>Pilih Nama Halaman</option>
                                             <option value="Download" {{ old('halaman_induk', $kartuDownload->halaman_induk) == 'Download' ? 'selected' : '' }}>Download</option>
                                             <option value="PPID" {{ old('halaman_induk', $kartuDownload->halaman_induk) == 'PPID' ? 'selected' : '' }}>PPID</option>

@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\admin\Kontak;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class KontakController extends Controller
 {
@@ -23,13 +24,30 @@ class KontakController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $request->validate([
+        $messages = [
+            'nomor_telepon.required' => 'Nomor telepon wajib diisi.',
+            'nomor_telepon.numeric' => 'Nomor telepon harus berisi angka.',
+            'email.required' => 'Email wajib diisi.',
+            'email.email' => 'Format email harus example@example.com',
+            'jam_pelayanan.required' => 'Jam pelayanan wajib diisi.',
+            'map.required' => 'Link Map wajib diisi.',
+            'alamat.required' => 'Alamat wajib diisi.',
+        ];
+        $validator = Validator::make($request->all(),[
             'nomor_telepon' => 'required|numeric',
             'email' => 'required|email',
             'jam_pelayanan' => 'required',
             'map' => 'required',
             'alamat' => 'required',
-        ]);
+        ], $messages);
+
+        if ($validator->fails()) {
+        return back()
+        ->withErrors($validator)
+        ->withInput();
+        }
+
+        try {
         $kontak = Kontak::findOrFail($id);
 
         $data = [
@@ -43,5 +61,10 @@ class KontakController extends Controller
         $kontak->update($data);
 
         return redirect()->route('admin.kontak.index')->with('success', 'Kontak Berhasil Diperbarui!');
+        } catch (\Exception $e) {
+            return back()
+                ->withErrors(['general' => 'Terjadi kesalahan: ' . $e->getMessage()])
+                ->withInput();
+        }
     }
 }

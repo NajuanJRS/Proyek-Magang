@@ -8,6 +8,7 @@ use App\Models\admin\KategoriFaq;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Validator;
 
 class FaqController extends Controller
 {
@@ -44,13 +45,25 @@ class FaqController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
-            'kategori_faq' => 'required|exists:kategori_faq,id_kategori_faq',
+         $messages = [
+            'pertanyaan.required' => 'Pertanyaan wajib diisi.',
+            'kategori_faq.required' => 'Kategori FAQ wajib diisi.',
+            'jawaban.required' => 'Kategori FAQ wajib diisi.',
+        ];
+        $validator = Validator::make($request->all(),[
+            'pertanyaan' => 'required',
             'id_user' => 'nullable|exists:user,id_user',
-            'pertanyaan' => 'required|min:5',
-            'jawaban' => 'required|min:5',
-        ]);
+            'kategori_faq' => 'required|exists:kategori_faq,id_kategori_faq',
+            'jawaban' => 'required',
+        ], $messages);
 
+        if ($validator->fails()) {
+        return back()
+        ->withErrors($validator)
+        ->withInput();
+        }
+
+        try{
         $idUser = Auth::check() && Auth::user()->role === 'admin'
         ? 1
         : Auth::id();
@@ -63,6 +76,11 @@ class FaqController extends Controller
         ]);
 
         return redirect()->route('admin.faq.index')->with('success', 'FAQ Berhasil Ditambahkan!');
+        } catch (\Exception $e) {
+            return back()
+                ->withErrors(['general' => 'Terjadi kesalahan: ' . $e->getMessage()])
+                ->withInput();
+        }
     }
 
     /**
@@ -88,12 +106,25 @@ class FaqController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $request->validate([
+       $messages = [
+            'pertanyaan.required' => 'Pertanyaan wajib diisi.',
+            'kategori_faq.required' => 'Kategori FAQ wajib diisi.',
+            'jawaban.required' => 'Jawaban wajib diisi.',
+        ];
+        $validator = Validator::make($request->all(),[
             'id_user' => 'nullable|exists:user,id_user',
             'kategori_faq' => 'required|exists:kategori_faq,id_kategori_faq',
-            'pertanyaan' => 'required|min:5',
-            'jawaban' => 'required|min:5',
-        ]);
+            'pertanyaan' => 'required',
+            'jawaban' => 'required',
+        ], $messages);
+
+        if ($validator->fails()) {
+        return back()
+        ->withErrors($validator)
+        ->withInput();
+        }
+
+        try{
         $faq = Faq::findOrFail($id);
         $idUser = Auth::check() && Auth::user()->role === 'admin'
         ? 1
@@ -109,6 +140,11 @@ class FaqController extends Controller
         $faq->update($data);
 
         return redirect()->route('admin.faq.index')->with('success', 'FAQ Berhasil Diperbarui!');
+        } catch (\Exception $e) {
+            return back()
+                ->withErrors(['general' => 'Terjadi kesalahan: ' . $e->getMessage()])
+                ->withInput();
+        }
     }
 
     /**

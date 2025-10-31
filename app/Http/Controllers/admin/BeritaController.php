@@ -4,16 +4,16 @@ namespace App\Http\Controllers\admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\admin\Berita;
-use App\Traits\ManajemenGambarTrait; // 1. Panggil Trait
+use App\Traits\ManajemenGambarTrait;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 
 class BeritaController extends Controller
 {
-    // 2. "Tempelkan" Trait ke Controller ini
     use ManajemenGambarTrait;
 
     /**
@@ -50,20 +50,40 @@ class BeritaController extends Controller
      */
     public function store(Request $request): RedirectResponse
     {
-        // 3. Naikkan batas ukuran file di validasi
-        $request->validate([
-            'judul' => 'required|string|max:255',
-            'isi_berita1' => 'required|string',
-            'gambar1' => 'required|image|mimes:jpeg,png,jpg,gif,svg,webp|max:5120', // 5MB
+        $messages = [
+            'judul.required' => 'Judul wajib diisi.',
+            'judul.min' => 'Judul minimal harus berisi :min karakter.',
+            'judul.max' => 'Judul maksimal :max karakter.',
+            'isi_berita1.required' => 'Isi berita 1 wajib diisi.',
+            'isi_berita1.min' => 'Isi berita 1 minimal harus berisi :min karakter.',
+            'gambar1.image' => 'File harus berupa gambar.',
+            'gambar1.mimes' => 'Format gambar 1 harus jpeg, png, jpg, svg, atau webp.',
+            'gambar1.max' => 'Ukuran gambar 1 maksimal :max KB.',
+            'gambar2.image' => 'File harus berupa gambar.',
+            'gambar2.mimes' => 'Format gambar 2 harus jpeg, png, jpg, svg, atau webp.',
+            'gambar2.max' => 'Ukuran gambar 2 maksimal :max KB.',
+            'gambar3.mimes' => 'Format gambar 3 harus jpeg, png, jpg, svg, atau webp.',
+            'gambar3.max' => 'Ukuran gambar 3 maksimal :max KB.',
+        ];
+        $validator = Validator::make($request->all(),[
+            'judul' => 'required|string|min:10|max:255',
+            'isi_berita1' => 'required|string|min:10',
+            'gambar1' => 'required|image|mimes:jpeg,png,jpg,gif,svg,webp|max:5120',
             'isi_berita2' => 'nullable|string',
-            'gambar2' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg,webp|max:5120', // 5MB
+            'gambar2' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg,webp|max:5120',
             'isi_berita3' => 'nullable|string',
-            'gambar3' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg,webp|max:5120', // 5MB
-        ]);
+            'gambar3' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg,webp|max:5120',
+        ], $messages);
 
+        if ($validator->fails()) {
+        return back()
+        ->withErrors($validator)
+        ->withInput();
+        }
+
+        try{
         $slug = $this->getUniqueSlug($request->judul);
 
-        // 4. Panggil fungsi dari Trait untuk memproses setiap gambar
         $pathGambar1 = null;
         $pathGambar2 = null;
         $pathGambar3 = null;
@@ -95,6 +115,11 @@ class BeritaController extends Controller
         ]);
 
         return redirect()->route('admin.berita.index')->with('success', 'Berita Berhasil Ditambahkan!');
+        } catch (\Exception $e) {
+            return back()
+                ->withErrors(['general' => 'Terjadi kesalahan: ' . $e->getMessage()])
+                ->withInput();
+        }
     }
 
     /**
@@ -102,7 +127,7 @@ class BeritaController extends Controller
      */
     public function show(Berita $berita)
     {
-        // Tidak digunakan di admin
+
     }
 
     /**
@@ -119,16 +144,38 @@ class BeritaController extends Controller
      */
     public function update(Request $request, $id): RedirectResponse
     {
-        $request->validate([
-            'judul' => 'required|string|max:255',
-            'isi_berita1' => 'required|string',
-            'gambar1' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg,webp|max:5120', // 5MB
+        $messages = [
+            'judul.required' => 'Judul wajib diisi.',
+            'judul.min' => 'Judul minimal harus berisi :min karakter.',
+            'judul.max' => 'Judul maksimal :max karakter.',
+            'isi_berita1.required' => 'Isi Konten 1 wajib diisi.',
+            'isi_berita1.min' => 'Isi Konten 1 minimal harus berisi :min karakter.',
+            'gambar1.image' => 'File harus berupa gambar.',
+            'gambar1.mimes' => 'Format gambar 1 harus jpeg, png, jpg, svg, atau webp.',
+            'gambar1.max' => 'Ukuran gambar 1 maksimal :max KB.',
+            'gambar2.image' => 'File harus berupa gambar.',
+            'gambar2.mimes' => 'Format gambar 2 harus jpeg, png, jpg, svg, atau webp.',
+            'gambar2.max' => 'Ukuran gambar 2 maksimal :max KB.',
+            'gambar3.mimes' => 'Format gambar 3 harus jpeg, png, jpg, svg, atau webp.',
+            'gambar3.max' => 'Ukuran gambar 3 maksimal :max KB.',
+        ];
+        $validator = Validator::make($request->all(),[
+            'judul' => 'required|string|min:10|max:255',
+            'isi_berita1' => 'required|string|min:10',
+            'gambar1' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg,webp|max:5120',
             'isi_berita2' => 'nullable|string',
-            'gambar2' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg,webp|max:5120', // 5MB
+            'gambar2' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg,webp|max:5120',
             'isi_berita3' => 'nullable|string',
-            'gambar3' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg,webp|max:5120', // 5MB
-        ]);
+            'gambar3' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg,webp|max:5120',
+        ], $messages);
 
+        if ($validator->fails()) {
+        return back()
+        ->withErrors($validator)
+        ->withInput();
+        }
+
+        try {
         $berita = Berita::findOrFail($id);
         $idUser = Auth::check() && Auth::user()->role === 'admin' ? 1 : Auth::id();
 
@@ -144,13 +191,11 @@ class BeritaController extends Controller
             $data['slug'] = $this->getUniqueSlug($request->judul, $id);
         }
 
-        // Handle Gambar 1 (jika ada file baru diupload)
         if ($request->hasFile('gambar1')) {
-            $this->hapusGambarLama($berita->gambar1); // Hapus gambar lama
+            $this->hapusGambarLama($berita->gambar1);
             $data['gambar1'] = $this->prosesDanSimpanGambar($request->file('gambar1'), 'berita', 'berita');
         }
 
-        // Handle Gambar 2 (jika ada file baru ATAU jika dicentang untuk dihapus)
         if ($request->hasFile('gambar2')) {
             $this->hapusGambarLama($berita->gambar2);
             $data['gambar2'] = $this->prosesDanSimpanGambar($request->file('gambar2'), 'berita', 'berita');
@@ -159,7 +204,6 @@ class BeritaController extends Controller
             $data['gambar2'] = null;
         }
 
-        // Handle Gambar 3 (jika ada file baru ATAU jika dicentang untuk dihapus)
         if ($request->hasFile('gambar3')) {
             $this->hapusGambarLama($berita->gambar3);
             $data['gambar3'] = $this->prosesDanSimpanGambar($request->file('gambar3'), 'berita', 'berita');
@@ -170,6 +214,11 @@ class BeritaController extends Controller
 
         $berita->update($data);
         return redirect()->route('admin.berita.index')->with('success', 'Berita Berhasil Diperbarui!');
+        } catch (\Exception $e) {
+            return back()
+                ->withErrors(['general' => 'Terjadi kesalahan: ' . $e->getMessage()])
+                ->withInput();
+        }
     }
 
     /**
@@ -179,7 +228,6 @@ class BeritaController extends Controller
     {
         $berita = Berita::findOrFail($id);
 
-        // Panggil fungsi hapus dari Trait untuk setiap gambar
         $this->hapusGambarLama($berita->gambar1);
         $this->hapusGambarLama($berita->gambar2);
         $this->hapusGambarLama($berita->gambar3);

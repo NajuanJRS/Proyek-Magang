@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\View\View;
 use Illuminate\Support\Facades\Response;
 use App\Models\admin\Header;
-use App\Models\admin\KategoriDownload;
+use App\Models\admin\KategoriFile;
 use App\Models\admin\FileDownload;
 
 class DownloadController extends Controller
@@ -16,7 +16,7 @@ class DownloadController extends Controller
     {
         $header = Header::where('id_kategori_header', 5)->first();
 
-        $cards = KategoriDownload::where('halaman_induk', 'download')->get();
+        $cards = KategoriFile::where('halaman_induk', 'download')->get();
 
         return view('pengguna.download.index', [
             'header' => $header,
@@ -26,11 +26,11 @@ class DownloadController extends Controller
 
     public function show(string $slug): View
     {
-        $activeCategory = KategoriDownload::where('slug', $slug)->firstOrFail();
+        $activeCategory = KategoriFile::where('slug', $slug)->firstOrFail();
 
         $files = $activeCategory->files;
 
-        $allDownloads = KategoriDownload::where('halaman_induk', 'download')->get()->map(function ($download) use ($slug) {
+        $allDownloads = KategoriFile::where('halaman_induk', 'download')->get()->map(function ($download) use ($slug) {
             $download['active'] = $download['slug'] == $slug;
             $download['url'] = url('/download/' . $download->slug);
             return $download;

@@ -51,7 +51,7 @@
                                     {{-- Nama Halaman --}}
                                     <label for="halaman_induk" class="mb-2">Nama Halaman</label>
                                     <div class="mb-4">
-                                        <select class="form-control" id="halaman_induk" name="halaman_induk" required>
+                                        <select class="form-select" id="halaman_induk" name="halaman_induk" required>
                                             <option value="" disabled selected>Pilih Nama Halaman</option>
                                             <option value="Download">Download</option>
                                             <option value="PPID">PPID</option>
