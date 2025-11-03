@@ -558,6 +558,11 @@ body {
     background: linear-gradient(135deg, #007bff 0%, #0056d2 100%);
 }
 
+.card-bergerak:hover {
+    transform: translateY(-4px);
+    transition: 0.3s ease-in-out;
+}
+
 .card i {
     transition: transform 0.3s;
 }
