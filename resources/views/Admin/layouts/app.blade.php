@@ -306,11 +306,11 @@
             </li>
 
             <li>
-                <a href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();"
-                    class="nav-link d-flex align-items-center">
+                <a href="#" id="logoutButton" class="nav-link d-flex align-items-center logout-link">
                     <i class="bi bi-box-arrow-right"></i>
                     <span class="menu-title">Logout</span>
                 </a>
+
                 <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
                     @csrf
                 </form>

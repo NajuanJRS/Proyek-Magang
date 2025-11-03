@@ -284,7 +284,7 @@ class KontenLayananController extends Controller
 
         Cache::forget('kategori_layanan_semua');
         Cache::forget('beranda_layanan');
-        
+
         // Hapus cache 'show' untuk slug lama
         Cache::forget('kategori_show_' . $slugLama);
 
@@ -334,7 +334,7 @@ class KontenLayananController extends Controller
 
         Cache::forget('kategori_layanan_semua');
         Cache::forget('beranda_layanan');
-        
+
         // Hapus cache 'show' untuk slug yang dihapus
         if ($slug) {
             Cache::forget('kategori_show_' . $slug);

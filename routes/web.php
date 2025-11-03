@@ -1,7 +1,9 @@
 <?php
 
+use App\Http\Controllers\admin\AdminDashboardController;
 use App\Http\Controllers\admin\AdminUpdateController;
 use App\Http\Controllers\admin\BeritaController;
+use App\Http\Controllers\admin\DaftarFileDownloadController;
 use App\Http\Controllers\pengguna\BerandaController;
 use App\Http\Controllers\pengguna\BeritaController as LandingBeritaController;
 use App\Http\Controllers\admin\FaqController;
@@ -89,9 +91,11 @@ Route::post('logout', [LoginController::class, 'destroy'])
     ->name('logout');
 
 Route::middleware(['auth', 'Admin'])->prefix('admin')->name('admin.')->group(function () {
-    Route::get('dashboard', function () {
-        return view('Admin.adminDashboard');
-    })->name('dashboard');
+    Route::get('dashboard', [AdminDashboardController::class, 'index'])
+        ->name('dashboard');
+
+    Route::get('file-download', [DaftarFileDownloadController::class, 'index'])
+        ->name('fileDownload');
 
     Route::resource('hero-section', SliderController::class)->names('slider');
 

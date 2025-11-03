@@ -15,7 +15,7 @@ use Illuminate\Support\Facades\Validator;
 class FileDownloadController extends Controller
 {
     /**
-     * Tampilkan daftar file berdasarkan kategori (slug optional)
+     *
      */
     public function index(Request $request, $slug = null)
     {
