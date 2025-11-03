@@ -9,6 +9,9 @@ use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cache;
+// use Illuminate\Support\Facades\Storage; // Tidak perlu lagi
+
 use Illuminate\Support\Facades\Validator;
 
 class HeaderLayananController extends Controller
@@ -107,6 +110,8 @@ class HeaderLayananController extends Controller
         }
 
         $headerLayanan->update($data);
+
+        Cache::forget('header_layanan');
 
         return redirect()->route('admin.headerLayanan.index')->with('success', 'Heading Layanan Berhasil Diperbarui!');
         } catch (\Exception $e) {

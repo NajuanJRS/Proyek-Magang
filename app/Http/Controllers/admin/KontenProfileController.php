@@ -10,8 +10,10 @@ use Illuminate\Http\Request;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
+// use Illuminate\Support\Facades\Storage; // Tidak perlu lagi
+use Illuminate\Support\Str; // Import Str facade
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Support\Str;
 
 class KontenProfileController extends Controller
 {
@@ -132,7 +134,10 @@ class KontenProfileController extends Controller
             'gambar3'             => $pathGambar3,
         ]);
 
-        return redirect()->route('admin.profile.index')
+        Cache::forget('profil_cards_menu');
+        Cache::forget('profil_all_categories');
+
+        return redirect()->route('admin.profile.index') // Sesuaikan route redirect
             ->with('success', 'Konten Profil Berhasil Ditambahkan!');
         } catch (\Exception $e) {
             return back()
@@ -205,6 +210,10 @@ class KontenProfileController extends Controller
         $konten = Konten::with('kategoriKonten')->findOrFail($id);
         $kategori = $konten->kategoriKonten;
 
+        $slugLama = $kategori->slug;
+        $slugBaru = $slugLama;
+
+        // --- Update Kategori Konten ---
         $kategoriData = [
             'judul_konten'  => $request->judul_konten,
         ];
@@ -220,6 +229,7 @@ class KontenProfileController extends Controller
 
         if ($request->judul_konten !== $kategori->judul_konten) {
             $kategoriData['slug'] = Str::slug($request->judul_konten);
+            $slugBaru = $kategoriData['slug'];
         }
 
         $kategori->update($kategoriData);
@@ -259,12 +269,26 @@ class KontenProfileController extends Controller
 
         $konten->update($kontenData);
 
-        return redirect()->route('admin.profile.index')->with('success', 'Konten Profil Berhasil Diperbarui!');
-        } catch (\Exception $e) {
-            return back()
-                ->withErrors(['general' => 'Terjadi kesalahan: ' . $e->getMessage()])
-                ->withInput();
+        Cache::forget('profil_cards_menu');
+        Cache::forget('profil_all_categories');
+
+        // 2. Hapus cache halaman detail (slug lama)
+        Cache::forget('profil_kategori_' . $slugLama);
+
+        // 3. Hapus cache halaman detail (slug baru, jika berubah)
+        if ($slugBaru !== $slugLama) {
+            Cache::forget('profil_kategori_' . $slugBaru);
         }
+
+        // 4. Hapus cache VisiMisi di Beranda (untuk jaga-jaga)
+        Cache::forget('beranda_visi_misi');
+
+        return redirect()->route('admin.profile.index')->with('success', 'Konten Profil Berhasil Diperbarui!'); // Sesuaikan route
+    } catch (\Exception $e) {
+        return back()
+            ->withErrors(['general' => 'Terjadi kesalahan: ' . $e->getMessage()])
+            ->withInput();
+    }
     }
 
 
@@ -280,7 +304,10 @@ class KontenProfileController extends Controller
         $this->hapusGambarLama($kontenProfile->gambar3);
 
         $kategori = $kontenProfile->kategoriKonten;
+        $slugYangDihapus = null;
         if ($kategori) {
+            $slugYangDihapus = $kategori->slug;
+            // Cek konten lain
             $otherKontenExists = Konten::where('id_kategori_konten', $kategori->id_kategori_konten)
                                         ->where('id_konten', '!=', $id)
                                         ->exists();
@@ -293,6 +320,17 @@ class KontenProfileController extends Controller
 
         $kontenProfile->delete();
 
-        return redirect()->route('admin.profile.index')->with('success', 'Konten Profil Berhasil Dihapus!');
+        Cache::forget('profil_cards_menu');
+        Cache::forget('profil_all_categories');
+
+        // 2. Hapus cache halaman detail (jika slug-nya ada)
+        if ($slugYangDihapus) {
+            Cache::forget('profil_kategori_' . $slugYangDihapus);
+        }
+
+        // 3. Hapus cache VisiMisi di Beranda
+        Cache::forget('beranda_visi_misi');
+
+        return redirect()->route('admin.profile.index')->with('success', 'Konten Profil Berhasil Dihapus!'); // Sesuaikan route
     }
 }

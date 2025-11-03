@@ -7,6 +7,8 @@ use App\Models\admin\Galeri;
 use App\Traits\ManajemenGambarTrait;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cache;
+// use Illuminate\Support\Facades\Storage; // Tidak perlu lagi jika hanya pakai Trait
 use Illuminate\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Validator;
@@ -85,6 +87,9 @@ class GaleriController extends Controller
             'tanggal_upload' => now(),
         ]);
 
+        Cache::forget('beranda_galeri');
+        Cache::forget('profil_galeri_items');
+
         return redirect()->route('admin.galeri.index')->with('success', 'Galeri Berhasil Ditambahkan!');
         } catch (\Exception $e) {
             return back()
@@ -155,6 +160,9 @@ class GaleriController extends Controller
 
         $galeri->update($data);
 
+        Cache::forget('beranda_galeri');
+        Cache::forget('profil_galeri_items');
+
         return redirect()->route('admin.galeri.index')->with('success', 'Galeri Berhasil Diperbarui!');
         } catch (\Exception $e) {
             return back()
@@ -171,6 +179,9 @@ class GaleriController extends Controller
         $this->hapusGambarLama($galeri->gambar);
 
         $galeri->delete();
+
+        Cache::forget('beranda_galeri');
+        Cache::forget('profil_galeri_items');
 
         return redirect()->route('admin.galeri.index')->with('success', 'Galeri Berhasil Dihapus!');
     }

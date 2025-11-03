@@ -9,6 +9,8 @@ use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cache;
+// use Illuminate\Support\Facades\Storage; // Tidak perlu lagi
 use Illuminate\Support\Facades\Validator;
 
 class HeaderProfileController extends Controller
@@ -107,6 +109,8 @@ class HeaderProfileController extends Controller
         }
 
         $headerProfile->update($data);
+
+        Cache::forget('profil_header');
 
         return redirect()->route('admin.headerProfile.index')->with('success', 'Heading Profil Berhasil Diperbarui!');
         } catch (\Exception $e) {

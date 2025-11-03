@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\admin\Kontak;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Validator;
 
 class KontakController extends Controller
@@ -59,6 +60,8 @@ class KontakController extends Controller
         ];
 
         $kontak->update($data);
+
+        Cache::forget('kontak_page_data');
 
         return redirect()->route('admin.kontak.index')->with('success', 'Kontak Berhasil Diperbarui!');
         } catch (\Exception $e) {

@@ -9,6 +9,8 @@ use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cache;
+// use Illuminate\Support\Facades\Storage; // Tidak perlu lagi
 use Illuminate\Support\Facades\Validator;
 
 class MitraController extends Controller
@@ -91,6 +93,8 @@ class MitraController extends Controller
             'gambar'     => $pathGambar,
         ]);
 
+        Cache::forget('beranda_mitra');
+
         return redirect()->route('admin.mitra.index')->with('success', 'Mitra Berhasil Ditambahkan!');
         } catch (\Exception $e) {
             return back()
@@ -167,6 +171,8 @@ class MitraController extends Controller
 
         $mitra->update($data);
 
+        Cache::forget('beranda_mitra');
+
         return redirect()->route('admin.mitra.index')->with('success', 'Mitra Berhasil Diperbarui!');
         } catch (\Exception $e) {
             return back()
@@ -184,6 +190,8 @@ class MitraController extends Controller
 
         $mitra->delete();
 
+        Cache::forget('beranda_mitra');
+        
         return redirect()->route('admin.mitra.index')->with('success', 'Mitra Berhasil Dihapus!');
     }
 }

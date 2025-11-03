@@ -23,11 +23,10 @@ class ViewServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        // Mengirim data ke view footer setiap kali view tersebut dirender
         View::composer('pengguna.layouts.footer', function ($view) {
-            // Ambil data kontak pertama dari database
-            $kontakInfo = Kontak::first();
-            // Kirim data ke view dengan nama variabel 'kontakInfo'
+            $kontakInfo = Cache::remember('kontak_page_data', now()->addHours(24), function () {
+                return Kontak::first();
+            });
             $view->with('kontakInfo', $kontakInfo);
         });
 

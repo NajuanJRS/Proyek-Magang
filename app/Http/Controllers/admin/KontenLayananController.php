@@ -9,6 +9,8 @@ use App\Traits\ManajemenGambarTrait;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cache;
+// use Illuminate\Support\Facades\Storage; // Tidak perlu lagi
 use Illuminate\Support\Facades\Validator;
 use Illuminate\View\View;
 use Illuminate\Support\Str;
@@ -143,6 +145,9 @@ class KontenLayananController extends Controller
             'gambar3'             => $pathGambar3,
         ]);
 
+        Cache::forget('kategori_layanan_semua');
+        Cache::forget('beranda_layanan');
+
         return redirect()->route('admin.layanan.index')
             ->with('success', 'Konten Layanan Berhasil Ditambahkan!');
         } catch (\Exception $e) {
@@ -216,11 +221,17 @@ class KontenLayananController extends Controller
         $konten = Konten::with('kategoriKonten')->findOrFail($id);
         $kategori = $konten->kategoriKonten;
 
+        $slugLama = $kategori->slug;
+        // --->
+
+        // --- Update Kategori Konten ---
         $kategoriData = [
             'judul_konten'  => $request->judul_konten,
             'slug'          => Str::slug($request->judul_konten),
         ];
 
+
+        // 7. Proses Update Icon Konten dengan Trait
         if ($request->hasFile('icon_konten')) {
             $this->hapusGambarLama($kategori->icon_konten);
             $pathIconBaru = $this->prosesDanSimpanGambar($request->file('icon_konten'), 'icon', 'icon');
@@ -271,6 +282,18 @@ class KontenLayananController extends Controller
 
         $konten->update($kontenData);
 
+        Cache::forget('kategori_layanan_semua');
+        Cache::forget('beranda_layanan');
+        
+        // Hapus cache 'show' untuk slug lama
+        Cache::forget('kategori_show_' . $slugLama);
+
+        // Hapus juga cache 'show' untuk slug BARU (jika slug-nya berubah)
+        $slugBaru = $kategoriData['slug'];
+        if ($slugLama !== $slugBaru) {
+            Cache::forget('kategori_show_' . $slugBaru);
+        }
+
         return redirect()->route('admin.layanan.index')->with('success', 'Konten Layanan Berhasil Diperbarui!');
         } catch (\Exception $e) {
             return back()
@@ -287,6 +310,13 @@ class KontenLayananController extends Controller
     {
         $kontenLayanan = Konten::with('kategoriKonten')->findOrFail($id);
 
+<<<<<<< HEAD
+        $kategori = $kontenLayanan->kategoriKonten;
+        $slug = $kategori ? $kategori->slug : null;
+
+        // 9. Gunakan Trait untuk Hapus Gambar Konten
+=======
+>>>>>>> e8fa3753aba3aba6875210b4be70a499a324a14d
         $this->hapusGambarLama($kontenLayanan->gambar1);
         $this->hapusGambarLama($kontenLayanan->gambar2);
         $this->hapusGambarLama($kontenLayanan->gambar3);
@@ -304,6 +334,14 @@ class KontenLayananController extends Controller
         }
 
         $kontenLayanan->delete();
+
+        Cache::forget('kategori_layanan_semua');
+        Cache::forget('beranda_layanan');
+        
+        // Hapus cache 'show' untuk slug yang dihapus
+        if ($slug) {
+            Cache::forget('kategori_show_' . $slug);
+        }
 
         return redirect()->route('admin.layanan.index')->with('success', 'Konten Layanan Berhasil Dihapus!');
     }

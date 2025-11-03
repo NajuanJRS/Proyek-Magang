@@ -23,14 +23,15 @@
        @endif
      </div>
 
-     <div class="ds-faq-search-wrapper mx-auto my-4">
-       <form action="{{ route('pencarian.index', ['kategori' => $kategoriAktif]) }}" method="GET" class="input-group">
-         <input type="search" name="keyword" class="form-control" placeholder="Masukkan kata kunci..." aria-label="Cari..." value="{{ $keyword ?? '' }}">
-         <button class="btn btn-primary" type="submit" aria-label="Tombol cari">
-           <i class="bi bi-search"></i>
-         </button>
-       </form>
-     </div>
+        <div class="ds-faq-search-wrapper mx-auto my-4">
+        <form action="{{ route('pencarian.index') }}" method="GET" class="input-group">
+            <input type="search" name="keyword" class="form-control" placeholder="Masukkan kata kunci..." aria-label="Cari..." value="{{ $keyword ?? '' }}">
+            <input type="hidden" name="kategori" value="{{ $kategoriAktif }}">
+            <button class="btn btn-primary" type="submit" aria-label="Tombol cari">
+            <i class="bi bi-search"></i>
+            </button>
+        </form>
+        </div>
 
      <div class="ds-faq-filters d-flex justify-content-center flex-wrap gap-2 mb-4">
        @foreach ($filters as $filter)
@@ -81,11 +82,11 @@
                  @foreach($faq_results as $index => $faq)
                  <div class="accordion-item">
                    <h2 class="accordion-header" id="heading-search-{{ $index }}">
-                     <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-search-{{ $index }}" aria-expanded="false" aria-controls="collapse-search-{{ $index }}">
+                     <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="
                        {{ $faq['title'] }}
                      </button>
                    </h2>
-                   <div id="collapse-search-{{ $index }}" class="accordion-collapse collapse" aria-labelledby="heading-search-{{ $index }}" data-bs-parent="#faqAccordion-search">
+                   <div id="collapse-search-{{ $index }}" class="accordion-collapse collapse" aria-labelledby="heading-search-{{ $index }}" data-bs-parent="
                      <div class="accordion-body">
                        {!! $faq['answer'] !!}
                      </div>

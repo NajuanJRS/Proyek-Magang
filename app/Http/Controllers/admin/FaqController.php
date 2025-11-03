@@ -8,6 +8,7 @@ use App\Models\admin\KategoriFaq;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cache; // <--- 1. TAMBAHKAN INI
 use Illuminate\Support\Facades\Validator;
 
 class FaqController extends Controller
@@ -17,6 +18,7 @@ class FaqController extends Controller
      */
     public function index(Request $request): View
     {
+        // ... (kode index tidak berubah) ...
         $search = $request->input('search');
 
         $faq = Faq::with('kategoriFaq') // eager load relasi kategori
@@ -36,6 +38,7 @@ class FaqController extends Controller
      */
     public function create(): View
     {
+        // ... (kode create tidak berubah) ...
         $kategoriFaq = KategoriFaq::all();
         return view('Admin.faq.formFaq', compact('kategoriFaq'));
     }
@@ -75,6 +78,9 @@ class FaqController extends Controller
             'jawaban' => $request->jawaban,
         ]);
 
+        // <--- 2. PANGGIL FUNGSI PEMBERSIH CACHE
+        $this->clearFaqCache();
+
         return redirect()->route('admin.faq.index')->with('success', 'FAQ Berhasil Ditambahkan!');
         } catch (\Exception $e) {
             return back()
@@ -96,6 +102,7 @@ class FaqController extends Controller
      */
     public function edit($id)
     {
+        // ... (kode edit tidak berubah) ...
         $faq = Faq::findOrFail($id);
         $kategoriFaq = KategoriFaq::all();
         return view('Admin.faq.formEditFaq', compact('faq', 'kategoriFaq'));
@@ -139,6 +146,9 @@ class FaqController extends Controller
 
         $faq->update($data);
 
+        // <--- 3. PANGGIL FUNGSI PEMBERSIH CACHE
+        $this->clearFaqCache();
+
         return redirect()->route('admin.faq.index')->with('success', 'FAQ Berhasil Diperbarui!');
         } catch (\Exception $e) {
             return back()
@@ -155,6 +165,30 @@ class FaqController extends Controller
         $faq = Faq::findOrFail($id);
 
         $faq->delete();
+
+        // <--- 4. PANGGIL FUNGSI PEMBERSIH CACHE
+        $this->clearFaqCache();
+
         return redirect()->route('admin.faq.index')->with('success', 'FAQ Berhasil Dihapus!');
+    }
+
+    /**
+     * Private function to clear all relevant FAQ caches.
+     */
+    // <--- 5. TAMBAHKAN FUNGSI BARU INI DI AKHIR CLASS
+    private function clearFaqCache()
+    {
+        Cache::forget('faq_kategori_list');
+        // 1. Bersihkan cache untuk 'faq_counts'
+        Cache::forget('faq_counts');
+
+        // 2. Bersihkan cache untuk 'faqs_semua'
+        Cache::forget('faqs_semua');
+
+        // 3. Loop semua kategori dan bersihkan cache dinamis mereka
+        $kategoriList = KategoriFaq::all();
+        foreach ($kategoriList as $kategori) {
+            Cache::forget('faqs_' . $kategori->slug);
+        }
     }
 }

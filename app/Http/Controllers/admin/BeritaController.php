@@ -11,6 +11,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Cache;
 
 class BeritaController extends Controller
 {
@@ -114,6 +115,10 @@ class BeritaController extends Controller
             'tgl_posting'=> now(),
         ]);
 
+        Cache::forget('beranda_berita');
+        Cache::forget('berita_sidebar_latest');
+        Cache::forget('berita_total_count');
+
         return redirect()->route('admin.berita.index')->with('success', 'Berita Berhasil Ditambahkan!');
         } catch (\Exception $e) {
             return back()
@@ -213,6 +218,11 @@ class BeritaController extends Controller
         }
 
         $berita->update($data);
+
+        Cache::forget('beranda_berita');
+        Cache::forget('berita_sidebar_latest');
+        Cache::forget('berita_total_count');
+
         return redirect()->route('admin.berita.index')->with('success', 'Berita Berhasil Diperbarui!');
         } catch (\Exception $e) {
             return back()
@@ -233,6 +243,11 @@ class BeritaController extends Controller
         $this->hapusGambarLama($berita->gambar3);
 
         $berita->delete();
+        
+        Cache::forget('beranda_berita');
+        Cache::forget('berita_sidebar_latest');
+        Cache::forget('berita_total_count');
+
         return redirect()->route('admin.berita.index')->with('success', 'Berita Berhasil Dihapus!');
     }
 

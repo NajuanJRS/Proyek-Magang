@@ -9,6 +9,8 @@ use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cache;
+// use Illuminate\Support\Facades\Storage; // Tidak perlu lagi
 use Illuminate\Support\Facades\Validator;
 
 class HeaderDownloadController extends Controller
@@ -107,6 +109,8 @@ class HeaderDownloadController extends Controller
         }
 
         $headerDownload->update($data);
+
+        Cache::forget('header_download');
 
         return redirect()->route('admin.headerDownload.index')->with('success', 'Heading Download Berhasil Diperbarui!');
         } catch (\Exception $e) {
