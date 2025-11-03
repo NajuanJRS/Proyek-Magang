@@ -8,7 +8,7 @@
         <div class="col-12">
             <div class="card card-bergerak shadow-sm border-0 bg-gradient-primary text-white p-4 rounded-4">
                 <h4 class="fw-bold mb-1">Selamat Datang, {{ Auth::user()->name }} 👋</h4>
-                <p class="mb-0">Halaman Dashboard Admin Dinas Sosial Provinsi Kalimantan Selatan.</p>
+                <p class="mb-0">Pusat Pengelolaan Konten dan Data Dinas Sosial Provinsi Kalimantan Selatan.</p>
             </div>
         </div>
 
@@ -54,7 +54,7 @@
         </div>
 
         <div class="col-md-4 col-sm-6">
-            <a href="{{ route('admin.fileDownload', ['halaman_induk' => 'download']) }}" class="text-decoration-none">
+            <a href="{{ route('admin.fileDownload') }}" class="text-decoration-none">
             <div class="card card-bergerak shadow-sm border-0 p-3 text-center rounded-4">
                 <div class="text-danger mb-2"><i class="bi bi-download fs-1"></i></div>
                 <h5 class="fw-bold mb-1">File Download</h5>
@@ -64,11 +64,11 @@
         </div>
 
         <div class="col-md-4 col-sm-6">
-            <a href="{{ route('admin.fileDownload', ['halaman_induk' => 'ppid']) }}" class="text-decoration-none">
+            <a href="{{ route('admin.mitra.index') }}" class="text-decoration-none">
             <div class="card card-bergerak shadow-sm border-0 p-3 text-center rounded-4">
-                <div class="text-danger mb-2"><i class="bi bi-download fs-1"></i></div>
-                <h5 class="fw-bold mb-1">File PPID</h5>
-                <p class="text-muted mb-0">{{ $totalFilePpid }} file</p>
+                <div class="text-danger mb-2"><i class="bi bi-people-fill fs-1"></i></div>
+                <h5 class="fw-bold mb-1">Mitra</h5>
+                <p class="text-muted mb-0">{{ $totalMitra }} file</p>
             </div>
             </a>
         </div>

@@ -17,14 +17,9 @@ class DaftarFileDownloadController extends Controller
                 $q->where('halaman_induk', $request->halaman_induk);
             });
         }
-        $judulHalaman = match (strtolower($request->halaman_induk)) {
-            'download' => 'File Download',
-            'ppid' => 'File PPID',
-            default => 'Daftar File',
-        };
 
         $fileDownload = $query->paginate(10);
 
-        return view('admin.fileDownload.daftarFileDownload', compact('fileDownload', 'judulHalaman'));
+        return view('admin.fileDownload.daftarFileDownload', compact('fileDownload'));
     }
 }

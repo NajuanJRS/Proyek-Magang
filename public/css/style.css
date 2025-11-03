@@ -1054,6 +1054,19 @@ body.no-scroll {
         word-break: break-word;
         width: 1%;
     }
+    .konten-download {
+        min-width:300px;
+        max-width:350px;
+        white-space: normal;
+        text-align: justify;
+        text-justify: inter-word;
+        hyphens: auto;
+        -webkit-hyphens: auto;
+        -ms-hyphens: auto;
+        overflow-wrap: break-word;
+        word-break: break-word;
+        width: 1%;
+    }
 
     .preview-text {
         display: block;

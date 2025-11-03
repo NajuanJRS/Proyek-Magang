@@ -284,7 +284,7 @@ class KontenLayananController extends Controller
 
         Cache::forget('kategori_layanan_semua');
         Cache::forget('beranda_layanan');
-        
+
         // Hapus cache 'show' untuk slug lama
         Cache::forget('kategori_show_' . $slugLama);
 
@@ -310,13 +310,10 @@ class KontenLayananController extends Controller
     {
         $kontenLayanan = Konten::with('kategoriKonten')->findOrFail($id);
 
-<<<<<<< HEAD
         $kategori = $kontenLayanan->kategoriKonten;
         $slug = $kategori ? $kategori->slug : null;
 
         // 9. Gunakan Trait untuk Hapus Gambar Konten
-=======
->>>>>>> e8fa3753aba3aba6875210b4be70a499a324a14d
         $this->hapusGambarLama($kontenLayanan->gambar1);
         $this->hapusGambarLama($kontenLayanan->gambar2);
         $this->hapusGambarLama($kontenLayanan->gambar3);
@@ -337,7 +334,7 @@ class KontenLayananController extends Controller
 
         Cache::forget('kategori_layanan_semua');
         Cache::forget('beranda_layanan');
-        
+
         // Hapus cache 'show' untuk slug yang dihapus
         if ($slug) {
             Cache::forget('kategori_show_' . $slug);

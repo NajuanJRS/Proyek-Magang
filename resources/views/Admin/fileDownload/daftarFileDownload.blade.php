@@ -11,7 +11,7 @@
 
                                 <div class="d-flex justify-content-between align-items-center mb-3">
                                     <h4 class="card-title mb-0">
-                                        {{ $judulHalaman }}
+                                        File Download
                                     </h4>
                                 </div>
 
@@ -33,6 +33,7 @@
                                         <thead>
                                             <tr>
                                                 <th class="text-center">No.</th>
+                                                <th class="text-center">Konten</th>
                                                 <th class="text-center">Nama File</th>
                                                 <th class="text-center">File</th>
                                             </tr>
@@ -40,9 +41,10 @@
                                         @php $no = 1; @endphp
                                         <tbody>
                                             @forelse ($fileDownload as $f)
-                                                <tr>
-                                                    <td class="text-center">{{ $no++ }}</td>
-                                                    <td class="text-center">{{ $f->nama_file }}</td>
+                                            <tr>
+                                                <td class="text-center">{{ $no++ }}</td>
+                                                <td class="konten-download">{{ $f->kategoriDownload->halaman_induk }}</td>
+                                                <td class="konten-download">{{ $f->nama_file }}</td>
 
                                                     @php
                                                         $fullText = trim(
@@ -54,7 +56,7 @@
                                                         );
                                                     @endphp
 
-                                                    <td class="text-center">
+                                                    <td class="konten-download">
                                                         <a href="{{ asset('storage/upload/file/' . $f->file) }}"
                                                             target="_blank"
                                                             style="text-decoration: none; color: #0d6efd; font-weight: 500;">
