@@ -23,37 +23,34 @@ class AdminUpdateController extends Controller
     public function update(Request $request, $id)
     {
         $messages = [
-            'name.min' => 'Username minimal :min karakter.',
-            'name.max' => 'Username maximal :max karakter.',
-            'password.min' => 'Password minimal :min karakter.',
-            'password.confirmed' => 'Konfirmasi password salah.',
-        ];
+        'name.required'   => 'Username wajib diisi.',
+        'name.min'        => 'Username minimal :min karakter.',
+        'name.max'        => 'Username maksimal :max karakter.',
+        'password.min'    => 'Password minimal :min karakter.',
+        'password.confirmed' => 'Konfirmasi password tidak sesuai.',
+    ];
 
-        $validator = Validator::make($request->all(),[
-            'name' => 'nullable|string|min:5|max:255',
-            'password' => 'nullable|string|min:8|confirmed',
-        ], $messages);
-
-        if ($validator->fails()) {
-            return back()
-            ->withErrors($validator)
-        ->withInput();
-        }
+    $request->validate([
+        'name'     => 'required|string|min:5|max:255',
+        'password' => 'nullable|string|min:8|confirmed',
+    ], $messages);
 
     try {
-        $adminUpdate = User::findOrFail($id);
-        $data = [
-            'name' => $request->name,
-            'password' => bcrypt($request->password),
-        ];
+        $data = ['name' => $request->name];
 
-        $adminUpdate->update($data);
-
-        return redirect()->route('admin.adminUpdate.index')->with('success', 'Akun Berhasil Diperbarui!');
-        } catch (\Exception $e) {
-            return back()
-                ->withErrors(['general' => 'Terjadi kesalahan: ' . $e->getMessage()])
-                ->withInput();
+        if ($request->filled('password')) {
+            $data['password'] = bcrypt($request->password);
         }
+
+        User::whereKey(Auth::id())->update($data);
+
+        return redirect()
+            ->route('admin.adminUpdate.index')
+            ->with('success', 'Akun berhasil diperbarui!');
+    } catch (\Exception $e) {
+        return back()
+            ->withErrors(['general' => 'Terjadi kesalahan: '.$e->getMessage()])
+            ->withInput();
+    }
     }
 }
