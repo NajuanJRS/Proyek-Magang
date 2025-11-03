@@ -50,6 +50,31 @@ window.deleteData = function (id) {
     });
 };
 
+document.addEventListener('DOMContentLoaded', function () {
+    const logoutButton = document.getElementById('logoutButton');
+    const logoutForm = document.getElementById('logout-form');
+
+    logoutButton.addEventListener('click', function (event) {
+        event.preventDefault();
+
+        Swal.fire({
+            title: 'Konfirmasi Logout',
+            text: 'Apakah Anda yakin ingin keluar dari akun ini?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Ya, Logout',
+            cancelButtonText: 'Batal',
+            confirmButtonColor: '#d33',
+            cancelButtonColor: '#3085d6',
+            reverseButtons: true,
+        }).then((result) => {
+            if (result.isConfirmed) {
+                logoutForm.submit();
+            }
+        });
+    });
+});
+
 
 function togglePassword() {
     var pwd = document.getElementById('password');

@@ -554,6 +554,18 @@ body {
     color: #fff;
 }
 
+.bg-gradient-primary {
+    background: linear-gradient(135deg, #007bff 0%, #0056d2 100%);
+}
+
+.card i {
+    transition: transform 0.3s;
+}
+
+.card:hover i {
+    transform: scale(1.1);
+}
+
 .btn-warning.btn-sm {
     padding: 6px 12px;
     font-size: 0.9rem;
@@ -1055,6 +1067,12 @@ body.no-scroll {
         white-space: normal;
         text-align: left;
         word-break: break-word;
+    }
+
+    .logout-link {
+        display: flex;
+        align-items: center;
+        margin-left: 2px;
     }
 
     th.kolom-judul {

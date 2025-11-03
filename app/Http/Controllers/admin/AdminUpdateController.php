@@ -6,13 +6,14 @@ use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 
 class AdminUpdateController extends Controller
 {
     public function index(): View
     {
-        $adminUpdate = User::first();
+        $adminUpdate = Auth::User();
         return view('Admin.adminUpdate', compact('adminUpdate'));
     }
 
