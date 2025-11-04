@@ -37,6 +37,20 @@
                                         </div>
                                     </div>
 
+                                    {{-- Password Saat Ini --}}
+                                    <div class="mb-4">
+                                        <label class="form-label" for="current_password">Password Saat Ini</label>
+                                        <div class="input-group">
+                                            <span class="input-group-text"><i class="bi bi-shield-lock"></i></span>
+                                            <input type="password"
+                                                class="form-control @error('current_password') is-invalid @enderror"
+                                                id="current_password" name="current_password" placeholder="Masukkan password sekarang">
+                                            <span class="input-group-text" style="cursor:pointer;" onclick="toggleCurrentPassword()">
+                                                <i class="bi bi-eye-slash" id="toggleIconCurrent"></i>
+                                            </span>
+                                        </div>
+                                    </div>
+
                                     <div class="mb-4">
                                         <label class="form-label" for="password">Password Baru</label>
                                         <div class="input-group">
