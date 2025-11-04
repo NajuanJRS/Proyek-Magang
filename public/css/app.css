@@ -486,7 +486,6 @@
 .ds-news-card-body{ padding:12px; display:flex; flex-direction:column; gap:8px; flex:1; }
 .ds-news-title{
   font-size:1rem;
-  line-height:1.35;
   font-weight:600;
   margin:0;
   display: -webkit-box;
@@ -847,24 +846,8 @@
   border-color: #a9c5ec;
 }
 
-.ds-faq-filter-btn {
-  border-radius: 20px;
-  padding: 0.3rem 1rem;
-  font-weight: 500;
-  background-color: #e9ecef;
-  border: 1px solid #dee2e6;
-  color: #495057;
-  transition: all 0.2s ease;
-}
-
 .ds-faq-filter-btn:hover {
   background-color: #dbe4f0;
-}
-
-.ds-faq-filter-btn.active {
-  background-color: #2B5A9A;
-  color: #fff;
-  border-color: #2B5A9A;
 }
 
 .ds-faq-accordion-wrapper {
@@ -967,30 +950,9 @@
   }
 }
 
-.ds-search-result-item {
-  padding-bottom: 1.5rem;
-  margin-bottom: 1.5rem;
-  border-bottom: 1px solid #e5e7eb;
-}
 .ds-search-results-container .ds-search-result-item:last-child {
   border-bottom: none;
   margin-bottom: 0;
-}
-
-.ds-result-title {
-  font-size: 1.2rem;
-  font-weight: 600;
-  text-decoration: none;
-  color: #2B5A9A;
-}
-.ds-result-title:hover {
-  text-decoration: underline;
-}
-
-.ds-result-meta {
-  font-size: 0.85rem;
-  color: #6c757d;
-  margin: 0.25rem 0 0.5rem;
 }
 
 .ds-result-summary {
@@ -1038,22 +1000,9 @@
   color: #2B5A9A;
 }
 
-.ds-filter-count {
-  font-size: 0.9rem;
-  background-color: #e9ecef;
-  padding: 0.1rem 0.5rem;
-  border-radius: 4px;
-}
 .ds-filter-list li a.active .ds-filter-count {
   background-color: #2B5A9A;
   color: #fff;
-}
-
-.ds-results-card {
-  background-color: #fff;
-  border: 1px solid #e5e7eb;
-  border-radius: 8px;
-  padding: 1.5rem;
 }
 
 @media (max-width: 767.98px) {
@@ -1601,11 +1550,13 @@ background-color: rgba(0, 0, 0, 0.40);
   z-index: 1050;
   padding: 1rem;
   opacity: 0;
-  transition: opacity 0.4s ease;
+  transition: opacity 0.4s ease, visibility 0s ease 0.4s;
 }
 
-.ds-modal-overlay:not([hidden]) {
+.ds-modal-overlay.ds-modal-visible {
   opacity: 1;
+  visibility: visible;
+  transition-delay: 0s; /* Hapus penundaan saat fade-in */
 }
 
 .ds-modal-content {
@@ -1623,7 +1574,7 @@ background-color: rgba(0, 0, 0, 0.40);
   width: 1px;
 }
 
-.ds-modal-overlay:not([hidden]) .ds-modal-content {
+.ds-modal-overlay.ds-modal-visible .ds-modal-content {
     transform: scale(1) translateY(0);
     opacity: 1;
 }
@@ -1708,7 +1659,7 @@ background-color: rgba(0, 0, 0, 0.40);
 .ds-faq-filter-btn {
   background-color: #f8f9fa;
   border-color: #dee2e6;
-  color: #6c757d;
+  color: #495057;
   transition: all 0.2s ease-in-out;
   display: flex;
   align-items: center;
@@ -1794,7 +1745,7 @@ background-color: rgba(0, 0, 0, 0.40);
     text-decoration: underline;
 }
 .ds-result-meta {
-    font-size: 0.85rem;
-    color: #6c757d;
-    margin-top: 0.25rem;
+  font-size: 0.85rem;
+  color: #6c757d;
+  margin: 0.25rem 0 0.5rem;
 }

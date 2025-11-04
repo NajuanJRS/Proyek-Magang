@@ -121,15 +121,22 @@
     const modalImage = document.getElementById('galleryModalImage');
     const modalCaption = document.getElementById('galleryModalCaption');
 
-    function openModal(imageSrc, imageTitle) {
+function openModal(imageSrc, imageTitle) {
         modalImage.src = imageSrc;
         modalImage.alt = imageTitle;
         modalCaption.textContent = imageTitle;
-        modal.hidden = false;
+
+        modal.removeAttribute('hidden');
+        requestAnimationFrame(() => {
+            modal.classList.add('ds-modal-visible');
+        });
     }
 
     function closeModal() {
-        modal.hidden = true;
+        modal.classList.remove('ds-modal-visible');
+        setTimeout(() => {
+            modal.setAttribute('hidden', '');
+        }, 400);
     }
 
     document.querySelectorAll('.ds-galeri-card').forEach(card => {

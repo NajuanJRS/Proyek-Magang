@@ -237,28 +237,30 @@
         </div>
 
         <div class="d-md-none ds-partner-scroll">
-            @foreach($mitra as $m)
-            <div class="ds-partner-item">
-                @if($m->link_mitra)
-                <a href="{{ $m->link_mitra }}" target="_blank" rel="noopener">
+            <div class="ds-partner-track">
+                @foreach($mitra as $m)
+                <div class="ds-partner-item">
+                    @if($m->link_mitra)
+                    <a href="{{ $m->link_mitra }}" target="_blank" rel="noopener">
+                        <img src="{{ asset('storage/' . $m->gambar) }}" alt="{{ $m->nama_mitra }}" loading="lazy">
+                    </a>
+                    @else
                     <img src="{{ asset('storage/' . $m->gambar) }}" alt="{{ $m->nama_mitra }}" loading="lazy">
-                </a>
-                @else
-                <img src="{{ asset('storage/' . $m->gambar) }}" alt="{{ $m->nama_mitra }}" loading="lazy">
-                @endif
-            </div>
-            @endforeach
-            @foreach($mitra as $m)
-            <div class="ds-partner-item">
-                @if($m->link_mitra)
-                <a href="{{ $m->link_mitra }}" target="_blank" rel="noopener">
+                    @endif
+                </div>
+                @endforeach
+                @foreach($mitra as $m)
+                <div class="ds-partner-item">
+                    @if($m->link_mitra)
+                    <a href="{{ $m->link_mitra }}" target="_blank" rel="noopener">
+                        <img src="{{ asset('storage/' . $m->gambar) }}" alt="{{ $m->nama_mitra }}" loading="lazy">
+                    </a>
+                    @else
                     <img src="{{ asset('storage/' . $m->gambar) }}" alt="{{ $m->nama_mitra }}" loading="lazy">
-                </a>
-                @else
-                <img src="{{ asset('storage/' . $m->gambar) }}" alt="{{ $m->nama_mitra }}" loading="lazy">
-                @endif
+                    @endif
+                </div>
+                @endforeach
             </div>
-            @endforeach
         </div>
         </div>
     @endif
@@ -302,7 +304,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function scheduleResume() {
-        resumeTimeout = setTimeout(playAnimation, 2000);
+        resumeTimeout = setTimeout(playAnimation, 100);
     }
     track.addEventListener('mouseover', pauseAnimation);
     track.addEventListener('mouseout', scheduleResume);
