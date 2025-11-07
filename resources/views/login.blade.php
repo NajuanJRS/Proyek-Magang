@@ -1,11 +1,10 @@
-<!-- filepath: c:\xampp\htdocs\Dinas_Sosial_Prov_Kalsel\resources\views\login.blade.php -->
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login DINSOS PROV KALSEL</title>
+    <title>DINSOS PROV KALSEL</title>
     <link rel="icon" href="{{ asset('images/favicon.ico') }}" type="image/x-icon">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
@@ -29,6 +28,11 @@
                     </ul>
                 </div>
             @endif
+            @if (session('success'))
+                <div id="session-success-toast" data-message="{{ session('success') }}" class="d-none">
+                    {{ session('success') }}
+                </div>
+            @endif
             <form action="{{ route('login') }}" method="POST" autocomplete="off">
                 @csrf
                 <div class="input-group mb-3">
@@ -50,6 +54,22 @@
         <p class="copyright-text">Copyright © 2025 Dinas Sosial Provinsi Kalimantan Selatan</p>
     </div>
 
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+    const successAlertElement = document.getElementById('session-success-toast');
+    if (successAlertElement) {
+        const message = successAlertElement.getAttribute('data-message');
+        if (message) {
+            Swal.fire({
+                title: 'Berhasil!',
+                text: message,
+                icon: 'success',
+                confirmButtonColor: '#3085d6',
+                confirmButtonText: 'OK'
+            });
+        }
+    }
+</script>
 <script src="{{ asset('js/custom.js') }}"></script>
 </body>
 
