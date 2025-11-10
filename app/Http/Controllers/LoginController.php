@@ -30,7 +30,7 @@ class LoginController extends Controller
             'password' => 'required|string',
         ]);
 
-        $user = User::where('name', $request->name)->first();
+        $user = User::whereRaw('BINARY name = ?', [$request->name])->first();
 
         if ($user && Hash::check($request->password, $user->password)) {
             Auth::login($user);
@@ -40,7 +40,7 @@ class LoginController extends Controller
             $user->save();
 
             return match ($user->role) {
-                'admin' => redirect()->route('admin.dashboard'),
+                'admin' => redirect()->route('admin.dashboard')->with('success', 'Login Berhasil!'),
                 default => redirect()->route('login')
                     ->withErrors(['role' => 'Role tidak dikenali.']),
             };
@@ -66,6 +66,6 @@ class LoginController extends Controller
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 
-        return redirect('/login');
+        return redirect()->route('login')->with('success', 'Anda telah berhasil logout!.');
     }
 }

@@ -14,21 +14,11 @@
 
         {{-- Statistik Cards --}}
         <div class="col-md-4 col-sm-6">
-            <a href="{{ route('admin.pejabat.index') }}" class="text-decoration-none">
+            <a href="{{ route('admin.mitra.index') }}" class="text-decoration-none">
             <div class="card card-bergerak shadow-sm border-0 p-3 text-center rounded-4">
-                <div class="text-info mb-2"><i class="bi bi-person-badge fs-1"></i></div>
-                <h5 class="fw-bold mb-1">Pejabat</h5>
-                <p class="text-muted mb-0">{{ $totalPejabat }} data</p>
-            </div>
-            </a>
-        </div>
-
-        <div class="col-md-4 col-sm-6">
-            <a href="{{ route('admin.layanan.index') }}" class="text-decoration-none">
-            <div class="card card-bergerak shadow-sm border-0 p-3 text-center rounded-4">
-                <div class="text-success mb-2"><i class="bi bi-briefcase fs-1"></i></div>
-                <h5 class="fw-bold mb-1">Layanan</h5>
-                <p class="text-muted mb-0">{{ $totalLayanan }} konten</p>
+                <div class="text-danger mb-2"><i class="bi bi-people-fill fs-1"></i></div>
+                <h5 class="fw-bold mb-1">Mitra</h5>
+                <p class="text-muted mb-0">{{ $totalMitra }} file</p>
             </div>
             </a>
         </div>
@@ -39,6 +29,36 @@
                 <div class="text-primary mb-2"><i class="bi bi-person-lines-fill fs-1"></i></div>
                 <h5 class="fw-bold mb-1">Profil</h5>
                 <p class="text-muted mb-0">{{ $totalProfil }} konten</p>
+            </div>
+            </a>
+        </div>
+
+        <div class="col-md-4 col-sm-6">
+            <a href="{{ route('admin.pejabat.index') }}" class="text-decoration-none">
+            <div class="card card-bergerak shadow-sm border-0 p-3 text-center rounded-4">
+                <div class="text-info mb-2"><i class="bi bi-person-badge fs-1"></i></div>
+                <h5 class="fw-bold mb-1">Pejabat</h5>
+                <p class="text-muted mb-0">{{ $totalPejabat }} data</p>
+            </div>
+            </a>
+        </div>
+
+        <div class="col-md-4 col-sm-6">
+            <a href="{{ route('admin.galeri.index') }}" class="text-decoration-none">
+            <div class="card card-bergerak shadow-sm border-0 p-3 text-center rounded-4">
+                <div class="text-purple mb-2"><i class="bi bi-image fs-1"></i></div>
+                <h5 class="fw-bold mb-1">Galeri</h5>
+                <p class="text-muted mb-0">{{ $totalGaleri }} gambar</p>
+            </div>
+            </a>
+        </div>
+
+        <div class="col-md-4 col-sm-6">
+            <a href="{{ route('admin.layanan.index') }}" class="text-decoration-none">
+            <div class="card card-bergerak shadow-sm border-0 p-3 text-center rounded-4">
+                <div class="text-success mb-2"><i class="bi bi-briefcase fs-1"></i></div>
+                <h5 class="fw-bold mb-1">Layanan</h5>
+                <p class="text-muted mb-0">{{ $totalLayanan }} konten</p>
             </div>
             </a>
         </div>
@@ -64,31 +84,11 @@
         </div>
 
         <div class="col-md-4 col-sm-6">
-            <a href="{{ route('admin.mitra.index') }}" class="text-decoration-none">
-            <div class="card card-bergerak shadow-sm border-0 p-3 text-center rounded-4">
-                <div class="text-danger mb-2"><i class="bi bi-people-fill fs-1"></i></div>
-                <h5 class="fw-bold mb-1">Mitra</h5>
-                <p class="text-muted mb-0">{{ $totalMitra }} file</p>
-            </div>
-            </a>
-        </div>
-
-        <div class="col-md-4 col-sm-6">
             <a href="{{ route('admin.ppid.index') }}" class="text-decoration-none">
             <div class="card card-bergerak shadow-sm border-0 p-3 text-center rounded-4">
                 <div class="text-secondary mb-2"><i class="bi bi-people fs-1"></i></div>
                 <h5 class="fw-bold mb-1">PPID</h5>
                 <p class="text-muted mb-0">{{ $totalPpid }} konten</p>
-            </div>
-            </a>
-        </div>
-
-        <div class="col-md-4 col-sm-6">
-            <a href="{{ route('admin.galeri.index') }}" class="text-decoration-none">
-            <div class="card card-bergerak shadow-sm border-0 p-3 text-center rounded-4">
-                <div class="text-purple mb-2"><i class="bi bi-image fs-1"></i></div>
-                <h5 class="fw-bold mb-1">Galeri</h5>
-                <p class="text-muted mb-0">{{ $totalGaleri }} gambar</p>
             </div>
             </a>
         </div>
