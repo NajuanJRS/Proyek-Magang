@@ -54,7 +54,7 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @forelse($kontenProfile as $k)
+                                        @foreach($kontenProfile as $k)
                                             <tr>
                                                 <td class="text-center">{{ $loop->iteration }}</td>
 
@@ -224,16 +224,10 @@
                                                         </form>
                                                     </td>
                                             </tr>
-                                        @empty
-                                            <tr>
-                                                <td colspan="10" class="text-center">Data tidak ditemukan.</td>
-                                            </tr>
-                                        @endforelse
+                                        @endforeach
                                     </tbody>
                                 </table>
                             </div>
-
-                            {{-- Pagination --}}
                             <div class="mt-4 d-flex justify-content-end">
                                     {{ $kontenProfile->links('pagination::bootstrap-5') }}
                             </div>

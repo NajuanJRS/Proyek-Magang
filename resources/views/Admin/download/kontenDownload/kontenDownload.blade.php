@@ -21,13 +21,11 @@
                                     <h6 class="mb-0">{{ $k->nama_kategori }}</h6>
                                 </div>
                                 <div class="d-flex gap-2">
-                                    {{-- Tombol Edit --}}
                                     <a href="{{ route('admin.kontenDownload.edit', $k->id_kategori) }}"
                                         class="btn btn-info btn-sm btn-circle rounded-circle d-inline-flex me-1">
                                         <i class="bi bi-pencil-square"></i>
                                     </a>
 
-                                    {{-- Tombol Delete --}}
                                     <a href="#"
                                         class="btn btn-danger btn-sm btn-circle rounded-circle d-inline-flex"
                                         onclick="deleteData('{{ $k->id_kategori }}')">
@@ -62,13 +60,10 @@
                                     <h6 class="mb-0">{{ $k->nama_kategori }}</h6>
                                 </div>
                                 <div class="d-flex gap-2">
-                                    {{-- Tombol Edit --}}
                                     <a href="{{ route('admin.kontenDownload.edit', $k->id_kategori) }}"
                                         class="btn btn-info btn-sm btn-circle rounded-circle d-inline-flex me-1">
                                         <i class="bi bi-pencil-square"></i>
                                     </a>
-
-                                    {{-- Tombol Delete --}}
                                     <a href="#"
                                         class="btn btn-danger btn-sm btn-circle rounded-circle d-inline-flex"
                                         onclick="deleteData('{{ $k->id_kategori }}')">

@@ -27,7 +27,7 @@
                                         </thead>
                                         <tbody>
                                             @php $no = 1; @endphp
-                                            @forelse($headerKartu as $h)
+                                            @foreach($headerKartu as $h)
                                                 @if (($h->kategoriHeader->nama_kategori ?? '') === 'Kartu Pejabat')
                                                     <tr>
                                                         <td class="text-center">{{ $no++ }}</td>
@@ -45,11 +45,7 @@
                                                         </td>
                                                     </tr>
                                                 @endif
-                                            @empty
-                                                <tr>
-                                                    <td colspan="6" class="text-center">Data tidak ditemukan.</td>
-                                                </tr>
-                                            @endforelse
+                                            @endforeach
                                         </tbody>
                                     </table>
                                 </div>
@@ -101,7 +97,7 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            @forelse($pejabat as $p)
+                                            @foreach($pejabat as $p)
                                                 <tr>
                                                     <td class="text-center">{{ $loop->iteration }}</td>
                                                     <td class="text-center">
@@ -126,14 +122,9 @@
                                                         </form>
                                                     </td>
                                                 </tr>
-                                            @empty
-                                                <tr>
-                                                    <td colspan="6" class="text-center">Data tidak ditemukan.</td>
-                                                </tr>
-                                            @endforelse
+                                            @endforeach
                                         </tbody>
                                     </table>
-
                                     <div class="mt-4 d-flex justify-content-end">
                                     {{ $pejabat->links('pagination::bootstrap-5') }}
                                 </div>

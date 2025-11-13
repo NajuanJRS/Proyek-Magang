@@ -30,7 +30,7 @@
                                         </thead>
                                         <tbody>
                                             @php $no = 1; @endphp
-                                            @forelse($headerLayanan as $h)
+                                            @foreach($headerLayanan as $h)
                                                 @if (($h->kategoriHeader->nama_kategori ?? '') === 'Heading Layanan')
                                                     <tr>
                                                         <td class="text-center">{{ $no++ }}</td>
@@ -79,11 +79,7 @@
                                                         </td>
                                                     </tr>
                                                 @endif
-                                            @empty
-                                                <tr>
-                                                    <td colspan="5" class="text-center">Data tidak ditemukan.</td>
-                                                </tr>
-                                            @endforelse
+                                            @endforeach
                                         </tbody>
                                     </table>
                                 </div>

@@ -51,27 +51,75 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            @forelse ($download as $f)
+                                            @foreach ($download as $f)
                                                 <tr>
                                                     <td class="text-center">{{ $loop->iteration }}</td>
-                                                    <td class="text-center">{{ $f->nama_file }}</td>
+                                                    <td class="text-start">
+                                                        @php
+                                                            $fullText = trim(
+                                                                preg_replace(
+                                                                    '/\s+/',
+                                                                    ' ',
+                                                                    html_entity_decode(
+                                                                        strip_tags($f->nama_file ?? ''),
+                                                                    ),
+                                                                ),
+                                                            );
+                                                        @endphp
+                                                        @if ($fullText)
+                                                            <div class="preview-text"
+                                                                style="max-width:420px; white-space:normal; overflow:hidden;">
+                                                                {{ \Illuminate\Support\Str::limit($fullText, 60) }}
+                                                            </div>
+                                                            @if (mb_strlen($fullText) > 60)
+                                                                <button type="button" class="btn btn-link p-0 see-more"
+                                                                    data-id="{{ $f->id_file }}-3"
+                                                                    data-judul="Nama File">
+                                                                    Lihat selengkapnya
+                                                                </button>
+                                                            @endif
+                                                            <div id="full-content-{{ $f->id_file }}-3" class="d-none">
+                                                                {!! $f->nama_file !!}
+                                                            </div>
+                                                        @else
+                                                            -
+                                                        @endif
+                                                    </td>
 
-                                                    @php
-                                                        $fullText = trim(
-                                                            preg_replace(
-                                                                '/\s+/',
-                                                                ' ',
-                                                                html_entity_decode(strip_tags($f->file)),
-                                                            ),
-                                                        );
-                                                    @endphp
+                                                    <td class="text-start">
+                                                        @php
+                                                            $fileText = trim(
+                                                                preg_replace(
+                                                                    '/\s+/',
+                                                                    ' ',
+                                                                    strip_tags($f->file ?? '')
+                                                                )
+                                                            );
+                                                        @endphp
 
-                                                    <td class="text-center">
-                                                        <a href="{{ asset('storage/upload/file/' . $f->file) }}"
-                                                            target="_blank"
-                                                            style="text-decoration: none; color: #0d6efd; font-weight: 500;">
-                                                            {{ $f->file }}
-                                                        </a>
+                                                        @if ($fileText)
+                                                            <div class="preview-text" style="max-width:420px; white-space:normal; overflow:hidden;">
+                                                                <a href="{{ asset('storage/upload/file/' . $f->file) }}" target="_blank"
+                                                                    style="text-decoration: none; color: #0d6efd; font-weight: 500;">
+                                                                    {{ \Illuminate\Support\Str::limit($fileText, 60) }}
+                                                                </a>
+                                                            </div>
+
+                                                            @if (mb_strlen($fileText) > 60)
+                                                                <button type="button" class="btn btn-link p-0 see-more" data-id="{{ $f->id_file }}-4" data-judul="File">
+                                                                    Lihat selengkapnya
+                                                                </button>
+                                                            @endif
+
+                                                            <div id="full-content-{{ $f->id_file }}-4" class="d-none">
+                                                                <a href="{{ asset('storage/upload/file/' . $f->file) }}" target="_blank"
+                                                                    style="text-decoration: none; color: #0d6efd; font-weight: 500;">
+                                                                    {{ $f->file }}
+                                                                </a>
+                                                            </div>
+                                                        @else
+                                                            -
+                                                        @endif
                                                     </td>
 
                                                     <td class="text-center">
@@ -79,8 +127,6 @@
                                                             class="btn btn-info btn-sm btn-circle rounded-circle d-inline-flex me-1">
                                                             <i class="bi bi-pencil-square"></i>
                                                         </a>
-
-                                                        {{-- Tombol Delete --}}
                                                         <a href="#" class="btn btn-danger btn-sm btn-circle rounded-circle d-inline-flex "
                                                             onclick="deleteData('{{ $f->id_file }}')">
                                                             <i class="bi bi-trash"></i></a>
@@ -93,12 +139,7 @@
                                                         </form>
                                                     </td>
                                                 </tr>
-                                            @empty
-                                                <tr>
-                                                    <td colspan="4" class="text-center">Belum ada file di kategori ini.
-                                                    </td>
-                                                </tr>
-                                            @endforelse
+                                            @endforeach
                                         </tbody>
                                     </table>
                                 </div>

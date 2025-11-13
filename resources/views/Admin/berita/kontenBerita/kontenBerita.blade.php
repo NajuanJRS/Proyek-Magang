@@ -51,7 +51,7 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            @forelse($berita as $b)
+                                            @foreach($berita as $b)
                                                 <tr>
                                                     <td class="text-center">{{ $loop->iteration }}</td>
                                                     <td class="kolom-judul">
@@ -237,11 +237,7 @@
                                                         </form>
                                                     </td>
                                                 </tr>
-                                            @empty
-                                                <tr>
-                                                    <td colspan="11" class="text-center">Data tidak ditemukan.</td>
-                                                </tr>
-                                            @endforelse
+                                            @endforeach
                                         </tbody>
                                     </table>
                                 </div>

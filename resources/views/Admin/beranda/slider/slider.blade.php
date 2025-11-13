@@ -45,7 +45,7 @@
                                         </thead>
                                         <tbody>
                                             @php $no = 1; @endphp
-                                            @forelse($slider as $s)
+                                            @foreach($slider as $s)
                                                 @if (($s->kategoriHeader->nama_kategori ?? '') === 'Hero Section')
                                                     <tr>
                                                         <td class="text-center">{{ $no++ }}</td>
@@ -104,11 +104,7 @@
                                                         </td>
                                                     </tr>
                                                 @endif
-                                            @empty
-                                                <tr>
-                                                    <td colspan="5" class="text-center">Data tidak ditemukan.</td>
-                                                </tr>
-                                            @endforelse
+                                            @endforeach
                                         </tbody>
                                     </table>
                                 </div>
