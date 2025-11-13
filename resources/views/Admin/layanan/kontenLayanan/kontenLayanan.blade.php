@@ -54,7 +54,7 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @forelse($kontenLayanan as $k)
+                                        @foreach($kontenLayanan as $k)
                                             <tr>
                                                 <td class="text-center">{{ $loop->iteration }}</td>
 
@@ -224,11 +224,7 @@
                                                         </form>
                                                     </td>
                                             </tr>
-                                        @empty
-                                            <tr>
-                                                <td colspan="10" class="text-center">Data tidak ditemukan.</td>
-                                            </tr>
-                                        @endforelse
+                                        @endforeach
                                     </tbody>
                                 </table>
                             </div>

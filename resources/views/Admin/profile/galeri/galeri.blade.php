@@ -44,7 +44,7 @@
                                         </thead>
                                         <tbody>
                                             @php $no = 1; @endphp
-                                            @forelse($galeri as $g)
+                                            @foreach($galeri as $g)
                                                     <tr>
                                                         <td class="text-center">{{ $loop->iteration }}</td>
                                                         <td class="text-center">{{ $g->judul ?? '-' }}</td>
@@ -76,11 +76,7 @@
                                                             </form>
                                                         </td>
                                                     </tr>
-                                            @empty
-                                                <tr>
-                                                    <td colspan="5" class="text-center">Data tidak ditemukan.</td>
-                                                </tr>
-                                            @endforelse
+                                            @endforeach
                                         </tbody>
                                     </table>
                                 </div>

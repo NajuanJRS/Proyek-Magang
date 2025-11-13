@@ -43,7 +43,7 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @forelse($faq as $f)
+                                        @foreach($faq as $f)
                                             <tr>
                                                 <td>{{ $loop->iteration }}</td>
                                                 <td class="isi-konten">{{ $f->pertanyaan }}</td>
@@ -75,11 +75,7 @@
                                                 </td>
                                             </tr>
                                             </tr>
-                                        @empty
-                                            <tr>
-                                                <td colspan="4" class="text-center">Data tidak ditemukan.</td>
-                                            </tr>
-                                        @endforelse
+                                        @endforeach
                                     </tbody>
                                 </table>
                                 </div>

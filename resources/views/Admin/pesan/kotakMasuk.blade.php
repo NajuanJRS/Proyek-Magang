@@ -27,7 +27,7 @@
                                     </form>
                                 </div>
                                 <div class="table-responsive custom-table-container">
-                                    <table class="table table-hover datatable">
+                                    <table class="table table-hover table-inbox">
                                         <thead>
                                             <tr>
                                                 <th>No.</th>
@@ -41,7 +41,7 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            @forelse($kotakMasuk as $k)
+                                            @foreach($kotakMasuk as $k)
                                                 <tr class="{{ $k->dibaca == 0 ? 'unread-message' : 'read-message' }}">
                                                     <td>{{ $loop->iteration }}</td>
                                                     <td>{{ $k->nama }}</td>
@@ -85,11 +85,7 @@
                                                         </form>
                                                     </td>
                                                 </tr>
-                                            @empty
-                                                <tr>
-                                                    <td colspan="8" class="text-center">Data tidak ditemukan.</td>
-                                                </tr>
-                                            @endforelse
+                                            @endforeach
                                         </tbody>
                                     </table>
                                 </div>

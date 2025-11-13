@@ -43,7 +43,7 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            @forelse($mitra as $m)
+                                            @foreach($mitra as $m)
                                                     <tr>
                                                         <td class="text-center">{{ $loop->iteration }}</td>
                                                         <td class="text-center">
@@ -95,11 +95,7 @@
                                                             </form>
                                                         </td>
                                                     </tr>
-                                            @empty
-                                                <tr>
-                                                    <td colspan="5" class="text-center">Data tidak ditemukan.</td>
-                                                </tr>
-                                            @endforelse
+                                            @endforeach
                                         </tbody>
                                     </table>
                                 </div>

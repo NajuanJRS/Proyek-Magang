@@ -30,7 +30,7 @@ class ViewServiceProvider extends ServiceProvider
             $view->with('kontakInfo', $kontakInfo);
         });
 
-        View::composer('admin.*', function ($view) {
+        View::composer(['admin.*', 'Admin.*'], function ($view) {
             $count = KotakMasuk::where('status_dibaca', 0)->count();
             $view->with('unreadKotakMasuk', $count);
         });

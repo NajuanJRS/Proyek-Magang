@@ -731,8 +731,10 @@ document.querySelectorAll('.see-more').forEach(btn => {
     });
 });
 
+});
 $(document).ready(function () {
-    let table = $('.datatable').DataTable({
+    // Untuk tabel inbox
+    $('.table-inbox').DataTable({
         searching: false,
         lengthChange: false,
         paging: false,
@@ -743,15 +745,33 @@ $(document).ready(function () {
         columnDefs: [
             { orderable: false, targets: -1 }
         ],
-        createdRow: function(row, data, dataIndex) {
-            let status_dibaca = $(row).find('.see-more').data('dibaca');
-            if (status_dibaca == 0) {
-                $(row).addClass('unread-message');
-            } else {
-                $(row).addClass('read-message');
+        createdRow: function (row, data, dataIndex) {
+            let seeMore = $(row).find('.see-more');
+            if (seeMore.length > 0) {
+                let status_dibaca = seeMore.data('dibaca');
+                if (status_dibaca == 0) {
+                    $(row).addClass('unread-message');
+                } else {
+                    $(row).addClass('read-message');
+                }
             }
         }
     });
-});
+
+    // Untuk tabel lain (seperti File Download)
+    $('.datatable').not('.table-inbox').DataTable({
+        searching: false,
+        lengthChange: false,
+        paging: false,
+        info: false,
+        ordering: true,
+        autoWidth: false,
+        responsive: true,
+        columnDefs: [
+            { orderable: false, targets: -1 }],
+        language: {
+        emptyTable: "Belum ada file di kategori ini."
+        }
+    });
 });
 
