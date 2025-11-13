@@ -61,7 +61,7 @@ class ProfilController extends Controller
         $viewName = 'pengguna.profil.show';
         $viewData = [];
 
-        if ($slug == 'profil-singkat-pejabat') {
+        if ($slug == 'profil-pejabat') {
             $viewName = 'pengguna.profil.pejabat';
 
             $jabatanKepalaDinasId = Jabatan::where('nama_jabatan', 'Kepala Dinas')->first()?->id_jabatan;

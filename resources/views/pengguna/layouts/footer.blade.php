@@ -5,10 +5,9 @@
          Terhubung dengan kami <br class="d-md-none">di media sosial:
         </span>
       <div class="ds-social d-flex align-items-center gap-4">
-        <a href="https://facebook.com/" target="_blank" rel="noopener" aria-label="Facebook" class="text-body-secondary"><i class="bi bi-facebook"></i></a>
-        <a href="https://instagram.com/" target="_blank" rel="noopener" aria-label="Instagram" class="text-body-secondary"><i class="bi bi-instagram"></i></a>
-        <a href="https://wa.me/6280000000000" target="_blank" rel="noopener" aria-label="WhatsApp" class="text-body-secondary"><i class="bi bi-whatsapp"></i></a>
-        <a href="https://youtube.com/" target="_blank" rel="noopener" aria-label="YouTube" class="text-body-secondary"><i class="bi bi-youtube"></i></a>
+        <a href="https://www.facebook.com/dinsoskalsel" target="_blank" rel="noopener" aria-label="Facebook" class="text-body-secondary"><i class="bi bi-facebook"></i></a>
+        <a href="https://www.instagram.com/dinsosprovkalsel/" target="_blank" rel="noopener" aria-label="Instagram" class="text-body-secondary"><i class="bi bi-instagram"></i></a>
+        <a href="https://www.youtube.com/channel/UCJKd8_4ulKJARy2QzYq5iQw" target="_blank" rel="noopener" aria-label="YouTube" class="text-body-secondary"><i class="bi bi-youtube"></i></a>
       </div>
     </div>
   </div>
@@ -31,7 +30,7 @@
         <ul class="list-unstyled ds-linklist">
             <li><a href="https://kemensos.go.id/" class="link-underline-opacity-0">Kementerian Sosial</a></li>
             <li><a href="https://kalselprov.go.id/" class="link-underline-opacity-0">kalselprov.go.id</a></li>
-            <li><a href="https://latihan.lapor.go.id/instansi/dinas-sosial-provinsi-kalimantan-selatan" class="link-underline-opacity-0">LAPOR!</a></li>
+            <li><a href="https://www.lapor.go.id/instansi/dinas-sosial-provinsi-kalimantan-selatan/common" class="link-underline-opacity-0">LAPOR!</a></li>
             <li><a href="#" class="link-underline-opacity-0">BPBD Kalsel</a></li>
             <li><a href="{{ url('/faq') }}" class="link-underline-opacity-0">FAQ</a></li>
             <li><a href="#" class="link-underline-opacity-0" data-bs-toggle="modal" data-bs-target="#feedbackModal">Umpan Balik</a></li>
