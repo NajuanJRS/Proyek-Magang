@@ -88,6 +88,12 @@
                                                  alt="Gambar Lama 1"
                                                  style="max-width: 200px; border-radius:8px; border:1px solid #ddd; padding:4px;">
                                         </div>
+                                        <div class="form-check mt-2">
+                                            <input class="form-check-input" type="checkbox" name="hapus_gambar1"
+                                                value="1" id="hapus_gambar1">
+                                            <label class="form-check-label" for="hapus_gambar1">Hapus gambar
+                                                1</label>
+                                            </div>
                                     @endif
 
                                     <div class="mt-2">
