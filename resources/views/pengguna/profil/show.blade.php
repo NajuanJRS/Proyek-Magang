@@ -88,7 +88,7 @@
       </div>
     </div>
   </section>
-    @if($profileContent && $profileContent->gambar1)
+    @if($profileContent && $profileContent->gambar2)
     <div class="modal fade" id="imageModal" tabindex="-1" aria-labelledby="imageModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-xl modal-dialog-centered">
         <div class="modal-content">
@@ -97,7 +97,7 @@
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body text-center">
-            <img src="{{ asset('storage/' . $profileContent->gambar1) }}" alt="{{ $activeCategory->judul_konten }}" class="img-fluid">
+            <img src="{{ asset('storage/' . $profileContent->gambar2) }}" alt="{{ $activeCategory->judul_konten }}" class="img-fluid">
         </div>
         </div>
     </div>

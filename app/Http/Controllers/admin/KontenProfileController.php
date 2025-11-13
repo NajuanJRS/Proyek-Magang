@@ -245,6 +245,9 @@ class KontenProfileController extends Controller
             $pathGambar1Baru = $this->prosesDanSimpanGambar($request->file('gambar1'), 'konten', 'konten');
             if (!$pathGambar1Baru) return redirect()->back()->withErrors(['gambar1' => 'Gagal memproses gambar 1.'])->withInput();
             $kontenData['gambar1'] = $pathGambar1Baru;
+        } elseif ($request->has('hapus_gambar1') && $request->hapus_gambar1 == 1) {
+            $this->hapusGambarLama($konten->gambar1);
+            $kontenData['gambar1'] = null;
         }
 
         if ($request->hasFile('gambar2')) {
