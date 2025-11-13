@@ -93,7 +93,11 @@
                                                 value="1" id="hapus_gambar1">
                                             <label class="form-check-label" for="hapus_gambar1">Hapus gambar
                                                 1</label>
+<<<<<<< HEAD
                                             </div>
+=======
+                                        </div>
+>>>>>>> 2567aa02c4a97473408a592f81cae2e1edf600b2
                                     @endif
 
                                     <div class="mt-2">
