@@ -1179,10 +1179,11 @@
   background-color: #fff;
   border: 1px solid #e5e7eb;
   box-shadow: 0 4px 12px rgba(0,0,0,.08);
+  transition: transform .3s ease, box-shadow .3s ease;
 }
 
 .ds-kadis-background {
-  height: 100px;
+  height: 170px;
   background-size: cover;
   background-position: center;
   position: relative;
@@ -1196,6 +1197,7 @@ background-color: rgba(0, 0, 0, 0.40);
 
 .ds-kadis-info {
   display: flex;
+  flex-direction: column;
   align-items: center;
   padding: 0 1.5rem 1.5rem;
   position: relative;
@@ -1203,15 +1205,19 @@ background-color: rgba(0, 0, 0, 0.40);
 }
 
 .ds-kadis-photo-new {
-  width: 200px;
-  height: 200px;
-  border-radius: 50%;
+  width: 225px;
+  height: 225px;
+  border-radius: 8px;
   border: 4px solid #fff;
   object-fit: cover;
-  margin-top: -80px;
-  margin-right: 1rem;
+  margin-top: -140px;
+  margin-bottom: 1rem;
   box-shadow: 0 2px 4px rgba(0,0,0,0.1);
   flex-shrink: 0;
+}
+
+.ds-kadis-nameplate {
+    text-align: center;
 }
 
 .ds-kadis-nameplate h4 {
@@ -1227,6 +1233,16 @@ background-color: rgba(0, 0, 0, 0.40);
   box-shadow: 0 2px 8px rgba(0,0,0,0.06);
   text-align: center;
   padding: 1rem;
+  transition: transform .3s ease, box-shadow .3s ease;
+}
+
+.ds-pejabat-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 18px rgba(0,0,0,.08);
+}
+.ds-kadis-card-new:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 18px rgba(0,0,0,.08);
 }
 
 .ds-pejabat-photo-wrapper {
@@ -1251,14 +1267,14 @@ background-color: rgba(0, 0, 0, 0.40);
 }
 
 @media (max-width: 576px) {
-  .ds-kadis-content {
-    flex-direction: column;
-    text-align: center;
-    padding: 0 1rem 1rem;
+.ds-kadis-info {
+    padding: 0 1rem 1.25rem;
   }
-    .ds-kadis-photo-new {
-    margin-right: 0;
-    margin-bottom: 0.5rem;
+  .ds-kadis-photo-new {
+    width: 220px;
+    height: 220px;
+    margin-top: -110px;
+    margin-bottom: 0.75rem;
   }
   .ds-kadis-nameplate h4 {
     font-size: 1.1rem;
@@ -1556,7 +1572,7 @@ background-color: rgba(0, 0, 0, 0.40);
 .ds-modal-overlay.ds-modal-visible {
   opacity: 1;
   visibility: visible;
-  transition-delay: 0s; /* Hapus penundaan saat fade-in */
+  transition-delay: 0s;
 }
 
 .ds-modal-content {

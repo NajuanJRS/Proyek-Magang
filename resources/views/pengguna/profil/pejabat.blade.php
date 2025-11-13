@@ -21,7 +21,7 @@
                 <h2 class="ds-article-title mb-4">Pejabat Dinas Sosial Kalimantan Selatan</h2>
 
                 @if($pejabatKepala)
-                    <div class="ds-kadis-card-new mb-5">
+                    <div class="ds-kadis-card-new mb-3">
                         @if($kadisBackground)
                             <div class="ds-kadis-background" style="background-image: url('{{ asset('storage/' . $kadisBackground->gambar) }}');"></div>
                         @else
