@@ -30,7 +30,12 @@
                                 <div class="mb-4">
                                     <input type="text" class="form-control" id="judul_konten" name="judul_konten"
                                         value="{{ old('judul_konten', $kontenProfile->kategoriKonten->judul_konten ?? '') }}"
-                                        placeholder="Masukkan judul utama konten" required>
+                                        placeholder="Masukkan judul utama konten"
+                                        @if(in_array($kontenProfile->kategoriKonten->judul_konten, ['Galeri Kami', 'Profil Pejabat']))
+                                            readonly
+                                            style="background-color:#e9ecef; cursor:not-allowed;"
+                                        @endif
+                                        required>
                                 </div>
 
                                 {{-- Icon Konten --}}
