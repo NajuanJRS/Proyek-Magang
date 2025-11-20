@@ -212,18 +212,16 @@
                                                             class="btn btn-info btn-sm btn-circle rounded-circle d-inline-flex me-1">
                                                             <i class="bi bi-pencil-square"></i>
                                                         </a>
-                                                         @if (!in_array($k->kategoriKonten->judul_konten, ['Galeri Kami', 'Profil Pejabat']))
-                                                            <a href="#" class="btn btn-danger btn-sm btn-circle rounded-circle d-inline-flex"
-                                                                onclick="deleteData('{{ $k->id_konten }}')">
-                                                                <i class="bi bi-trash"></i>
-                                                            </a>
-                                                            <form id="delete-form-{{ $k->id_konten }}"
-                                                                action="{{ route('admin.profile.destroy', $k->id_konten) }}"
-                                                                method="POST" style="display:none;">
-                                                                @csrf
-                                                                @method('DELETE')
-                                                            </form>
-                                                        @endif
+                                                        <a href="#" class="btn btn-danger btn-sm btn-circle rounded-circle d-inline-flex"
+                                                            onclick="deleteData('{{ $k->id_konten }}')">
+                                                            <i class="bi bi-trash"></i>
+                                                        </a>
+                                                        <form id="delete-form-{{ $k->id_konten }}"
+                                                            action="{{ route('admin.profile.destroy', $k->id_konten) }}"
+                                                            method="POST" style="display:none;">
+                                                            @csrf
+                                                            @method('DELETE')
+                                                        </form>
                                                     </td>
                                             </tr>
                                         @endforeach
