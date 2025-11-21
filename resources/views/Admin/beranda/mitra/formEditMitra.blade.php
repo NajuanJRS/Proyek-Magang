@@ -10,7 +10,7 @@
                             <div class="card-body px-5 py-4">
 
                                 <h4 class="mb-5">Edit Mitra</h4>
-                                
+
                                 @if ($errors->any())
                                     <div class="alert alert-danger">
                                         <ul>
@@ -37,7 +37,7 @@
                                             @if ($mitra->gambar)
                                                 <div class="mt-2">
                                                     <img id="oldPreview"
-                                                        src="{{ asset('storage/' . $mitra->gambar) }}"
+                                                        src="{{ asset('media/' . $mitra->gambar) }}"
                                                         alt="Gambar Mitra" width="120"
                                                         style="border-radius: 8px; border:1px solid #ddd; padding:4px;">
                                                 </div>

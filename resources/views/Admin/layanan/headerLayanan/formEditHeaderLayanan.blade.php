@@ -10,7 +10,7 @@
                             <div class="card-body px-5 py-4">
 
                                 <h4 class="mb-5">Edit Header Layanan</h4>
-                                
+
                                 @if ($errors->any())
                                     <div class="alert alert-danger">
                                         <ul>
@@ -37,7 +37,7 @@
                                             @if ($headerLayanan->gambar)
                                                 <div class="mt-2">
                                                     <img id="oldPreview"
-                                                        src="{{ asset('storage/' . $headerLayanan->gambar) }}"
+                                                        src="{{ asset('media/' . $headerLayanan->gambar) }}"
                                                         alt="Gambar Heading" width="120"
                                                         style="border-radius: 8px; border:1px solid #ddd; padding:4px;">
                                                 </div>

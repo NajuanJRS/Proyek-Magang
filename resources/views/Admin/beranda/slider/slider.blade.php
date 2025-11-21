@@ -50,7 +50,7 @@
                                                     <tr>
                                                         <td class="text-center">{{ $no++ }}</td>
                                                         <td class="text-center">
-                                                            <img src="{{ asset('storage/' . $s->gambar) }}"
+                                                            <img src="{{ asset('media/' . $s->gambar) }}"
                                                                 width="150" alt="Gambar Slider">
                                                         </td>
                                                         <td class="text-center">

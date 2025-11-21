@@ -10,7 +10,7 @@
                             <div class="card-body px-5 py-4">
 
                                 <h4 class="mb-5">Tambah Kartu Download</h4>
-                                
+
                                 @if ($errors->any())
                                     <div class="alert alert-danger">
                                         <ul>
@@ -44,7 +44,7 @@
                                             @if ($kartuDownload->icon)
                                                 <div class="mt-2">
                                                     <img id="oldPreview"
-                                                        src="{{ asset('storage/' . $kartuDownload->icon) }}"
+                                                        src="{{ asset('media/' . $kartuDownload->icon) }}"
                                                         alt="Icon Heading" width="120"
                                                         style="border-radius: 8px; border:1px solid #ddd; padding:4px;">
                                                 </div>

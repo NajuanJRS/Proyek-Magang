@@ -32,7 +32,7 @@
                                                     <tr>
                                                         <td class="text-center">{{ $no++ }}</td>
                                                         <td class="text-center">
-                                                            <img src="{{ asset('storage/' . $h->gambar) }}" width="100">
+                                                            <img src="{{ asset('media/' . $h->gambar) }}" width="100">
                                                         </td>
                                                         <td class="text-center">{{ $h->kategoriHeader->nama_kategori ?? '-' }}</td>
 
@@ -101,7 +101,7 @@
                                                 <tr>
                                                     <td class="text-center">{{ $loop->iteration }}</td>
                                                     <td class="text-center">
-                                                        <img src="{{ asset('storage/' . $p->gambar) }}" width="150" alt="foto pejabat">
+                                                        <img src="{{ asset('media/' . $p->gambar) }}" width="150" alt="foto pejabat">
                                                     </td>
                                                     <td class="text-center">{{ $p->nama_pejabat }}</td>
                                                     <td class="text-center">{{ $p->jabatan->nama_jabatan }}</td>

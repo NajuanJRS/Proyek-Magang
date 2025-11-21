@@ -13,7 +13,7 @@
 
   @if($header)
     <section class="ds-hero ds-hero-profil">
-      <img src="{{ asset('storage/' . $header->gambar) }}" alt="{{ $header->headline }}" class="ds-hero-bg" loading="lazy">
+      <img src="{{ asset('media/' . $header->gambar) }}" alt="{{ $header->headline }}" class="ds-hero-bg" loading="lazy">
       <div class="ds-hero-overlay"></div>
       <div class="container ds-hero-inner text-center text-white">
         <h1 class="ds-hero-title">{!! $header->headline !!}</h1>
@@ -32,7 +32,7 @@
               <div class="col-12 col-md-6 col-lg-3 d-flex">
                 <a href="{{ url('/download/' . $card->slug) }}" class="card ds-layanan-card text-center w-100 text-decoration-none text-dark">
                   <div class="ds-layanan-icon-wrapper">
-                    <img src="{{ asset('storage/' . $card->icon) }}" alt="{{ $card->nama_kategori }}" loading="lazy">
+                    <img src="{{ asset('media/' . $card->icon) }}" alt="{{ $card->nama_kategori }}" loading="lazy">
                   </div>
                   <div class="card-body">
                     <h6 class="card-title fw-semibold">{{ $card->nama_kategori }}</h6>
@@ -49,7 +49,7 @@
               <div class="col-6">
                 <a href="{{ url('/download/' . $card->slug) }}" class="card ds-layanan-card ds-card-compact text-center h-100 text-decoration-none text-dark">
                   <div class="ds-layanan-icon-wrapper">
-                    <img src="{{ asset('storage/' . $card->icon) }}" alt="{{ $card->nama_kategori }}" loading="lazy">
+                    <img src="{{ asset('media/' . $card->icon) }}" alt="{{ $card->nama_kategori }}" loading="lazy">
                   </div>
                   <div class="card-body p-3">
                     <h6 class="card-title fw-semibold mb-0 ds-title-compact">{{ $card->nama_kategori }}</h6>

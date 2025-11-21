@@ -49,7 +49,7 @@
                                                         <td class="text-center">{{ $loop->iteration }}</td>
                                                         <td class="text-center">{{ $g->judul ?? '-' }}</td>
                                                         <td class="text-center">
-                                                            <img src="{{ asset('storage/' . $g->gambar) }}"
+                                                            <img src="{{ asset('media/' . $g->gambar) }}"
                                                                 width="150" alt="Gambar galeri">
                                                         </td>
 

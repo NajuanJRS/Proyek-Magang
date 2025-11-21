@@ -6,7 +6,7 @@
             <div class="card-body px-4 py-4">
 
                 <h4 class="card-title mb-3">Edit File Download</h4>
-                
+
                 @if ($errors->any())
                     <div class="alert alert-danger">
                         <ul>
@@ -35,7 +35,7 @@
                     <label class="form-label">Ganti File (Opsional)</label>
                     <div class="mb-2">
                         <div class="mb-2">
-                            <a href="{{ asset('storage/upload/file/' . $fileDownload->file) }}" target="_blank"
+                            <a href="{{ asset('media/upload/file/' . $fileDownload->file) }}" target="_blank"
                                 class="text-primary">
                                 {{ \Illuminate\Support\Str::after($fileDownload->file, '_') }}
                             </a>

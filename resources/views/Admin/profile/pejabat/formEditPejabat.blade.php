@@ -10,7 +10,7 @@
                             <div class="card-body px-5 py-4">
 
                                 <h4 class="mb-5">Edit Pejabat</h4>
-                                
+
                                 @if ($errors->any())
                                     <div class="alert alert-danger">
                                         <ul>
@@ -61,7 +61,7 @@
 
                                             {{-- Gambar lama --}}
                                             @if ($pejabat->gambar)
-                                                <img id="oldPreview" src="{{ asset('storage/' . $pejabat->gambar) }}"
+                                                <img id="oldPreview" src="{{ asset('media/' . $pejabat->gambar) }}"
                                                     alt="Gambar Lama" style="max-width:200px; border-radius:8px; border:1px solid #ddd; padding:4px;">
                                             @endif
                                         </div>

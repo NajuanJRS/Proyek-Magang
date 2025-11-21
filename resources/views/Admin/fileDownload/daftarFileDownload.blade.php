@@ -89,7 +89,7 @@
 
                                                         @if ($fileText)
                                                             <div class="preview-text" style="max-width:420px; white-space:normal; overflow:hidden;">
-                                                                <a href="{{ asset('storage/upload/file/' . $f->file) }}" target="_blank"
+                                                                <a href="{{ asset('media/upload/file/' . $f->file) }}" target="_blank"
                                                                     style="text-decoration: none; color: #0d6efd; font-weight: 500;">
                                                                     {{ \Illuminate\Support\Str::limit($fileText, 60) }}
                                                                 </a>
@@ -102,7 +102,7 @@
                                                             @endif
 
                                                             <div id="full-content-{{ $f->id_file }}-4" class="d-none">
-                                                                <a href="{{ asset('storage/upload/file/' . $f->file) }}" target="_blank"
+                                                                <a href="{{ asset('media/upload/file/' . $f->file) }}" target="_blank"
                                                                     style="text-decoration: none; color: #0d6efd; font-weight: 500;">
                                                                     {{ $f->file }}
                                                                 </a>

@@ -70,6 +70,10 @@ Route::get('/download/file/{filename}', [DownloadController::class, 'downloadFil
 // Route menampilkan halaman Profil PPID
 Route::get('/ppid/{slug}', [PpidController::class, 'show'])->name('ppid.show');
 
+Route::get('/media/{path}', function ($path) {
+    return response()->file(storage_path("app/public/$path"));
+})->where('path', '.*');
+
 Route::fallback(function () {
     if (Auth::check()) {
         $user = Auth::user();

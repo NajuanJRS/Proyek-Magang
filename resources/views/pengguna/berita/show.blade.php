@@ -32,7 +32,7 @@
 
                 @if ($chunk['type'] == 'image')
                 <figure class="my-4 text-center">
-                    <img src="{{ asset('storage/' . $chunk['url']) }}"
+                    <img src="{{ asset('media/' . $chunk['url']) }}"
                         alt="{{ $chunk['caption'] ?? 'Gambar Berita' }}"
                         class="img-fluid rounded shadow-sm"
                         loading="lazy">
@@ -68,7 +68,7 @@
             <div class="ds-sidebar-list">
             @foreach($sidebarArticles as $item)
                 <a href="{{ route('berita.show', $item->slug) }}" class="ds-sidebar-item">
-                <img src="{{ asset('storage/' . $item->gambar1) }}" alt="{{ $item->judul }}" loading="lazy">
+                <img src="{{ asset('media/' . $item->gambar1) }}" alt="{{ $item->judul }}" loading="lazy">
                 <h6 class="ds-sidebar-item-title">{{ $item->judul }}</h6>
                 </a>
             @endforeach

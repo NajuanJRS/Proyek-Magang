@@ -16,7 +16,7 @@
                         <div class="card h-100 shadow-sm card-hover-animation">
                             <div class="card-body d-flex justify-content-between align-items-center">
                                 <div class="d-flex align-items-center">
-                                    <img src="{{ asset('storage/' . $k->icon) }}" alt="icon"
+                                    <img src="{{ asset('media/' . $k->icon) }}" alt="icon"
                                         width="64" height="64" class="me-2 rounded" style="object-fit:cover;">
                                     <h6 class="mb-0">{{ $k->nama_kategori }}</h6>
                                 </div>
@@ -55,7 +55,7 @@
                         <div class="card h-100 shadow-sm card-hover-animation">
                             <div class="card-body d-flex justify-content-between align-items-center">
                                 <div class="d-flex align-items-center">
-                                    <img src="{{ asset('storage/' . $k->icon) }}" alt="icon"
+                                    <img src="{{ asset('media/' . $k->icon) }}" alt="icon"
                                         width="64" height="64" class="me-2 rounded" style="object-fit:cover;">
                                     <h6 class="mb-0">{{ $k->nama_kategori }}</h6>
                                 </div>

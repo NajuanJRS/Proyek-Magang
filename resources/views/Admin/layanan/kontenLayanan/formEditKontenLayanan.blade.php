@@ -43,7 +43,7 @@
                                     @if (!empty($kontenLayanan->kategoriKonten->icon_konten))
                                         <div class="mt-2">
                                             <img id="oldPreviewIcon"
-                                                 src="{{ asset('storage/' . $kontenLayanan->kategoriKonten->icon_konten) }}"
+                                                 src="{{ asset('media/' . $kontenLayanan->kategoriKonten->icon_konten) }}"
                                                  alt="Icon Konten Lama"
                                                  style="max-width: 150px; border-radius:8px; border:1px solid #ddd; padding:4px;">
                                         </div>
@@ -84,7 +84,7 @@
                                     @if ($kontenLayanan->gambar1)
                                         <div class="mt-2">
                                             <img id="oldPreview1"
-                                                 src="{{ asset('storage/' . $kontenLayanan->gambar1) }}"
+                                                 src="{{ asset('media/' . $kontenLayanan->gambar1) }}"
                                                  alt="Gambar Lama 1"
                                                  style="max-width: 200px; border-radius:8px; border:1px solid #ddd; padding:4px;">
                                         </div>
@@ -139,7 +139,7 @@
                                         @if ($kontenLayanan->gambar2)
                                             <div class="mt-2">
                                                 <img id="oldPreview2"
-                                                     src="{{ asset('storage/' . $kontenLayanan->gambar2) }}"
+                                                     src="{{ asset('media/' . $kontenLayanan->gambar2) }}"
                                                      alt="Gambar Lama 2"
                                                      style="max-width:200px; border-radius:8px; border:1px solid #ddd; padding:4px;">
                                             </div>
@@ -194,7 +194,7 @@
                                         @if ($kontenLayanan->gambar3)
                                             <div class="mt-2">
                                                 <img id="oldPreview3"
-                                                     src="{{ asset('storage/' . $kontenLayanan->gambar3) }}"
+                                                     src="{{ asset('media/' . $kontenLayanan->gambar3) }}"
                                                      alt="Gambar Lama 3"
                                                      style="max-width:200px; border-radius:8px; border:1px solid #ddd; padding:4px;">
                                             </div>

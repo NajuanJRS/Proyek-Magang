@@ -89,7 +89,7 @@
                                                     {{-- Gambar 1 --}}
                                                     <td class="text-center">
                                                         @if ($b->gambar1)
-                                                            <img src="{{ asset('storage/' . $b->gambar1) }}"
+                                                            <img src="{{ asset('media/' . $b->gambar1) }}"
                                                                 alt="gambar berita" width="100"
                                                                 style="border-radius: 6px; border: 1px solid #ddd;">
                                                         @else
@@ -133,7 +133,7 @@
                                                     {{-- Gambar 2 --}}
                                                     <td class="text-center">
                                                         @if ($b->gambar2)
-                                                            <img src="{{ asset('storage/' . $b->gambar2) }}"
+                                                            <img src="{{ asset('media/' . $b->gambar2) }}"
                                                                 alt="gambar berita" width="100"
                                                                 style="border-radius: 6px; border: 1px solid #ddd;">
                                                         @else
@@ -177,7 +177,7 @@
                                                     {{-- Gambar 3 --}}
                                                     <td class="text-center">
                                                         @if ($b->gambar3)
-                                                            <img src="{{ asset('storage/' . $b->gambar3) }}"
+                                                            <img src="{{ asset('media/' . $b->gambar3) }}"
                                                                 alt="gambar berita" width="100"
                                                                 style="border-radius: 6px; border: 1px solid #ddd;">
                                                         @else

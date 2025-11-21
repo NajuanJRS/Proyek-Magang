@@ -25,7 +25,7 @@
                     {{-- Blok Konten 1 --}}
                     @if($pageContent->gambar1)
                         <figure class="my-4 text-center">
-                            <img src="{{ asset('storage/' . $pageContent->gambar1) }}" class="img-fluid rounded shadow-sm">
+                            <img src="{{ asset('media/' . $pageContent->gambar1) }}" class="img-fluid rounded shadow-sm">
                         </figure>
                     @endif
                     @if($pageContent->isi_konten1)
@@ -34,7 +34,7 @@
 
                     @if($pageContent->gambar2)
                         <div class="ds-image-zoom-wrapper mt-3" data-bs-toggle="modal" data-bs-target="#imageModal">
-                        <img src="{{ asset('storage/' . $pageContent->gambar2) }}" alt="Gambar Konten" class="img-fluid rounded shadow-sm">
+                        <img src="{{ asset('media/' . $pageContent->gambar2) }}" alt="Gambar Konten" class="img-fluid rounded shadow-sm">
                         <div class="ds-image-zoom-overlay">
                             <i class="bi bi-zoom-in"></i>
                             <span>Klik untuk memperbesar</span>
@@ -47,7 +47,7 @@
 
                     @if($pageContent->gambar3)
                         <figure class="my-4 text-center">
-                            <img src="{{ asset('storage/' . $pageContent->gambar3) }}" class="img-fluid rounded shadow-sm">
+                            <img src="{{ asset('media/' . $pageContent->gambar3) }}" class="img-fluid rounded shadow-sm">
                         </figure>
                     @endif
                     @if($pageContent->isi_konten3)
@@ -76,7 +76,7 @@
             <div class="ds-sidebar-list">
               @foreach($allPpidItems as $item)
                 <a href="{{ $item->url }}" class="ds-sidebar-item-layanan {{ $item->active ? 'active' : '' }}">
-                  <img src="{{ asset('storage/' . $item->icon) }}" alt="{{ $item->judul }}">
+                  <img src="{{ asset('media/' . $item->icon) }}" alt="{{ $item->judul }}">
                   <h6 class="ds-sidebar-item-title">{{ $item->judul }}</h6>
                 </a>
               @endforeach
@@ -97,7 +97,7 @@
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body text-center">
-            <img src="{{ asset('storage/' . $pageContent->gambar2) }}" alt="{{ $activeCategory->judul_konten }}" class="img-fluid">
+            <img src="{{ asset('media/' . $pageContent->gambar2) }}" alt="{{ $activeCategory->judul_konten }}" class="img-fluid">
         </div>
         </div>
     </div>

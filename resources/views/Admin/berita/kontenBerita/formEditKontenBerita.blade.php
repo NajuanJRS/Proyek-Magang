@@ -10,7 +10,7 @@
                             <div class="card-body px-5 py-4">
 
                                 <h4 class="mb-5">Edit Berita</h4>
-                                
+
                                 @if ($errors->any())
                                     <div class="alert alert-danger">
                                         <ul>
@@ -62,7 +62,7 @@
                                         @if ($berita->gambar1)
                                             <div class="mt-2">
                                                 <img id="oldPreview1"
-                                                    src="{{ asset('storage/' . $berita->gambar1) }}"
+                                                    src="{{ asset('media/' . $berita->gambar1) }}"
                                                     alt="Gambar Berita 1"
                                                     style="max-width: 200px; border-radius: 8px; border:1px solid #ddd; padding:4px;">
                                             </div>
@@ -111,7 +111,7 @@
 
                                     @if ($berita->gambar2)
                                         <div class="mt-2">
-                                            <img id="oldPreview2" src="{{ asset('storage/' . $berita->gambar2) }}"
+                                            <img id="oldPreview2" src="{{ asset('media/' . $berita->gambar2) }}"
                                                 alt="Gambar Berita 2"
                                                 style="max-width: 200px; border-radius: 8px; border:1px solid #ddd; padding:4px;">
                                         </div>
@@ -165,7 +165,7 @@
 
                                     @if ($berita->gambar3)
                                         <div class="mt-2">
-                                            <img id="oldPreview3" src="{{ asset('storage/' . $berita->gambar3) }}"
+                                            <img id="oldPreview3" src="{{ asset('media/' . $berita->gambar3) }}"
                                                 alt="Gambar Berita 3"
                                                 style="max-width: 200px; border-radius: 8px; border:1px solid #ddd; padding:4px;">
                                         </div>

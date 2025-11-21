@@ -13,7 +13,7 @@
 
     @if($header)
     <section class="ds-hero ds-hero-profil">
-        <img src="{{ asset('storage/' . $header->gambar) }}" alt="{{ $header->headline }}" class="ds-hero-bg">
+        <img src="{{ asset('media/' . $header->gambar) }}" alt="{{ $header->headline }}" class="ds-hero-bg">
         <div class="ds-hero-overlay"></div>
         <div class="container ds-hero-inner text-center text-white">
         <h1 class="ds-hero-title">{!! $header->headline !!}</h1>
@@ -35,7 +35,7 @@
         <div class="d-none d-md-block">
           @if($featuredNews)
             <a href="{{ route('berita.show', $featuredNews->slug) }}" class="ds-featured-news text-decoration-none text-dark mb-4">
-              <img src="{{ asset('storage/' . $featuredNews->gambar1) }}" alt="{{ $featuredNews->judul }}" class="ds-featured-img" loading="lazy">
+              <img src="{{ asset('media/' . $featuredNews->gambar1) }}" alt="{{ $featuredNews->judul }}" class="ds-featured-img" loading="lazy">
               <div class="ds-featured-body">
                 <h2 class="ds-featured-title">{{ $featuredNews->judul }}</h2>
                 <p class="ds-featured-summary">{{ Str::limit(strip_tags($featuredNews->isi_berita1), 200) }}</p>
@@ -51,7 +51,7 @@
             @foreach($regularNews as $item)
             <div class="col-12 col-md-4 col-lg-3">
               <a href="{{ route('berita.show', $item->slug) }}" class="ds-news-card h-100">
-                <img src="{{ asset('storage/' . $item->gambar1) }}" alt="{{ $item->judul }}" loading="lazy">
+                <img src="{{ asset('media/' . $item->gambar1) }}" alt="{{ $item->judul }}" loading="lazy">
                 <div class="ds-news-card-body">
                   <h6 class="ds-news-title">{{ $item->judul }}</h6>
                   <div class="mt-auto ds-meta small">
@@ -68,7 +68,7 @@
         <div class="d-md-none">
           @if($featuredNews)
             <a class="ds-mfeat" href="{{ route('berita.show', $featuredNews->slug) }}">
-              <img src="{{ asset('storage/' . $featuredNews->gambar1) }}" alt="{{ $featuredNews->judul }}" loading="lazy">
+              <img src="{{ asset('media/' . $featuredNews->gambar1) }}" alt="{{ $featuredNews->judul }}" loading="lazy">
               <h3 class="mt-2">{{ $featuredNews->judul }}</h3>
             </a>
             <hr class="my-4">
@@ -77,7 +77,7 @@
             @foreach($regularNews as $item)
               <div class="col-6">
                 <a href="{{ route('berita.show', $item->slug) }}" class="ds-news-card h-100">
-                  <img src="{{ asset('storage/' . $item->gambar1) }}" alt="{{ $item->judul }}" loading="lazy">
+                  <img src="{{ asset('media/' . $item->gambar1) }}" alt="{{ $item->judul }}" loading="lazy">
                   <div class="ds-news-card-body">
                     <h6 class="ds-news-title">{{ $item->judul }}</h6>
                     <div class="mt-auto ds-meta small">
@@ -98,7 +98,7 @@
           @foreach($berita as $item)
           <div class="col-6 col-md-4 col-lg-3">
             <a href="{{ route('berita.show', $item->slug) }}" class="ds-news-card h-100">
-              <img src="{{ asset('storage/' . $item->gambar1) }}" alt="{{ $item->judul }}" loading="lazy">
+              <img src="{{ asset('media/' . $item->gambar1) }}" alt="{{ $item->judul }}" loading="lazy">
               <div class="ds-news-card-body">
                 <h6 class="ds-news-title">{{ $item->judul }}</h6>
                 <div class="mt-auto ds-meta small">
