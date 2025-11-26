@@ -15,26 +15,28 @@
 
 <body>
 
-    {{-- Navbar --}}
     <nav class="navbar navbar-expand-lg navbar-custom fixed-top">
         <div class="container-fluid d-flex align-items-center">
-            <a class="navbar-brand d-flex align-items-center">
-                <img src="{{ asset('img/Logo dinsos.png') }}" alt="Logo Utama" class="logo-full" id="logoFull">
-                <img src="{{ asset('img/Logo mini.png') }}" alt="Logo Mini" class="d-none" id="logoMini">
+        <button id="mobileSidebarToggle"
+                class="btn btn-link text-white me-0 d-inline-flex d-lg-none"
+                type="button"><i class="bi bi-list"></i></button>
 
-                <button id="sidebarToggle" class="btn btn-link text-white d-none d-lg-inline-flex" type="button"
-                    aria-label="Toggle sidebar">
-                    <i class="bi bi-list"></i>
-                </button>
+        <a class="navbar-brand mobile-brand d-flex align-items-center d-lg-none">
+            <img src="{{ asset('images/dinas-sosial.png') }}" class="mobile-logo" alt="Dinsos Kalsel">
+        </a>
 
-                <!-- Tombol khusus mobile untuk membuka sidebar sebagai overlay -->
-                <button id="mobileSidebarToggle" class="btn btn-link text-white me-2 d-inline-flex d-lg-none"
+        <a class="navbar-brand desktop-brand d-none d-lg-flex align-items-center">
+            <img src="{{ asset('img/Logo dinsos.png') }}" class="logo-full" id="logoFull" alt="Dinsos Kalsel">
+            <img src="{{ asset('img/Logo mini.png') }}" class="d-none" id="logoMini" alt="Dinsos Kalsel">
+
+            <button id="sidebarToggle"
+                    class="btn btn-link text-white d-none d-lg-inline-flex ms-2"
                     type="button">
-                    <i class="bi bi-list"></i>
-                </button>
+                <i class="bi bi-list"></i>
+            </button>
 
-                <span class="brand-text" id="brandText">Dinas Sosial Provinsi Kalimantan Selatan</span>
-            </a>
+            <span class="brand-text ms-2" id="brandText">Dinas Sosial Provinsi Kalimantan Selatan</span>
+        </a>
         </div>
     </nav>
 
