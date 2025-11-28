@@ -73,6 +73,11 @@ body {
     scrollbar-width: none;
 }
 
+body.no-scroll {
+    overflow: hidden !important;
+    height: 100vh;
+    overscroll-behavior: none;        /* ⬅️ blok scroll chaining ke body */
+}
 
 .sidebar .admin-profile {
     text-align: center;
@@ -1357,6 +1362,37 @@ body.no-scroll {
         font-weight:600;
         white-space:nowrap;
     }
+
+    .login-card {
+        width: 90vw !important;
+        padding: 28px 18px !important;
+        border-radius: 15px;
+    }
+
+    .login-card img {
+        width: 70px !important;     /* Mengecilkan logo */
+        margin-bottom: 12px;
+    }
+
+    .login-card h3 {                 /* "Selamat Datang!" */
+        font-size: 1.3rem !important;
+        margin-bottom: 4px;
+    }
+
+    .login-card .login-title {       /* "Login" */
+        font-size: 1.05rem !important;
+        margin-bottom: 16px;
+    }
+
+    .form-control {
+        height: 44px !important;
+        font-size: .9rem !important;
+    }
+
+    .login-btn {
+        font-size: 1rem !important;
+        padding: 10px 0 !important;
+    }
 }
 
 /* MOBILE */
@@ -1365,14 +1401,26 @@ body.no-scroll {
     .desktop-brand{display:none !important;}
     .mobile-logo{height:38px;}
     .mobile-brand-text{font-size:.85rem;font-weight:600;}
+    .sidebar-spacer{
+        height:45px;
+        pointer-events:none;
+        display:block;
+    }
+    .sidebar {
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;  /* smooth di mobile */
+    overscroll-behavior: contain;       /* ⬅️ cegah scroll lanjut ke parent */
+    }
 }
 
 /* DESKTOP */
 @media(min-width:992px){
     .desktop-brand{display:flex !important;}
     .mobile-brand{display:none !important;}
+    .sidebar-spacer{
+        display:none !important;
+    }
 }
-
 
 
 /* toolbar baris tombol */

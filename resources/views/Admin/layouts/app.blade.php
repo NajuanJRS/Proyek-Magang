@@ -317,6 +317,8 @@
                     @csrf
                 </form>
             </li>
+
+            <li class="sidebar-spacer"></li>
         </ul>
     </div>
 

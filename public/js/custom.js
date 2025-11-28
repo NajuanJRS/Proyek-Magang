@@ -775,3 +775,13 @@ $(document).ready(function () {
     });
 });
 
+sidebar.addEventListener("wheel", e => {
+    const atTop = sidebar.scrollTop <= 0;
+    const atBottom = sidebar.scrollTop + sidebar.clientHeight >= sidebar.scrollHeight;
+
+    if ((atTop && e.deltaY < 0) || (atBottom && e.deltaY > 0)) {
+        e.stopPropagation();        // ← stop event agar tidak naik ke body
+        e.preventDefault();         // ← blok scroll
+        return false;
+    }
+}, { passive:false });
