@@ -10,7 +10,6 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
-// use Illuminate\Support\Facades\Storage; // Tidak perlu lagi
 use Illuminate\Support\Facades\Validator;
 use Illuminate\View\View;
 use Illuminate\Support\Str;
@@ -222,16 +221,12 @@ class KontenLayananController extends Controller
         $kategori = $konten->kategoriKonten;
 
         $slugLama = $kategori->slug;
-        // --->
 
-        // --- Update Kategori Konten ---
         $kategoriData = [
             'judul_konten'  => $request->judul_konten,
             'slug'          => Str::slug($request->judul_konten),
         ];
 
-
-        // 7. Proses Update Icon Konten dengan Trait
         if ($request->hasFile('icon_konten')) {
             $this->hapusGambarLama($kategori->icon_konten);
             $pathIconBaru = $this->prosesDanSimpanGambar($request->file('icon_konten'), 'icon', 'icon');
@@ -316,7 +311,6 @@ class KontenLayananController extends Controller
         $kategori = $kontenLayanan->kategoriKonten;
         $slug = $kategori ? $kategori->slug : null;
 
-        // 9. Gunakan Trait untuk Hapus Gambar Konten
         $this->hapusGambarLama($kontenLayanan->gambar1);
         $this->hapusGambarLama($kontenLayanan->gambar2);
         $this->hapusGambarLama($kontenLayanan->gambar3);

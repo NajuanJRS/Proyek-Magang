@@ -10,14 +10,12 @@ use Illuminate\Http\Request;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
-// use Illuminate\Support\Facades\Storage; // Tidak perlu lagi
-use Illuminate\Support\Str; // Import Str facade
+use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Validator;
 
 class KontenProfileController extends Controller
 {
-    // 2. Gunakan Trait
     use ManajemenGambarTrait;
 
     /**
@@ -137,7 +135,7 @@ class KontenProfileController extends Controller
         Cache::forget('profil_cards_menu');
         Cache::forget('profil_all_categories');
 
-        return redirect()->route('admin.profile.index') // Sesuaikan route redirect
+        return redirect()->route('admin.profile.index')
             ->with('success', 'Konten Profil Berhasil Ditambahkan!');
         } catch (\Exception $e) {
             return back()
@@ -213,7 +211,6 @@ class KontenProfileController extends Controller
         $slugLama = $kategori->slug;
         $slugBaru = $slugLama;
 
-        // --- Update Kategori Konten ---
         $kategoriData = [
             'judul_konten'  => $request->judul_konten,
         ];

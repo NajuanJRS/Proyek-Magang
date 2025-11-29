@@ -76,7 +76,7 @@ body {
 body.no-scroll {
     overflow: hidden !important;
     height: 100vh;
-    overscroll-behavior: none;        /* ⬅️ blok scroll chaining ke body */
+    overscroll-behavior: none;
 }
 
 .sidebar .admin-profile {
@@ -804,7 +804,6 @@ body.nav-collapsed .brand-text {
         margin-right: auto;
     }
 
-    /* input tetap mengikuti lebar card */
     input, textarea, select, .custom-editor-container {
         width: 100% !important;
         box-sizing: border-box;
@@ -1171,7 +1170,7 @@ body.no-scroll {
 
 
     .badge-unread {
-    background: #dc3545;     /* merah */
+    background: #dc3545;
     color: #fff;
     font-size: .6rem;
     line-height: 1;
@@ -1246,7 +1245,7 @@ body.no-scroll {
   }
 
   #mobileSidebarToggle i{
-        font-size: 28px !important;  /* naikkan 30/32/36 sesuai selera */
+        font-size: 28px !important;
         line-height: 1;
     }
 
@@ -1262,7 +1261,6 @@ body.no-scroll {
 
 @media (max-width: 991px){
 
-    /* Struktur navbar menjadi fleksibel untuk memisahkan posisi ikon/menu */
     .navbar {
         display: flex;
         align-items: center;
@@ -1270,7 +1268,6 @@ body.no-scroll {
         height: 56px;
     }
 
-    /* Tombol hamburger tetap berada di kiri */
     #sidebarToggle {
         order: 1;
         margin-left: 0 !important;
@@ -1278,7 +1275,6 @@ body.no-scroll {
         color: #fff;
     }
 
-    /* Logo pindah ke kanan */
     .navbar-brand {
         order: 2;
         margin-left: auto !important;
@@ -1287,14 +1283,12 @@ body.no-scroll {
         gap: 6px;
     }
 
-    /* Ukuran logo mobile agar tidak terlalu besar */
     .navbar-brand img {
         height: 60px !important;
         width: auto;
         object-fit: contain;
     }
 
-    /* Jika terdapat text pada brand agar mengecil di mobile */
     .brand-text {
         font-size: .82rem;
         font-weight: 600;
@@ -1302,7 +1296,6 @@ body.no-scroll {
         white-space: nowrap;
     }
 
-    /* Sidebar tetap slide left & backdrop aktif */
     .sidebar { left:-100%; }
     .sidebar.show { left:0; }
     .sidebar-backdrop.show { display:block; }
@@ -1310,36 +1303,31 @@ body.no-scroll {
 
 @media (max-width: 991px){
 
-    /* Kontainer navbar tidak lagi mendorong brand ke kanan */
     .navbar .container-fluid{
         justify-content:flex-start !important;
         gap:0px;
     }
 
-    /* Tombol mobile tetap berada di paling kiri */
     #mobileSidebarToggle{
         order:1;
         font-size:1.7rem;
         margin-left:-15px !important;
     }
 
-    /* Brand (logo + teks) pindah menjadi urutan kedua */
     .navbar-brand{
         order:2;
         display:flex;
         align-items:center;
-        gap:6px; /* buat lebih rapat dengan logo */
+        gap:6px;
         margin-left:0 !important;
         padding-left:0 !important;
     }
 
-    /* Perkecil logo agar proporsional mobile */
     .navbar-brand img{
         height:45px !important;
         width:auto;
     }
 
-    /* Teks brand mengecil agar tidak melebar */
     .brand-text{
         font-size:.85rem;
         font-weight:600;
@@ -1370,16 +1358,16 @@ body.no-scroll {
     }
 
     .login-card img {
-        width: 70px !important;     /* Mengecilkan logo */
+        width: 70px !important;
         margin-bottom: 12px;
     }
 
-    .login-card h3 {                 /* "Selamat Datang!" */
+    .login-card h3 {
         font-size: 1.3rem !important;
         margin-bottom: 4px;
     }
 
-    .login-card .login-title {       /* "Login" */
+    .login-card .login-title {
         font-size: 1.05rem !important;
         margin-bottom: 16px;
     }
@@ -1395,7 +1383,6 @@ body.no-scroll {
     }
 }
 
-/* MOBILE */
 @media(max-width:991px){
     .mobile-brand{display:flex !important;}
     .desktop-brand{display:none !important;}
@@ -1408,12 +1395,11 @@ body.no-scroll {
     }
     .sidebar {
     overflow-y: auto;
-    -webkit-overflow-scrolling: touch;  /* smooth di mobile */
-    overscroll-behavior: contain;       /* ⬅️ cegah scroll lanjut ke parent */
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior: contain;
     }
 }
 
-/* DESKTOP */
 @media(min-width:992px){
     .desktop-brand{display:flex !important;}
     .mobile-brand{display:none !important;}
@@ -1422,8 +1408,6 @@ body.no-scroll {
     }
 }
 
-
-/* toolbar baris tombol */
 .custom-editor-toolbar{
     display:flex;
     gap:4px;
@@ -1433,22 +1417,18 @@ body.no-scroll {
     flex-wrap:wrap;
 }
 
-/* tombol toolbar */
 .custom-editor-toolbar button{
     border-radius:6px !important;
     padding:6px 10px !important;
 }
 
-
-
-/* ===== MOBILE IMPROVEMENT ===== */
 @media(max-width:991px){
     .custom-editor-container{
         width:100% !important;
         max-width:100% !important;
     }
     .custom-editor{
-        min-height:320px !important; /* agar lega dibaca di HP */
+        min-height:320px !important;
         font-size:15px;
     }
 }
@@ -1460,10 +1440,10 @@ body.no-scroll {
 @media(max-width:768px){
 
     .input-group{
-        width:100% !important;          /* agar fleksibel */
+        width:100% !important;
         display:flex !important;
         align-items:center;
-        flex-wrap:nowrap !important;    /* cegah turun ke bawah */
+        flex-wrap:nowrap !important;
     }
 
     .input-group input{
@@ -1483,14 +1463,13 @@ body.no-scroll {
         border-radius:10px;
     }
 
-    /* Atur wrapper agar berada tepat di kanan tanpa geser */
     .d-flex.justify-content-end.mb-4{
         justify-content:flex-start !important;
         width:100% !important;
     }
 
     form{
-        width:100% !important;          /* form tidak terlalu kecil */
+        width:100% !important;
         max-width:100% !important;
     }
 }

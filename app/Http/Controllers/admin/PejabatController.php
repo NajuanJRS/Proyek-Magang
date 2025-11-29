@@ -5,27 +5,24 @@ namespace App\Http\Controllers\admin;
 use App\Http\Controllers\Controller;
 use App\Models\admin\Header;
 use App\Models\admin\Jabatan;
-use App\Models\admin\KategoriHeader; // Tidak perlu di sini
+use App\Models\admin\KategoriHeader;
 use App\Models\admin\Pejabat;
-use App\Traits\ManajemenGambarTrait; // 1. Panggil Trait
+use App\Traits\ManajemenGambarTrait;
 use Illuminate\Contracts\View\View;
-use Illuminate\Http\RedirectResponse; // Tambahkan RedirectResponse
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Validator;
 
-// use Illuminate\Support\Facades\Storage; // Tidak perlu lagi
-
 class PejabatController extends Controller
 {
-    // 2. Gunakan Trait
     use ManajemenGambarTrait;
 
     /**
      * Display a listing of the resource.
      */
-    public function index(Request $request): View // Tambahkan View return type
+    public function index(Request $request): View
     {
         $search = $request->input('search');
 
@@ -37,10 +34,6 @@ class PejabatController extends Controller
         }
         $pejabat = $pejabatQuery->paginate(10);
 
-
-        // Data headerKartu (Hanya ambil 1 data spesifik)
-
-        // Asumsi id_kategori_header = 8 untuk Kartu Pejabat
         $headerKartu = Header::with('kategoriHeader')
             ->when($search, function ($query, $search) {
                 $query->where('headline', 'like', "%$search%")
@@ -55,7 +48,7 @@ class PejabatController extends Controller
     /**
      * Form tambah pejabat
      */
-    public function create(): View // Hapus parameter Pejabat $pejabat, tambah View return type
+    public function create(): View
     {
         $jabatan = Jabatan::all();
         return view('Admin.profile.pejabat.formPejabat', compact('jabatan'));
@@ -64,7 +57,7 @@ class PejabatController extends Controller
     /**
      * Simpan data pejabat baru
      */
-    public function store(Request $request): RedirectResponse // Tambah RedirectResponse return type
+    public function store(Request $request): RedirectResponse
     {
         $messages = [
         'nama_pejabat.required' => 'Nama pejabat wajib diisi.',
@@ -119,7 +112,7 @@ class PejabatController extends Controller
             'id_user' => $idUser,
             'nama_pejabat' => $request->nama_pejabat,
             'id_jabatan' => $request->id_jabatan,
-            'gambar' => $pathGambar, // Path hasil Trait
+            'gambar' => $pathGambar,
         ]);
 
         Cache::forget('profil_pejabat_kepala');
@@ -136,7 +129,7 @@ class PejabatController extends Controller
     /**
      * Form edit pejabat
      */
-    public function edit(Pejabat $pejabat): View // Tambah View return type
+    public function edit(Pejabat $pejabat): View
     {
         $jabatan = Jabatan::all();
         return view('Admin.profile.pejabat.formEditPejabat', compact('pejabat', 'jabatan'));
@@ -146,7 +139,7 @@ class PejabatController extends Controller
     /**
      * Form edit background kartu pejabat
      */
-    public function editHeader($id): View // Tambah View return type
+    public function editHeader($id): View
     {
         $headerKartu = Header::findOrFail($id);
         // KategoriHeader tidak perlu
@@ -216,7 +209,6 @@ class PejabatController extends Controller
 
         Cache::forget('profil_pejabat_kepala');
         Cache::forget('profil_pejabat_lainnya');
-        // Juga bersihkan cache id jabatan kadin, untuk jaga-jaga
         Cache::forget('jabatan_kepala_dinas_id');
 
         return redirect()->route('admin.pejabat.index')->with('success', 'Informasi Pejabat Berhasil Diperbarui!');
@@ -241,7 +233,7 @@ class PejabatController extends Controller
         ];
 
         $validator = Validator::make($request->all(),[
-            'gambar' => 'required|image|mimes:jpeg,png,jpg,svg,webp|max:5120', // Gambar wajib, naikkan max size
+            'gambar' => 'required|image|mimes:jpeg,png,jpg,svg,webp|max:5120',
         ], $messages);
 
         if ($validator->fails()) {

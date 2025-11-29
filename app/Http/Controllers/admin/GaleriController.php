@@ -8,7 +8,6 @@ use App\Traits\ManajemenGambarTrait;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
-// use Illuminate\Support\Facades\Storage; // Tidak perlu lagi jika hanya pakai Trait
 use Illuminate\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Validator;

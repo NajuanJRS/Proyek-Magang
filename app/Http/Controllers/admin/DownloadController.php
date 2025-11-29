@@ -11,7 +11,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Facades\Storage; // Pastikan ini ada
+use Illuminate\Support\Facades\Storage;
 
 class DownloadController extends Controller
 {
@@ -70,9 +70,7 @@ class DownloadController extends Controller
             'halaman_induk' => $request->halaman_induk,
         ]);
 
-        // === PERBAIKAN "SLEDGEHAMMER" ===
         $this->clearAllListCaches();
-        // ===============================
 
         return redirect()->route('admin.kontenDownload.index')->with('success', 'Konten Download Berhasil Ditambahkan!');
         } catch (\Exception $e) {
@@ -133,14 +131,12 @@ class DownloadController extends Controller
         }
 
         $kartuDownload->update($data);
-        
+
         $slugBaru = $data['slug'];
         $halamanIndukBaru = $data['halaman_induk'];
 
-        // === PERBAIKAN "SLEDGEHAMMER" ===
         $this->clearAllListCaches(); // Hapus semua cache list
 
-        // Hapus cache detail (per-slug) yang LAMA
         if ($halamanIndukLama == 'download') {
             Cache::forget("kategori_download_detail_{$slugLama}");
         } elseif ($halamanIndukLama == 'ppid') {
@@ -155,7 +151,6 @@ class DownloadController extends Controller
                 Cache::forget("ppid.content.{$slugBaru}");
             }
         }
-        // ===============================
 
         return redirect()->route('admin.kontenDownload.index')->with('success', 'Konten Download Berhasil Diupdate!');
         } catch (\Exception $e) {
@@ -167,7 +162,7 @@ class DownloadController extends Controller
 
     public function destroy($id): RedirectResponse
     {
-        $kartuDownload = KategoriDownload::with('files')->findOrFail($id); // Eager load relasi
+        $kartuDownload = KategoriDownload::with('files')->findOrFail($id);
 
         $slug = $kartuDownload->slug;
         $halamanInduk = $kartuDownload->halaman_induk;
@@ -187,8 +182,7 @@ class DownloadController extends Controller
 
         $kartuDownload->delete();
 
-        // === PERBAIKAN "SLEDGEHAMMER" ===
-        $this->clearAllListCaches(); // Hapus semua cache list
+        $this->clearAllListCaches();
 
         // Hapus cache detail (per-slug) yang spesifik
         if ($halamanInduk == 'download') {
@@ -196,11 +190,10 @@ class DownloadController extends Controller
         } elseif ($halamanInduk == 'ppid') {
             Cache::forget("ppid.content.{$slug}");
         }
-        // ===============================
 
         return redirect()->route('admin.kontenDownload.index')->with('success', 'Konten Download dan Semua Filenya Berhasil Dihapus!');
     }
-    
+
     /**
      * Menghapus semua cache list yang terkait dengan Download dan PPID.
      */

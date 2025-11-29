@@ -10,7 +10,6 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
-// use Illuminate\Support\Facades\Storage; // Tidak perlu lagi
 use Illuminate\Support\Facades\Validator;
 use Illuminate\View\View;
 use Illuminate\Support\Str;
@@ -136,7 +135,7 @@ class PpidController extends Controller
         Cache::forget('ppid.kategori_konten');
         Cache::forget('ppid.all_items_nav');
 
-        return redirect()->route('admin.ppid.index') // Sesuaikan route
+        return redirect()->route('admin.ppid.index')
             ->with('success', 'Konten PPID Berhasil Ditambahkan!');
         } catch (\Exception $e) {
             return back()
@@ -209,7 +208,7 @@ class PpidController extends Controller
         $konten = Konten::with('kategoriKonten')->findOrFail($id);
         $kategori = $konten->kategoriKonten;
         $slugLama = $kategori->slug;
-        $slugBaru = $slugLama; // Inisialisasi
+        $slugBaru = $slugLama;
 
         $kategoriData = [
             'judul_konten'  => $request->judul_konten,
@@ -271,16 +270,13 @@ class PpidController extends Controller
 
         Cache::forget('ppid.kategori_konten');
         Cache::forget('ppid.all_items_nav');
-
-        // 2. Hapus cache halaman detail (slug lama)
         Cache::forget("ppid.content.{$slugLama}");
 
-        // 3. Hapus cache halaman detail (slug baru, jika berubah)
         if ($slugBaru !== $slugLama) {
             Cache::forget("ppid.content.{$slugBaru}");
         }
 
-        return redirect()->route('admin.ppid.index')->with('success', 'Konten PPID Berhasil Diperbarui!'); // Sesuaikan route
+        return redirect()->route('admin.ppid.index')->with('success', 'Konten PPID Berhasil Diperbarui!');
         } catch (\Exception $e) {
             return back()
                 ->withErrors(['general' => 'Terjadi kesalahan: ' . $e->getMessage()])
@@ -320,11 +316,10 @@ class PpidController extends Controller
         Cache::forget('ppid.kategori_konten');
         Cache::forget('ppid.all_items_nav');
 
-        // 2. Hapus cache halaman detail (jika slug-nya ada)
         if ($slugYangDihapus) {
             Cache::forget("ppid.content.{$slugYangDihapus}");
         }
 
-        return redirect()->route('admin.ppid.index')->with('success', 'Konten PPID Berhasil Dihapus!'); // Sesuaikan route
+        return redirect()->route('admin.ppid.index')->with('success', 'Konten PPID Berhasil Dihapus!');
     }
 }
