@@ -61,7 +61,7 @@
 
                                                             @if (mb_strlen($fullText) > 160)
                                                                 <button type="button" class="btn btn-link p-0 see-more"
-                                                                    data-id="{{ $h->id_header }}" data-judul="sub_heading">
+                                                                    data-id="{{ $h->id_header }}" data-judul="Sub Heading">
                                                                     Lihat selengkapnya
                                                                 </button>
                                                             @endif
